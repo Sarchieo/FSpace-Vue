@@ -372,7 +372,7 @@ export default {
         {
           src:
             "//img.alicdn.com/imgextra/i3/871886077/TB2tZC9cXXXXXc7XXXXXXXXXXXX-871886077.jpg"
-        }],
+        },
        medicineList: [
          {
            title: '中西药品',
@@ -440,6 +440,7 @@ export default {
              }
            ]
          },
+
           {
            title: '医疗器械',
            src: '//img.alicdn.com/imgextra/i3/2807849288/TB2ikxWrVXXXXaAXpXXXXXXXXXX_!!2807849288.jpg',
