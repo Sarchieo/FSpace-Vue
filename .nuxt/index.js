@@ -12,6 +12,7 @@ import { setContext, getLocation, getRouteData, normalizeError } from './utils'
 
 import nuxt_plugin_antdui_2b2dca90 from 'nuxt_plugin_antdui_2b2dca90' // Source: ../plugins/antd-ui (mode: 'all')
 import nuxt_plugin_fsplugin_465b94d8 from 'nuxt_plugin_fsplugin_465b94d8' // Source: ../plugins/fs-plugin.js (mode: 'client')
+import nuxt_plugin_vuelazyload_d07c1d40 from 'nuxt_plugin_vuelazyload_d07c1d40' // Source: ../plugins/vue-lazyload.js (mode: 'client')
 
 // Component: <NoSsr>
 Vue.component(NoSsr.name, NoSsr)
@@ -133,6 +134,7 @@ async function createApp(ssrContext) {
 
   if (process.client) {
     if (typeof nuxt_plugin_fsplugin_465b94d8 === 'function') await nuxt_plugin_fsplugin_465b94d8(app.context, inject)
+    if (typeof nuxt_plugin_vuelazyload_d07c1d40 === 'function') await nuxt_plugin_vuelazyload_d07c1d40(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

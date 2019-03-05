@@ -10,25 +10,16 @@
             <div class="binnar-box">
               <a-carousel autoplay>
                 <div>
-                  <img
-                    src="//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg"
-                    alt
-                  >
+                  <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" >
                 </div>
                 <div>
-                  <img
-                    src="//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg"
-                    alt
-                  >
+                  <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" >
                 </div>
                 <div>
-                  <img
-                    src="//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg"
-                    alt
-                  >
+                  <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" >
                 </div>
                 <div>
-                  <img src="//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg" alt="">
+                  <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" >
                 </div>
               </a-carousel>
               <div class="sale">
@@ -42,7 +33,8 @@
                       <p></p>
                       <p class="price">￥21.3元</p>
                     </div>
-                    <img src="//img.alicdn.com/imgextra/i3/1902685596/O1CN01vvrsd81rD0sDn5A8o_!!0-item_pic.jpg_q90.jpg" alt>
+
+                    <img v-lazy="'//img.alicdn.com/imgextra/i3/1902685596/O1CN01vvrsd81rD0sDn5A8o_!!0-item_pic.jpg_q90.jpg'" alt>
                   </a>
                   <a href>
                     <div>
@@ -380,7 +372,7 @@ export default {
         {
           src:
             "//img.alicdn.com/imgextra/i3/871886077/TB2tZC9cXXXXXc7XXXXXXXXXXXX-871886077.jpg"
-        },
+        }],
        medicineList: [
          {
            title: '中西药品',
@@ -448,7 +440,6 @@ export default {
              }
            ]
          },
-
           {
            title: '医疗器械',
            src: '//img.alicdn.com/imgextra/i3/2807849288/TB2ikxWrVXXXXaAXpXXXXXXXXXX_!!2807849288.jpg',
