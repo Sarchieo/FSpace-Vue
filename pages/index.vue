@@ -426,7 +426,20 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.initData()
+  },
   methods: {
+    initData() {
+      let self = this;
+      this.$queryIce(system.SystemServicePrx , 'SystemService', 'getAllDict', new this.IceCallback(
+        function (result) {
+          console.log(result)
+        },
+        function (error) {
+        }
+      ));
+    },
     addClass(item, index) {
       this.$refs['hover' + index][0].style.top = index * -this.$refs['li' + index][0].clientHeight + 'px'
       this.$refs['li' + index][0].style.borderRight = ''
@@ -592,6 +605,7 @@ li {
   line-height: 680px;
   z-index: 101;
 }
+
 .hover-show div{
   width: 650px!important;
   height: 136px;

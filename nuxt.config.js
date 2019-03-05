@@ -1,29 +1,69 @@
+const pkg = require('./package')
+
 
 module.exports = {
+  mode: 'spa',
+
   /*
   ** Headers of the page
   */
   head: {
-    title: 'starter',
+    title: pkg.name,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+      { hid: 'description', name: 'description', content: pkg.description }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Ice.js' },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Glacier2.js' },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/IceGrid.js' },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/IceStorm.js' },
+      { src: 'http://39.108.85.159:8080/wlq/system.js' }
     ]
   },
-  /*
-  ** Global CSS
-  */
-  css: ['~assets/css/main.css'],
-  plugins: [{
-    src: '~plugins/ant-design-vue',
-    ssr: true
-  }],
+
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#3B8070' }
+  loading: { color: '#fff' },
+
+  /*
+  ** Global CSS
+  */
+  css: [
+    'ant-design-vue/dist/antd.css'
+  ],
+
+  /*
+  ** Plugins to load before mounting the App
+  */
+  plugins: [
+    '@/plugins/antd-ui',
+    { src: '@/plugins/ice-client.js', ssr: false }
+    
+  ],
+  /*
+  ** Nuxt.js modules
+  */
+  modules: [
+  ],
+
+  /*
+  ** Build configuration
+  */
+  build: {
+    /*
+    ** You can extend webpack config here
+    */
+    extend(config, ctx) {
+      // console.log('webpack config:', config)
+     if(ctx.isClient) {
+      config.module.unknownContextCritical = false
+     }
+    }
+  }
 }
