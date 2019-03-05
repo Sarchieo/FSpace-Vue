@@ -1,4 +1,4 @@
-# Project
+# fspace-vue-ssr-demo
 
 > My astonishing Nuxt.js project
 
