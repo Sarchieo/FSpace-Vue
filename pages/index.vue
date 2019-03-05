@@ -381,6 +381,7 @@ export default {
           src:
             "//img.alicdn.com/imgextra/i3/871886077/TB2tZC9cXXXXXc7XXXXXXXXXXXX-871886077.jpg"
         },
+      ],
        medicineList: [
          {
            title: '中西药品',
