@@ -22,7 +22,7 @@ module.exports = {
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Glacier2.js' },
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/IceGrid.js' },
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/IceStorm.js' },
-      { src: 'http://39.108.85.159:8080/wlq/system.js' }
+      { src: 'http://39.108.85.159:8080/wlq/info.js' }
     ]
   },
 
@@ -43,7 +43,7 @@ module.exports = {
   */
   plugins: [
     '@/plugins/antd-ui',
-    { src: '@/plugins/ice-client.js', ssr: false }
+    { src: '@/plugins/fs-plugin.js', ssr: false }
     
   ],
   /*
