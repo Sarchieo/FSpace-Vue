@@ -31,12 +31,8 @@ function queryIce(moduleProxy, moduleName, methodName, callback, ...params) {
       callback.onCallback(CALLBACK_ACTION.READY, params);
       let proxy = communication
         .stringToProxy(moduleName)
-        // .ice_timeout(18000)
-        // .ice_invocationTimeout(18000)
         .ice_twoway()
         .ice_preferSecure(true);
-      // proxy.ice_timeout(1000).ice_twoway().ice_secure(false);
-
       return moduleProxy.checkedCast(proxy)
     }
   )

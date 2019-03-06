@@ -1,7 +1,7 @@
 {
-  "name": "Project",
+  "name": "FSpace-Medicine",
   "version": "1.0.0",
-  "description": "My astonishing Nuxt.js project",
+  "description": "一块医药",
   "author": "Sarchieo",
   "private": true,
   "scripts": {
