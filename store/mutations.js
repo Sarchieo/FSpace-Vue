@@ -1,5 +1,3 @@
-export const mutations = {
-  SET_USER: function (state, user) {
-    state.authUser = user
-  }
+export function SET_USER (state, user)  {
+  state.user = user || null
 }

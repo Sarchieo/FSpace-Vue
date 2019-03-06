@@ -1348,29 +1348,22 @@ export default {
       ]
     };
   },
-  async fetch({store, redirect}) {
-    if (!store.state.authUser) {
-      return redirect('/')
-    }
-  },
-  asyncData(context) {
-    // 接口调试
-    context.app.$queryIce(
-      InfoModule.OrderServerPrx,
-      "osB",
-      "queryByUserId",
-      new context.app.$iceCallback(
-        function result(result) {
-          return { testList: result };
-        },
-        function error(error) {}
-      ),
-      [10000, context.app.$commom.num2jlong(1000010000)]
-    );
+  mounted() {
+    this.initData()
   },
   methods: {
-    test() {
-      this.$router.push({path:'/product/detail',query:{id:'1'}})
+    async initData() {
+      this.$queryIce(
+        InfoModule.OrderServerPrx,
+        "osB",
+        "queryByUserId",
+        new this.$iceCallback(
+          function result(result) {
+            console.log(result)
+          }
+        ),
+        10000, this.$commom.num2jlong(1000010000)
+      );
     }
   }
 };
