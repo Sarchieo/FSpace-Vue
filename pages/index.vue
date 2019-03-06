@@ -27,15 +27,18 @@
                   <a-icon type="clock-circle" style="margin-right: 10px;"/>限时特价
                 </h2>
                 <div class="binnar-sale">
-                  <a href>
-                    <div>
-                      <p>美国进口now foods玛卡秘</p>
-                      <p></p>
-                      <p class="price">￥21.3元</p>
-                    </div>
 
-                    <img v-lazy="'//img.alicdn.com/imgextra/i3/1902685596/O1CN01vvrsd81rD0sDn5A8o_!!0-item_pic.jpg_q90.jpg'" alt>
-                  </a>
+                    <nuxt-link :to="{name: 'product-detail',params:{ id: 1 }}">
+                        <a href='javascript:;'>
+                        <div>
+                          <p>美国进口now foods玛卡秘</p>
+                          <p></p>
+                          <p class="price">￥21.3元</p>
+                        </div>
+                        <img v-lazy="'//img.alicdn.com/imgextra/i3/1902685596/O1CN01vvrsd81rD0sDn5A8o_!!0-item_pic.jpg_q90.jpg'" alt>
+                      </a>
+                    </nuxt-link>
+
                   <a href>
                     <div>
                       <p>进口无针注射针器胰岛素</p>
@@ -372,7 +375,7 @@ export default {
         {
           src:
             "//img.alicdn.com/imgextra/i3/871886077/TB2tZC9cXXXXXc7XXXXXXXXXXXX-871886077.jpg"
-        },
+        }
       ],
        medicineList: [
          {
@@ -1089,6 +1092,11 @@ export default {
       ),
       [10000, context.app.$commom.num2jlong(1000010000)]
     );
+  },
+  methods: {
+    test() {
+      this.$router.push({path:'/product/detail',query:{id:'1'}})
+    }
   }
 };
 </script>
