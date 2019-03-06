@@ -1,22 +1,22 @@
-# fspace-vue-ssr-demo
+# 项目介绍
 
-> My astonishing Nuxt.js project
+NUXT服务端渲染测试。
 
-## Build Setup
+### 安装
 
-``` bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn run dev
-
-# build for production and launch server
-$ yarn run build
-$ yarn start
-
-# generate static project
-$ yarn run generate
+```
+npm install
 ```
 
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+And 
+
+```
+yarn
+```
+
+## 运行
+
+```
+npm run dev
+```
+

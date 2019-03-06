@@ -1079,7 +1079,13 @@ export default {
       ]
     };
   },
+  async fetch({store, redirect}) {
+    if (!store.state.authUser) {
+      return redirect('/')
+    }
+  },
   asyncData(context) {
+    // 接口调试
     context.app.$queryIce(
       InfoModule.OrderServerPrx,
       "osB",
