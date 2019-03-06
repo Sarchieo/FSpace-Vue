@@ -3,38 +3,44 @@
   <a-layout-header>
     <div class="header-title">
       <div class="header-left">
-        <span>一块医药首页</span>
-        <span>请登录</span>
-        <span>免费注册</span>
+        <a>欢迎来到一块医药</a>
+        <a>登录</a>
+        <a>注册</a>
       </div>
       <div class="header-right">
-        <span>我的淘宝</span>
-        <span>购物车</span>
-        <span>收藏夹</span>
-        <span>手机版</span>
-        <span>淘宝网</span>
-        <span>商家支持</span>
-        <span>网站导航</span>
+        <a>帮助中心</a>
+        <a>在线客服</a>
+        <a>签到有礼</a>
+        <a>我的订单</a>
+        <a>我的一块</a>
       </div>
     </div>
     <div class="medicine-names">
       <div class="medicine-name-box">
         <div class="medicine-name">
-          <span>一块医药</span>
+          <img src="../../assets/img/u49.png" alt="">
         </div>
         <div class="medicine-search">
           <div class="search-box">
-            <a-input placeholder="搜索本店商品"/>
-            <a-button>搜本店</a-button>
+            <a-input placeholder="药品名称/药品通用名/药品助记码"/>
+            <a-button class="search-btn">搜索</a-button>
           </div>
         </div>
+        <a-button type="primary" class="cart-btn">
+          <a-icon type="shopping-cart" class="cart-icon"/>
+          <span class="cart-count">6</span>
+          购物车
+        </a-button>
+        <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
+        <div class="nav-box">
+          <a href class="goods-type">商品分类</a>
+          <a href>首页</a>
+          <a href>新人专享</a>
+          <a href>热销商品</a>
+          <a href>签到有礼</a>
+          <a href>在线采购</a>
+          <a href>我的采购</a>
       </div>
-      <div class="nav-box">
-        <a href>首页</a>
-        <a href>网络医院名医面对面</a>
-        <a href>阿里健康旗舰店</a>
-        <a href>中国医药O2O先锋联盟</a>
-        <a href>阿里健康大药房</a>
       </div>
     </div>
   </a-layout-header>
@@ -45,6 +51,24 @@
   }
 </script>
 <style>
+a {
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  margin: 0;
+  padding: 0;
+}
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 .ant-layout-header {
   height: 170px;
   line-height: 30px;
@@ -54,21 +78,31 @@
 }
 /* 头部 */
 .header-title {
-  width: 1190px;
+  width: 1200px;
   height: 30px;
   margin: 0 auto;
 }
 .header-title span {
+  float: right;
   margin-right: 10px;
 }
 .header-left {
   display: inline-block;
   width: 365px;
 }
+.header-left a{
+  margin-right: 15px;
+  color: #999999;
+}
 .header-right {
   float: right;
   width: 445px;
-  margin-right: 50px;
+  /* margin-right: 50px; */
+}
+.header-right a{
+  float: right;
+  margin-left: 15px;
+  color: #999999;
 }
 .medicine-names {
   display: block;
@@ -77,10 +111,18 @@
 .medicine-name-box {
   display: block;
   width: 1190px;
-  height: 100px;
+  height: 141px;
   margin: 0 auto;
   padding-top: 20px;
   background: #ffffff;
+}
+.spike{
+  text-indent: 29.6%;
+}
+.spike a{
+  margin-left: 15px;
+  margin-right: 15px;
+  color: #999999!important;
 }
 .medicine-name {
   display: inline-block;
@@ -91,24 +133,83 @@
 .medicine-name span {
   color: black;
 }
+.medicine-name img{
+  width:195px;
+  height: 62px;
+}
 .medicine-search {
   display: inline-block;
   width: 500px;
-  height: 36px;
+  height: 42px;
+  border-radius: 20px;
   margin-left: 150px;
   border: 2px solid rgb(255, 0, 54);
   background: rgb(255, 0, 54);
+}
+/* .search-box{
+  border-radius: 50%;
+} */
+.search-btn{
+  background-color: rgb(255, 0, 54);
+  border: none;
+  color: #ffffff;
+}
+.cart-btn{
+  float: right;
+  position: relative;
+  width: 154px;
+  height: 42px;
+  background: #ffffff;
+  border: 1px solid rgb(255,0,54);
+  border-radius: 20px;
+  color: #666666;
+}
+.cart-btn .cart-count{
+  position: absolute;
+  top: 2px;
+  left: 42px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgb(255,0,54);
+  color: #ffffff;
+}
+.cart-btn i{
+  margin-right: 20px;
+  font-size: 22px;
 }
 .nav-box {
   display: block;
   width: 1190px;
   height: 40px;
-  line-height: 60px;
   margin: 0 auto;
   background: #ffffff;
 }
+.nav-box .goods-type{
+  display: inline-block;
+  width: 196px!important;
+  height: 40px;
+  background: rgb(255,0,54);
+  line-height: 40px;
+  text-align: center;
+  color: #ffffff;
+}
 .nav-box a {
-  margin-right: 20px;
+  display: inline-block;
+  height: 40px;
+  margin-right: 30px;
+  font-size: 16px;
   color: black;
 }
+.ant-input {
+  width: 84% !important;
+  height: 38px;
+  border: none;
+  border-radius: 18px 0 0 18px;
+}
+/* .ant-btn {
+  background-color: rgb(255, 0, 54);
+  border: none;
+  color: #ffffff;
+} */
 </style>
