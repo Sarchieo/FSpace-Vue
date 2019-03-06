@@ -100,7 +100,7 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['@/plugins/antd-ui', { src: '@/plugins/fs-plugin.js', ssr: false }],
+  plugins: ['@/plugins/antd-ui', { src: '@/plugins/fs-plugin.js', ssr: false }, { src: "~/plugins/vue-lazyload.js", ssr: false }],
   /*
   ** Nuxt.js modules
   */
@@ -243,7 +243,7 @@ module.exports = require("consola");
 /* 7 */
 /***/ function(module, exports) {
 
-module.exports = {"name":"Project","version":"1.0.0","description":"My astonishing Nuxt.js project","author":"Sarchieo","private":true,"scripts":{"dev":"cross-env NODE_ENV=development nodemon server/index.js --watch server","build":"nuxt build","start":"cross-env NODE_ENV=production node server/index.js","generate":"nuxt generate"},"dependencies":{"cross-env":"^5.2.0","nuxt":"^2.4.0","koa":"^2.6.2","ant-design-vue":"^1.1.10","ice":"^3.6.3"},"devDependencies":{"nodemon":"^1.18.9"}}
+module.exports = {"name":"Project","version":"1.0.0","description":"My astonishing Nuxt.js project","author":"Sarchieo","private":true,"scripts":{"dev":"cross-env NODE_ENV=development nodemon server/index.js --watch server","build":"nuxt build","start":"cross-env NODE_ENV=production node server/index.js","generate":"nuxt generate"},"dependencies":{"cross-env":"^5.2.0","nuxt":"^2.4.0","koa":"^2.6.2","ant-design-vue":"^1.1.10","ice":"^3.6.3"},"devDependencies":{"nodemon":"^1.18.9","vue-lazyload":"^1.2.6"}}
 
 /***/ }
 /******/ ]);
