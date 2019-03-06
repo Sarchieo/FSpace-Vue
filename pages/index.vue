@@ -42,7 +42,7 @@
                       <p></p>
                       <p class="price">￥21.3元</p>
                     </div>
-                    <img src="//img.alicdn.com/imgextra/i2/2255157576/O1CN01dAxJAz25pr62D8NDd_!!0-item_pic.jpg_q90.jpg" alt>
+                    <img v-lazy="'//img.alicdn.com/imgextra/i2/2255157576/O1CN01dAxJAz25pr62D8NDd_!!0-item_pic.jpg_q90.jpg'" alt>
                   </a>
                   <a href>
                     <div>
@@ -50,7 +50,7 @@
                       <p></p>
                       <p class="price">￥21.3元</p>
                     </div>
-                    <img src="//img.alicdn.com/imgextra/i4/772458181/O1CN01nczH7S2AIwiKUl1NB_!!0-item_pic.jpg_q90.jpg" alt>
+                    <img v-lazy="'//img.alicdn.com/imgextra/i4/772458181/O1CN01nczH7S2AIwiKUl1NB_!!0-item_pic.jpg_q90.jpg'" alt>
                   </a>
                   <a href>
                     <div>
@@ -58,7 +58,7 @@
                       <p></p>
                       <p class="price">￥21.3元</p>
                     </div>
-                    <img src="//img.alicdn.com/imgextra/i4/911757567/O1CN01hJ3I7b25ljWuhSGYJ_!!0-item_pic.jpg_q90.jpg" alt>
+                    <img v-lazy="'//img.alicdn.com/imgextra/i4/911757567/O1CN01hJ3I7b25ljWuhSGYJ_!!0-item_pic.jpg_q90.jpg'" alt>
                   </a>
                 </div>
               </div>
@@ -66,30 +66,30 @@
             <div class="binnar-position">
               <div class="binnar-img">
                 <a href="">
-                  <img src="//img.alicdn.com/tps/TB16TwaKVXXXXauXVXXXXXXXXXX-190-160.png_q90.jpg" alt="">
+                  <img v-lazy="'//img.alicdn.com/tps/TB16TwaKVXXXXauXVXXXXXXXXXX-190-160.png_q90.jpg'" alt="">
                 </a>
               </div>
               <div class="binnar-img">
                 <a href="">
-                  <img src="//img.alicdn.com/tps/i1/TB1oT0WHpXXXXXHaXXXEeH32pXX-190-160.jpg_q90.jpg" alt="">
+                  <img v-lazy="'//img.alicdn.com/tps/i1/TB1oT0WHpXXXXXHaXXXEeH32pXX-190-160.jpg_q90.jpg'" alt="">
                 </a>
               </div>
               <p>下期预告</p>
               <a href class="next-binnar">
                 <span>同仁堂麻仁丸60克</span>
-                <img src="//img.alicdn.com/imgextra/i3/1588915138/TB2Oz3baXXXXXadXpXXXXXXXXXX_!!1588915138.jpg_70x70q90.jpg" alt="">
+                <img v-lazy="'//img.alicdn.com/imgextra/i3/1588915138/TB2Oz3baXXXXXadXpXXXXXXXXXX_!!1588915138.jpg_70x70q90.jpg'" alt="">
               </a>
               <a href class="next-binnar">
                 <span>白云山 风油精3ml</span>
-                <img src="//img.alicdn.com/imgextra/i2/2110807016/TB2N6i1cVXXXXbsXpXXXXXXXXXX_!!2110807016.jpg_70x70q90.jpg" alt="">
+                <img v-lazy="'//img.alicdn.com/imgextra/i2/2110807016/TB2N6i1cVXXXXbsXpXXXXXXXXXX_!!2110807016.jpg_70x70q90.jpg'" alt="">
               </a>
               <a href class="next-binnar">
                 <span>金寿 麝香壮骨膏</span>
-                <img src="//img.alicdn.com/imgextra/i3/2029339133/TB2SeS5bBLzQeBjSZFCXXXmtXXa_!!2029339133.jpg_70x70q90.jpg" alt="">
+                <img v-lazy="'//img.alicdn.com/imgextra/i3/2029339133/TB2SeS5bBLzQeBjSZFCXXXmtXXa_!!2029339133.jpg_70x70q90.jpg'" alt="">
               </a>
               <a href class="next-binnar">
                 <span>上海龙虎牌 清凉鼻</span>
-                <img src="//img.alicdn.com/imgextra/i3/2643613580/TB2patTqFXXXXcAXXXXXXXXXXXX_!!2643613580.jpg_70x70q90.jpg" alt="">
+                <img v-lazy="'//img.alicdn.com/imgextra/i3/2643613580/TB2patTqFXXXXcAXXXXXXXXXXXX_!!2643613580.jpg_70x70q90.jpg'" alt="">
               </a>
             </div>
             <div class></div>
@@ -100,7 +100,7 @@
               <div class="brand-left">
                 <a href>
                   <img
-                    src="//img.alicdn.com/imgextra/i2/757937135/TB2jOg4X9FjpuFjSspbXXXagVXa_!!757937135.jpg"
+                    v-lazy="'//img.alicdn.com/imgextra/i2/757937135/TB2jOg4X9FjpuFjSspbXXXagVXa_!!757937135.jpg'"
                     alt
                   >
                 </a>
@@ -111,7 +111,7 @@
                 </ul>
                 <ul class="logo-box">
                   <li v-for="(item,index) in hotList" :key="index">
-                    <img :src="item.src" alt>
+                    <img v-lazy="item.src" alt>
                   </li>
                 </ul>
               </div>
@@ -122,7 +122,7 @@
             <p class="healthy-title">健康热点</p>
             <div class="upper" v-for="(item,index) in imgPath" :key="index">
               <a href class="healthy-left">
-                <img :src="item.src" alt>
+                <img v-lazy="item.src" alt>
                 <!-- <img :src="item.src" alt=""> -->
               </a>
               <!-- 健康热点 -->
@@ -140,7 +140,7 @@
                         <del>￥{{items.old}}</del>
                       </p>
                     </div>
-                    <img :src="items.url" alt>
+                    <img v-lazy="items.url" alt>
                   </a>
                 </li>
               </ul>
@@ -151,31 +151,31 @@
             <h2>春夏常见疾病</h2>
             <div class="summer-pic">
               <a href class="cold">
-                <img src="//img.alicdn.com/tps/i3/TB1Q7GxGVXXXXc7XXXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i3/TB1Q7GxGVXXXXc7XXXXSutbFXXX.jpg'" alt>
               </a>
               <a href class="skin">
-                <img src="//img.alicdn.com/tps/i1/TB13H5sGVXXXXaiXFXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i1/TB13H5sGVXXXXaiXFXXSutbFXXX.jpg'" alt>
               </a>
               <a href class="uphot">
-                <img src="//img.alicdn.com/tps/i4/TB1PbWoGVXXXXXxXVXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i4/TB1PbWoGVXXXXXxXVXXSutbFXXX.jpg'" alt>
               </a>
               <a href class="bianmi">
-                <img src="//img.alicdn.com/tps/i3/TB1lVmiGVXXXXakaXXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i3/TB1lVmiGVXXXXakaXXXSutbFXXX.jpg'" alt>
               </a>
               <a href class="jianfei">
-                <img src="//img.alicdn.com/tps/i4/TB19yasGVXXXXX4XFXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i4/TB19yasGVXXXXX4XFXXSutbFXXX.jpg'" alt>
               </a>
               <a href class="shenxu">
-                <img src="//img.alicdn.com/tps/i4/TB1CASoGVXXXXbDXFXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i4/TB1CASoGVXXXXbDXFXXSutbFXXX.jpg'" alt>
               </a>
               <a href class="yanyan">
-                <img src="//img.alicdn.com/tps/i3/TB1ieKyGVXXXXaOXXXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i3/TB1ieKyGVXXXXaOXXXXSutbFXXX.jpg'" alt>
               </a>
               <a href class="weibing">
-                <img src="//img.alicdn.com/tps/i1/TB1GmWrGVXXXXasXFXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i1/TB1GmWrGVXXXXasXFXXSutbFXXX.jpg'" alt>
               </a>
               <a href class="shimian">
-                <img src="//img.alicdn.com/tps/i1/TB1cpaoGVXXXXXTXVXXSutbFXXX.jpg" alt>
+                <img  v-lazy="'//img.alicdn.com/tps/i1/TB1cpaoGVXXXXXTXVXXSutbFXXX.jpg'" alt>
               </a>
             </div>
           </div>
@@ -185,12 +185,12 @@
           <div class="medicine" v-for="(item,index) in medicineList" :key="index">
             <h2>{{item.title}}</h2>
             <a href="" class="medicine-left">
-              <img :src="item.src" alt="">
+              <img v-lazy="item.src" alt="">
             </a>
             <ul class="medicine-ui">
               <li v-for="(items,index) in item.list" :key="index" class="border-right border-bottom">
                 <a href="">
-                  <img :src="items.src" alt="">
+                  <img v-lazy="items.src" alt="">
                   <div class="goods-info">
                     <p class="goods-text">{{items.text}}</p>
                     <p class="goods-price">￥{{items.new}}  <del>￥{{items.old}}</del></p>
@@ -326,7 +326,7 @@
               <p class="licence">
                 <span class="gongshang">互联网违法和不良信息举报电话： 0571-81683755 blxxjb@alibaba-inc.com</span>
                 <span>互联网药品信息服务资质证书编号： </span> <a href="">湘- (经营性) -2017-0005</a>
-                <span><img src="//img.alicdn.com/tps/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png" alt=""></span> <a href=""> 湘公网安备33010002000120号</a>
+                <span><img v-lazy="'//img.alicdn.com/tps/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png'" alt=""></span> <a href=""> 湘公网安备33010002000120号</a>
               </p>
               <p class="licence">
                 <span>医疗器械网络交易服务第三方平台备案： (湘) 网械平台备字[2018]第00002号</span>
@@ -373,6 +373,7 @@ export default {
           src:
             "//img.alicdn.com/imgextra/i3/871886077/TB2tZC9cXXXXXc7XXXXXXXXXXXX-871886077.jpg"
         },
+      ],
        medicineList: [
          {
            title: '中西药品',
@@ -1631,7 +1632,7 @@ li {
 }
 .shoping-guide{
   width: 1190px;
-  height: 215px;
+  height: 200px;
   margin: 0 auto;
   border-top: 1px solid rgb(237,237,237);
   background: #ffffff;
