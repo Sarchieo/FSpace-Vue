@@ -39,14 +39,14 @@
             </div>
             <div class></div>
           </div>
-          <div class="brand-hall">
-            <p class="brand-hall-title">限时抢购</p>
+          <div class="brand-hall" v-for="(item,index) in rushList" :key="index">
+            <p class="brand-hall-title">{{item.title}} <a class="all-hot">查看全部抢购  > </a></p>
             <div class="brand-div">
               <div class="brand-left">
-                <p>12：00场</p>
+                <p>{{item.time}}</p>
               </div>
               <ul class="brand-right">
-                <li v-for="(item,index) in rushList" :key="index">
+                <li v-for="(items,index) in item.list" :key="index">
                   <a-card
                     hoverable
                     class="card"
@@ -54,16 +54,16 @@
                     <img
                       class="card-img"
                       alt="example"
-                      v-lazy="item.src"
+                      v-lazy="items.src"
                       slot="cover"
                     />
-                    <a-progress :percent="item.surplus" style="position:absolute;top:145px;left:37.5px;width: 150px;" :showInfo="false" status="exception"/>
-                    <p class="surplus">还剩{{item.surplus}}支</p>
+                    <a-progress :percent="items.surplus" style="position:absolute;top:145px;left:37.5px;width: 150px;" :showInfo="false" status="exception"/>
+                    <p class="surplus">还剩{{items.surplus}}支</p>
                     <a-card-meta
                       class="card-info"
-                      :title="item.text">
+                      :title="items.text">
                     </a-card-meta>
-                    <p class="card-price">￥{{item.new}} <del>￥{{item.old}}</del></p>
+                    <p class="card-price">￥{{items.new}} <del>￥{{items.old}}</del></p>
                   </a-card>
                 </li>
               </ul>
@@ -78,6 +78,7 @@
                   <a-card
                     hoverable
                     class="card"
+                    @click="toDetailsPages"
                   >
                     <img
                       class="card-img"
@@ -130,87 +131,6 @@
               </li>
             </ul>
           </div>
-          <!-- <div class="healthy">
-            <p class="healthy-title">健康热点</p>
-            <div class="upper" v-for="(item,index) in imgPath" :key="index">
-              <a href class="healthy-left">
-                <img v-lazy="item.src" alt>
-                
-              </a>
-             
-              <ul class="upper-ul">
-                <li
-                  class="border-right border-bottom"
-                  v-for="(items,index) in item.list"
-                  :key="index"
-                >
-                  <a href>
-                    <div>
-                      <p class="desc-text">{{items.title}}</p>
-                      <p class="desc-price">
-                        ￥{{items.new}}
-                        <del>￥{{items.old}}</del>
-                      </p>
-                    </div>
-                    <img v-lazy="items.url" alt>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-    
-          <div class="summer-spring">
-            <h2>春夏常见疾病</h2>
-            <div class="summer-pic">
-              <a href class="cold">
-                <img  v-lazy="'//img.alicdn.com/tps/i3/TB1Q7GxGVXXXXc7XXXXSutbFXXX.jpg'" alt>
-              </a>
-              <a href class="skin">
-                <img  v-lazy="'//img.alicdn.com/tps/i1/TB13H5sGVXXXXaiXFXXSutbFXXX.jpg'" alt>
-              </a>
-              <a href class="uphot">
-                <img  v-lazy="'//img.alicdn.com/tps/i4/TB1PbWoGVXXXXXxXVXXSutbFXXX.jpg'" alt>
-              </a>
-              <a href class="bianmi">
-                <img  v-lazy="'//img.alicdn.com/tps/i3/TB1lVmiGVXXXXakaXXXSutbFXXX.jpg'" alt>
-              </a>
-              <a href class="jianfei">
-                <img  v-lazy="'//img.alicdn.com/tps/i4/TB19yasGVXXXXX4XFXXSutbFXXX.jpg'" alt>
-              </a>
-              <a href class="shenxu">
-                <img  v-lazy="'//img.alicdn.com/tps/i4/TB1CASoGVXXXXbDXFXXSutbFXXX.jpg'" alt>
-              </a>
-              <a href class="yanyan">
-                <img  v-lazy="'//img.alicdn.com/tps/i3/TB1ieKyGVXXXXaOXXXXSutbFXXX.jpg'" alt>
-              </a>
-              <a href class="weibing">
-                <img  v-lazy="'//img.alicdn.com/tps/i1/TB1GmWrGVXXXXasXFXXSutbFXXX.jpg'" alt>
-              </a>
-              <a href class="shimian">
-                <img  v-lazy="'//img.alicdn.com/tps/i1/TB1cpaoGVXXXXXTXVXXSutbFXXX.jpg'" alt>
-              </a>
-            </div>
-          </div> -->
-
-
-          <!-- 中西药品，医疗器械，营养保健 -->
-          <!-- <div class="medicine" v-for="(item,index) in medicineList" :key="index">
-            <h2>{{item.title}}</h2>
-            <a href="" class="medicine-left">
-              <img v-lazy="item.src" alt="">
-            </a>
-            <ul class="medicine-ui">
-              <li v-for="(items,index) in item.list" :key="index" class="border-right border-bottom">
-                <a href="">
-                  <img v-lazy="items.src" alt="">
-                  <div class="goods-info">
-                    <p class="goods-text">{{items.text}}</p>
-                    <p class="goods-price">￥{{items.new}}  <del>￥{{items.old}}</del></p>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div> -->
         </a-layout-content>
         <!-- 页脚 -->
         <a-layout-footer>
@@ -595,6 +515,9 @@ export default {
       ],
       rushList: [
         {
+         time: '12:00场',
+         title: '限时抢购',
+         list: [{
           total: 120,
           surplus: 36,
           text: '999 感冒灵颗粒 可抢2盒',
@@ -625,724 +548,7 @@ export default {
           src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
           old: 52,
           new: 45
-        }
-      ],
-      testList: [],
-      hotList: [
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/2653032020/TB2b4gWgXXXXXaKXpXXXXXXXXXX_!!2653032020.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/871886077/TB2rEPlcXXXXXXtXXXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/2957611790/TB2SW_EcNdkpuFjy0FbXXaNnpXa_!!2957611790.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/871886077/TB2tZC9cXXXXXc7XXXXXXXXXXXX-871886077.jpg"
-        }
-      ],
-       medicineList: [
-         {
-           title: '中西药品',
-           src: '//img.alicdn.com/imgextra/i3/2071216161/TB24cRnbFXXXXXmXpXXXXXXXXXX_!!2071216161.jpg',
-           list: [
-             {
-               src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
-               text: '领券减+六叶】汇仁牌肾宝片',
-               old: 322,
-               new: 322
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1srwPPVXXXXaIaXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
-               text: '买2得理疗包】白云山陈李济',
-               old: 790,
-               new: 711
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '山东东阿阿胶250g铁盒阿胶块',
-               old: 1350,
-               new: 1350
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
-               text: '礼袋装】东阿阿胶复方阿胶浆',
-               old: 468,
-               new: 468
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '买3盒立减+包邮】九芝堂六味',
-               old: 32,
-               new: 32
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '包邮2得六味】太极五子衍宗',
-               old: 49,
-               new: 49
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
-               text: '买1得好礼】盘龙云海排毒养',
-               old: 99,
-               new: 99
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '买2得高级毛巾】善存多维元',
-               old: 115,
-               new: 99
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '辅舒良丙酸氟替卡松鼻喷雾剂',
-               old: 75,
-               new: 63
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '买3得3好礼】斯利安叶酸片',
-               old: 56,
-               new: 52
-             }
-           ]
-         },
-
-          {
-           title: '医疗器械',
-           src: '//img.alicdn.com/imgextra/i3/2807849288/TB2ikxWrVXXXXaAXpXXXXXXXXXX_!!2807849288.jpg',
-           list: [
-             {
-               src: '//img.alicdn.com/imgextra/i2/TB1MbEyJVXXXXXSXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '欧姆龙电子血压计HEM-7052',
-               old: 580,
-               new: 399
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1AoDTLXXXXXc3XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '【顺丰无辐射】邦力健多普勒',
-               old: 308,
-               new: 178
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1UKsnMVXXXXXoXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '冠昌医用儿童温度计电子体温',
-               old: 198,
-               new: 45
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i3/TB11ct_JVXXXXaEXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '刮痧板】康祝拔罐器24罐真空',
-               old: 157.8,
-               new: 64.9
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB11nltKFXXXXchXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '衡互邦轮椅折叠带坐便半躺',
-               old: 1500,
-               new: 348
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1gclOKFXXXXalXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '鱼跃空气压缩式雾化器可调雾',
-               old: 588,
-               new: 289
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
-               text: '德国博朗耳温枪IRT6520耳温',
-               old: 998,
-               new: 328
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1KFFEKFXXXXclXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '三诺安稳血糖试纸血糖仪试纸',
-               old: 183,
-               new: 62
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1XvJvNXXXXXcDXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: 'Panasonic/松下电子血压计',
-               old: 469,
-               new: 269
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '鱼跃制氧机8F-3W带雾化医用',
-               old: 7200,
-               new: 2880
-             }
-           ]
-         },
-         {
-           title: '营养保健',
-           src: '//img.alicdn.com/tps/i2/TB1C_JAHXXXXXc7XpXXef7H2pXX-190-520.jpg',
-           list: [
-             {
-               src: '//img.alicdn.com/imgextra/i6/TB1vNRiLXXXXXXmXXXX02ZE_VXX_065725.jpg_160x160q90.jpg',
-               text: '汤臣倍健R液体钙软胶囊',
-               old: 98,
-               new: 88
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1vHlSIXXXXXXTXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: 'Lumi胶原蛋白粉20包 进口',
-               old: 298,
-               new: 228
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1L37TMpXXXXbnXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: 'Lumi胶原蛋白口服液6瓶 进口',
-               old: 266,
-               new: 149
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i7/TB1Q0tiGFXXXXamXVXXHSxV_FXX_060806.jpg_160x160q90.jpg',
-               text: '绿A天然螺旋藻精片 0.5g*200',
-               old: 98,
-               new: 92
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1RFl8JFXXXXcBXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '[买2送5]康比特 果蔬纤维代餐',
-               old: 195,
-               new: 74
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1qgvDKFXXXXX.XXXXvspi_XXX_051614.jpg_160x160q90.jpg',
-               text: '程海牌螺旋藻片 0.5g/片*100',
-               old: 136,
-               new: 135
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i7/TB1kLY0MXXXXXXKXXXXhFn4.FXX_110224.jpg_160x160q90.jpg',
-               text: '养生堂牌天然维生素E软胶囊',
-               old: 238,
-               new: 128
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i8/TB1MdNnGFXXXXbjXpXXmI2p_FXX_061850.jpg_160x160q90.jpg',
-               text: '绿A天然螺旋藻精片 0.5g*12',
-               old: 335,
-               new: 318
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i3/TB1_09BLVXXXXX1XpXXzGCz.VXX_112116.jpg_160x160q90.jpg',
-               text: '红桃K维生素C加E咀嚼片',
-               old: 148,
-               new: 39
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i3/TB1C289GFXXXXX2XpXXktFl_XXX_051632.jpg_160x160q90.jpg',
-               text: '汤臣倍健牌蛋白质粉 455g/罐',
-               old: 391.25,
-               new: 313
-             }
-           ]
-         },
-         {
-           title: '滋补养生',
-           src: '//img.alicdn.com/tps/i1/TB1MQV.IpXXXXb4XXXXef7H2pXX-190-520.jpg',
-           list: [
-             {
-               src: '//img.alicdn.com/imgextra/i1/TB1YCrCKVXXXXchXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: 'Beryl/百瑞源 枸杞，中宁枸杞',
-               old: 98,
-               new: 39.9
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i3/TB1fKKIJXXXXXcaXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '【五月新货】山东东阿阿胶桃',
-               old: 150,
-               new: 150
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1EpYsKpXXXXbDXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: 'Beryl/百瑞源 中宁枸杞 500g',
-               old: 139,
-               new: 37.9
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '康美',
-               old: 388,
-               new: 128
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1hoQsKFXXXXcFXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '老字号 百花牌纯天然蜂蜜',
-               old: 159,
-               new: 59.9
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i3/TB1q0YVKpXXXXXdXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '寿仙谷 破壁灵芝孢子粉',
-               old: 4050,
-               new: 4050
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i2/TB1zFmZLXXXXXcVXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '金诃 藏红花 5克',
-               old: 160,
-               new: 79.2
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '贯康 冬虫夏草 4条/克',
-               old: 258.88,
-               new: 258
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1sej.KFXXXXXpXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '桃花姬135*2',
-               old: 269,
-               new: 268
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i2/TB1gpgYKpXXXXb8XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '敖东城 西洋参 80g',
-               old: 420,
-               new: 69
-             }
-           ]
-         },
-         {
-           title: '保健食品',
-           src: '//img.alicdn.com/tps/i3/TB1RfxIHXXXXXb7aXXXef7H2pXX-190-520.jpg',
-           list: [
-             {
-               src: '//img.alicdn.com/imgextra/i2/TB1RMTfIFXXXXX.XVXXLJcJ8VXX_033554.jpg_160x160q90.jpg',
-               text: '斯强牌乳酸营养颗粒 3g/袋',
-               old: 42,
-               new: 42
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i5/TB1YqVlLpXXXXakXpXX9fLt8XXX_020819.jpg_160x160q90.jpg',
-               text: '程海牌螺旋藻片 0.5g/片* 300',
-               old: 189,
-               new: 89
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1fOw2LpXXXXc0XFXXY34r9VXX_045741.jpg_160x160q90.jpg',
-               text: 'Dr. Herbs/禾博士 维生素C咀',
-               old: 196,
-               new: 39
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1LCwGKVXXXXbFXVXXrbwl8VXX_033358.jpg_160x160q90.jpg',
-               text: '千泉 威莱斯牌左旋肉碱绿茶',
-               old: 298,
-               new: 138
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1hoQsKFXXXXcFXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '沛元 蜂胶胶囊 500mg/粒*90',
-               old: 198,
-               new: 129
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i5/TB19qVpGpXXXXbjXVXXi5Ck.pXX_102824.jpg_160x160q90.jpg',
-               text: '泰尔牌膳通片 750mg/片*50',
-               old: 128,
-               new: 128
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB15ffEKFXXXXXcXXXXLCqm8pXX_023204.jpg_160x160q90.jpg',
-               text: 'Health care/一品康',
-               old: 158,
-               new: 108
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '康纽莱联合邦利牌天然胡萝卜素',
-               old: 90,
-               new: 41.8
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i5/TB13WoBMpXXXXbIXVXXD9FsFVXX_095711.jpg_160x160q90.jpg',
-               text: '修正破壁灵芝孢子粉 0.99g/片',
-               old: 398,
-               new: 299
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i5/TB1.JSuGpXXXXXUaXXXZKcU7FXX_013255.jpg_160x160q90.jpg',
-               text: '三金牌伊康美胶囊 480mg/粒',
-               old: 137.5,
-               new: 55
-             }
-           ]
-         },
-          {
-           title: '医疗健康服务',
-           src: '//img.alicdn.com/tps/TB1IY2QKVXXXXcNXVXXXXXXXXXX-190-520.jpg',
-           list: [
-             {
-               src: '//img.alicdn.com/bao/uploaded/TB1G57MLXXXXXa9XFXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '新年孝敬父母双人体检套餐',
-               old: 1798,
-               new: 1199
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB1IhsxLXXXXXaFXFXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '瑞慈体检卡 白金卡套餐',
-               old: 1980,
-               new: 1980
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB1J8UoLXXXXXcaXVXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '慈铭体检 快乐职场套餐',
-               old: 780,
-               new: 468
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB1wWwDLXXXXXXiXpXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '熙康中老年感恩超值套餐',
-               old: 472,
-               new: 472
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB1qwZsLXXXXXa0XVXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '博奥颐和儿童肺癌基因检测',
-               old: 1500,
-               new: 899
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB1EXgPLXXXXXa6XXXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '产前检查套餐',
-               old: 26135,
-               new: 26135
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB1Na.GLXXXXXcVXFXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '线上甩脂营减脂健身塑形',
-               old: 1599,
-               new: 670
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB1dwgHLXXXXXcQXFXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '【喜鹊上门】背部缓解酸痛',
-               old: 268,
-               new: 98
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB13lwnLXXXXXbUXVXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '德国威兰德全瓷牙套餐',
-               old: 3980,
-               new: 3980
-             },
-              {
-               src: '//img.alicdn.com/bao/uploaded/TB143kDLXXXXXXzXFXXSutbFXXX.jpg_160x160q90.jpg',
-               text: '牙齿贴面美容卡',
-               old: 3500,
-               new: 2800
-             }
-           ]
-         },
-           {
-           title: '隐形眼镜',
-           src: '//img.alicdn.com/tps/i2/TB18Ea8JFXXXXc7XpXXef7H2pXX-190-520.jpg',
-           list: [
-             {
-               src: '//img.alicdn.com/imgextra/i2/TB1GJucOpXXXXX.apXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '[买2送眼贴]强生安视优隐形',
-               old: 389,
-               new: 168
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1f_GPOFXXXXckXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '【送润眼液】博士伦日抛隐形',
-               old: 112,
-               new: 28
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i4/TB1vhv2OXXXXXXCXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '[买到送眼贴]强生美瞳',
-               old: 539,
-               new: 148
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1s0F5NpXXXXatXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '[买1送7]博士伦隐形近视眼镜',
-               old: 103.9,
-               new: 78
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1JiucKXXXXXasXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '买4送充电宝 强生美瞳',
-               old: 1500,
-               new: 899
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1cG_ULpXXXXX7XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '爱尔康傲滴护理液',
-               old: 159.9,
-               new: 85
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB128oqNXXXXXcGXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '爱尔康傲滴护理液355ml*3',
-               old: 199,
-               new: 132
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i2/TB1.2rqLVXXXXXEXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '爱尔康傲滴近视隐形眼镜护理',
-               old: 79,
-               new: 73
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i1/TB1WfaMOFXXXXcxaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '[4件7.5折]视康美瞳',
-               old: 198,
-               new: 68
-             },
-              {
-               src: '//img.alicdn.com/imgextra/i2/TB1kW4kKFXXXXaAXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-               text: '[买2送洗眼液]爱尔康视康睛彩美',
-               old: 185,
-               new: 68
-             }
-           ]
-         }
-       ],
-       hotList: [
-         {
-           src:"//img.alicdn.com/imgextra/i3/2653032020/TB2b4gWgXXXXXaKXpXXXXXXXXXX_!!2653032020.jpg"
-         },
-         {
-           src:"//img.alicdn.com/imgextra/i4/871886077/TB2rEPlcXXXXXXtXXXXXXXXXXXX-871886077.jpg"
-         },
-         {
-           src:"//img.alicdn.com/imgextra/i1/2957611790/TB2SW_EcNdkpuFjy0FbXXaNnpXa_!!2957611790.jpg"
-         },
-         {
-           src:"//img.alicdn.com/imgextra/i3/871886077/TB2tZC9cXXXXXc7XXXXXXXXXXXX-871886077.jpg"
-         },
-
-        {
-          src:
-            "//img.alicdn.com/imgextra/i2/871886077/TB2eKW9cXXXXXa1XpXXXXXXXXXX-871886077.jpg"
-        },
-
-        {
-          src:
-            "//img.alicdn.com/imgextra/i2/871886077/TB21pYfcXXXXXbTXXXXXXXXXXXX-871886077.jpg"
-        },
-
-        {
-          src:
-            "//img.alicdn.com/imgextra/i2/871886077/TB2lAPfcXXXXXcaXXXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/2957611790/TB2SW_EcNdkpuFjy0FbXXaNnpXa_!!2957611790.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/871886077/TB2gkblcXXXXXXJXXXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i2/871886077/TB22hzacXXXXXXiXpXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/2435673160/TB2HA4ccFXXXXaJXpXXXXXXXXXX_!!2435673160.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/1810287826/TB2EzXdcFXXXXXwXpXXXXXXXXXX_!!1810287826.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/871886077/TB217LgcXXXXXb1XXXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/871886077/TB2rEPlcXXXXXXtXXXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/871886077/TB2P0nhcXXXXXbVXXXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i2/871886077/TB21pYfcXXXXXbTXXXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/2071216161/TB2CrBfdVXXXXXGXXXXXXXXXXXX_!!2071216161.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/2071216161/TB2CrBfdVXXXXXGXXXXXXXXXXXX_!!2071216161.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i2/871886077/TB2lAPfcXXXXXcaXXXXXXXXXXXX-871886077.jpg"
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/871886077/TB2fnHacXXXXXc_XXXXXXXXXXXX-871886077.jpg"
-        }
-      ],
-      imgPath: [
-        {
-          src: "//img.alicdn.com/tps/TB1KO3kMVXXXXXiXXXXXXXXXXXX-190-520.jpg",
-          list: [
-            {
-              title: "汇仁肾宝片126成人男性肾亏",
-              url:
-                "//img.alicdn.com/imgextra/i1/2928278102/O1CN016PrL3z29ilQVDMXxK_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 322,
-              new: 322
-            },
-            {
-              title: " 好礼】艾丽奥利司 他胶囊排油 3盒】包邮",
-              url:
-                "//img.alicdn.com/imgextra/i2/2928278102/O1CN012rmOP029ilQMSyp8x_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 298,
-              new: 139
-            },
-            {
-              title: "九芝堂六味地黄丸",
-              url:
-                "//img.alicdn.com/imgextra/i4/2928278102/O1CN01mXOTCc29ilQQB0eOa_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 78,
-              new: 90
-            },
-            {
-              title: "万晟蔓迪米诺地尔酊溶液60ml",
-              url:
-                "//img.alicdn.com/imgextra/i1/2928278102/O1CN01e1RAbs29ilQSa3v9k_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 56,
-              new: 32
-            },
-            {
-              title: "2瓶】珍视明四味珍层冰硼眼药",
-              url:
-                "//img.alicdn.com/imgextra/i4/2928278102/O1CN01U4UYOg29ilQU7xI4x_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 150,
-              new: 129
-            },
-            {
-              title: "鱼跃制氧机8F-3W雾化医用级",
-              url:
-                "//img.alicdn.com/imgextra/i3/TB1F3ZDIFXXXXXyXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 7200,
-              new: 2880
-            },
-            {
-              title: "【工程师上门】PHILIPS/飞利",
-              url:
-                "//img.alicdn.com/imgextra/i1/TB11m47NpXXXXXzaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 10800,
-              new: 7380
-            },
-            {
-              title: "可孚制氧机医用老人孕妇家用",
-              url:
-                "//img.alicdn.com/imgextra/i1/TB1gpRGNpXXXXanXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 5800,
-              new: 1688
-            },
-            {
-              title: "【保价双II】瑞迈特呼吸机",
-              url:
-                "//img.alicdn.com/imgextra/i2/TB1cFVoNVXXXXbhapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 7180,
-              new: 4180
-            },
-            {
-              title: "9A国仁牌神灯理疗仪 tdp治疗仪",
-              url:
-                "//img.alicdn.com/imgextra/i3/TB11bH_LpXXXXavXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 499,
-              new: 189
-            }
-          ]
-        },
-        {
-          src:
-            "//img.alicdn.com/tps/i2/TB1U3eeIpXXXXXjXXXXef7H2pXX-190-520.jpg",
-          list: [
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i2/TB1zfkkNFXXXXcWXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 46.8,
-              new: 46.8
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 98,
-              new: 98
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i4/TB1kHWcNpXXXXXKXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 235,
-              new: 235
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 403.5,
-              new: 403.5
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i2/TB1_d2dJFXXXXalXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 336,
-              new: 336
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i3/TB1rd_VNFXXXXc0XpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 2580,
-              new: 2580
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i1/TB1XJi_KVXXXXXEXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 178,
-              new: 178
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i4/TB1pn9kNFXXXXcfXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 928,
-              new: 928
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 728,
-              new: 728
-            },
-            {
-              title: "",
-              url:
-                "//img.alicdn.com/imgextra/i4/TB1LcttKFXXXXc5XXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              old: 4050,
-              new: 4050
-            }
-          ]
+        }]
         }
       ]
     };
@@ -1351,6 +557,11 @@ export default {
     this.initData()
   },
   methods: {
+    toDetailsPages() {
+      this.$router.push({
+        path:'/product/detail'
+      })
+    },
     async initData() {
       this.$queryIce(
         InfoModule.OrderServerPrx,
@@ -1369,6 +580,7 @@ export default {
 </script>
 
 <style scoped>
+/* 初始化 */
 * {
   margin: 0;
 }
@@ -1416,30 +628,6 @@ li {
 }
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
-}
-/* 右侧菜单栏 */
-.sider-meun{
-  position: fixed;
-  top: 300px;
-  right: 10px;
-  display: flex;
-  flex-direction:column;
-  justify-content:space-between;
-  width: 85px;
-  height:550px;
-  background: rgb(238,238,238);
-}
-.sider-meun li{
-  width: 85px;
-  height: 85px;
-  line-height: 85px;
-  text-align: center;
-  background: #ffffff;
-  color: #666;
-}
-.sider-meun li:hover{
-  background: rgb(255, 0, 54);
-  color: #ffffff;
 }
 /* 限时抢购 */
 .card{
@@ -1613,13 +801,71 @@ li {
   line-height: 50px;
   font-size: 22px;
 }
+/* 热销专区，包邮专区 */
+.brand-hall {
+  display: block;
+  width: 1190px;
+  height: 330px;
+  margin: 0 auto;
+  background: #ffffff;
+  margin-bottom: 20px;
+}
+.brand-hall .brand-hall-title {
+  height: 50px;
+  line-height: 50px;
+  background: rgb(238, 238, 238);
+  font-size: 22px;
+}
+.brand-hall-title .all-hot{
+  float: right;
+  font-size: 20px;
+  color:  #c40000;
+}
+.brand-div {
+  display: block;
+  width: 1190px;
+  height: 280px;
+  margin: 0 auto;
+  background: rgb(238,238,238);
+}
+.brand-left {
+  float: left;
+  position: relative;
+  width: 228px;
+  height: 280px;
+  background: #fff;
+}
+.brand-left a {
+  width: 100%;
+  height: 100%;
+}
+.brand-left p{
+  position: absolute;
+  top: 15px;
+  width: 228px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+  color: rgb(245,47,94);
+}
+.brand-right {
+  float: right;
+  display: flex;
+  justify-content: space-between;
+  width: 950px;
+  height: 280px;
+  background: rgb(238,238,238);
+}
+.text-Center{
+  text-align: center!important;
+  text-indent: 0px!important;
+}
 /* 导航及广告轮播左侧菜单栏,广告位，特价区 */
 /* For demo */
 .ant-carousel >>> .slick-slide {
   text-align: center;
   height: 435px;
   line-height: 435px;
-  background: #364d79;
   overflow: hidden;
 }
 
@@ -1655,7 +901,6 @@ li {
   text-align: center;
   height: 160px;
   line-height: 160px;
-  background: #364d79;
   overflow: hidden;
 }
 .ant-carousel > .slick-slide h3 {
@@ -1679,390 +924,6 @@ li {
   /* background: orchid; */
   line-height: 321px;
   text-align: center;
-}
-.binnar-position {
-  display: inline-block;
-  position: absolute;
-  top: 0px;
-  left: 991px;
-  width: 200px;
-  height: 680px;
-}
-.binnar-position a {
-  display: inline-block;
-  width: 200px;
-  height: 77px;
-  line-height: 77px;
-  border-bottom: 1px solid rgb(229, 229, 229);
-}
-.binnar-position a span {
-  margin-left: 3px;
-}
-.binnar-position p {
-  height: 51px;
-  line-height: 50px;
-  border-bottom: 2px solid rgb(5, 132, 100);
-  color: rgb(5, 132, 100);
-  font-size: 16px;
-}
-.sale {
-  position: absolute;
-  top: 321px;
-  left: 0px;
-  width: 750px;
-  height: 360px;
-  line-height: 402px;
-}
-.sale h2 {
-  height: 50px;
-  text-indent: 15px;
-  line-height: 50px;
-  border-bottom: 2px solid rgb(16, 182, 140);
-}
-.binnar-position .binnar-img {
-  position: relative;
-  left: 5px;
-  width: 190px;
-  height: 160px;
-  line-height: 160px;
-  text-align: center;
-  /* background: yellowgreen; */
-}
-.binnar-img a {
-  width: 100%;
-  height: 100%;
-}
-.binnar-img a img {
-  width: 100%;
-  height: 100%;
-}
-.next-binnar img {
-  float: right;
-}
-.binnar-sale {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.binnar-sale a {
-  position: relative;
-  width: 186px;
-  height: 308px;
-  border-right: 1px solid rgb(229, 229, 229);
-}
-.binnar-sale a img {
-  position: absolute;
-  top: 150px;
-  left: 22px;
-  width: 140px;
-  height: 140px;
-}
-.binnar-sale a div {
-  position: absolute;
-  top: 10px;
-  left: 7px;
-  width: 172px;
-  height: 64px;
-}
-.binnar-sale a div p {
-  width: 172px;
-  height: 20px;
-  line-height: 20px;
-  color: #333333;
-}
-.binnar-sale a div .price {
-  font-weight: bold;
-  color: #c40000;
-}
-/* 品牌馆 */
-.brand-hall {
-  display: block;
-  width: 1190px;
-  height: 330px;
-  margin: 0 auto;
-  background: #ffffff;
-  margin-bottom: 20px;
-}
-.brand-hall .brand-hall-title {
-  height: 50px;
-  line-height: 50px;
-  background: rgb(238, 238, 238);
-  font-size: 22px;
-}
-.brand-div {
-  display: block;
-  width: 1190px;
-  height: 280px;
-  margin: 0 auto;
-  background: rgb(238,238,238);
-}
-.brand-left {
-  float: left;
-  width: 228px;
-  height: 280px;
-  background: #fff;
-}
-.brand-left a {
-  width: 100%;
-  height: 100%;
-}
-.brand-right {
-  float: right;
-  display: flex;
-  justify-content: space-between;
-  width: 950px;
-  height: 280px;
-  background: rgb(238,238,238);
-}
-.text-Center{
-  text-align: center!important;
-  text-indent: 0px!important;
-}
-.logo-box {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 590px;
-  height: 192px;
-}
-/* 健康热点 */
-.healthy {
-  display: block;
-  width: 1190px;
-  height: 1150px;
-  margin: 0 auto;
-  background: rgb(238, 238, 238);
-}
-.healthy-title {
-  height: 50px;
-  line-height: 70px;
-  margin-bottom: 2px;
-  border-bottom: 2px solid black;
-  font-size: 18px;
-}
-.upper {
-  width: 1190px;
-  height: 520px;
-  margin-bottom: 20px;
-}
-.healthy-left {
-  float: left;
-  width: 190px;
-  height: 520px;
-}
-.healthy-left img {
-  width: 190px;
-  height: 520px;
-}
-.upper .upper-ul {
-  float: right;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 1000px;
-  height: 520px;
-  background: #ffffff;
-}
-.upper .upper-ul li {
-  width: 199px;
-  height: 260px;
-}
-.upper-ul li a {
-  position: relative;
-  top: 0px;
-  left: 0px;
-  width: 199px;
-  height: 260px;
-}
-.upper-ul li a div {
-  position: absolute;
-  top: 20px;
-  /* left: 20px; */
-  width: auto;
-}
-.upper-ul li a img {
-  position: absolute;
-  top: 110px;
-  left: 30px;
-  width: 140px;
-  height: 140px;
-}
-.desc-text {
-  width: 199px;
-  text-align: center;
-  color: rgb(153, 153, 153);
-}
-.desc-price {
-  text-align: center;
-  font-weight: bold;
-  color: rgb(196, 0, 0);
-}
-.desc-price del {
-  color: rgb(204, 204, 204);
-}
-.lower {
-  width: 1190px;
-  height: 520px;
-  background: red;
-}
-.border-right {
-  border-right: 1px solid rgb(228, 228, 228);
-}
-.border-bottom {
-  border-bottom: 1px solid rgb(228, 228, 228);
-}
-/* 春夏常见疾病 */
-.summer-spring {
-  display: block;
-  width: 1190px;
-  height: 270px;
-  margin: 0 auto;
-  background: #ffffff;
-}
-.summer-spring h2 {
-  height: 30px;
-  border-bottom: 2px solid #000000;
-  font-size: 18px;
-  background: rgb(238, 238, 238);
-}
-.summer-pic {
-  position: relative;
-  width: 1190px;
-  height: 240px;
-}
-.summer-pic a img {
-  width: 100%;
-  height: 100%;
-  animation: ks-fadeIn 350ms linear 0ms 1 normal both;
-}
-.cold {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 240px;
-  height: 240px;
-}
-.skin {
-  position: absolute;
-  top: 0px;
-  left: 240px;
-  width: 240px;
-  height: 120px;
-}
-.uphot {
-  position: absolute;
-  top: 0px;
-  left: 480px;
-  width: 140px;
-  height: 120px;
-}
-.bianmi {
-  position: absolute;
-  top: 0px;
-  left: 620px;
-  width: 130px;
-  height: 120px;
-}
-.jianfei {
-  position: absolute;
-  top: 0px;
-  left: 750px;
-  width: 240px;
-  height: 240px;
-}
-.shenxu {
-  position: absolute;
-  top: 0px;
-  left: 990px;
-  width: 200px;
-  height: 240px;
-}
-.yanyan {
-  position: absolute;
-  width: 140px;
-  height: 120px;
-  top: 120px;
-  left: 240px;
-}
-.weibing {
-  position: absolute;
-  top: 120px;
-  left: 380px;
-  width: 240px;
-  height: 120px;
-}
-.shimian {
-  position: absolute;
-  top: 120px;
-  left: 620px;
-  width: 130px;
-  height: 120px;
-}
-/* 中西药品，医疗器械，营养保健等 */
-.medicine{
-  display: block;
-  width: 1190px;
-  height: 570px;
-  margin: 0 auto;
-}
-.medicine h2{
-  height: 50px;
-  line-height: 70px;
-  font-size: 18px;
-  border-bottom: 2px solid #000000;
-}
-.medicine-left{
-  float: left;
-  width: 190px;
-  height: 520px;
-}
-.medicine-left img{
-  width: 100%;
-  height: 100%;
-}
-.medicine-ui{
-  float: right;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 1000px;
-  height: 520px;
-  background: #ffffff;
-}
-.medicine-ui li{
-  width: 199px;
-  height: 260px;
-}
-.medicine-ui li a{
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.medicine-ui li a img{
-  position: absolute;
-  top: 15px;
-  left: 30px;
-  width: 140px;
-  height: 140px;
-}
-.goods-info{
-  position:absolute;
-  top: 190px;
-  left: 0px;
-  width: 199px;
-}
-.goods-info .goods-text{
-  text-align: center;
-  color: #000;
-  font-size: 13px;
-}
-.goods-info .goods-price{
-  text-align: center;
-  color: rgb(203,31,31);
-  font-weight: bold;
-}
-.goods-info .goods-price del{
-  color: #999;
 }
 /* 页脚 */
 .page-footer{

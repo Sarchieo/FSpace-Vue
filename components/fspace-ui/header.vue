@@ -26,10 +26,10 @@
             <a-button class="search-btn">搜索</a-button>
           </div>
         </div>
-        <a-button type="primary" class="cart-btn">
+        <a-button class="cart-btn">
           <a-icon type="shopping-cart" class="cart-icon"/>
           <span class="cart-count">6</span>
-          购物车
+          采购单
         </a-button>
         <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
         <div class="nav-box">
@@ -154,6 +154,10 @@ li {
   border: none;
   color: #ffffff;
 }
+.search-btn:hover{
+  background-color: rgb(255, 0, 54);
+  color: #ffffff;
+}
 .cart-btn{
   float: right;
   position: relative;
@@ -162,7 +166,12 @@ li {
   background: #ffffff;
   border: 1px solid rgb(255,0,54);
   border-radius: 20px;
+  margin-top: 8px;
   color: #666666;
+}
+.cart-btn:hover{
+  border: 1px solid rgb(255,0,54);
+  /* background: rgb(255,0,54); */
 }
 .cart-btn .cart-count{
   position: absolute;
@@ -200,6 +209,9 @@ li {
   margin-right: 30px;
   font-size: 16px;
   color: black;
+}
+.nav-box a:hover{
+  color: rgb(255,0,54);
 }
 .ant-input {
   width: 84% !important;
