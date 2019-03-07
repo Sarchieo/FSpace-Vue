@@ -4,7 +4,7 @@
     <div class="header-title">
       <div class="header-left">
         <a>欢迎来到一块医药</a>
-        <a>登录</a>
+        <nuxt-link to='/shoppingCart'>登录</nuxt-link>
         <a>注册</a>
       </div>
       <div class="header-right">

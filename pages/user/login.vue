@@ -11,7 +11,6 @@ export default {
       this.$store.dispatch('login').then((res) => {
         // 保存用户信息
         this.$store.commit('SET_USER', 1)
-
       }).catch((err) => {
         console.log('登录失败')
       })

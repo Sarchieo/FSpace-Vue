@@ -1268,7 +1268,6 @@ export default {
             }
           ]
         },
-
         {
           src:
             "//img.alicdn.com/tps/i2/TB1U3eeIpXXXXXjXXXXef7H2pXX-190-520.jpg",
