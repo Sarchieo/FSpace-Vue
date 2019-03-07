@@ -1,5 +1,5 @@
 <template>
-  <div id="components-layout-demo-basic">
+    <div id="components-layout-demo-basic">
     <a-layout>
       <a-layout>
         <f-space-header></f-space-header>
@@ -24,13 +24,13 @@
                   <a-icon type="right-circle" />
                 </div>
                 <div>
-                  <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" class="banner-pic">
+                  <img v-lazy="'//img30.360buyimg.com/img/jfs/t22975/291/671631212/175034/741d012e/5b3c309cN3f3c7cb8.jpg'" class="banner-pic">
                 </div>
                 <div>
-                  <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" class="banner-pic">
+                  <img v-lazy="'//img30.360buyimg.com/img/jfs/t15169/46/1365117661/178502/d02d6948/5a4ddc4eNbd55867a.jpg'" class="banner-pic">
                 </div>
                 <div>
-                  <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" class="banner-pic">
+                  <img v-lazy="'//img30.360buyimg.com/img/jfs/t16327/24/1234872079/191114/a510775d/5a4ddbc6N2d73dd08.jpg'" class="banner-pic">
                 </div>
                 <div>
                   <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" class="banner-pic">
@@ -39,7 +39,7 @@
             </div>
             <div class></div>
           </div>
-          <div class="brand-hall" v-for="(item,index) in rushList" :key="index">
+          <div id='hot' class="brand-hall" v-for="(item,index) in rushList" :key="index">
             <p class="brand-hall-title">{{item.title}} <a class="all-hot">查看全部抢购  > </a></p>
             <div class="brand-div">
               <div class="brand-left">
@@ -53,7 +53,6 @@
                   >
                     <img
                       class="card-img"
-                      alt="example"
                       v-lazy="items.src"
                       slot="cover"
                     />
@@ -70,7 +69,7 @@
             </div>
           </div>
           <!-- 热销专区 包邮专区 -->
-          <div class="brand-hall" v-for="(item,index) in hotSelling" :key="index">
+          <div id="top" class="brand-hall" v-for="(item,index) in hotSelling" :key="index">
             <p class="brand-hall-title">{{item.title}}</p>
             <div class="brand-div">
               <ul class="brand-right hot-width">
@@ -82,7 +81,38 @@
                   >
                     <img
                       class="card-img"
-                      alt="example"
+                      v-lazy="items.src"
+                      slot="cover"
+                    />
+                    
+                    <p class="surplus text-Center top185">{{items.text}}</p>
+                    <p class="validity">有效期至{{items.validity}}</p>
+                    <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
+                    <p class="specifications">{{items.specifications}}</p>
+                    <p class="manufacturer">{{items.manufacturer}}</p>
+                    <p class="sold">已售{{items.sold}}盒</p>
+                    <a-card-meta
+                      class="card-info"
+                      :title="item.text">
+                    </a-card-meta>
+                    
+                  </a-card>
+                </li>
+              </ul>
+            </div>
+          </div>
+            <div id="free-delivery" class="brand-hall" v-for="(item,index) in freeDelivery" :key="index">
+            <p class="brand-hall-title">{{item.title}}</p>
+            <div class="brand-div">
+              <ul class="brand-right hot-width">
+                <li v-for="(items,index) in item.list" :key="index">
+                  <a-card
+                    hoverable
+                    class="card"
+                    @click="toDetailsPages"
+                  >
+                    <img
+                      class="card-img"
                       v-lazy="items.src"
                       slot="cover"
                     />
@@ -104,7 +134,7 @@
             </div>
           </div>
           <!-- 为你精选 -->
-          <div class="elaborate" v-for="(item,index) in elaborateList" :key="index">
+          <div id='choice' class="elaborate" v-for="(item,index) in elaborateList" :key="index">
             <p class="elaborate-title">{{item.title}}</p>
             <ul class="elaborate-ui">
               <li v-for="(items,index) in item.list" :key="index">
@@ -113,7 +143,6 @@
                     class="elaborate-card"
                   >
                     <img
-                      alt="example"
                       v-lazy="items.src"
                       slot="cover"
                     />
@@ -258,7 +287,7 @@
               <p class="licence">
                 <span class="gongshang">互联网违法和不良信息举报电话： 0571-81683755 blxxjb@alibaba-inc.com</span>
                 <span>互联网药品信息服务资质证书编号： </span> <a href="">湘- (经营性) -2017-0005</a>
-                <span><img v-lazy="'//img.alicdn.com/tps/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png'" alt=""></span> <a href=""> 湘公网安备33010002000120号</a>
+                <span><img v-lazy="'//img.alicdn.com/tps/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png'"></span> <a href=""> 湘公网安备33010002000120号</a>
               </p>
               <p class="licence">
                 <span>医疗器械网络交易服务第三方平台备案： (湘) 网械平台备字[2018]第00002号</span>
@@ -274,12 +303,14 @@
         </a-layout-footer>
       </a-layout>
        <ul class="sider-meun">
-        <li>商品分类</li>
-        <li>限时抢购</li>
-        <li>热销专区</li>
-        <li>包邮专区</li>
-        <li>为你精选</li>
-        <li>回到顶部</li>
+         <a-anchor offsetTop='offsetTop'>
+            <a-anchor-link href="#components-layout-demo-basic" title="商品分类" />
+            <a-anchor-link href="#hot" title="限时抢购" />
+            <a-anchor-link href="#top" title="热销专区" />
+            <a-anchor-link href="#free-delivery" title="包邮专区" />
+            <a-anchor-link href="#choice" title="为你精选" />
+            <a-back-top />
+         </a-anchor>
       </ul>
     </a-layout>
   </div>
@@ -294,12 +325,13 @@ export default {
   },
   data() {
     return {
+      offsetTop: 40,
       elaborateList: [
         {
           title: '为你精选',
           list: [
             {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: '//img.alicdn.com/imgextra/i2/2928278102/O1CN01CglrRQ29ilQVNceiu_!!0-item_pic.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -309,7 +341,7 @@ export default {
               sold: 12
             },
              {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: '//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -319,7 +351,7 @@ export default {
               sold: 22
             },
              {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: '//img.alicdn.com/imgextra/i3/TB1hNj_PXXXXXcrXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -329,7 +361,7 @@ export default {
               sold: 3
             },
              {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: '//img.alicdn.com/imgextra/i2/TB1cFVoNVXXXXbhapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -339,7 +371,7 @@ export default {
               sold: 4
             },
              {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: '//img.alicdn.com/imgextra/i1/TB11m47NpXXXXXzaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -349,7 +381,7 @@ export default {
               sold: 5
             },
              {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: '//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -359,7 +391,7 @@ export default {
               sold: 6
             },
              {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: '//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -379,7 +411,7 @@ export default {
               sold: 8
             }, 
             {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: 'http://img.alicdn.com/imgextra/i7/TB1kLY0MXXXXXXKXXXXhFn4.FXX_110224.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -389,7 +421,7 @@ export default {
               sold: 9
             },
              {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src: 'http://img.alicdn.com/imgextra/i5/TB1YqVlLpXXXXakXpXX9fLt8XXX_020819.jpg_160x160q90.jpg',
               text: '九芝堂六味地黄丸',
               specifications: '0.5g*50片',
               manufacturer: '上海强生制药有限公司',
@@ -401,12 +433,12 @@ export default {
           ]
         }
       ],
-      hotSelling: [
-        {
-          title: '热销专区',
+      freeDelivery: [
+         {
+          title: '包邮专区',
           list: [
             {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/imgextra/i2/TB1RMTfIFXXXXX.XVXXLJcJ8VXX_033554.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -416,7 +448,7 @@ export default {
               sold: 666
             },
              {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/imgextra/i5/TB1YqVlLpXXXXakXpXX9fLt8XXX_020819.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -426,7 +458,7 @@ export default {
               sold: 666
             },
              {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/imgextra/i4/TB1fOw2LpXXXXc0XFXXY34r9VXX_045741.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -436,7 +468,7 @@ export default {
               sold: 666
             },
              {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/imgextra/i5/TB19qVpGpXXXXbjXVXXi5Ck.pXX_102824.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -446,7 +478,7 @@ export default {
               sold: 666
             },
              {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/imgextra/i5/TB13WoBMpXXXXbIXVXXD9FsFVXX_095711.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -456,12 +488,14 @@ export default {
               sold: 666
             }
           ]
-        },
-         {
-          title: '包邮专区',
+         }
+      ],
+      hotSelling: [
+        {
+          title: '热销专区',
           list: [
             {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/bao/uploaded/TB1EXgPLXXXXXa6XXXXSutbFXXX.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -471,7 +505,7 @@ export default {
               sold: 666
             },
              {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/imgextra/i1/TB128oqNXXXXXcGXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -481,7 +515,7 @@ export default {
               sold: 666
             },
              {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/imgextra/i4/TB1vhv2OXXXXXXCXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -491,7 +525,7 @@ export default {
               sold: 666
             },
              {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/bao/uploaded/TB1qwZsLXXXXXa0XVXXSutbFXXX.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -501,7 +535,7 @@ export default {
               sold: 666
             },
              {
-              src:'//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+              src:'//img.alicdn.com/bao/uploaded/TB1dwgHLXXXXXcQXFXXSutbFXXX.jpg_160x160q90.jpg',
               validity: '2022-02-15',
               old: 23,
               new: 22,
@@ -529,7 +563,7 @@ export default {
           total: 120,
           surplus: 89,
           text: '领券减+六叶】汇仁牌肾宝片',
-          src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
+          src: '//img.alicdn.com/imgextra/i4/772458181/O1CN01nczH7S2AIwiKUl1NB_!!0-item_pic.jpg_q90.jpg',
           old: 100.50,
           new: 95
         },
@@ -537,7 +571,7 @@ export default {
           total: 120,
           surplus: 59,
           text: '山东东阿阿胶250g铁盒阿胶块',
-          src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
+          src: '//img.alicdn.com/imgextra/i3/1902685596/O1CN01vvrsd81rD0sDn5A8o_!!0-item_pic.jpg_q90.jpg',
           old: 300,
           new: 295
         },
@@ -545,7 +579,7 @@ export default {
           total: 120,
           surplus: 10,
           text: '买1得好礼】盘龙云海排毒养',
-          src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
+          src: '//img.alicdn.com/imgextra/i2/2255157576/O1CN01dAxJAz25pr62D8NDd_!!0-item_pic.jpg_q90.jpg',
           old: 52,
           new: 45
         }]

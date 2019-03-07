@@ -2,7 +2,7 @@ const pkg = require('./package')
 
 
 module.exports = {
-  // mode: 'spa',
+  mode: 'universal',
   /*
   ** Headers of the page
   */
@@ -43,8 +43,8 @@ module.exports = {
   */
   plugins: [
     '@/plugins/antd-ui',
-    '@/plugins/vue-lazyload.js',
-    { src: '~plugins/fs-plugin.js', ssr: false },
+    { src: '~/plugins/vue-lazyload.js', ssr: true },
+    { src: '~plugins/fs-plugin.js', ssr: false }
   ],
   /*
   ** Nuxt.js modules
@@ -56,6 +56,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    vendor: ['vue-lazyload'],
     /*
     ** You can extend webpack config here
     */
