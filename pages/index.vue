@@ -1054,6 +1054,30 @@ li {
 .gongshang{
   margin-right: 40px;
 }
+/* 右侧菜单栏 */
+.sider-meun{
+  position: fixed;
+  top: 300px;
+  right: 10px;
+  display: flex;
+  flex-direction:column;
+  justify-content:space-between;
+  width: 85px;
+  height:550px;
+  background: rgb(238,238,238);
+}
+.sider-meun li{
+  width: 85px;
+  height: 85px;
+  line-height: 85px;
+  text-align: center;
+  background: #ffffff;
+  color: #666;
+}
+.sider-meun li:hover{
+  background: rgb(255, 0, 54);
+  color: #ffffff;
+}
 /* ui框架样式 */
 .ant-input {
   width: 84% !important;
