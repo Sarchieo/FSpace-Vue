@@ -11,12 +11,16 @@
     {{item.title}}
     <a-icon type="right" />
     <div :ref='"hover" + index' class="hover-show" v-show="item.isActive">
-
+      <p> {{ item.title }} </p>
+      <div>
+        <span v-for="(items,index) in item.list" :key="index">{{items}}</span>
+      </div>
     </div>
     </li>
   </ul>
 </template>
 <script>
+
 export default {
   name: 'f-space-menu',
   data() {
@@ -24,39 +28,178 @@ export default {
           list: [
             {
               isActive: false,
-              title: '西药',  
+              title: '西药',
+              list: [
+                '体检套餐',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽'
+              ]
             },
              {
               isActive: false,
               title: '中成药',
+               list: [
+                '避孕计生',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '发烧',
+              ]
             },
              {
               isActive: false,
               title: '医疗器械',
+               list: [
+                '补肾用药',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '发烧',
+              ]
             },
              {
               isActive: false,
               title: '食品保健',
+               list: [
+                '蜂蜜',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '发烧',
+              ]
             },
              {
               isActive: false,
               title: '中药饮品',
+               list: [
+                '三七',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '发烧',
+              ]
             },
              {
               isActive: false,
               title: '生物制药',
+               list: [
+                '血糖仪',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '发烧',
+              ]
             },
              {
               isActive: false,
               title: '注射用药',
+               list: [
+                '青莓素',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '发烧',
+              ]
             },
              {
               isActive: false,
               title: '日化用品',
+               list: [
+                '牙膏',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '发烧',
+              ]
             },
              {
               isActive: false,
               title: '美妆护理',
+               list: [
+                '粉底',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '感冒咳嗽',
+                '发烧',
+              ]
             }
       ]
     };
@@ -64,7 +207,7 @@ export default {
   methods: {
     showChildren(item, index, e) {
       this.$refs["hover" + index][0].style.top =
-        index * -this.$refs["li" + index][0].clientHeight + "px";
+        index * -this.$refs["li" + index][0].clientHeight + -15 + "px";
       item.isActive = true;
     },
     hideChildren(item) {
@@ -75,19 +218,16 @@ export default {
 </script>
 <style>
 .sider-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   width: 196px;
   height: 435px;
   padding-top: 15px!important;
+  padding-bottom: 15px!important;
   box-shadow: 1px 1px 3px #999;
   z-index: 99;
 }
 .sider-menu-li {
   position: relative;
   width: 196px;
-  height: 43px;
   box-sizing: border-box;
   line-height: 45px;
   text-indent: 20px;
@@ -101,65 +241,35 @@ export default {
   margin-top: 15px;
   margin-right: 5px;
 }
-.sider-menu-li div {
-  width: 196px;
-  height: 136px;
-  padding-left: 10px;
-  /* border-right: 2px solid #ffffff; */
-}
-.sider-menu-li div h3 {
-  width: 195px;
-  position: relative;
-  margin: 4px 0 0;
-  font-size: 14px;
-}
-.sider-menu-li div h3 a {
-  display: inline-block;
-  width: 182px;
-  height: 30px;
-  color: rgb(95, 95, 95);
-}
-.selectLi {
-  border-left: 1px solid #10b68c;
-  border-top: 1px solid #10b68c;
-  border-bottom: 1px solid #10b68c;
-  border-right: 1px solid #10b68c;
-}
-.selectLi-need-boder {
-  border-left: 1px solid #ffffff;
-  border-top: 1px solid #ffffff;
-  border-bottom: 1px solid #ffffff;
-  border-right: 1px solid #10b68c !important;
-}
-.drugs-type {
-  width: 210px !important;
-  height: 88px !important;
-}
-.drugs-type a {
-  display: inline-block;
-  width: 60px;
-  margin-right: 5px;
-  margin-bottom: 6px;
-  color: #000000;
-}
-.drugs-type p {
-  margin-bottom: 7px !important;
-}
 .hover-show {
   position: absolute;
   top: 0px;
-  left: 195px;
-  width: 720px !important;
+  left: 197px;
+  width: 970px !important;
   height: 435px !important;
   background: #ffffff;
-  text-align: center;
-  line-height: 680px;
+  color: #666!important;
   z-index: 101;
-  background: deeppink;
+}
+.hover-show p {
+  height: 60px;
+  line-height: 70px;
+  text-indent: 30px;
+  font-size: 18px;
+  color: #333;
 }
 .hover-show div {
-  width: 650px !important;
-  height: 136px;
-  border-left: 1px solid #10b68c;
+  height: 356px;
+  padding-left: 30px;
+  padding-top: 10px;
+}
+.hover-show div span{
+  float: left;
+  width: 130px;
+  height: 40px;
+  text-align: left;
+  line-height: 40px;
+  font-size: 16px;
+  color: black;
 }
 </style>

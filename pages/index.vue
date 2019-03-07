@@ -303,12 +303,12 @@
         </a-layout-footer>
       </a-layout>
        <ul class="sider-meun">
-         <a-anchor offsetTop='offsetTop'>
-            <a-anchor-link href="#components-layout-demo-basic" title="商品分类" />
-            <a-anchor-link href="#hot" title="限时抢购" />
-            <a-anchor-link href="#top" title="热销专区" />
-            <a-anchor-link href="#free-delivery" title="包邮专区" />
-            <a-anchor-link href="#choice" title="为你精选" />
+         <a-anchor :affix="false"  offsetTop='40' :showInkInFixed='false' wrapperClass="wrap-right">
+            <a-anchor-link class="right-meun" href="#components-layout-demo-basic" title="商品分类" />
+            <a-anchor-link class="right-meun" href="#hot" title="限时抢购" />
+            <a-anchor-link class="right-meun" href="#top" title="热销专区" />
+            <a-anchor-link class="right-meun" href="#free-delivery" title="包邮专区" />
+            <a-anchor-link class="right-meun" href="#choice" title="为你精选" />
             <a-back-top />
          </a-anchor>
       </ul>
@@ -325,7 +325,6 @@ export default {
   },
   data() {
     return {
-      offsetTop: 40,
       elaborateList: [
         {
           title: '为你精选',
@@ -1093,22 +1092,47 @@ li {
   position: fixed;
   top: 300px;
   right: 10px;
-  display: flex;
-  flex-direction:column;
-  justify-content:space-between;
-  width: 85px;
-  height:550px;
+  width: 120px;
+  height:530px;
   background: rgb(238,238,238);
 }
-.sider-meun li{
+.sider-meun .right-meun{
   width: 85px;
-  height: 85px;
-  line-height: 85px;
+  height: 80px;
+  line-height: 80px;
   text-align: center;
   background: #ffffff;
   color: #666;
 }
-.sider-meun li:hover{
+.ant-anchor-link {
+  padding: 7px 0 7px 16px;
+  line-height: 1.143;
+}
+.ant-anchor-link-title {
+  display: block;
+  position: relative;
+  transition: all 0.3s;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+.ant-anchor-link-title:only-child {
+  margin-bottom: 0;
+}
+.ant-anchor-link-active > .ant-anchor-link-title {
+  color: #1890ff;
+}
+.ant-anchor-link .ant-anchor-link {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.wrap-right {
+  height: 420px;
+}
+.sider-meun .right-meun:hover{
   background: rgb(255, 0, 54);
   color: #ffffff;
 }

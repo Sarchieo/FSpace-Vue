@@ -35,6 +35,9 @@
               </div>
               <div class="manufacturer">
                 <p class="packing"> <span>规格/包装：</span> <span class="margin-right190">5g*15袋</span><span>剂  型：</span> <span>瓶装</span></p>
+                <p class="packing"> <span>规格/包装：</span> <span class="margin-right190">5g*15袋</span><span>剂  型：</span> <span>瓶装</span></p>
+                <p class="packing"> <span>规格/包装：</span> <span class="margin-right190">5g*15袋</span><span>剂  型：</span> <span>瓶装</span></p>
+                <p class="packing"> <span>规格/包装：</span> <span class="margin-right190">5g*15袋</span><span>剂  型：</span> <span>瓶装</span></p>
               </div>
             </div>
           </div>
