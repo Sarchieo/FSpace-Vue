@@ -177,7 +177,7 @@
 <script>
 import FSpaceHeader from "../components/fspace-ui/header/header";
 import FSpaceMenu from "../components/fspace-ui/menu";
-import FSpaceFooter from '../components/fspace-ui/footer';
+import FSpaceFooter from "../components/fspace-ui/footer";
 export default {
   components: {
     FSpaceHeader,

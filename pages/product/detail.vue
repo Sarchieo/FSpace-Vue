@@ -4,6 +4,7 @@
       <a-layout>
         <!-- 头部组件 -->
         <f-space-header></f-space-header>
+        <f-space-button name="蓝色" color="blue"></f-space-button>
         <a-layout-content>
           <div class="goods-exhibition">
             <a-breadcrumb class="crumbs">
@@ -497,10 +498,12 @@
 import moment from "moment";
 const baseUrl =
   "https://raw.githubusercontent.com/vueComponent/ant-design-vue/master/components/vc-slick/assets/img/react-slick/";
-import FSpaceHeader from "../../components/fspace-ui/header";
+import FSpaceHeader from "../../components/fspace-ui/header/header";
+import FSpaceButton from "../../components/fspace-ui/button/button"
 export default {
   components: {
-    FSpaceHeader
+    FSpaceHeader, 
+    FSpaceButton
   },
   data() {
     return {
