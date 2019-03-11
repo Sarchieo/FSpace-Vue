@@ -1,327 +1,188 @@
 <template>
-    <div id="components-layout-demo-basic">
+  <div id="components-layout-demo-basic">
     <a-layout>
-      <a-layout>
-        <f-space-header></f-space-header>
-        <!-- 左侧菜单，轮播，广告位及物价区 -->
-        <a-layout-content>
-          <div class="goods-nav-box">
-            <f-space-menu></f-space-menu>
-            <div class="binnar-box">
-              <a-carousel autoplay arrows>
-                <div
-                  slot="prevArrow" slot-scope="props"
-                  class="custom-slick-arrow"
-                  style="left: 10px;zIndex: 1"
-                >
-                  <a-icon type="left-circle" />
-                </div>
-                <div
-                  slot="nextArrow" slot-scope="props"
-                  class="custom-slick-arrow"
-                  style="right: 10px"
-                >
-                  <a-icon type="right-circle" />
-                </div>
-                <div>
-                  <img v-lazy="'//img30.360buyimg.com/img/jfs/t22975/291/671631212/175034/741d012e/5b3c309cN3f3c7cb8.jpg'" class="banner-pic">
-                </div>
-                <div>
-                  <img v-lazy="'//img30.360buyimg.com/img/jfs/t15169/46/1365117661/178502/d02d6948/5a4ddc4eNbd55867a.jpg'" class="banner-pic">
-                </div>
-                <div>
-                  <img v-lazy="'//img30.360buyimg.com/img/jfs/t16327/24/1234872079/191114/a510775d/5a4ddbc6N2d73dd08.jpg'" class="banner-pic">
-                </div>
-                <div>
-                  <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" class="banner-pic">
-                </div>
-              </a-carousel>
-            </div>
-            <div class></div>
-          </div>
-          <div id='hot' class="brand-hall" v-for="(item,index) in rushList" :key="index">
-            <p class="brand-hall-title">{{item.title}} <a class="all-hot">查看全部抢购  > </a></p>
-            <div class="brand-div">
-              <div class="brand-left">
-                <p>{{item.time}}</p>
+      <f-space-header type='home'></f-space-header>
+      <!-- 左侧菜单，轮播，广告位及物价区 -->
+      <a-layout-content>
+        <div class="goods-nav-box">
+          <f-space-menu></f-space-menu>
+          <div class="binnar-box">
+            <a-carousel autoplay arrows>
+              <div
+                slot="prevArrow" slot-scope="props"
+                class="custom-slick-arrow"
+                style="left: 10px;zIndex: 1"
+              >
+                <a-icon type="left-circle" />
               </div>
-              <ul class="brand-right">
-                <li v-for="(items,index) in item.list" :key="index">
-                  <a-card
-                    hoverable
-                    class="card"
-                  >
-                    <img
-                      class="card-img"
-                      v-lazy="items.src"
-                      slot="cover"
-                    />
-                    <a-progress :percent="items.surplus" style="position:absolute;top:145px;left:37.5px;width: 150px;" :showInfo="false" status="exception"/>
-                    <p class="surplus">还剩{{items.surplus}}支</p>
-                    <a-card-meta
-                      class="card-info"
-                      :title="items.text">
-                    </a-card-meta>
-                    <p class="card-price">￥{{items.new}} <del>￥{{items.old}}</del></p>
-                  </a-card>
-                </li>
-              </ul>
-            </div>
+              <div
+                slot="nextArrow" slot-scope="props"
+                class="custom-slick-arrow"
+                style="right: 10px"
+              >
+                <a-icon type="right-circle" />
+              </div>
+              <div>
+                <img v-lazy="'//img30.360buyimg.com/img/jfs/t22975/291/671631212/175034/741d012e/5b3c309cN3f3c7cb8.jpg'" class="banner-pic">
+              </div>
+              <div>
+                <img v-lazy="'//img30.360buyimg.com/img/jfs/t15169/46/1365117661/178502/d02d6948/5a4ddc4eNbd55867a.jpg'" class="banner-pic">
+              </div>
+              <div>
+                <img v-lazy="'//img30.360buyimg.com/img/jfs/t16327/24/1234872079/191114/a510775d/5a4ddbc6N2d73dd08.jpg'" class="banner-pic">
+              </div>
+              <div>
+                <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" class="banner-pic">
+              </div>
+            </a-carousel>
           </div>
-          <!-- 热销专区 包邮专区 -->
-          <div id="top" class="brand-hall" v-for="(item,index) in hotSelling" :key="index">
-            <p class="brand-hall-title">{{item.title}}</p>
-            <div class="brand-div">
-              <ul class="brand-right hot-width">
-                <li v-for="(items,index) in item.list" :key="index">
-                  <a-card
-                    hoverable
-                    class="card"
-                    @click="toDetailsPages"
-                  >
-                    <img
-                      class="card-img"
-                      v-lazy="items.src"
-                      slot="cover"
-                    />
-                    
-                    <p class="surplus text-Center top185">{{items.text}}</p>
-                    <p class="validity">有效期至{{items.validity}}</p>
-                    <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
-                    <p class="specifications">{{items.specifications}}</p>
-                    <p class="manufacturer">{{items.manufacturer}}</p>
-                    <p class="sold">已售{{items.sold}}盒</p>
-                    <a-card-meta
-                      class="card-info"
-                      :title="item.text">
-                    </a-card-meta>
-                    
-                  </a-card>
-                </li>
-              </ul>
+          <div class></div>
+        </div>
+        <div id='hot' class="brand-hall" v-for="(item,index) in rushList" :key="index">
+          <p class="brand-hall-title">{{item.title}} <a class="all-hot">查看全部抢购  > </a></p>
+          <div class="brand-div">
+            <div class="brand-left">
+              <p>{{item.time}}</p>
             </div>
-          </div>
-            <div id="free-delivery" class="brand-hall" v-for="(item,index) in freeDelivery" :key="index">
-            <p class="brand-hall-title">{{item.title}}</p>
-            <div class="brand-div">
-              <ul class="brand-right hot-width">
-                <li v-for="(items,index) in item.list" :key="index">
-                  <a-card
-                    hoverable
-                    class="card"
-                    @click="toDetailsPages"
-                  >
-                    <img
-                      class="card-img"
-                      v-lazy="items.src"
-                      slot="cover"
-                    />
-                    
-                    <p class="surplus text-Center top185">{{items.text}}</p>
-                    <p class="validity">有效期至{{items.validity}}</p>
-                    <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
-                    <p class="specifications">{{items.specifications}}</p>
-                    <p class="manufacturer">{{items.manufacturer}}</p>
-                    <p class="sold">已售{{items.sold}}盒</p>
-                    <a-card-meta
-                      class="card-info"
-                      :title="item.text">
-                    </a-card-meta>
-                    
-                  </a-card>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- 为你精选 -->
-          <div id='choice' class="elaborate" v-for="(item,index) in elaborateList" :key="index">
-            <p class="elaborate-title">{{item.title}}</p>
-            <ul class="elaborate-ui">
+            <ul class="brand-right">
               <li v-for="(items,index) in item.list" :key="index">
                 <a-card
-                    hoverable
-                    class="elaborate-card"
-                  >
-                    <img
-                      v-lazy="items.src"
-                      slot="cover"
-                    />
-                    <p class="elaborate-text">{{items.text}}</p>
-                    <p class="elaborate-specifications">{{items.specifications}}</p>
-                    <p class="elaborate-manufacturer">{{items.manufacturer}}</p>
-                    <p class="elaborate-validity">有效期至{{items.validity}}</p>
-                    <p class="elaborate-price">￥{{items.old}} 至 ￥{{items.new}}</p>
-                    <p class="elaborate-sold">已售{{items.sold}}瓶</p>
-                    <a-card-meta
-                      >
-                    </a-card-meta>
-                    <p></p>
-                  </a-card>
+                  hoverable
+                  class="card"
+                >
+                  <img
+                    class="card-img"
+                    v-lazy="items.src"
+                    slot="cover"
+                  />
+                  <a-progress :percent="items.surplus" style="position:absolute;top:145px;left:37.5px;width: 150px;" :showInfo="false" status="exception"/>
+                  <p class="surplus">还剩{{items.surplus}}支</p>
+                  <a-card-meta
+                    class="card-info"
+                    :title="items.text">
+                  </a-card-meta>
+                  <p class="card-price">￥{{items.new}} <del>￥{{items.old}}</del></p>
+                </a-card>
               </li>
             </ul>
           </div>
-        </a-layout-content>
-        <!-- 页脚 -->
-        <a-layout-footer>
-          <div class="page-footer">
-            <div class="server-list">
-              <ul class="server-ui">
-                <li>
-                  <a href="">
-                    <span>优</span>
-                    <h3>品质保障</h3>
-                    <p>品质护航 购物无忧</p>
-                  </a>
-                </li>
-                <li>
-                   <a href="">
-                    <span> 七</span>
-                    <h3>七天无理由退换货</h3>
-                    <p>为您提供售后无忧保障</p>
-                  </a>
-                </li>
-                <li>
-                    <a href="">
-                    <span>特</span>
-                    <h3>特色服务体验</h3>
-                    <p>为您呈现不一样的服务</p>
-                  </a>
-                </li>
-                <li>
-                   <a href="">
-                    <span>帮</span>
-                    <h3>帮助中心</h3>
-                    <p>您的购物指南</p>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="shoping-guide">
-              <ul class="shoping-list">
-                <li>
-                  <ul class="shoping-ui">
-                    <li class="first-server">购物指南</li>
-                    <li><a href="">免费注册</a></li>
-                    <li><a href="">开通支付宝</a></li>
-                    <li><a href="">支付宝充值</a></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                  </ul>
-                </li>
-                <li>
-                  <ul class="shoping-ui">
-                    <li class="first-server">一块医药保障</li>
-                    <li><a href="">发票保障</a></li>
-                    <li><a href="">售后规则</a></li>
-                    <li><a href="">缺货赔付</a></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                  </ul>
-                </li>
-                <li>
-                  <ul class="shoping-ui">
-                    <li class="first-server">支付方式</li>
-                    <li><a href="">快捷支付</a></li>
-                    <li><a href="">信用卡</a></li>
-                    <li><a href="">余额宝</a></li>
-                    <li><a href="">蚂蚁花呗</a></li>
-                    <li><a href="">货到付款</a></li>
-                    <li></li>
-                  </ul>
-                </li>
-                <li>
-                  <ul class="shoping-ui">
-                    <li class="first-server">商家服务</li>
-                    <li><a href="">一块医药规则</a></li>
-                    <li><a href="">商家入驻</a></li>
-                    <li><a href="">商家中心</a></li>
-                    <li><a href="">一块智库</a></li>
-                    <li><a href="">物流服务</a></li>
-                    <li><a href="">运营服务</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
+        </div>
+        <!-- 热销专区 包邮专区 -->
+        <div id="top" class="brand-hall" v-for="(item,index) in hotSelling" :key="index">
+          <p class="brand-hall-title">{{item.title}}</p>
+          <div class="brand-div">
+            <ul class="brand-right hot-width">
+              <li v-for="(items,index) in item.list" :key="index">
+                <a-card
+                  hoverable
+                  class="card"
+                  @click="toDetailsPages"
+                >
+                  <img
+                    class="card-img"
+                    v-lazy="items.src"
+                    slot="cover"
+                  />
+                  
+                  <p class="surplus text-Center top185">{{items.text}}</p>
+                  <p class="validity">有效期至{{items.validity}}</p>
+                  <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
+                  <p class="specifications">{{items.specifications}}</p>
+                  <p class="manufacturer">{{items.manufacturer}}</p>
+                  <p class="sold">已售{{items.sold}}盒</p>
+                  <a-card-meta
+                    class="card-info"
+                    :title="item.text">
+                  </a-card-meta>
+                  
+                </a-card>
+              </li>
+            </ul>
           </div>
-          <div class="black-footer">
-            <div>
-              <p class="footer-record">
-                <a href="">关于一块医药</a>
-                <a href="">帮助中心</a>
-                <a href="">开放平台</a>
-                <a href="">诚聘英才</a>
-                <a href="">联系我们</a>
-                <a href="">网站合作</a>
-                <a href="">法律声明</a>
-                <a href="">隐私权政策</a>
-                <a href="">知识产权</a>
-                <a href="">廉政举报</a></p>
-              <p class="footer-record">
-                <a href="">湖南空间折叠 |</a>
-                <a href="">淘宝网 |</a>
-                <a href="">天猫 |</a>
-                <a href="">聚划算 |</a>
-                <a href="">全球速卖通 |</a>
-                <a href="">阿里巴巴国际交易市场 |</a>
-                <a href="">1688 |</a>
-                <a href="">阿里妈妈 |</a>
-                <a href="">飞猪 |</a>
-                <a href="">阿里云计算 |</a>
-                <a href="">AliOS |</a>
-                <a href="">阿里通信 |</a>
-                <a href="">万网 |</a>
-                <a href="">高德 |</a>
-                <a href="">UC |</a>
-                <a href="">友盟 |</a>
-                <a href="">虾米 |</a>
-                <a href="">钉钉 |</a>
-                <a href="">支付宝</a>
-              </p>
-              <p class="licence">
-                <span>增值电信业务经营许可证：</span> <a href="">湘A2-20110446</a>
-                <span>市场名称登记证：</span>  <span class="gongshang">工商网市字3301004119号</span>
-                <span>出版物网络交易平台服务经营备案证：</span> <span>新出发湘备字第001号</span>
-              </p>
-              <p class="licence">
-                <span class="gongshang">互联网违法和不良信息举报电话： 0571-81683755 blxxjb@alibaba-inc.com</span>
-                <span>互联网药品信息服务资质证书编号： </span> <a href="">湘- (经营性) -2017-0005</a>
-                <span><img v-lazy="'//img.alicdn.com/tps/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png'"></span> <a href=""> 湘公网安备33010002000120号</a>
-              </p>
-              <p class="licence">
-                <span>医疗器械网络交易服务第三方平台备案： (湘) 网械平台备字[2018]第00002号</span>
-                <span>互联网药品交易服务资格证书： 国A20150001</span></p>
-              <p class="licence">
-                <span  class="gongshang">湖南省网络食品销售第三方平台提供者备案： 湘网食A33010002</span> <a>12318举报</a>
-              </p>
-              <p class="licence">
-                <span>© 2003-2018 TMALL.COM 版权所有</span>
-              </p>
-            </div>
+        </div>
+          <div id="free-delivery" class="brand-hall" v-for="(item,index) in freeDelivery" :key="index">
+          <p class="brand-hall-title">{{item.title}}</p>
+          <div class="brand-div">
+            <ul class="brand-right hot-width">
+              <li v-for="(items,index) in item.list" :key="index">
+                <a-card
+                  hoverable
+                  class="card"
+                  @click="toDetailsPages"
+                >
+                  <img
+                    class="card-img"
+                    v-lazy="items.src"
+                    slot="cover"
+                  />
+                  
+                  <p class="surplus text-Center top185">{{items.text}}</p>
+                  <p class="validity">有效期至{{items.validity}}</p>
+                  <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
+                  <p class="specifications">{{items.specifications}}</p>
+                  <p class="manufacturer">{{items.manufacturer}}</p>
+                  <p class="sold">已售{{items.sold}}盒</p>
+                  <a-card-meta
+                    class="card-info"
+                    :title="item.text">
+                  </a-card-meta>
+                  
+                </a-card>
+              </li>
+            </ul>
           </div>
-        </a-layout-footer>
-      </a-layout>
-       <ul class="sider-meun">
-         <a-anchor :affix="false"  offsetTop='40' :showInkInFixed='false' wrapperClass="wrap-right">
-            <a-anchor-link class="right-meun" href="#components-layout-demo-basic" title="商品分类" />
-            <a-anchor-link class="right-meun" href="#hot" title="限时抢购" />
-            <a-anchor-link class="right-meun" href="#top" title="热销专区" />
-            <a-anchor-link class="right-meun" href="#free-delivery" title="包邮专区" />
-            <a-anchor-link class="right-meun" href="#choice" title="为你精选" />
-            <a-back-top />
-         </a-anchor>
-      </ul>
+        </div>
+        <!-- 为你精选 -->
+        <div id='choice' class="elaborate" v-for="(item,index) in elaborateList" :key="index">
+          <p class="elaborate-title">{{item.title}}</p>
+          <ul class="elaborate-ui">
+            <li v-for="(items,index) in item.list" :key="index">
+              <a-card
+                  hoverable
+                  class="elaborate-card"
+                >
+                  <img
+                    v-lazy="items.src"
+                    slot="cover"
+                  />
+                  <p class="elaborate-text">{{items.text}}</p>
+                  <p class="elaborate-specifications">{{items.specifications}}</p>
+                  <p class="elaborate-manufacturer">{{items.manufacturer}}</p>
+                  <p class="elaborate-validity">有效期至{{items.validity}}</p>
+                  <p class="elaborate-price">￥{{items.old}} 至 ￥{{items.new}}</p>
+                  <p class="elaborate-sold">已售{{items.sold}}瓶</p>
+                  <a-card-meta
+                    >
+                  </a-card-meta>
+                  <p></p>
+                </a-card>
+            </li>
+          </ul>
+        </div>
+      </a-layout-content>
+      <f-space-footer></f-space-footer>
     </a-layout>
+      <!-- <ul class="sider-meun">
+        <a-anchor :affix="false"  offsetTop='40' :showInkInFixed='false' wrapperClass="wrap-right">
+          <a-anchor-link class="right-meun" href="#components-layout-demo-basic" title="商品分类" />
+          <a-anchor-link class="right-meun" href="#hot" title="限时抢购" />
+          <a-anchor-link class="right-meun" href="#top" title="热销专区" />
+          <a-anchor-link class="right-meun" href="#free-delivery" title="包邮专区" />
+          <a-anchor-link class="right-meun" href="#choice" title="为你精选" />
+          <a-back-top />
+        </a-anchor>
+    </ul> -->
   </div>
 </template>
 <script>
-import FSpaceHeader from "../components/fspace-ui/header";
+import FSpaceHeader from "../components/fspace-ui/header/header";
 import FSpaceMenu from "../components/fspace-ui/menu";
+import FSpaceFooter from '../components/fspace-ui/footer';
 export default {
   components: {
     FSpaceHeader,
-    FSpaceMenu
+    FSpaceMenu,
+    FSpaceFooter
   },
   data() {
     return {
@@ -596,23 +457,24 @@ export default {
       })
     },
     async initData() {
-      this.$queryIce(
-        InfoModule.OrderServerPrx,
-        "osB",
-        "queryByUserId",
-        new this.$iceCallback(
-          function result(result) {
-            console.log(result)
-          }
-        ),
-        10000, this.$commom.num2jlong(1000010000)
-      );
+      // this.$queryIce(
+      //   InfoModule.OrderServerPrx,
+      //   "osB",
+      //   "queryByUserId",
+      //   new this.$iceCallback(
+      //     function result(result) {
+      //       console.log(result)
+      //     }
+      //   ),
+      //   10000, this.$commom.num2jlong(1000010000)
+      // );
+      this.$iceTest()
     }
   }
 };
 </script>
 
-<style scoped>
+<style scoped>  
 /* 初始化 */
 * {
   margin: 0;
@@ -957,135 +819,6 @@ li {
   /* background: orchid; */
   line-height: 321px;
   text-align: center;
-}
-/* 页脚 */
-.page-footer{
-  width: 1190px;
-  height: 340px;
-  margin: 0 auto;
-}
-.server-list{
-  width: 1190px;
-  height: 140px;
-  background: #ffffff;
-}
-.server-ui{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 1190px;
-  height: 140px;
-}
-.server-ui li{
-  width: 297px;
-  height: 100px;
-}
-.server-ui li a{
-  position: relative;
-  display: inline-block;
-  top: 0px;
-  width: 297px;
-  height: 100px;
-}
-.server-ui li a span{
-  position: absolute;
-  top: 15px;
-  left: 45px;
-  width: 70px;
-  height: 70px;
-  border: 3px solid rgb(255,0,58);
-  border-radius: 50%;
-  line-height: 60px;
-  text-align: center;
-  font-size: 30px;
-  color: rgb(255,0,58);
-}
-.server-ui li a h3{
-  position: absolute;
-  top: 20px;
-  left: 135px;
-  font-weight: bold;
-}
-.server-ui li a p{
-  position: absolute;
-  top: 45px;
-  left: 135px;
-  color: #999999;
-  font-size: 16px;
-}
-.shoping-guide{
-  width: 1190px;
-  height: 200px;
-  margin: 0 auto;
-  border-top: 1px solid rgb(237,237,237);
-  background: #ffffff;
-  padding-top: 20px;
-}
-.shoping-list{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: url('//img.alicdn.com/tfs/TB1dl28RXXXXXbzaFXXXXXXXXXX-136-50.png');
-  background-repeat: no-repeat;
-  background-size: 68px 25px;
-  background-position: 12px bottom;
-  padding-left: 50px;
-  padding-right: 50px;
-}
-.shoping-list li .shoping-ui li{
-  width: 100px;
-  height: 20px;
-  margin-bottom: 3px;
-}
-.shoping-ui li a:hover{
-  border-bottom: 1px solid #666666;
-}
-.first-server{
-  font-size: 16px;
-  color: #666666!important;
-}
-.first-serve a{
-  color: #000000!important;
-}
-.black-footer{
-  width: 100%;
-  /* height: 175px; */
-  background: #000000;
-  border-top: 2px solid rgb(255,0,54)
-}
-.black-footer div{
-  display: block;
-  width: 1190px;
-  height: 175px;
-  margin: 0 auto;
-  padding-top: 10px;
-}
-.footer-record{
-  height: 30px;
-  line-height: 20px;
-}
-.footer-record a{
-  font-weight: 300;
-  font-size: 12px;
-  color: rgb(255,255,255);
-}
-.footer-record a:hover{
-  border-bottom: 1px solid #ffffff;
-}
-.licence{
-  font-size: 12px;
-  color: rgb(136, 134, 134);
-}
-.licence a{
-  margin-right: 40px;
-  font-size: 12px;
-  color: rgb(164,164,164);
-}
-.licence a:hover{
-  border-bottom: 1px solid rgb(164,164,164);
-}
-.gongshang{
-  margin-right: 40px;
 }
 /* 右侧菜单栏 */
 .sider-meun{

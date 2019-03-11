@@ -24,7 +24,7 @@
                   <img :src="baseUrl+'abstract0'+item+'.jpg'">
                 </div>
               </a-carousel>
-              
+
             </div>
             <div class="goods-info">
               <p class="goods-name">思密达 蒙脱石散</p>
