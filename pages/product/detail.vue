@@ -8,36 +8,299 @@
           <div class="goods-exhibition">
             <a-breadcrumb class="crumbs">
               <a-breadcrumb-item>首页</a-breadcrumb-item>
-              <a-breadcrumb-item><a href="">限时抢购</a></a-breadcrumb-item>
-              <a-breadcrumb-item><a href="">汇仁牌 肾宝片</a></a-breadcrumb-item>
+              <a-breadcrumb-item>
+                <a href>限时抢购</a>
+              </a-breadcrumb-item>
+              <a-breadcrumb-item>
+                <a href>汇仁牌 肾宝片</a>
+              </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
-              <!-- 图片数量根据下面li数量循环 -->
-              <img src="https://img.alicdn.com/imgextra/i4/2928278102/O1CN01lrOUgK29ilPBeKXIk_!!2928278102.jpg_430x430q90.jpg" alt="">
-              <ul class="small-pic">
-                <!-- li数量由后台数据决定 -->
-                <li>
-                  <img src="//img.alicdn.com/imgextra/i1/2928278102/O1CN016PrL3z29ilQVDMXxK_!!0-item_pic.jpg_60x60q90.jpg" alt="">
-                </li>
-                <li></li>
-                <li></li>
-                 <li></li>
-                  <li></li>
-              </ul>
+              <a-carousel arrows dotsClass="slick-dots slick-thumb">
+                <a slot="customPaging" slot-scope="props">
+                  <img :src="getImgUrl(props.i)">
+                </a>
+                <div v-for="(item,index) in 4" :key="index">
+                  <img :src="baseUrl+'abstract0'+item+'.jpg'">
+                </div>
+              </a-carousel>
+              
             </div>
             <div class="goods-info">
               <p class="goods-name">思密达 蒙脱石散</p>
               <p class="rush-time">限时抢购 距离结束还剩 12 小时 15 分钟 52 秒 56</p>
               <div class="price-server">
-                <p class="price"> <span class="price-title">价格</span> <span class="money-count">￥34</span> <del>￥32</del></p>
-                <p class="price"> <span class="integral">积份</span> <span>购买得50积分</span></p>
-                <p class="price indent"> <a-icon type="check-circle"/> <span>30天无忧退换货</span> <a-icon type="check-circle" /> <span>48小时快速退款</span> <a-icon type="check-circle" /> <span>满88元免邮费</span></p>
+                <p class="price">
+                  <span class="price-title">价格</span>
+                  <span class="money-count">￥34</span>
+                  <del>￥32</del>
+                </p>
+                <p class="price">
+                  <span class="integral">积份</span>
+                  <span>购买得50积分</span>
+                </p>
+                <p class="price indent">
+                  <a-icon type="check-circle"/>
+                  <span>30天无忧退换货</span>
+                  <a-icon type="check-circle"/>
+                  <span>48小时快速退款</span>
+                  <a-icon type="check-circle"/>
+                  <span>满88元免邮费</span>
+                </p>
               </div>
               <div class="manufacturer">
-                <p class="packing"> <span>规格/包装：</span> <span class="margin-right190">5g*15袋</span><span>剂  型：</span> <span>瓶装</span></p>
-                <p class="packing"> <span>规格/包装：</span> <span class="margin-right190">5g*15袋</span><span>剂  型：</span> <span>瓶装</span></p>
-                <p class="packing"> <span>规格/包装：</span> <span class="margin-right190">5g*15袋</span><span>剂  型：</span> <span>瓶装</span></p>
-                <p class="packing"> <span>规格/包装：</span> <span class="margin-right190">5g*15袋</span><span>剂  型：</span> <span>瓶装</span></p>
+                <p class="packing">
+                  <span>规格/包装：</span>
+                  <span class="margin-right190">5g*15袋</span>
+                  <span>剂 型：</span>
+                  <span>瓶装</span>
+                </p>
+                <p class="packing">
+                  <span>批准文号：</span>
+                  <span class="margin-right190">国药准字H20000690</span>
+                  <span>整件数量：</span>
+                  <span>200盒</span>
+                </p>
+                <p class="packing">
+                  <span>生产厂家：</span>
+                  <span class="margin-right190">博福-益普生(天津)制药有限公司</span>
+                </p>
+                <p class="packing">
+                  <span>生产日期：</span>
+                  <span class="margin-right190">1863-02-25</span>
+                  <span>有效期至：</span>
+                  <span>2029-09-06</span>
+                </p>
+                <div class="packing">
+                  <span>配送至</span>
+                  <a-select defaultValue="湖南省长沙市岳麓区" style="width: 200px" @change="handleChange"></a-select>
+                  <span>有货</span>
+                </div>
+                <p class="packing">
+                  由
+                  <a href>一块物流</a>发货，一块医药提供售后服务. 23:00前下单,预计后天(03月18日)送达
+                </p>
+
+                <p class="cart">
+                  <input type="text" readonly="readonly" v-model="count" class="goods-count">
+                  <button class="addition width22">+</button>
+                  <button class="reduce width22">-</button>
+                  <button type="danger" class="purchase">立即购买</button>
+                  <a-button class="add-cart">
+                    <a-icon type="shopping-cart"/>加入采购单
+                  </a-button>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- 优惠套餐 -->
+          <div class="discount">
+            <p class="discount-title">优惠套餐</p>
+            <div class="carousel">
+              <a-carousel arrows>
+                <div
+                  slot="prevArrow"
+                  slot-scope="props"
+                  class="custom-slick-arrow"
+                  style="left: 10px;zIndex: 1;margin-right: 5px;"
+                >
+                  <a-icon type="left-circle"/>
+                </div>
+                <div
+                  slot="nextArrow"
+                  slot-scope="props"
+                  class="custom-slick-arrow"
+                  style="right: 10px"
+                >
+                  <a-icon type="right-circle"/>
+                </div>
+                <div v-for="(item,index) in mealList" :key="index">
+                  <a-card
+                    hoverable
+                    class="meal-card"
+                    v-for="(items,index) in item.list"
+                    :key="index"
+                  >
+                    <img v-lazy="items.url" slot="cover">
+                    <p class="meal-price">${{items.price}}</p>
+                    <p class="meal-name">{{items.name}}</p>
+                    <p class="meal-packing">{{items.packing}}</p>
+                  </a-card>
+                </div>
+              </a-carousel>
+            </div>
+          </div>
+          <!-- 详情和评价 -->
+          <div class="tabs-page">
+            <div class="tabs-detail">
+              <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle">
+                <!-- 详情 -->
+                <a-tab-pane tab="药品详情" key="1">
+                  <div class="goods-detail">
+                    <p class="detail-list">
+                      <span class="explain-header">药石名称</span>
+                      <span>思密达 蒙脱石散</span>
+                    </p>
+                    <p class="detail-list">
+                      <span class="explain-header">规格包装</span>
+                      <span>3g * 10 袋</span>
+                    </p>
+                    <p class="detail-list">
+                      <span class="explain-header">生产厂家</span>
+                      <span>博福-益普生(天津)制药有限公司</span>
+                    </p>
+                    <p class="detail-list">
+                      <span class="explain-header">批准文号</span>
+                      <span>GB/T3232-2018</span>
+                    </p>
+                    <p class="detail-list">
+                      <span class="explain-header">批次号</span>
+                      <span>CP181102</span>
+                    </p>
+                    <div class="explain">
+                      <span class="explain-header">功能主治</span>
+                      <span class="explain-text">{{isis}}</span>
+                    </div>
+                    <div class="explain">
+                      <span class="explain-header">主要成份</span>
+                      <span class="explain-text">本品系取天然膨润土中提取的蒙脱石加适量矫味剂加工制成的散剂。</span>
+                    </div>
+                    <div class="explain">
+                      <span class="explain-header">用法用量</span>
+                      <span
+                        class="explain-text"
+                      >将蒙脱石散（思密达）（1袋)倒入50毫升温水中，搅匀后服用。儿童：1岁以下，每日1袋：1-2岁，每日1-2袋: 2岁以上，每日2-3袋，均分三次服用。或遵医嘱。 成人：一次1袋，一日3次。急性腹泻服用蒙脱石散（思密达）治疗时，首次剂量加倍。</span>
+                    </div>
+                    <div class="explain">
+                      <span class="explain-header">注意事项</span>
+                      <span
+                        class="explain-text"
+                      >急性腹泻服用蒙脱石散（思密达）治疗时，首次剂量加倍。偶见便秘，大便干结。1.治疗急性腹泻时，应注意纠正脱水。 2.如出现便秘，可减少剂量继续服用。 3.需同服肠道杀菌药时，请咨询医师。 4.儿童用量请咨询医师或药师。 5.儿童急性腹泻服用本品1天后、慢性腹泻服用2-3天后症状未改善，请咨询医师或药师。 6.如服用过量或出现严重不良反应，应立即就医。 7.对本品过敏者禁用，过敏体质者慎用。 8.本品性状发生改变时禁止使用。 9.请将本品放在儿童不能接触的地方。 10.儿童必须在成人监护下使用。 13.如正在使用其他药品，使用本品前请咨询医师或药师。</span>
+                    </div>
+                    <div class="explain">
+                      <span class="explain-header">禁忌</span>
+                      <span class="explain-text">孕妇、哺乳期妇女忌用。对本品过敏者禁用.</span>
+                    </div>
+                  </div>
+                </a-tab-pane>
+                <!-- 评价 -->
+                <a-tab-pane tab="药品评价" key="2" forceRender>
+                  <div class="evaluate-box">
+                    <div class="praise">
+                      <div class="probability">
+                        <p class="percentage">好评率</p>
+                        <p class="percentage-num">98.6%</p>
+                        <a-rate :defaultValue="5" disabled/>
+                      </div>
+                      <div class="everybody">
+                        <p>大家都在说</p>
+                        <a href class="is-active">全部(200+)</a>
+                        <a href>物流快(30)</a>
+                        <a href>有图(30)</a>
+                        <a href>追评(50)</a>
+                        <a href>服务很好(30)</a>
+                        <a href>药效明显(60)</a>
+                      </div>
+                    </div>
+                    <div class="evaluate-list">
+                      <a-comment>
+                        <template slot="actions">
+                          <span>
+                            <a-tooltip title="Like">
+                              <a-icon
+                                type="like"
+                                :theme="action === 'liked' ? 'filled' : 'outlined'"
+                                @click="like"
+                              />
+                            </a-tooltip>
+                            <span style="padding-left: '8px';cursor: 'auto'">{{likes}}</span>
+                          </span>
+                          <span>
+                            <a-tooltip title="Dislike">
+                              <a-icon
+                                type="dislike"
+                                :theme="action === 'disliked' ? 'filled' : 'outlined'"
+                                @click="dislike"
+                              />
+                            </a-tooltip>
+                            <span style="padding-left: '8px';cursor: 'auto'">{{dislikes}}</span>
+                          </span>
+                          <span>Reply to</span>
+                        </template>
+                        <a slot="author">Han Solo</a>
+                        <a-avatar
+                          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                          alt="Han Solo"
+                          slot="avatar"
+                        />
+                        <p
+                          slot="content"
+                          class="comment-text"
+                        >药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备</p>
+                        <a-tooltip slot="datetime" :title="moment().format('YYYY-MM-DD HH:mm:ss')">
+                          <span>{{moment().fromNow()}}</span>
+                        </a-tooltip>
+                      </a-comment>
+                    </div>
+                    <div class="evaluate-list">
+                      <a-comment>
+                        <template slot="actions">
+                          <span>
+                            <a-tooltip title="Like">
+                              <a-icon
+                                type="like"
+                                :theme="action === 'liked' ? 'filled' : 'outlined'"
+                                @click="like"
+                              />
+                            </a-tooltip>
+                            <span style="padding-left: '8px';cursor: 'auto'">{{likes}}</span>
+                          </span>
+                          <span>
+                            <a-tooltip title="Dislike">
+                              <a-icon
+                                type="dislike"
+                                :theme="action === 'disliked' ? 'filled' : 'outlined'"
+                                @click="dislike"
+                              />
+                            </a-tooltip>
+                            <span style="padding-left: '8px';cursor: 'auto'">{{dislikes}}</span>
+                          </span>
+                          <span>Reply to</span>
+                        </template>
+                        <a slot="author">Han Solo</a>
+                        <a-avatar
+                          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                          alt="Han Solo"
+                          slot="avatar"
+                        />
+                        <p
+                          slot="content"
+                          class="comment-text"
+                        >药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备</p>
+                        <a-tooltip slot="datetime" :title="moment().format('YYYY-MM-DD HH:mm:ss')">
+                          <span>{{moment().fromNow()}}</span>
+                        </a-tooltip>
+                      </a-comment>
+                    </div>
+                  </div>
+                  <a-pagination :defaultCurrent="6" :total="500" />
+                </a-tab-pane>
+              </a-tabs>
+            </div>
+            <!-- 热销推荐 -->
+            <div class="hot-recommend">
+              <p class="hot-recommend-title">热销推荐</p>
+              <div class="recommend-box">
+                <ul class="recommend-ul">
+                  <li v-for="(item,index) in recommendList" :key="index">
+                    <a-card class="card-recommend" hoverable>
+                      <img v-lazy="item.url" slot="cover">
+                      <p class="meal-price">￥{{item.price}}元</p>
+                      <p class="meal-name">{{item.name}}</p>
+                      <p class="meal-packing">{{item.packing}}</p>
+                    </a-card>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -48,28 +311,28 @@
             <div class="server-list">
               <ul class="server-ui">
                 <li>
-                  <a href="">
+                  <a href>
                     <span>优</span>
                     <h3>品质保障</h3>
                     <p>品质护航 购物无忧</p>
                   </a>
                 </li>
                 <li>
-                   <a href="">
-                    <span> 七</span>
+                  <a href>
+                    <span>七</span>
                     <h3>七天无理由退换货</h3>
                     <p>为您提供售后无忧保障</p>
                   </a>
                 </li>
                 <li>
-                    <a href="">
+                  <a href>
                     <span>特</span>
                     <h3>特色服务体验</h3>
                     <p>为您呈现不一样的服务</p>
                   </a>
                 </li>
                 <li>
-                   <a href="">
+                  <a href>
                     <span>帮</span>
                     <h3>帮助中心</h3>
                     <p>您的购物指南</p>
@@ -82,9 +345,15 @@
                 <li>
                   <ul class="shoping-ui">
                     <li class="first-server">购物指南</li>
-                    <li><a href="">免费注册</a></li>
-                    <li><a href="">开通支付宝</a></li>
-                    <li><a href="">支付宝充值</a></li>
+                    <li>
+                      <a href>免费注册</a>
+                    </li>
+                    <li>
+                      <a href>开通支付宝</a>
+                    </li>
+                    <li>
+                      <a href>支付宝充值</a>
+                    </li>
                     <li></li>
                     <li></li>
                     <li></li>
@@ -93,9 +362,15 @@
                 <li>
                   <ul class="shoping-ui">
                     <li class="first-server">一块医药保障</li>
-                    <li><a href="">发票保障</a></li>
-                    <li><a href="">售后规则</a></li>
-                    <li><a href="">缺货赔付</a></li>
+                    <li>
+                      <a href>发票保障</a>
+                    </li>
+                    <li>
+                      <a href>售后规则</a>
+                    </li>
+                    <li>
+                      <a href>缺货赔付</a>
+                    </li>
                     <li></li>
                     <li></li>
                     <li></li>
@@ -104,23 +379,45 @@
                 <li>
                   <ul class="shoping-ui">
                     <li class="first-server">支付方式</li>
-                    <li><a href="">快捷支付</a></li>
-                    <li><a href="">信用卡</a></li>
-                    <li><a href="">余额宝</a></li>
-                    <li><a href="">蚂蚁花呗</a></li>
-                    <li><a href="">货到付款</a></li>
+                    <li>
+                      <a href>快捷支付</a>
+                    </li>
+                    <li>
+                      <a href>信用卡</a>
+                    </li>
+                    <li>
+                      <a href>余额宝</a>
+                    </li>
+                    <li>
+                      <a href>蚂蚁花呗</a>
+                    </li>
+                    <li>
+                      <a href>货到付款</a>
+                    </li>
                     <li></li>
                   </ul>
                 </li>
                 <li>
                   <ul class="shoping-ui">
                     <li class="first-server">商家服务</li>
-                    <li><a href="">一块医药规则</a></li>
-                    <li><a href="">商家入驻</a></li>
-                    <li><a href="">商家中心</a></li>
-                    <li><a href="">一块智库</a></li>
-                    <li><a href="">物流服务</a></li>
-                    <li><a href="">运营服务</a></li>
+                    <li>
+                      <a href>一块医药规则</a>
+                    </li>
+                    <li>
+                      <a href>商家入驻</a>
+                    </li>
+                    <li>
+                      <a href>商家中心</a>
+                    </li>
+                    <li>
+                      <a href>一块智库</a>
+                    </li>
+                    <li>
+                      <a href>物流服务</a>
+                    </li>
+                    <li>
+                      <a href>运营服务</a>
+                    </li>
                   </ul>
                 </li>
               </ul>
@@ -129,52 +426,62 @@
           <div class="black-footer">
             <div>
               <p class="footer-record">
-                <a href="">关于一块医药</a>
-                <a href="">帮助中心</a>
-                <a href="">开放平台</a>
-                <a href="">诚聘英才</a>
-                <a href="">联系我们</a>
-                <a href="">网站合作</a>
-                <a href="">法律声明</a>
-                <a href="">隐私权政策</a>
-                <a href="">知识产权</a>
-                <a href="">廉政举报</a></p>
+                <a href>关于一块医药</a>
+                <a href>帮助中心</a>
+                <a href>开放平台</a>
+                <a href>诚聘英才</a>
+                <a href>联系我们</a>
+                <a href>网站合作</a>
+                <a href>法律声明</a>
+                <a href>隐私权政策</a>
+                <a href>知识产权</a>
+                <a href>廉政举报</a>
+              </p>
               <p class="footer-record">
-                <a href="">湖南空间折叠 |</a>
-                <a href="">淘宝网 |</a>
-                <a href="">天猫 |</a>
-                <a href="">聚划算 |</a>
-                <a href="">全球速卖通 |</a>
-                <a href="">阿里巴巴国际交易市场 |</a>
-                <a href="">1688 |</a>
-                <a href="">阿里妈妈 |</a>
-                <a href="">飞猪 |</a>
-                <a href="">阿里云计算 |</a>
-                <a href="">AliOS |</a>
-                <a href="">阿里通信 |</a>
-                <a href="">万网 |</a>
-                <a href="">高德 |</a>
-                <a href="">UC |</a>
-                <a href="">友盟 |</a>
-                <a href="">虾米 |</a>
-                <a href="">钉钉 |</a>
-                <a href="">支付宝</a>
+                <a href>湖南空间折叠 |</a>
+                <a href>淘宝网 |</a>
+                <a href>天猫 |</a>
+                <a href>聚划算 |</a>
+                <a href>全球速卖通 |</a>
+                <a href>阿里巴巴国际交易市场 |</a>
+                <a href>1688 |</a>
+                <a href>阿里妈妈 |</a>
+                <a href>飞猪 |</a>
+                <a href>阿里云计算 |</a>
+                <a href>AliOS |</a>
+                <a href>阿里通信 |</a>
+                <a href>万网 |</a>
+                <a href>高德 |</a>
+                <a href>UC |</a>
+                <a href>友盟 |</a>
+                <a href>虾米 |</a>
+                <a href>钉钉 |</a>
+                <a href>支付宝</a>
               </p>
               <p class="licence">
-                <span>增值电信业务经营许可证：</span> <a href="">湘A2-20110446</a>
-                <span>市场名称登记证：</span>  <span class="gongshang">工商网市字3301004119号</span>
-                <span>出版物网络交易平台服务经营备案证：</span> <span>新出发湘备字第001号</span>
+                <span>增值电信业务经营许可证：</span>
+                <a href>湘A2-20110446</a>
+                <span>市场名称登记证：</span>
+                <span class="gongshang">工商网市字3301004119号</span>
+                <span>出版物网络交易平台服务经营备案证：</span>
+                <span>新出发湘备字第001号</span>
               </p>
               <p class="licence">
                 <span class="gongshang">互联网违法和不良信息举报电话： 0571-81683755 blxxjb@alibaba-inc.com</span>
-                <span>互联网药品信息服务资质证书编号： </span> <a href="">湘- (经营性) -2017-0005</a>
-                <span><img v-lazy="'//img.alicdn.com/tps/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png'" alt=""></span> <a href=""> 湘公网安备33010002000120号</a>
+                <span>互联网药品信息服务资质证书编号：</span>
+                <a href>湘- (经营性) -2017-0005</a>
+                <span>
+                  <img v-lazy="'//img.alicdn.com/tps/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png'" alt>
+                </span>
+                <a href>湘公网安备33010002000120号</a>
               </p>
               <p class="licence">
                 <span>医疗器械网络交易服务第三方平台备案： (湘) 网械平台备字[2018]第00002号</span>
-                <span>互联网药品交易服务资格证书： 国A20150001</span></p>
+                <span>互联网药品交易服务资格证书： 国A20150001</span>
+              </p>
               <p class="licence">
-                <span  class="gongshang">湖南省网络食品销售第三方平台提供者备案： 湘网食A33010002</span> <a>12318举报</a>
+                <span class="gongshang">湖南省网络食品销售第三方平台提供者备案： 湘网食A33010002</span>
+                <a>12318举报</a>
               </p>
               <p class="licence">
                 <span>© 2003-2018 TMALL.COM 版权所有</span>
@@ -187,32 +494,221 @@
   </div>
 </template>
 <script>
+import moment from "moment";
+const baseUrl =
+  "https://raw.githubusercontent.com/vueComponent/ant-design-vue/master/components/vc-slick/assets/img/react-slick/";
 import FSpaceHeader from "../../components/fspace-ui/header";
 export default {
   components: {
-    FSpaceHeader,
+    FSpaceHeader
   },
   data() {
     return {
-
-    }
+      likes: 0,
+      dislikes: 0,
+      action: null,
+      moment,
+      isis:
+        "成人及儿童急、慢性腹泻。蒙脱石散（思密达）用于食道、胃、十二指肠疾病引起的相关疼痛症",
+      tabStyle: {
+        color: "black",
+        fontSize: "26px",
+        backgroundColor: "#f2f2f2"
+      },
+      baseUrl,
+      count: 1,
+      recommendList: [
+        {
+          price: 32,
+          name: "汇仁片肾宝片",
+          packing: "0.5g/片 * 100片",
+          url:
+            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+        },
+        {
+          price: 32,
+          name: "汇仁片肾宝片",
+          packing: "0.5g/片 * 100片",
+          url:
+            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+        },
+        {
+          price: 32,
+          name: "汇仁片肾宝片",
+          packing: "0.5g/片 * 100片",
+          url:
+            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+        },
+        {
+          price: 32,
+          name: "汇仁片肾宝片",
+          packing: "0.5g/片 * 100片",
+          url:
+            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+        },
+        {
+          price: 32,
+          name: "汇仁片肾宝片",
+          packing: "0.5g/片 * 100片",
+          url:
+            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+        }
+      ],
+      mealList: [
+        {
+          list: [
+            {
+              url:
+                "//img.alicdn.com/imgextra/i2/TB1RMTfIFXXXXX.XVXXLJcJ8VXX_033554.jpg_160x160q90.jpg",
+              price: 42,
+              name: "斯强牌服输酸营养颗粒",
+              packing: "3g / 袋"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 49,
+              name: "太极五子衍宗",
+              packing: "0.5g / 80片"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 99,
+              name: "盘龙去海排毒胶囊",
+              packing: "0.5g * 18颗"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 468,
+              name: "善存多维元素片",
+              packing: "20g / 1瓶"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 32,
+              name: "九芝堂六味地黄丸",
+              packing: "0.5g / 100粒"
+            }
+          ]
+        },
+        {
+          list: [
+            {
+              url:
+                "//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg",
+              price: 322,
+              name: "汇仁牌肾宝片",
+              packing: "5g / 100片"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i1/TB1srwPPVXXXXaIaXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg",
+              price: 711,
+              name: "白去山陈李济",
+              packing: "5g / 80片"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 1350,
+              name: "山东东阿阿胶",
+              packing: "5g * 18袋"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i2/TB11.ucPpXXXXaVaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 468,
+              name: "东阿阿胶复方阿胶浆",
+              packing: "20g / 1瓶"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 32,
+              name: "九芝堂六味地黄丸",
+              packing: "0.5g / 100粒"
+            }
+          ]
+        },
+        {
+          list: [
+            {
+              url:
+                "//img.alicdn.com/imgextra/i3/TB1q0YVKpXXXXXdXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 4050,
+              name: "破壁灵芝孢子粉",
+              packing: "5g / 15袋"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i2/TB1zFmZLXXXXXcVXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 79.2,
+              name: "金河藏红",
+              packing: "5g / 10袋"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 1350,
+              name: "贯康 冬虫夏草 4条/克",
+              packing: "5g * 18袋"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i1/TB1sej.KFXXXXXpXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 269,
+              name: "桃花姬",
+              packing: "20g / 1袋"
+            },
+            {
+              url:
+                "//img.alicdn.com/imgextra/i2/TB1gpgYKpXXXXb8XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              price: 69,
+              name: "敖东城 西洋参",
+              packing: "80g / 1瓶"
+            }
+          ]
+        }
+      ]
+    };
   },
   mounted() {
-    this.initData()
+    this.initData();
   },
   methods: {
+    like() {
+      this.likes = 1;
+      this.dislikes = 0;
+      this.action = "liked";
+    },
+    dislike() {
+      this.likes = 0;
+      this.dislikes = 1;
+      this.action = "disliked";
+    },
+    getImgUrl(i) {
+      return `${baseUrl}abstract0${i + 1}.jpg`;
+    },
+    handleChange(value) {
+      console.log(`selected ${value}`);
+    },
     async initData() {
       this.$queryIce(
         InfoModule.OrderServerPrx,
         "osB",
         "queryByUserId",
-        new this.$iceCallback(
-          function result(result) {
-            console.log(result)
-          }
-        ),
-        10000, this.$commom.num2jlong(1000010000)
+        new this.$iceCallback(function result(result) {
+          console.log(result);
+        }),
+        10000,
+        this.$commom.num2jlong(1000010000)
       );
+    },
+    callback(key) {
+      console.log(key);
     }
   }
 };
@@ -270,9 +766,8 @@ li {
 /* 商品展示 */
 .goods-exhibition {
   width: 1190px;
-  height: 690px;
+  height: 550px;
   margin: 0 auto;
-  background:cornflowerblue;
   padding-top: 20px;
 }
 .goods-exhibition .crumbs {
@@ -281,40 +776,38 @@ li {
 .goods-big-pic {
   display: inline-block;
   width: 490px;
-  height: 530px;
-  background: burlywood;
+  height: 485px;
 }
 .goods-big-pic img {
   width: 490px;
   height: 430px;
 }
 .small-pic {
-  display:inline-block;
+  display: inline-block;
   width: 490px;
   height: 100px;
   overflow: hidden;
   padding-bottom: 10px;
 }
 .small-pic li {
-  display:inline-block;
+  display: inline-block;
   position: relative;
   top: 10px;
   width: 80px;
   height: 80px;
-  background:brown;
+  background: brown;
 }
 .small-pic li img {
-  display:inline-block;
+  display: inline-block;
   position: absolute;
-  top:0px;
+  top: 0px;
   width: 80px;
   height: 80px;
 }
 .goods-info {
   float: right;
   width: 657px;
-  height: 530px;
-  border: 1px solid brown;
+  height: 485px;
 }
 .goods-name {
   height: 40px;
@@ -326,13 +819,13 @@ li {
   height: 40px;
   line-height: 40px;
   text-indent: 20px;
-  background: rgb(247,37,38);
+  background: rgb(247, 37, 38);
   font-size: 20px;
   color: #ffffff;
 }
 .price-server {
   height: 129px;
-  background: rgb(246,246,246);
+  background: rgb(246, 246, 246);
 }
 .price-server .price {
   height: 42px;
@@ -341,7 +834,7 @@ li {
   font-size: 16px;
   color: #666666;
 }
-.price-server .price del{
+.price-server .price del {
   font-weight: bold;
 }
 .price-server .price .integral {
@@ -351,10 +844,10 @@ li {
   margin-right: 5px;
   font-size: 24px;
   font-weight: bold;
-  color: rgb(247,37,38);
+  color: rgb(247, 37, 38);
 }
 .indent {
-  text-indent: 10px!important;
+  text-indent: 10px !important;
 }
 .manufacturer {
   display: inline-block;
@@ -368,8 +861,252 @@ li {
   text-indent: 20px;
   line-height: 36px;
 }
-.margin-right190{
+.margin-right190 {
   margin-right: 190px;
+}
+.cart {
+  position: relative;
+  top: 10px;
+  left: 0px;
+  height: 44px;
+  text-indent: 20px;
+}
+.goods-count {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+.addition {
+  position: absolute;
+  top: 0px;
+  left: 64px;
+}
+.width22 {
+  width: 22px;
+  height: 22px;
+  line-height: 10px;
+  text-align: center;
+}
+.reduce {
+  position: absolute;
+  top: 22px;
+  left: 64px;
+}
+.purchase {
+  position: absolute;
+  top: 0px;
+  left: 120px;
+  width: 170px;
+  height: 44px;
+  border: 1px solid rgb(247, 37, 38);
+  border-radius: 5px;
+  background: rgb(255, 244, 246);
+  color: rgb(247, 37, 38);
+}
+/* 优惠套餐 */
+.discount {
+  display: block;
+  width: 1190px;
+  height: 360px;
+  margin: 0 auto;
+  border: 1px solid rgb(238, 238, 238);
+  margin-bottom: 20px;
+}
+.discount-title {
+  width: 1190px;
+  height: 50px;
+  background: rgb(246, 246, 246);
+  line-height: 50px;
+  text-indent: 20px;
+  font-size: 18px;
+  color: #666666;
+}
+.discount .carousel {
+  width: 1190px;
+  height: 310px;
+  padding-top: 15px;
+}
+.meal-card {
+  display: inline-block;
+  width: 200px;
+  height: 280px;
+  margin-right: 10px;
+}
+.meal-card img {
+  width: 200px;
+  height: 180px;
+}
+.meal-price {
+  text-align: left;
+  font-weight: bold;
+  color: rgb(245, 47, 62);
+}
+.meal-name {
+  text-align: left;
+  color: #333333;
+}
+.meal-packing {
+  text-align: left;
+  color: #999999;
+}
+.ant-carousel >>> .slick-slide {
+  text-align: center;
+  height: 310px;
+  line-height: 310px;
+  overflow: hidden;
+}
+.ant-carousel[data-v-0e9671aa] .custom-slick-arrow {
+  background-color: rgba(247, 37, 38, 0.5);
+}
+.ant-carousel >>> .custom-slick-arrow {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #fff;
+  background-color: rgba(31, 45, 61, 0.11);
+  opacity: 0.3;
+}
+.ant-carousel >>> .custom-slick-arrow:before {
+  display: none;
+}
+.ant-carousel >>> .custom-slick-arrow:hover {
+  opacity: 0.5;
+}
+.ant-carousel >>> .slick-slide h3 {
+  color: #fff;
+}
+/* 详情和评价页面 */
+.tabs-page {
+  display: block;
+  width: 1190px;
+  height: 1900px;
+  margin: 0 auto;
+}
+.tabs-detail {
+  float: left;
+  width: 905px;
+  height: 1900px;
+}
+.goods-detail {
+  width: 900px;
+  height: 1800px;
+  padding-left: 50px;
+}
+.explain {
+  width: 900px;
+  height: auto;
+  padding: 20px 0;
+  font-size: 18px;
+}
+.detail-list {
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+}
+.explain .explain-text {
+  display: inline-block;
+  width: 700px;
+  height: auto;
+}
+.explain-header {
+  display: inline-block;
+  width: 80px;
+  margin-right: 20px;
+  vertical-align: top;
+}
+.ant-tabs-nav .ant-tabs-tab-active {
+  color: red;
+}
+.evaluate-box {
+  display: block;
+  width: 900px;
+  height: 1600px;
+  margin-bottom: 20px;
+  border-left: 1px solid rgb(238, 238, 238);
+  border-bottom: 1px solid rgb(238, 238, 238);
+}
+.evaluate-box .praise {
+  display: block;
+  width: 750px;
+  height: 160px;
+}
+.probability {
+  float: left;
+  width: 150px;
+  height: 150px;
+  margin-left: 30px;
+  border-right: 1px solid rgb(238, 238, 238);
+}
+.probability .percentage,
+.probability .percentage-num {
+  height: 50px;
+  line-height: 50px;
+  color: #333;
+}
+.everybody {
+  float: right;
+  width: 500px;
+  height: 200px;
+}
+.everybody p {
+  height: 40px;
+  line-height: 40px;
+  font-size: 18px;
+}
+.everybody a {
+  display: inline-block;
+  height: 30px;
+  border: 1px solid rgb(247, 37, 38);
+  border-radius: 30px;
+  padding: 10px 10px;
+  margin-bottom: 10px;
+  line-height: 10px;
+  text-align: center;
+}
+.is-active {
+  background: rgb(247, 37, 38);
+  color: #fff;
+}
+.ant-tabs-bar {
+  margin: 0 !important;
+}
+.comment-text {
+  width: 700px;
+  height: auto;
+}
+.evaluate-list {
+  border-top: 1px solid rgb(238, 238, 238);
+}
+/* 热销推荐 */
+.hot-recommend {
+  float: right;
+  width: 280px;
+  height: 1630px;
+  /* background: darkorange; */
+  border: 1px solid rgb(238, 238, 238);
+}
+.hot-recommend-title {
+  height: 55px;
+  text-indent: 20px;
+  line-height: 55px;
+  background: rgb(246, 246, 246);
+  font-size: 20px;
+  color: #666666;
+}
+.recommend-ul {
+  width: 200px;
+  height: 1510px;
+}
+.recommend-box {
+  padding: 0 40px;
+}
+.card-recommend {
+  width: 200px;
+  height: 300px;
+  margin-bottom: 15px;
 }
 /* 页脚 */
 .page-footer {
@@ -384,14 +1121,12 @@ li {
   background: #ffffff;
 }
 .server-ui {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
   width: 1190px;
   height: 140px;
 }
 .server-ui li {
-  width: 297px;
+  display: inline-block;
+  width: 292px;
   height: 100px;
 }
 .server-ui li a {
@@ -407,12 +1142,12 @@ li {
   left: 45px;
   width: 70px;
   height: 70px;
-  border: 3px solid rgb(255,0,58);
+  border: 3px solid rgb(255, 0, 58);
   border-radius: 50%;
   line-height: 60px;
   text-align: center;
   font-size: 30px;
-  color: rgb(255,0,58);
+  color: rgb(255, 0, 58);
 }
 .server-ui li a h3 {
   position: absolute;
@@ -431,15 +1166,12 @@ li {
   width: 1190px;
   height: 200px;
   margin: 0 auto;
-  border-top: 1px solid rgb(237,237,237);
+  border-top: 1px solid rgb(237, 237, 237);
   background: #ffffff;
   padding-top: 20px;
 }
 .shoping-list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: url('//img.alicdn.com/tfs/TB1dl28RXXXXXbzaFXXXXXXXXXX-136-50.png');
+  background: url("//img.alicdn.com/tfs/TB1dl28RXXXXXbzaFXXXXXXXXXX-136-50.png");
   background-repeat: no-repeat;
   background-size: 68px 25px;
   background-position: 12px bottom;
@@ -447,6 +1179,7 @@ li {
   padding-right: 50px;
 }
 .shoping-list li .shoping-ui li {
+  display: inline-block;
   width: 100px;
   height: 20px;
   margin-bottom: 3px;
@@ -456,16 +1189,16 @@ li {
 }
 .first-server {
   font-size: 16px;
-  color: #666666!important;
+  color: #666666 !important;
 }
 .first-serve a {
-  color: #000000!important;
+  color: #000000 !important;
 }
 .black-footer {
   width: 100%;
   /* height: 175px; */
   background: #000000;
-  border-top: 2px solid rgb(255,0,54)
+  border-top: 2px solid rgb(255, 0, 54);
 }
 .black-footer div {
   display: block;
@@ -481,7 +1214,7 @@ li {
 .footer-record a {
   font-weight: 300;
   font-size: 12px;
-  color: rgb(255,255,255);
+  color: rgb(255, 255, 255);
 }
 .footer-record a:hover {
   border-bottom: 1px solid #ffffff;
@@ -493,13 +1226,27 @@ li {
 .licence a {
   margin-right: 40px;
   font-size: 12px;
-  color: rgb(164,164,164);
+  color: rgb(164, 164, 164);
 }
 .licence a:hover {
-  border-bottom: 1px solid rgb(164,164,164);
+  border-bottom: 1px solid rgb(164, 164, 164);
 }
 .gongshang {
   margin-right: 40px;
+}
+.add-cart {
+  position: absolute;
+  top: 0px;
+  left: 300px;
+  width: 170px;
+  height: 44px;
+  line-height: 44px;
+}
+.add-cart i {
+  font-size: 20px;
+}
+.add-cart span {
+  font-size: 16px;
 }
 /* ui框架样式 */
 .ant-input {
@@ -514,5 +1261,30 @@ li {
 }
 .ant-layout-footer {
   padding: 0px;
+}
+/* 轮播样式 */
+.ant-carousel >>> .slick-dots {
+  height: auto;
+}
+.ant-carousel >>> .slick-slide img {
+  border: 5px solid #fff;
+  display: block;
+  margin: auto;
+  max-width: 80%;
+}
+.ant-carousel >>> .slick-thumb {
+  bottom: -45px;
+}
+.ant-carousel >>> .slick-thumb li {
+  width: 60px;
+  height: 45px;
+}
+.ant-carousel >>> .slick-thumb li img {
+  width: 100%;
+  height: 100%;
+  filter: grayscale(100%);
+}
+.ant-carousel >>> .slick-thumb li.slick-active img {
+  filter: grayscale(0%);
 }
 </style>
