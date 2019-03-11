@@ -1,56 +1,72 @@
 <template>
-  <!-- 页头 -->
-  <a-layout-header>
-    <div class="header-title">
-      <div class="header-left">
-        <a>欢迎来到一块医药</a>
-        <nuxt-link to='/shoppingCart'>登录</nuxt-link>
-        <a>注册</a>
-      </div>
-      <div class="header-right">
-        <a>帮助中心</a>
-        <a>在线客服</a>
-        <a>签到有礼</a>
-        <a>我的订单</a>
-        <a>我的一块</a>
-      </div>
-    </div>
-    <div class="medicine-names">
-      <div class="medicine-name-box">
-        <div class="medicine-name">
-          <img src="../../assets/img/u49.png" alt="">
+  <div>
+    <!-- 首页 -->
+    <a-layout-header v-if='type === "home"'>
+      <div class="header-title">
+        <div class="header-left">
+          <a>欢迎来到一块医药</a>
+          <nuxt-link to='/user/login'>登录</nuxt-link>
+          <nuxt-link to='/user/register'>注册</nuxt-link>
         </div>
-        <div class="medicine-search">
-          <div class="search-box">
-            <a-input placeholder="药品名称/药品通用名/药品助记码"/>
-            <a-button class="search-btn">搜索</a-button>
+        <div class="header-right">
+          <a>帮助中心</a>
+          <a>在线客服</a>
+          <a>签到有礼</a>
+          <a>我的订单</a>
+          <a>我的一块</a>
+        </div>
+      </div>
+      <div class="medicine-names">
+        <div class="medicine-name-box">
+          <div class="medicine-name">
+            <img src="../../../assets/img/u49.png" alt="">
           </div>
+          <div class="medicine-search">
+            <div class="search-box">
+              <a-input placeholder="药品名称/药品通用名/药品助记码"/>
+              <a-button class="search-btn">搜索</a-button>
+            </div>
+          </div>
+          <a-button class="cart-btn">
+            <a-icon type="shopping-cart" class="cart-icon"/>
+            <span class="cart-count">6</span>
+            采购单
+          </a-button>
+          <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
+          <div class="nav-box">
+            <a href class="goods-type">商品分类</a>
+            <a href>首页</a>
+            <a href>新人专享</a>
+            <a href>热销商品</a>
+            <a href>签到有礼</a>
+            <a href>在线采购</a>
+            <a href>我的采购</a>
         </div>
-        <a-button class="cart-btn">
-          <a-icon type="shopping-cart" class="cart-icon"/>
-          <span class="cart-count">6</span>
-          采购单
-        </a-button>
-        <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
-        <div class="nav-box">
-          <a href class="goods-type">商品分类</a>
-          <a href>首页</a>
-          <a href>新人专享</a>
-          <a href>热销商品</a>
-          <a href>签到有礼</a>
-          <a href>在线采购</a>
-          <a href>我的采购</a>
+        </div>
       </div>
+    </a-layout-header>
+    <!-- 登录 -->
+    <a-layout-header v-if='type === "login"'>
+      <div class="ant-layout-header-login">
+        <div class="medicine-name-login">
+          <img src="../../../assets/img/u49.png" alt="">
+        </div>
+        <div class="ant-layout-header-back">
+          <a>返回首页</a>
+          <a>电商APP</a>
+        </div>
+        <div class="divider"></div>
       </div>
-    </div>
-  </a-layout-header>
+    </a-layout-header>
+  </div>
 </template>
 <script>
   export default {
-    name: 'f-space-header'
+    name: 'f-space-header',
+    props: ['type']
   }
 </script>
-<style>
+<style lang='less'>
 a {
   text-decoration: none;
 }
@@ -224,4 +240,36 @@ li {
   border: none;
   color: #ffffff;
 } */
+.ant-layout-header-login {
+  height: 85px;
+  line-height: 85px;
+  background: #ffffff;
+  .medicine-name-login {
+    margin-left: 10%;
+    width: 200px;
+    height: 85px;
+    display: inline-block;
+    img {
+      width: 180px;
+      height: 50px;
+    }
+  }
+  .ant-layout-header-back {
+    float: right;
+    width: 200px;
+    font-size: 18px;
+    margin-right: 5%;
+    a {
+      margin-right: 10%;
+    }
+    a:nth-child(2) {
+      color: #999999
+    }
+  }
+  .divider {
+    height: 1px;
+    background: #73a1f3;
+  }
+}
+
 </style>

@@ -187,7 +187,7 @@
   </div>
 </template>
 <script>
-import FSpaceHeader from "../../components/fspace-ui/header";
+import FSpaceHeader from "../../components/fspace-ui/header/header";
 export default {
   components: {
     FSpaceHeader,

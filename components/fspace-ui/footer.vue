@@ -1,26 +1,36 @@
 <template>
   <a-layout-footer class="footer">
     <div class="footer-message">
-      <div>
-        <p>30天无忧退换货</p>
-        <a-card
-          hoverable
-          class="footer-message-card"
-        >
-          <a-icon type="customer-service" />
-        </a-card>
-        <a-card
-          hoverable
-          style="width: 90px"
-        >
-          <a-icon type="customer-service" />
-        </a-card>
+      <div class="footer-message-item">
+        <p class="footer-message-p">客户服务</p>
+        <div class="footer-message-box">
+          <div class="footer-message-box-item">
+            <a-icon type="sync" />
+            <p>在线客服</p>
+          </div>
+          <div class="footer-message-box-item">
+            <a-icon type="sync" />
+            <p>用户反馈</p>
+          </div>
+        </div>
       </div>
-      <div>
-         <p>满88元免邮费</p>
+      <div class="footer-message-item">
+         <p class="footer-message-p">一块医药公众号</p>
+         <div class="footer-message-box">
+          <img src="../../assets/img/img01.png">
+          <img src="../../assets/img/img01.png">
+         </div>
       </div>
-      <div>
-         <p>平台品质保证</p>
+      <div class="footer-message-item">
+         <p class="footer-message-p">一块物流公众号</p>
+         <div class="footer-message-box">
+            <div class="footer-message-box-item">
+            <img src="../../assets/img/img01.png">
+          </div>
+          <div class="footer-message-box-item">
+            <img src="../../assets/img/img01.png">
+          </div>
+         </div>
       </div>
     </div>
     <div class="footer-box">
@@ -45,7 +55,7 @@ export default {
   name: 'f-space-footer'
 }
 </script>
-<style>
+<style lang='less'>
 .footer {
   background: #414141;
   border-top: 1px #000;
@@ -58,17 +68,38 @@ export default {
   background: white;
   border-top: 1px #000;
 }
-.footer-message div {
+.footer-message-item {
   text-align: center;
   float: left;
   width: 33.3%;
-  height: 100px;
-  line-height: 100px;
   font-size: 18px;
   color: black;
 }
-.footer-message-card {
-  font-size: 20px;
+.footer-message-p {
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+}
+.footer-message-box {
+  height: 120px;
+  line-height: 120px;
+}
+.footer-message-box-item {
+  border: 0.5px solid #dddddd;
+  display: inline-block;
+  width: 30%;
+  height:80px;
+  line-height: 80%;
+}
+.footer-message-box img {
+  width: 100px;
+  height: 100px;
+}
+.footer-message-box-item i {
+  width: 50%;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  font-size: 40px;
 }
 .footer-box {
   padding-left: 15%;

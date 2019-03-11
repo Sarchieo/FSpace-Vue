@@ -1,8 +1,20 @@
 <template>
-   <a-button type="primary" @click='submitFrom'>点我登录</a-button>
+  <div>
+    <a-layout>
+      <f-space-header type='login'></f-space-header>
+      <a-button type="primary" @click='submitFrom'>点我登录</a-button>
+      <f-space-footer></f-space-footer>
+    </a-layout>
+  </div>
 </template>
 <script>
+import FSpaceHeader from "../../components/fspace-ui/header/header";
+import FSpaceFooter from '../../components/fspace-ui/footer';
 export default {
+  components: {
+    FSpaceHeader,
+    FSpaceFooter
+  },
   mounted() {
     this.submitFrom
   },
@@ -19,5 +31,7 @@ export default {
 }
 </script>
 <style>
-
+* {
+  margin: 0;
+}
 </style>

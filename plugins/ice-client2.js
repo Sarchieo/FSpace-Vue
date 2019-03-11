@@ -18,7 +18,6 @@ var communicator = Ice.initialize();
 
 
 function iceTest() {
-  debugger
   var CallbackReceiverI = Ice.Class(Demo.Receiver, {
     callback: function(num, current)
     {

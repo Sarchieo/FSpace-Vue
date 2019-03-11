@@ -11,14 +11,25 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "cross-env": "^5.2.0",
-    "nuxt": "^2.4.0",
-    "koa": "^2.6.2",
     "ant-design-vue": "^1.1.10",
-    "ice": "^3.6.3"
+    "cross-env": "^5.2.0",
+    "css-loader": "^2.1.1",
+    "ice": "^3.6.3",
+    "koa": "^2.6.2",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "node-sass": "^4.11.0",
+    "nuxt": "^2.4.0",
+    "sass-resources-loader": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",
     "vue-lazyload": "^1.2.6"
+  },
+  "config": {
+    "nuxt": {
+      "host": "192.168.1.16",
+      "port": "8011"
+    }
   }
 }
