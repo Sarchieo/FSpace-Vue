@@ -678,7 +678,7 @@ li {
 }
 .elaborate-price{
   position: absolute;
-  top: 130px;
+  top: 130px; 
   left: 195px;
   width: 170px;
   color: rgb(238,47,38);

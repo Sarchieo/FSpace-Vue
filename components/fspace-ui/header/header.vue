@@ -23,15 +23,33 @@
           </div>
           <div class="medicine-search">
             <div class="search-box">
-              <a-input placeholder="药品名称/药品通用名/药品助记码"/>
+              <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
               <a-button class="search-btn">搜索</a-button>
             </div>
           </div>
-          <a-button class="cart-btn">
-            <a-icon type="shopping-cart" class="cart-icon"/>
-            <span class="cart-count">6</span>
-            采购单
-          </a-button>
+          <a-dropdown>
+            <a class="ant-dropdown-link cart-btn" @click="toCart()">
+              <a-icon type="shopping-cart" class="cart-icon"/>
+              <span class="cart-count">6</span>
+              <span class="cart-text">采购单</span>
+            </a>
+            <a-menu slot="overlay" class="cart-down">
+                <a-menu-item class="cart-down-list" v-for="(item,index) in cartList" :key="index">
+                  <a href="javascript:;">
+                    <img v-lazy="item.src" class="cart-img">
+                    <p class="cart-goods-text">{{item.text}} <span>￥{{item.price}}元</span></p>
+                    <p class="cart-goods-count">{{item.guige}}  ×  {{item.count}}</p>
+                    <a-icon type="close" class="del-cart-goods"/>
+                  </a>
+                </a-menu-item>
+                <a-menu-item class="total-settlement">
+                  <p>
+                    商品合计1880元 
+                    <button>去购物车结算</button>
+                  </p>
+                </a-menu-item>
+            </a-menu>
+          </a-dropdown>
           <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
           <div class="nav-box">
             <a href class="goods-type">商品分类</a>
@@ -46,7 +64,7 @@
       </div>
     </a-layout-header>
     <!-- 登录 -->
-    <a-layout-header v-if='type === "login"'>
+    <a-layout-header v-if='type === "login"' class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
           <img src="../../../assets/img/u49.png" alt="">
@@ -58,15 +76,84 @@
         <div class="divider"></div>
       </div>
     </a-layout-header>
+    <!-- 注册 -->
+    <a-layout-header v-if='type === "register"' class="login-header">
+      <div class="ant-layout-header-login">
+        <div class="medicine-name-login">
+          <img src="../../../assets/img/u49.png" alt="">
+        </div>
+        <div class="ant-layout-header-back">
+          <a class="already">已有账号</a>
+          <a class="immediately">立即登录</a>
+        </div>
+        <div class="divider"></div>
+      </div>
+    </a-layout-header>
   </div>
 </template>
 <script>
   export default {
     name: 'f-space-header',
-    props: ['type']
+    props: ['type'],
+    data () {
+      return {
+        cartList: [
+          {
+            src:'//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg',
+            text: '汇仁肾宝片126片成人男性肾亏',
+            price: 322,
+            guige: '3g * 126片',
+            count: 9
+          },
+           {
+            src:'//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+            text: '宁夏红枸杞',
+            price: 50,
+            guige: '300g * 1袋',
+            count: 6
+          },
+           {
+            src:'//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+            text: '长白山人参',
+            price: 18888,
+            guige: '30g * 1株',
+            count: 1
+          },
+           {
+            src:'//img.alicdn.com/imgextra/i4/TB1pn9kNFXXXXcfXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+            text: '东阿阿胶片',
+            price: 188,
+            guige: '3g * 126片',
+            count: 3
+          },
+           {
+            src:'//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+            text: '九芝堂六味地黄丸',
+            price: 88,
+            guige: '3g * 126片',
+            count: 2
+          },
+           {
+            src:'//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
+            text: '太极五子衍宗丸',
+            price: 288,
+            guige: '3g * 126片',
+            count: 9
+          }
+        ]
+      }
+    },
+    methods: {
+      toCart() {
+        this.$router.push({
+          name:'/shoppingCart'
+      })
+      }
+    }
   }
 </script>
 <style lang='less'>
+@import "../../../components/fspace-ui/container/index.less";
 a {
   text-decoration: none;
 }
@@ -91,6 +178,16 @@ li {
   padding: 0px;
   background: rgb(242, 242, 242);
   color: gray;
+}
+.already {
+  color: #999999;
+}
+.immediately {
+  color: rgb(255, 0, 54)!important;
+}
+/* 登录头部 */
+.login-header {
+  height: 85px;
 }
 /* 头部 */
 .header-title {
@@ -175,8 +272,8 @@ li {
   color: #ffffff;
 }
 .cart-btn{
-  float: right;
   position: relative;
+  float: right;
   width: 154px;
   height: 42px;
   background: #ffffff;
@@ -185,7 +282,14 @@ li {
   margin-top: 8px;
   color: #666666;
 }
+.cart-text {
+  position: absolute;
+  top: 5px;
+  left: 65px;
+  font-size: 16px;
+}
 .cart-btn:hover{
+  color: #666666;
   border: 1px solid rgb(255,0,54);
   /* background: rgb(255,0,54); */
 }
@@ -195,13 +299,50 @@ li {
   left: 42px;
   width: 20px;
   height: 20px;
+  line-height: 20px;
+  text-align: center;
   border-radius: 50%;
   background: rgb(255,0,54);
   color: #ffffff;
 }
 .cart-btn i{
+  position: absolute;
+  top: 8px;
+  left: 30px;
   margin-right: 20px;
   font-size: 22px;
+}
+.cart-down {
+  .container-size(block,300px,400px,0px,0px);
+  overflow: auto;
+  .position(relative,0px,0px);
+}
+.cart-down-list {
+  .container-size(block,280px,80px,0px,0px);
+  line-height: 80px;
+  .position(relative,0px,0px);
+}
+.cart-img {
+  .position(absolute,5px,5px);
+  .container-size(inline-block,70px,70px,0px,0px);
+}
+.cart-goods-text {
+  .position(absolute,5px,80px);
+  display: inline-block;
+  width: 190px;
+  .p-size(40px,40px,14px,left,#666666);
+  overflow: hidden;
+}
+.cart-goods-count {
+  .position(absolute,35px,80px);
+  .p-size(40px,40px,14px,left,#666666);
+}
+.del-cart-goods {
+  .position(absolute,35px,260px);
+}
+.total-settlement {
+  .container-size(inline-block,280px,80px,0px,0px);
+  .position(absolute,300px,0px);
 }
 .nav-box {
   display: block;
