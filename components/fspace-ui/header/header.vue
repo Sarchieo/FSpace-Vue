@@ -58,6 +58,19 @@
         <div class="divider"></div>
       </div>
     </a-layout-header>
+    <!-- 注册 -->
+    <a-layout-header v-if='type === "register"'>
+      <div class="ant-layout-header-login">
+        <div class="medicine-name-login">
+          <img src="../../../assets/img/u49.png" alt="">
+        </div>
+        <div class="ant-layout-header-back">
+          <span>已有账号,</span>
+          <nuxt-link to='/user/login'><a style="color: red;">直接登录</a></nuxt-link>
+        </div>
+        <div class="divider"></div>
+      </div>
+    </a-layout-header>
   </div>
 </template>
 <script>
@@ -94,7 +107,7 @@ li {
 }
 /* 头部 */
 .header-title {
-  width: 1200px;
+  width: 100%;
   height: 30px;
   margin: 0 auto;
 }

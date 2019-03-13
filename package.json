@@ -14,7 +14,9 @@
     "ant-design-vue": "^1.1.10",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
+    "fingerprintjs2": "^2.0.6",
     "ice": "^3.6.3",
+    "jsencrypt": "^3.0.0-rc.1",
     "koa": "^2.6.2",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "nodemon": "^1.18.9",
+    "uglifyjs-webpack-plugin": "^2.1.2",
     "vue-lazyload": "^1.2.6"
   },
   "config": {

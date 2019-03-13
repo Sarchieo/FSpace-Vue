@@ -23,7 +23,7 @@
                 <a-icon type="right-circle" />
               </div>
               <div>
-                <img v-lazy="'//img30.360buyimg.com/img/jfs/t22975/291/671631212/175034/741d012e/5b3c309cN3f3c7cb8.jpg'" class="banner-pic">
+                <img v-lazy="'//m.360buyimg.com/babel/jfs/t1/26491/29/9870/42039/5c820018E6ac9f854/55c42a68a489cd18.jpg'" class="banner-pic">
               </div>
               <div>
                 <img v-lazy="'//img30.360buyimg.com/img/jfs/t15169/46/1365117661/178502/d02d6948/5a4ddc4eNbd55867a.jpg'" class="banner-pic">
@@ -154,7 +154,7 @@
                   <a-card-meta
                     >
                   </a-card-meta>
-                  <p></p>
+                   <p></p>
                 </a-card>
             </li>
           </ul>
@@ -162,8 +162,8 @@
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
-      <!-- <ul class="sider-meun">
-        <a-anchor :affix="false"  offsetTop='40' :showInkInFixed='false' wrapperClass="wrap-right">
+      <ul class="sider-meun">
+        <a-anchor :affix="false"  :showInkInFixed='false' wrapperClass="wrap-right">
           <a-anchor-link class="right-meun" href="#components-layout-demo-basic" title="商品分类" />
           <a-anchor-link class="right-meun" href="#hot" title="限时抢购" />
           <a-anchor-link class="right-meun" href="#top" title="热销专区" />
@@ -171,13 +171,15 @@
           <a-anchor-link class="right-meun" href="#choice" title="为你精选" />
           <a-back-top />
         </a-anchor>
-    </ul> -->
+    </ul>
   </div>
 </template>
 <script>
 import FSpaceHeader from "../components/fspace-ui/header/header";
 import FSpaceMenu from "../components/fspace-ui/menu";
 import FSpaceFooter from "../components/fspace-ui/footer";
+// import Fingerprint2 from 'fingerprintjs2'
+
 export default {
   components: {
     FSpaceHeader,
@@ -186,6 +188,7 @@ export default {
   },
   data() {
     return {
+      GUID: '',
       elaborateList: [
         {
           title: '为你精选',
@@ -448,27 +451,62 @@ export default {
     };
   },
   mounted() {
-    this.initData()
+    this.initData();
+    this.createFingerprint()
   },
   methods: {
+    async createFingerprint(components) {
+      let _this = this
+      //  setTimeout(function () {
+      //   Fingerprint2.get(function (components) {
+      //     console.log(components)
+      //     let id = components[5].value + components[15].value + components[19].value + components[26].value.length + components[27].value
+      //     _this.GUID = id
+      //     console.log(_this.GUID)
+      //   })
+      //  },500)
+    },
     toDetailsPages() {
       this.$router.push({
         path:'/product/detail'
       })
     },
     async initData() {
-      // this.$queryIce(
-      //   InfoModule.OrderServerPrx,
-      //   "osB",
-      //   "queryByUserId",
+      // let iRequest = new inf.IRequest();
+      // iRequest.cls = "UserServerImp";
+      // iRequest.method = "login";
+      // iRequest.param.json = JSON.stringify({
+      //   username: 'admin',
+      //   password: 'admin'
+      // }) 
+      // iRequest.param.token = '1234'
+      // this.$refcallback(
+      //   "userServer",
+      //   iRequest,
       //   new this.$iceCallback(
       //     function result(result) {
       //       console.log(result)
       //     }
-      //   ),
-      //   10000, this.$commom.num2jlong(1000010000)
+      //   )
       // );
-      this.$iceTest()
+
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "UserServerImp";
+      iRequest.method = "loginSuccessTest";
+      // iRequest.param.json = JSON.stringify({
+      //   username: 'admin',
+      //   password: 'admin'
+      // }) 
+      iRequest.param.token = '1234'
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            console.log(result)
+          }
+        )
+      );
     }
   }
 };
