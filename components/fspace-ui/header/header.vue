@@ -146,7 +146,7 @@
     methods: {
       toCart() {
         this.$router.push({
-          name:'/shoppingCart'
+          name:'shoppingCart'
       })
       }
     }
@@ -374,7 +374,7 @@ li {
   width: 84% !important;
   height: 38px;
   border: none;
-  border-radius: 18px 0 0 18px;
+  border-radius: 18px 0 0 18px!important;
 }
 /* .ant-btn {
   background-color: rgb(255, 0, 54);
