@@ -44,7 +44,7 @@
                 </a-menu-item>
                 <a-menu-item class="total-settlement">
                   <p>
-                    商品合计1880元 
+                    商品合计1880元
                     <button>去购物车结算</button>
                   </p>
                 </a-menu-item>
@@ -191,7 +191,7 @@ li {
 }
 /* 头部 */
 .header-title {
-  width: 1200px;
+  width: 100%;
   height: 30px;
   margin: 0 auto;
 }
