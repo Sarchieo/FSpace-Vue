@@ -178,7 +178,6 @@
 import FSpaceHeader from "../components/fspace-ui/header/header";
 import FSpaceMenu from "../components/fspace-ui/menu";
 import FSpaceFooter from "../components/fspace-ui/footer";
-// import Fingerprint2 from 'fingerprintjs2'
 
 export default {
   components: {
@@ -452,7 +451,6 @@ export default {
   },
   mounted() {
     this.initData();
-    this.createFingerprint()
   },
   methods: {
     async createFingerprint(components) {

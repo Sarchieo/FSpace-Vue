@@ -6,18 +6,51 @@
         <div class="from-box">
           <p>用户注册</p>
           <a-form :form="form" @submit="handleSubmit">
-            <a-form-item v-bind="formItemLayout" label="手机号">
+            <a-form-item
+              v-bind="formItemLayout"
+              label="手机号"
+              has-feedback
+            >
               <a-input
                 v-decorator="[
-          'number',
-          {
-            rules: [{
-              type: 'number', message: '输入手机号',
-            }, {
-              required: true, message: '请填写手机号',
-            }]
-          }
-        ]"
+                  'phone',
+                  {
+                    rules: [ {
+                      validator: validatePhone,
+                    }],
+                  }
+                ]"
+                id="validating"
+                placeholder="请输入您的手机号码"
+              >
+              </a-input>
+            </a-form-item>
+            <a-form-item v-bind="formItemLayout" label="设置密码">
+              <a-input
+                v-decorator="[
+                  'password',
+                  {
+                    rules: [{
+                      validator: validatePwd,
+                    }],
+                  }
+                ]"
+                type="password"
+                placeholder="请输入密码"
+              />
+            </a-form-item>
+            <a-form-item v-bind="formItemLayout" label="再次设置密码">
+              <a-input
+                v-decorator="[
+                  'password2',
+                  {
+                    rules: [{
+                      validator: validatePwd2,
+                    }],
+                  }
+                ]"
+                type="password"
+                placeholder="请再次输入密码"
               />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="短信验证码">
@@ -25,62 +58,15 @@
                 <a-col :span="14">
                   <a-input
                     v-decorator="[
-              'captcha',
-              {rules: [{ required: true, message: '请填写短信验证码' }]}
-            ]"
+                      'smsCode',
+                      {rules: [{ required: true, message: '请填写短信验证码', min:6 }]}
+                    ]"
                   />
                 </a-col>
                 <a-col :span="4">
-                  <a-button class="captcha">获取验证码</a-button>
+                  <a-button class="captcha" :disabled='!sendAuthCode' :loading="sendAuthCodeLoading" @click='getAuthCode'> {{sendAuthCodeText}} </a-button>
                 </a-col>
               </a-row>
-            </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="图形验证码">
-              <a-input
-                v-decorator="[
-          'confirm',
-          {
-            rules: [{
-              required: true, message: '请填写图形验证码',
-            }, {
-              validator: compareToFirstPassword,
-            }],
-          }
-        ]"
-                type="text"
-                @blur="handleConfirmBlur"
-              />
-            </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="设置密码">
-              <a-input
-                v-decorator="[
-          'password',
-          {
-            rules: [{
-              required: true, message: '请设置密码',
-            }, {
-              validator: validateToNextPassword,
-            }],
-          }
-        ]"
-                type="password"
-              />
-            </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="再次设置密码">
-              <a-input
-                v-decorator="[
-          'confirm',
-          {
-            rules: [{
-              required: true, message: '请再次设置密码',
-            }, {
-              validator: compareToFirstPassword,
-            }],
-          }
-        ]"
-                type="password"
-                @blur="handleConfirmBlur"
-              />
             </a-form-item>
             <a-form-item v-bind="tailFormItemLayout">
               <a-button type="primary" html-type="submit" class="register-btn">注册</a-button>
@@ -100,40 +86,6 @@
   </div>
 </template>
 <script>
-const residences = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    value: "jiangsu",
-    label: "Jiangsu",
-    children: [
-      {
-        value: "nanjing",
-        label: "Nanjing",
-        children: [
-          {
-            value: "zhonghuamen",
-            label: "Zhong Hua Men"
-          }
-        ]
-      }
-    ]
-  }
-];
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceFooter from "../../components/fspace-ui/footer";
 export default {
@@ -143,9 +95,12 @@ export default {
   },
   data() {
     return {
+      sendAuthCode: false, // 控制验证码按钮
+      sendAuthCodeText: '获取验证码',
+      sendAuthCodeLoading: false,
+      auth_time: 60,
+      isSubmitFrom: false,
       confirmDirty: false,
-      residences,
-      autoCompleteResult: [],
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -180,15 +135,18 @@ export default {
       }
     };
   },
+  mounted() {
+    this.vueTest()
+  },
   beforeCreate() {
     this.form = this.$form.createForm(this);
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      this.form.validateFieldsAndScroll((err, values) => {
+      this.form.validateFields((err, values) => {
         if (!err) {
-          console.log("Received values of form: ", values);
+          // 提交表单
         }
       });
     },
@@ -196,31 +154,66 @@ export default {
       const value = e.target.value;
       this.confirmDirty = this.confirmDirty || !!value;
     },
-    compareToFirstPassword(rule, value, callback) {
+    validatePhone(rule, value, callback) {
       const form = this.form;
-      if (value && value !== form.getFieldValue("password")) {
-        callback("Two passwords that you enter is inconsistent!");
+      if (value && value.length === 11) {
+        // 调用后台接口, 验证手机是否允许注册
+        setTimeout(() => {
+          if(value === '17621503668'){
+            callback('手机号码已注册')
+            this.sendAuthCode = false
+          } else {
+            this.sendAuthCode = true
+            callback()
+          }
+        },1500)
       } else {
+        this.sendAuthCode = false
+        callback('请输入手机正确的手机号码');
+      }
+    },
+    validatePwd(rule, value, callback) {
+      const form = this.form;
+      if (value && value.length > 5) {
         callback();
-      }
-    },
-    validateToNextPassword(rule, value, callback) {
-      const form = this.form;
-      if (value && this.confirmDirty) {
-        form.validateFields(["confirm"], { force: true });
-      }
-      callback();
-    },
-    handleWebsiteChange(value) {
-      let autoCompleteResult;
-      if (!value) {
-        autoCompleteResult = [];
       } else {
-        autoCompleteResult = [".com", ".org", ".net"].map(
-          domain => `${value}${domain}`
-        );
+        callback("请设置密码");
       }
-      this.autoCompleteResult = autoCompleteResult;
+    },
+    validatePwd2(rule, value, callback) {
+      const form = this.form;
+      if (value && value === form.getFieldValue("password")) {
+        callback();
+      } else {
+        callback('密码不一致, 请重新输入');
+      }
+    },
+    getAuthCode() {
+      this.sendAuthCodeText = '请稍后'
+      this.sendAuthCodeLoading = true
+      // 发送验证码
+      setTimeout(()=> {
+        this.auth_time = 60;
+        this.$message.success('短信发送成功');
+        let auth_timetimer =  setInterval(()=>{
+          this.sendAuthCodeLoading = false
+          this.sendAuthCode = false;
+          this.auth_time--;
+          this.sendAuthCodeText = this.auth_time + 's'
+          if(this.auth_time<=0){
+            this.sendAuthCode = true;
+            this.sendAuthCodeText = '获取验证码'
+            clearInterval(auth_timetimer);
+          }
+        }, 1000);
+      },1500)
+    },
+    vueTest() {
+      this.$store.dispatch('setUser', {
+        userName: '11111',
+        userPhone: '22222'
+      })
+      console.log(this.$store.state.user)
     }
   }
 };
@@ -243,20 +236,18 @@ export default {
   border-radius: 0;
 }
 .register-btn {
-  // .button-size(@width;@height;@line-height;@font-size;@padding;@border-radius;); @border:1px solid transparent;@background-color;@color;
-  .button-size(390px,45px,45px,18px,0px,5px);
-  .button-color(1px solid transparent,#ED2F26,#ffffff);
+  .button-size(390px, 45px, 45px, 18px, 0px, 5px);
+  .button-color(1px solid transparent, #ed2f26, #ffffff);
 }
 .register-btn:hover {
-  background: #ED2F26;
+  opacity: 0.8;
 }
 .captcha {
-  .button-size(100px,40px,40px,14px,0px,5px);
-  .button-color(1px solid transparent,#ED2F26,#ffffff);
+  .button-size(115px, 40px, 40px, 14px, 0px, 5px);
+  .button-color(1px solid transparent, #ed2f26, #ffffff);
+  .button-disabled(#D3D3D3, #ffffff)
 }
 .captcha:hover {
-  background: #ED2F26;
-  color: #ffffff;
-  border: 1px solid transparent;
+  opacity: 0.8;
 }
 </style>

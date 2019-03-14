@@ -15,9 +15,15 @@
       <a-input
         v-decorator="[
           'username',
-          {rules: [{ required: true, message: '请输入用户名' }]}
+          {
+            rules: [ {
+              validator: validateUserName,
+            }],
+          }
+           
         ]"
         placeholder="请输入用户名"
+
       />
     </a-form-item>
     <a-form-item
@@ -29,7 +35,11 @@
         type="password"
         v-decorator="[
           ' ',
-          {rules: [{ required: checkNick, message: '请输入密码' }]}
+          {
+            rules: [ {
+              validator: validatePwd,
+            }],
+          }
         ]"
         placeholder="请输入密码"
       />
@@ -59,7 +69,7 @@
       </button>
     </a-form-item>
   </a-form>
-  <p class="to-register">还没有账号？立即去<a href="">注册</a></p>
+  <p class="to-register">还没有账号？立即去<nuxt-link to='/user/register'>登录</nuxt-link></p>
           </div>
         </div>
       </div>
@@ -85,7 +95,7 @@ export default {
   },
   data() {
     return {
-       checkNick: false,
+      checkNick: false,
       formItemLayout,
       formTailLayout,
       form: this.$form.createForm(this),
@@ -118,6 +128,12 @@ export default {
       this.$nextTick(() => {
         this.form.validateFields(["nickname"], { force: true });
       });
+    },
+    validateUserName() {
+
+    },
+    validatePwd() {
+
     }
   }
 };
