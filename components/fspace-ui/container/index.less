@@ -7,11 +7,27 @@
     -moz-border-radius:@border-radius;
     -webkit-border-radius:@border-radius;
 }
-.p-size (@height;@line-height;@font-size;@text-align;@color) {
+.container-align (@text-align;@text-indent;@line-height) {
+    text-align: @text-align;
+    text-indent: @text-indent;
+    line-height: @line-height;
+}
+.container-color (@background-color;@border;@color;) {
+    background-color: @background-color;
+    border: @border;
+    color: @color;
+}
+.p-size (@height;@line-height;@font-size;@text-align;@indent;@color) {
     height: @height;
     line-height: @line-height;
     font-size: @font-size;
     text-align: @text-align;
+    text-indent: @indent;
+    color: @color;
+}
+.p-color (@background-color;@border;@color;) {
+    background-color: @background-color;
+    border: @border;
     color: @color;
 }
 .position (@position;@top;@left) {

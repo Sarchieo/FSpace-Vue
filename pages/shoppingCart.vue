@@ -5,7 +5,7 @@
        <a-layout-content>
          <div class="cart-box">
             <ul class="table-header">
-              <li class="whole"><a-checkbox @change="onChange">全选</a-checkbox></li>
+              <li class="whole"><a-checkbox @change="onChange" v-model="checked">全选</a-checkbox></li>
               <li>商品信息</li>
               <li>单价</li>
               <li>数量</li>
@@ -19,7 +19,7 @@
               </div>
               <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
                 <div class="first-div">
-                  <a-checkbox @change="onChange" class="pick-input"></a-checkbox>
+                  <a-checkbox @change="onChanges(index)" v-model="item.checked" class="pick-input"></a-checkbox>
                   <!-- <input type="radio" class="pick-input"> -->
                   <img  v-lazy="item.src" alt="">
                   <p class="goods-name">{{item.name}}</p>
@@ -28,20 +28,25 @@
                   <p class="old-price">￥ {{item.price}}</p>
                   <p class="validity">有效期：{{item.time}}</p>
                   <p class="btn-p">
-                    <button>+</button>
-                    <input type="text" readonly="readonly" v-model="item.count" class="goods-count">
-                    <button>-</button>
+                    <button @click="addCount(index)">+</button>
+                    <button class="goods-count">{{item.count}}</button>
+                    <!-- <input type="text" readonly="readonly" v-model="item.count" class="goods-count"> -->
+                    <button @click="reduceCount(index)">-</button>
                   </p>
-                  <p class="new-price">￥478</p>
+                  <p class="new-price">￥{{item.price*item.count}}</p>
                   <p class="move">移入收藏夹</p>
-                  <p class="del-goods">删除</p>
+                  <p class="del-goods" @click="removeList(index)">删除</p>
                 </div>
               </li>
             </ul>
             <div class="whole-pick">
               <a-checkbox @change="onChange">全选</a-checkbox>
               <span>删除选中商品</span>
-              <p class="summary"><span>商品合计：￥3000</span> <span>活动优惠：-￥100 </span> <span>应付总金额：￥2900</span> <button class="order-btn">下单</button></p>
+              <p class="summary"><span>商品合计：￥{{total}}</span> <span>活动优惠：-￥{{discount}} </span> <span class="total-price">应付总金额：￥{{total - discount}}</span> <button class="order-btn" @click="toPlaceOrder()">下单</button></p>
+            </div>
+            <!-- 猜你喜欢，有一样的功能，待组件 -->
+            <div class="">
+
             </div>
          </div>
        </a-layout-content>
@@ -60,44 +65,78 @@ export default {
   // middleware: 'authenticated',
   data() {
     return {
-      
+      checked: false,
+      discount: 100,
       cartList: [
         {
           src: '//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
           name: '东阿阿胶',
           guige: '0.4g*12粒',
           changshang: '吉林市吴太感康药业有限公司',
-          price: 198,
-          total: 198,
+          price: 88,
           count: 1,
-          time: '2022-02-30'
+          time: '2022-02-30',
+          checked: false
         },
         {
           src: '//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
           name: '东阿阿胶',
           guige: '0.4g*12粒',
           changshang: '吉林市吴太感康药业有限公司',
-          price: 198,
-          total: 198,
+          price: 199,
           count: 1,
-          time: '2022-02-30'
+          time: '2022-02-30',
+          checked: false
         },
         {
           src: '//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
           name: '东阿阿胶',
           guige: '0.4g*12粒',
           changshang: '吉林市吴太感康药业有限公司',
-          price: 198,
-          total: 198,
+          price: 99,
           count: 1,
-          time: '2022-02-30'
+          time: '2022-02-30',
+          checked: false
         }
       ]
     }
   },
+  computed: {
+    total: function () {
+      var total = 0;
+      this.cartList.forEach((item) => {
+       total +=  item.price * item.count
+      })
+      return total;
+    }
+  },
   methods: {
-     onChange (e) {
-      console.log(`checked = ${e.target.checked}`)
+    onChange (e) {
+      var _this = this
+      this.cartList.forEach( (item) => {
+        item.checked = _this.checked
+      })
+    },
+    onChanges(index) {
+      var _this = this
+      
+    },
+    toPlaceOrder() {
+      this.$router.push({
+          path:'order/placeOrder'
+      })
+    },
+    addCount(index) {
+      this.cartList[index].count += 1
+    },
+    reduceCount(index) {
+      if(this.cartList[index].count===1){
+          return false
+        }
+      this.cartList[index].count -= 1
+    },
+    removeList(index) {
+      this.cartList.splice(index, 1)
     }
   }
 }
@@ -179,6 +218,11 @@ li {
 .whole {
   width: 100px!important;
 }
+.total-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ed2f26;
+}
 .goods-lists-li {
   .container-size(block,1190px,140px,0 auto,0px);
   border-top: 1px solid #e0e0e0;
@@ -232,6 +276,7 @@ li {
 .btn-p button {
   width: 40px;
   height: 30px;
+  line-height:30px;
   border: 1px solid #e0e0e0;
   background: #ffffff;
 }

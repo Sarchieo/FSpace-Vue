@@ -236,7 +236,7 @@ export default {
   .container-size(block, 700px, 734px, 0 auto, 0px);
 }
 .from-box p {
-  .p-size(50px, 50px, 18px, center, #000000);
+  .p-size(50px, 50px, 18px, center,0px, #000000);
 }
 .ant-input {
   border: 1px solid rgb(238, 238, 238);

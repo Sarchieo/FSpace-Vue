@@ -220,6 +220,7 @@ li {
 .medicine-names {
   display: block;
   background: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
 }
 .medicine-name-box {
   display: block;
@@ -330,12 +331,12 @@ li {
   .position(absolute,5px,80px);
   display: inline-block;
   width: 190px;
-  .p-size(40px,40px,14px,left,#666666);
+  .p-size(40px,40px,14px,left,0px,#666666);
   overflow: hidden;
 }
 .cart-goods-count {
   .position(absolute,35px,80px);
-  .p-size(40px,40px,14px,left,#666666);
+  .p-size(40px,40px,14px,left,0px,#666666);
 }
 .del-cart-goods {
   .position(absolute,35px,260px);
