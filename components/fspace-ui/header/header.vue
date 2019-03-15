@@ -24,7 +24,7 @@
           <div class="medicine-search">
             <div class="search-box">
               <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
-              <a-button class="search-btn">搜索</a-button>
+              <button class="search-btn" @click="toCategory()">搜索</button>
             </div>
           </div>
           <a-dropdown>
@@ -148,6 +148,11 @@
         this.$router.push({
           name:'shoppingCart'
       })
+      },
+      toCategory() {
+        this.$router.push({
+          name:'category'
+        })
       }
     }
   }
@@ -264,12 +269,21 @@ li {
   border-radius: 50%;
 } */
 .search-btn{
+  width: 70px;
+  height: 30px;
   background-color: rgb(255, 0, 54);
   border: none;
+  outline:none;
   color: #ffffff;
 }
 .search-btn:hover{
   background-color: rgb(255, 0, 54);
+  color: #ffffff;
+}
+.search-btn:active {
+  background-color: rgb(255, 0, 54);
+  border: none;
+  outline:none;
   color: #ffffff;
 }
 .cart-btn{

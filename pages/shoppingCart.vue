@@ -14,7 +14,7 @@
             </ul>
             <ul class="goods-lists">
               <div class="nutrition">
-                 <a-icon type="android" theme="filled" />
+                 <a-icon type="shop" />
                  <span>一块医药自营</span>
               </div>
               <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">

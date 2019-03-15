@@ -42,7 +42,7 @@
           </ul>
           <ul class="goods-table">
             <p class="goods-table-name">
-              <a-icon type="exclamation-circle"/>一块医药自营
+              <a-icon type="shop" />一块医药自营
             </p>
             <li v-for="(item,index) in cartLists" :key="index">
               <div class="goods-name">
