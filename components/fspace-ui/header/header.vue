@@ -7,7 +7,7 @@
           <a>欢迎来到一块医药</a>
           <nuxt-link to='/user/login'>登录</nuxt-link>
           <nuxt-link to='/user/register'>注册</nuxt-link>
-          <nuxt-link to='/user/personal/personal'>我的一块</nuxt-link>
+          <nuxt-link to='/user/personal'>我的一块</nuxt-link>
         </div>
         <div class="header-right">
           <a>帮助中心</a>
@@ -53,12 +53,10 @@
           <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
           <div class="nav-box">
             <a href class="goods-type">商品分类</a>
-            <a href>首页</a>
             <a href>新人专享</a>
+            <a href>新品上线</a>
             <a href>热销商品</a>
-            <a href>签到有礼</a>
-            <a href>在线采购</a>
-            <a href>我的采购</a>
+            <a href>全部商品</a>
         </div>
         </div>
       </div>
