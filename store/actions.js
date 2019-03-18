@@ -1,5 +1,7 @@
 import * as types from './mutation-types'
-
+import {
+  saveUser
+} from '../utils/cache'
 
 // export const login = (context, code) => {
 //   return new Promise(((resolve, reject) => {
@@ -12,7 +14,7 @@ import * as types from './mutation-types'
 //   commit(types.SET_USER, saveUser(user))
 // }
 const actions = {
-  async setUser({ commit }, { user }) {
+  async setUser({commit, state}, user) {
     commit(types.SET_USER, saveUser(user))
   }
 }

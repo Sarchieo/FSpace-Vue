@@ -7,13 +7,13 @@
           <a>欢迎来到一块医药</a>
           <nuxt-link to='/user/login'>登录</nuxt-link>
           <nuxt-link to='/user/register'>注册</nuxt-link>
+          <nuxt-link to='/user/personal/personal'>我的一块</nuxt-link>
         </div>
         <div class="header-right">
           <a>帮助中心</a>
           <a>在线客服</a>
           <a>签到有礼</a>
           <a>我的订单</a>
-          <a>我的一块</a>
         </div>
       </div>
       <div class="medicine-names">

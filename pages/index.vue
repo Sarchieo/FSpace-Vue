@@ -83,7 +83,6 @@
                     v-lazy="items.src"
                     slot="cover"
                   />
-                  
                   <p class="surplus text-Center top185">{{items.text}}</p>
                   <p class="validity">有效期至{{items.validity}}</p>
                   <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
@@ -115,7 +114,6 @@
                     v-lazy="items.src"
                     slot="cover"
                   />
-                  
                   <p class="surplus text-Center top185">{{items.text}}</p>
                   <p class="validity">有效期至{{items.validity}}</p>
                   <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
@@ -470,41 +468,7 @@ export default {
       })
     },
     async initData() {
-      // let iRequest = new inf.IRequest();
-      // iRequest.cls = "UserServerImp";
-      // iRequest.method = "login";
-      // iRequest.param.json = JSON.stringify({
-      //   username: 'admin',
-      //   password: 'admin'
-      // }) 
-      // iRequest.param.token = '1234'
-      // this.$refcallback(
-      //   "userServer",
-      //   iRequest,
-      //   new this.$iceCallback(
-      //     function result(result) {
-      //       console.log(result)
-      //     }
-      //   )
-      // );
 
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "UserServerImp";
-      iRequest.method = "loginSuccessTest";
-      // iRequest.param.json = JSON.stringify({
-      //   username: 'admin',
-      //   password: 'admin'
-      // }) 
-      iRequest.param.token = '1234'
-      this.$refcallback(
-        "userServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            console.log(result)
-          }
-        )
-      );
     }
   }
 };

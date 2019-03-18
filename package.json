@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^1.1.10",
+    "cookie-universal-nuxt": "^2.0.14",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
     "fingerprintjs2": "^2.0.6",

@@ -1,18 +1,15 @@
-// import Cookies from 'js-cookie'
-// import Storage from 'good-storage'
-
 const UserKey = 'User' 
 
 export function loadUser () {
-  return Cookies.get(UserInfoKey, {})
+  return JSON.parse(localStorage.getItem(UserKey))
 }
 
 export function saveUser (userInfo) {
-  Cookies.set(UserInfoKey, userInfo)
+  localStorage.setItem(UserKey, JSON.stringify(userInfo))
   return userInfo
 }
 
 export function removeUser () {
-  Cookies.remove(UserKey)
+  localStorage.removeItem(UserKey)
   return {}
 }

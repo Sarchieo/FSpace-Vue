@@ -69,7 +69,9 @@
               </a-row>
             </a-form-item>
             <a-form-item v-bind="tailFormItemLayout">
+              <!-- <a-button type="primary" html-type="submit" class="register-btn" >注册</a-button> -->
               <a-button type="primary" html-type="submit" class="register-btn">注册</a-button>
+              
             </a-form-item>
             <a-form-item v-bind="tailFormItemLayout">
               <a-checkbox v-decorator="['agreement', {valuePropName: 'checked'}]">
@@ -146,7 +148,7 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          // 提交表单
+          this.register(values, 3)
         }
       });
     },
@@ -155,18 +157,41 @@ export default {
       this.confirmDirty = this.confirmDirty || !!value;
     },
     validatePhone(rule, value, callback) {
+      let _this = this;
       const form = this.form;
       if (value && value.length === 11) {
         // 调用后台接口, 验证手机是否允许注册
-        setTimeout(() => {
-          if(value === '17621503668'){
-            callback('手机号码已注册')
-            this.sendAuthCode = false
-          } else {
-            this.sendAuthCode = true
-            callback()
+        let iRequest = new inf.IRequest();
+        iRequest.cls = "UserServerImp";
+        iRequest.method = "checkPhoneExist";
+        iRequest.param.json = JSON.stringify({
+          phone: value
+        })
+        this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            debugger
+            if(result.code === 200) {
+              _this.sendAuthCode = true
+              callback()
+            }else {
+              _this.sendAuthCode = false
+              callback('手机号码已注册')
+            }
           }
-        },1500)
+        )
+      );
+        // setTimeout(() => {
+        //   if(value === '17621503608'){
+        //     callback('手机号码已注册')
+        //     this.sendAuthCode = false
+        //   } else {
+        //     this.sendAuthCode = true
+        //     callback()
+        //   }
+        // },1500)
       } else {
         this.sendAuthCode = false
         callback('请输入手机正确的手机号码');
@@ -208,12 +233,42 @@ export default {
         }, 1000);
       },1500)
     },
+    async register(values, type) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "UserServerImp";
+      iRequest.method = "register";
+      iRequest.param.json = JSON.stringify({
+        phone: values.phone,
+        password: values.password,
+        password2: values.password2,
+        smsCode: values.smsCode,
+        type: type
+      }) 
+      iRequest.param.token = '1234'
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              _this.$message.success(result.data);
+              // 跳转页面
+              _this.$router.push({
+                path: '/user/login'
+              })
+            }else {
+              _this.$message.error(result.message);
+            }
+          }
+        )
+      );
+    },
     vueTest() {
       this.$store.dispatch('setUser', {
-        userName: '11111',
+        userName: '',
         userPhone: '22222'
       })
-      console.log(this.$store.state.user)
     }
   }
 };

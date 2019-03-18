@@ -50,13 +50,14 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    'cookie-universal-nuxt'
   ],
 
   /*
   ** Build configuration
   */
   build: {
-    vendor: ['vue-lazyload','js-cookie','good-storage'],
+    vendor: ['vue-lazyload'],
     /*
     ** You can extend webpack config here
     */
