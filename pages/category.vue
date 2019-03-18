@@ -294,11 +294,11 @@ li {
 }
 .brand-list a,.brand-lists a{
   float: left;
-  .container-size(inline-block,115px,auto,0,0px);
+  .container-size(inline-block,110px,auto,0,0px);
 }
 .brand-list span,.brand-lists span{
   float: left;
-  margin-right: 20px;
+  width: 110px;
 }
 .goods-list-box li {
   .container-size(inline-block,228px,280px,6.5px 6.5px,0px);
