@@ -1,6 +1,6 @@
 <template>
   <div>
-    首页
+    收藏
   </div>
 </template>
 <script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    首页
+    发票
   </div>
 </template>
 <script>

@@ -20,7 +20,6 @@
                         validator: validateUserName,
                       }],
                     }
-                    
                   ]"
                   placeholder="请输入用户名"
                 />

@@ -1,6 +1,6 @@
 <template>
   <div>
-    首页
+    售后服务
   </div>
 </template>
 <script>
