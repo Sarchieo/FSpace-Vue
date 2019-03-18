@@ -717,9 +717,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-@import "../../components/fspace-ui/container/index.less";
-@import "../../components/fspace-ui/button/index.less";
+<style scoped>
 * {
   margin: 0;
 }
@@ -770,33 +768,44 @@ li {
 }
 /* 商品展示 */
 .goods-exhibition {
-  .container-size(block,1190px,550px,0 auto,0px);
+  width: 1190px;
+  height: 550px;
+  margin: 0 auto;
   padding-top: 20px;
 }
 .goods-exhibition .crumbs {
   margin: 0 0 20px 0;
 }
 .goods-big-pic {
-  .container-size(inline-block,490px,485px,0,0px);
+  display: inline-block;
+  width: 490px;
+  height: 485px;
 }
 .goods-big-pic img {
   width: 490px;
   height: 430px;
 }
 .small-pic {
-  .container-size(inline-block,490px,100px,0,0px);
+  display: inline-block;
+  width: 490px;
+  height: 100px;
   overflow: hidden;
   padding-bottom: 10px;
 }
 .small-pic li {
-  .position(absolute,10px,0px);
-  .container-size(inline-block,490px,100px,0,0px);
+  display: inline-block;
+  position: relative;
+  top: 10px;
+  width: 80px;
+  height: 80px;
   background: brown;
 }
 .small-pic li img {
-  .container-size(inline-block,80px,80px,0,0px);
+  display: inline-block;
   position: absolute;
   top: 0px;
+  width: 80px;
+  height: 80px;
 }
 .goods-info {
   float: right;
@@ -844,7 +853,9 @@ li {
   text-indent: 10px !important;
 }
 .manufacturer {
-   .container-size(inline-block,657px,150px,0,0px);
+  display: inline-block;
+  width: 657px;
+  height: 150px;
   font-size: 16px;
   color: #666666;
 }
@@ -857,7 +868,9 @@ li {
   margin-right: 190px;
 }
 .cart {
-  .position(relative,10px,0px);
+  position: relative;
+  top: 10px;
+  left: 0px;
   height: 44px;
   text-indent: 20px;
 }
@@ -870,7 +883,9 @@ li {
   border-radius: 5px;
 }
 .addition {
-  .position(absolute,0px,64px);
+  position: absolute;
+  top: 0px;
+  left: 64px;
 }
 .width22 {
   width: 22px;
@@ -884,8 +899,11 @@ li {
   left: 64px;
 }
 .purchase {
-  .position(absolute,0px,120px);
-  .container-size(inline-block,170px,44px,0,0px);
+  position: absolute;
+  top: 0px;
+  left: 120px;
+  width: 170px;
+  height: 44px;
   border: 1px solid rgb(247, 37, 38);
   border-radius: 5px;
   background: rgb(255, 244, 246);
@@ -893,13 +911,21 @@ li {
 }
 /* 优惠套餐 */
 .discount {
-  .container-size(block,1190px,360px,0 auto 20px auto,0px);
+  display: block;
+  width: 1190px;
+  height: 360px;
+  margin: 0 auto;
   border: 1px solid rgb(238, 238, 238);
+  margin-bottom: 20px;
 }
 .discount-title {
-  .container-size(block,1190px,50px,0 auto,0px);
-  .p-size (50px,50px,18px,left,20px,#666666);
+  width: 1190px;
+  height: 50px;
   background: rgb(246, 246, 246);
+  line-height: 50px;
+  text-indent: 20px;
+  font-size: 18px;
+  color: #666666;
 }
 .discount .carousel {
   width: 1190px;
@@ -907,7 +933,10 @@ li {
   padding-top: 15px;
 }
 .meal-card {
-  .container-size(block,200px,280px,0 10px 0 auto,0px);
+  display: inline-block;
+  width: 200px;
+  height: 280px;
+  margin-right: 10px;
 }
 .meal-card img {
   width: 200px;
@@ -926,7 +955,7 @@ li {
   text-align: left;
   color: #999999;
 }
-.ant-carousel > .slick-slide {
+.ant-carousel >>> .slick-slide {
   text-align: center;
   height: 310px;
   line-height: 310px;
@@ -935,7 +964,7 @@ li {
 .ant-carousel[data-v-0e9671aa] .custom-slick-arrow {
   background-color: rgba(247, 37, 38, 0.5);
 }
-.ant-carousel > .custom-slick-arrow {
+.ant-carousel >>> .custom-slick-arrow {
   width: 25px;
   height: 25px;
   font-size: 25px;
@@ -943,18 +972,21 @@ li {
   background-color: rgba(31, 45, 61, 0.11);
   opacity: 0.3;
 }
-.ant-carousel > .custom-slick-arrow:before {
+.ant-carousel >>> .custom-slick-arrow:before {
   display: none;
 }
-.ant-carousel > .custom-slick-arrow:hover {
+.ant-carousel >>> .custom-slick-arrow:hover {
   opacity: 0.5;
 }
-.ant-carousel > .slick-slide h3 {
+.ant-carousel >>> .slick-slide h3 {
   color: #fff;
 }
 /* 详情和评价页面 */
 .tabs-page {
-  .container-size(block,1190px,1900px,0 auto,0px);
+  display: block;
+  width: 1190px;
+  height: 1900px;
+  margin: 0 auto;
 }
 .tabs-detail {
   float: left;
@@ -978,7 +1010,9 @@ li {
   font-size: 18px;
 }
 .explain .explain-text {
-  .container-size(inline-block,700px,auto,0,0px);
+  display: inline-block;
+  width: 700px;
+  height: auto;
 }
 .explain-header {
   display: inline-block;
@@ -990,13 +1024,17 @@ li {
   color: red;
 }
 .evaluate-box {
-  .container-size(block,900px,1600px,0,0px);
+  display: block;
+  width: 900px;
+  height: 1600px;
   margin-bottom: 20px;
   border-left: 1px solid rgb(238, 238, 238);
   border-bottom: 1px solid rgb(238, 238, 238);
 }
 .evaluate-box .praise {
-  .container-size(block,750px,160px,0,0px);
+  display: block;
+  width: 750px;
+  height: 160px;
 }
 .probability {
   float: left;
@@ -1022,8 +1060,10 @@ li {
   font-size: 18px;
 }
 .everybody a {
-  .container-size(inline-block,auto,30px,0,30px);
+  display: inline-block;
+  height: 30px;
   border: 1px solid rgb(247, 37, 38);
+  border-radius: 30px;
   padding: 10px 10px;
   margin-bottom: 10px;
   line-height: 10px;
@@ -1052,8 +1092,12 @@ li {
   border: 1px solid rgb(238, 238, 238);
 }
 .hot-recommend-title {
-  .p-size (55px,55px,20px,left,20px,#666666);
+  height: 55px;
+  text-indent: 20px;
+  line-height: 55px;
   background: rgb(246, 246, 246);
+  font-size: 20px;
+  color: #666666;
 }
 .recommend-ul {
   width: 200px;
@@ -1069,7 +1113,9 @@ li {
 }
 /* 页脚 */
 .page-footer {
-  .container-size(block,1190px,340px,0 auto,0px);
+  width: 1190px;
+  height: 340px;
+  margin: 0 auto;
   border: 1px solid brown;
 }
 .server-list {
@@ -1082,29 +1128,47 @@ li {
   height: 140px;
 }
 .server-ui li {
-  .container-size(inline-block,292px,100px,0,0px);
+  display: inline-block;
+  width: 292px;
+  height: 100px;
 }
 .server-ui li a {
-  .position (relative,0px,0px);
-  .container-size(inline-block,297px,100px,0,0px);
+  position: relative;
+  display: inline-block;
+  top: 0px;
+  width: 297px;
+  height: 100px;
 }
 .server-ui li a span {
-  .position (absolute,15px,45px);
-  .container-size(inline-block,70px,70px,0,50%);
+  position: absolute;
+  top: 15px;
+  left: 45px;
+  width: 70px;
+  height: 70px;
   border: 3px solid rgb(255, 0, 58);
-  .p-size (60px,60px,20px,center,30px,#FF003A);
+  border-radius: 50%;
+  line-height: 60px;
+  text-align: center;
+  font-size: 30px;
+  color: rgb(255, 0, 58);
 }
 .server-ui li a h3 {
-  .position (absolute,20px,135px);
+  position: absolute;
+  top: 20px;
+  left: 135px;
   font-weight: bold;
 }
 .server-ui li a p {
-  .position (absolute,45px,135px);
+  position: absolute;
+  top: 45px;
+  left: 135px;
   color: #999999;
   font-size: 16px;
 }
 .shoping-guide {
-  .container-size(block,1190px,200px,0 auto,0px);
+  width: 1190px;
+  height: 200px;
+  margin: 0 auto;
   border-top: 1px solid rgb(237, 237, 237);
   background: #ffffff;
   padding-top: 20px;
@@ -1118,7 +1182,9 @@ li {
   padding-right: 50px;
 }
 .shoping-list li .shoping-ui li {
-  .container-size(inline-block,100px,20px,0 auto,0px);
+  display: inline-block;
+  width: 100px;
+  height: 20px;
   margin-bottom: 3px;
 }
 .shoping-ui li a:hover {
@@ -1138,7 +1204,10 @@ li {
   border-top: 2px solid rgb(255, 0, 54);
 }
 .black-footer div {
-  .container-size(block,1190px,175px,0 auto,0px);
+  display: block;
+  width: 1190px;
+  height: 175px;
+  margin: 0 auto;
   padding-top: 10px;
 }
 .footer-record {
@@ -1169,7 +1238,9 @@ li {
   margin-right: 40px;
 }
 .add-cart {
-  .position (absolute,0px,300px);
+  position: absolute;
+  top: 0px;
+  left: 300px;
   width: 170px;
   height: 44px;
   line-height: 44px;
@@ -1195,28 +1266,28 @@ li {
   padding: 0px;
 }
 /* 轮播样式 */
-.ant-carousel > .slick-dots {
+.ant-carousel >>> .slick-dots {
   height: auto;
 }
-.ant-carousel > .slick-slide img {
+.ant-carousel >>> .slick-slide img {
   border: 5px solid #fff;
   display: block;
   margin: auto;
   max-width: 80%;
 }
-.ant-carousel > .slick-thumb {
+.ant-carousel >>> .slick-thumb {
   bottom: -45px;
 }
-.ant-carousel > .slick-thumb li {
+.ant-carousel >>> .slick-thumb li {
   width: 60px;
   height: 45px;
 }
-.ant-carousel > .slick-thumb li img {
+.ant-carousel >>> .slick-thumb li img {
   width: 100%;
   height: 100%;
   filter: grayscale(100%);
 }
-.ant-carousel > .slick-thumb li.slick-active img {
+.ant-carousel >>> .slick-thumb li.slick-active img {
   filter: grayscale(0%);
 }
 </style>
