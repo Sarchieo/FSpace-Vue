@@ -24,7 +24,7 @@
           <div class="medicine-search">
             <div class="search-box">
               <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
-              <a-button class="search-btn">搜索</a-button>
+              <button class="search-btn" @click="toCategory()">搜索</button>
             </div>
           </div>
           <a-dropdown>
@@ -148,6 +148,11 @@
         this.$router.push({
           name:'shoppingCart'
       })
+      },
+      toCategory() {
+        this.$router.push({
+          name:'category'
+        })
       }
     }
   }
@@ -220,6 +225,7 @@ li {
 .medicine-names {
   display: block;
   background: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
 }
 .medicine-name-box {
   display: block;
@@ -263,12 +269,21 @@ li {
   border-radius: 50%;
 } */
 .search-btn{
+  width: 70px;
+  height: 30px;
   background-color: rgb(255, 0, 54);
   border: none;
+  outline:none;
   color: #ffffff;
 }
 .search-btn:hover{
   background-color: rgb(255, 0, 54);
+  color: #ffffff;
+}
+.search-btn:active {
+  background-color: rgb(255, 0, 54);
+  border: none;
+  outline:none;
   color: #ffffff;
 }
 .cart-btn{
@@ -330,12 +345,12 @@ li {
   .position(absolute,5px,80px);
   display: inline-block;
   width: 190px;
-  .p-size(40px,40px,14px,left,#666666);
+  .p-size(40px,40px,14px,left,0px,#666666);
   overflow: hidden;
 }
 .cart-goods-count {
   .position(absolute,35px,80px);
-  .p-size(40px,40px,14px,left,#666666);
+  .p-size(40px,40px,14px,left,0px,#666666);
 }
 .del-cart-goods {
   .position(absolute,35px,260px);
