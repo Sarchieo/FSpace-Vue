@@ -510,7 +510,9 @@ export default {
 };
 </script>
 
-<style scoped>  
+<style scoped lang="less">
+@import "../components/fspace-ui/container/index.less";
+@import "../components/fspace-ui/button/index.less";
 /* 初始化 */
 * {
   margin: 0;
@@ -567,39 +569,27 @@ li {
   height:280px;
 }
 .surplus{
-  position: absolute;
-  top: 168px;
-  left: 0px;
-  width: 225px;
+  .container-size(inline-block,225px,auto,0,0px);
+  .position(absolute,168px,0px);
   text-indent: 40px;
   color: rgb(255, 0, 54);
 }
 .card-img{
-  position: absolute;
-  top:15px;
-  left: 45px;
-  width: 135px;
-  height: 123px;
+  .position(absolute,15px,45px);
+  .container-size(inline-block,135px,123px,0,0px);
 }
 .card-progress{
-  position: absolute;
-  top: 0px;
-  left: 0px;
+  .position(absolute,0px,0px);
 }
 .card-info{
-  position: absolute;
-  top: 195px;
-  left: 0px;
-  width: 225px;
-  height: auto;
+  .position(absolute,195px,0px);
+  .container-size(inline-block,225px,auto,0,0px);
   padding-left: 20px;
   padding-right: 20px;
   text-align: center;
 }
 .card-price{
-  position: absolute;
-  top: 235px;
-  left: 0px;
+  .position(absolute,235px,0px);
   width: 225px;
   text-align: center;
   font-weight: bold;
@@ -612,9 +602,7 @@ li {
   width: 1190px!important;
 }
 .validity{
-  position: absolute;
-  top: 145px;
-  left: 0px;
+  .position(absolute,145px,0px);
   width: 228px;
   text-align: center;
 }
@@ -625,25 +613,21 @@ li {
   top: 185px!important;
 }
 .specifications{
-  position: absolute;
-  top: 205px;
-  left: 0px;
+  .position(absolute,205px,0px);
   width: 228px;
   text-indent: 24px;
   color: #999;
 }
 .manufacturer{
-  position: absolute;
-  top: 225px;
-  left: 0px;
+  .position(absolute,225px,0px);
   width: 228px;
   text-indent: 24px;
   color: #999;
 }
 .sold{
   position: absolute;
-  bottom: 0px;
   left: 0px;
+  bottom: 0px;
   width: 228px;
   height: 30px;
   text-align: center;
@@ -653,10 +637,7 @@ li {
 }
 /* 为你精选 */
 .elaborate{
-  display: block;
-  width: 1190px;
-  height: auto;
-  margin: 0 auto;
+  .container-size(block,1190px,auto,0 auto,0px);
   background: rgb(238,238,238);
 }
 .elaborate-ui{
@@ -673,58 +654,40 @@ li {
   background: #ffffff;
 }
 .elaborate-card{
-  position: relative;
-  top:0px;
-  left: 0px;
-  width: 383px;
-  height: 220px;
+  .position(relative,0px,0px);
+  .container-size(inline-block,383px,220px,0,0px);
 }
 .elaborate-card img{
-  position:absolute;
-  top: 25px;
-  left: 10px;
-  width: 170px;
-  height: 170px;
+  .position(absolute,25px,10px);
+  .container-size(inline-block,170px,170px,0,0px);
 }
 .elaborate-text{
-  position: absolute;
-  top: 32px;
-  left: 200px;
+  .position(absolute,32px,200px);
   width: 170px;
   color: #000000;
   font-size: 16px;
 }
 .elaborate-specifications{
-  position: absolute;
-  top: 54px;
-  left: 200px;
+  .position(absolute,54px,200px);
   width: 170px;
 }
 .elaborate-manufacturer{
-  position: absolute;
-  top: 76px;
-  left: 198px;
+  .position(absolute,76px,198px);
   width: 170px;
 }
 .elaborate-validity{
-  position: absolute;
-  top: 98px;
-  left: 198px;
+  .position(absolute,98px,198px);
   width: 170px;
 }
 .elaborate-price{
-  position: absolute;
-  top: 130px; 
-  left: 195px;
+  .position(absolute,130px,195px);
   width: 170px;
   color: rgb(238,47,38);
   font-size: 20px;
   font-weight: bold;
 }
 .elaborate-sold{
-  position: absolute;
-  top: 165px;
-  left: 198px;
+  .position(absolute,165px,198px);
   color: #999;
 }
 .elaborate-title{
@@ -734,10 +697,7 @@ li {
 }
 /* 热销专区，包邮专区 */
 .brand-hall {
-  display: block;
-  width: 1190px;
-  height: 330px;
-  margin: 0 auto;
+  .container-size(block,1190px,330px,0 auto,0px);
   background: #ffffff;
   margin-bottom: 20px;
 }
@@ -753,10 +713,7 @@ li {
   color:  #c40000;
 }
 .brand-div {
-  display: block;
-  width: 1190px;
-  height: 280px;
-  margin: 0 auto;
+  .container-size(block,1190px,280px,0 auto,0px);
   background: rgb(238,238,238);
 }
 .brand-left {
@@ -771,8 +728,7 @@ li {
   height: 100%;
 }
 .brand-left p{
-  position: absolute;
-  top: 15px;
+  .position(absolute,15px,0px);
   width: 228px;
   text-align: center;
   font-weight: bold;
@@ -793,14 +749,14 @@ li {
 }
 /* 导航及广告轮播左侧菜单栏,广告位，特价区 */
 /* For demo */
-.ant-carousel >>> .slick-slide {
+.ant-carousel > .slick-slide {
   text-align: center;
   height: 435px;
   line-height: 435px;
   overflow: hidden;
 }
 
-.ant-carousel >>> .custom-slick-arrow {
+.ant-carousel > .custom-slick-arrow {
   width: 25px;
   height: 25px;
   font-size: 25px;
@@ -808,22 +764,19 @@ li {
   background-color: rgba(31,45,61,.11);
   opacity: 0.3;
 }
-.ant-carousel >>> .custom-slick-arrow:before {
+.ant-carousel > .custom-slick-arrow:before {
   display: none;
 }
-.ant-carousel >>> .custom-slick-arrow:hover {
+.ant-carousel > .custom-slick-arrow:hover {
   opacity: 0.5;
 }
 
-.ant-carousel >>> .slick-slide  h3 {
+.ant-carousel > .slick-slide  h3 {
   color: #fff;
 }
 .goods-nav-box {
-  display: block;
+  .container-size(block,1190px,435px,0 auto,0px);
   position: relative;
-  width: 1190px;
-  height: 435px;
-  margin: 0 auto;
   background: #ffffff;
   border-top: 1px solid rgb(238, 238, 238);
   margin-bottom: 25px;
@@ -842,12 +795,8 @@ li {
   height: 435px;
 }
 .binnar-box {
-  display: inline-block;
-  position: absolute;
-  top: 0px;
-  left: 197px;
-  width: 995px;
-  height: 435px;
+  .container-size(inline-block,995px,435px,0,0px);
+  .position(absolute,0px,197px);
 }
 .binnar-pic {
   width: 750px;

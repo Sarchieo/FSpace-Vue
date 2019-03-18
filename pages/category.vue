@@ -10,22 +10,20 @@
           </p>
           <ul class="condition-box">
               <li class="brand-box">
-                  <p class="">
+                  <p class="brand-list" ref="list">
                       <span>品牌：</span>
                        <a>全部</a>
-                       <a>罗浮山</a>
-                       <a>美林</a>
-                       <a>嘉林阿乐</a>
-                       <a>更多</a>
+                       <a v-for="(item,index) in brandLists" :key="index">{{item}}</a>
+                       <a class="more">多选<a-icon type="plus" /></a>
+                       <a class="more" @click="showMore()">更多<a-icon type="down" /></a>
                   </p>
-                   <a-collapse :bordered="false" class="collapse">
-                        <a-collapse-panel header="" key="1">
-                            <p>1</p>
-                            <p>2</p>
-                            <p>3</p>
-                            <p>4</p>
-                        </a-collapse-panel>
-                      </a-collapse>
+                  <p class="brand-lists" ref="lists">
+                      <span>品牌：</span>
+                       <a>全部</a>
+                       <a v-for="(item,index) in brandList" :key="index">{{item}}</a>
+                       <a class="more">多选<a-icon type="plus" /></a>
+                       <a class="more" @click="hideMore()">收起<a-icon type="down" /></a>
+                  </p>
               </li>
               <li>
 
@@ -35,7 +33,7 @@
               </li>
           </ul>
           <ul class="goods-list-box">
-              <li v-for="(item,index) in list" :key="index" @mouseover="showCardBtn(index)" @mouseout="hideCardBtn(index)">
+              <li v-for="(item,index) in list" :key="index">
                 <a-card
                   hoverable
                   class="card"
@@ -48,13 +46,20 @@
                   <p class="surplus text-Center top185">{{item.text}}</p>
                   <p class="validity">有效期至{{item.validity}}</p>
                   <p class="card-price top165">￥{{item.new}} <del>￥{{item.old}}</del></p>
-                  <!-- 规格 -->
-                  <p class="specifications" v-show="!isShowCard && index=== current">{{item.specifications}}</p>
+
+                 <!-- 规格 -->
+                  <p class="specifications">{{item.specifications}}</p>
                   <!-- 厂家 -->
-                  <p class="manufacturer" v-show="!isShowCard && index=== current">{{item.manufacturer}}</p>
-                  <p class="sold" v-show="isShowCard && index=== current"><span class="evaluate">评价{{item.evaluate}}条</span><span class="sold-count">已售{{item.sold}}盒</span></p>
+                  <p class="manufacturer">{{item.manufacturer}}</p>
+                  <p class="sold"><span class="evaluate">评价{{item.evaluate}}条</span><span class="sold-count">已售{{item.sold}}盒</span></p>
                   <!-- 按钮 -->
-                  <p class="add-card" v-show="isShowCard && index=== current">
+
+
+
+
+
+
+                  <p class="add-card">
                     <button>-</button>
                     <button>{{count}}</button>
                     <button>+</button>
@@ -64,12 +69,15 @@
                     </button>
                   </p>
                   <!-- 有无存货 -->
-                  <p class="goods-state" v-show="isShowCard && index=== current">有货 {{item.specifications}} <a-icon type="star"/>收藏</p>
+                  <p class="goods-state">有货 {{item.specifications}} <a-icon type="star"/>收藏</p>
+
+
+
+
                   <a-card-meta
                     class="card-info"
                     :title="item.text">
                   </a-card-meta>
-                  
                 </a-card>
               </li>
           </ul>
@@ -92,8 +100,26 @@ export default {
   data() {
     return {
       current: 0,
-      isShowCard: false,
       count: 1,
+      brandLists: [],
+      brandList: [
+        '美林',
+        '嘉林阿乐',
+       '三九药业',
+       '汉森药业',
+       '千金药业',
+        '美林',
+       '美林',
+       '美林',
+       '美林',
+       '美林',
+       '美林',
+       '美林',
+        '美林',
+         '美林',
+          '美林',
+           '美林'
+      ],
       list: [
         {
           src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
@@ -194,15 +220,22 @@ export default {
       ]
     };
   },
+  mounted () {
+    this.brandLists = this.brandList.slice(0,6);
+  },
   methods: {
-    showCardBtn(index) {
-      this.isShowCard = true;
-      this.current = index;
+     hideMore() {
+       var lists = this.$refs['lists'];
+       var list = this.$refs['list'];
+       lists.style.display = 'none'
+       list.style.display = 'inline-block'
      },
-    hideCardBtn(index) {
-      this.isShowCard = true;
-      this.current = null
-    }
+     showMore() {
+       var lists = this.$refs['lists'];
+       var list = this.$refs['list'];
+       lists.style.display = 'inline-block'
+       list.style.display = 'none'
+     }
   }
 };
 </script>
@@ -249,6 +282,24 @@ li {
 .goods-list-box {
     .container-size(block,1206px,auto,0 auto,0px);
 }
+.brand-list {
+  display: inline-block;
+  .p-size(40px,40px,14px,left,0px,#666666);
+}
+.brand-lists {
+  display: none;
+  width: 1150px;
+  .p-size(200px,40px,14px,left,0px,#666666);
+  overflow: auto;
+}
+.brand-list a,.brand-lists a{
+  float: left;
+  .container-size(inline-block,115px,auto,0,0px);
+}
+.brand-list span,.brand-lists span{
+  float: left;
+  margin-right: 20px;
+}
 .goods-list-box li {
   .container-size(inline-block,228px,280px,6.5px 6.5px,0px);
   .container-color(#ffffff,none,#999);
@@ -270,6 +321,22 @@ li {
 .card:hover {
   border: 1px solid red;
 }
+.card:hover .specifications{
+  display: none;
+}
+.card:hover .manufacturer {
+  display: none;
+ }
+.card:hover .sold {
+  display: none;
+ } 
+.card:hover .add-card {
+  display: inline-block;
+}
+.card:hover .goods-state {
+  display: inline-block;
+}
+
 .surplus{
   .position(absolute,190px,0px);
   width: 225px;
@@ -308,6 +375,7 @@ li {
   background: rgb(228,228,228);
 }
 .sold {
+  display: inline-block;
   width: 225px;
   .position(absolute,255px,0px);
   border-top: 1px solid #e0e0e0;
@@ -320,22 +388,30 @@ li {
   float: right;
 }
 .manufacturer {
+  display: inline-block;
   .position(absolute,231px,0px);
   width: 225px;
   text-align: center;
 }
 .specifications {
+  display: inline-block;
   .position(absolute,210px,0px);
   width: 225px;
   text-align: center;
 }
+
 .add-card {
+  display: none;
   .position(absolute,245px,0px);
   width: 225px;
   text-indent: 10px;
 }
 .goods-state {
+  display: none;
   .position(absolute,215px,0px);
   text-indent: 10px;
+}
+.more {
+  float: right;
 }
 </style>
