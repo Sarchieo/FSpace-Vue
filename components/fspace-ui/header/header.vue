@@ -4,6 +4,7 @@
     <a-layout-header v-if='type === "home"'>
       <div class="header-title">
         <div class="header-left">
+          <a-icon type="environment" v-show="isLogin">长沙</a-icon>
           <a>欢迎来到一块医药</a>
           <nuxt-link to='/user/login'>登录</nuxt-link>
           <nuxt-link to='/user/register'>注册</nuxt-link>
@@ -12,8 +13,22 @@
         <div class="header-right">
           <a>帮助中心</a>
           <a>在线客服</a>
-          <a>签到有礼</a>
+          <a>签到有礼<span class="sign"></span></a>
           <a>我的订单</a>
+           <a-dropdown>
+              <a class="ant-dropdown-link" href="#">
+                我的医药 <a-icon type="down" />
+              </a>
+              <a-menu slot="overlay">
+                <a-menu-item>
+                  <a href="javascript:;">常购药品</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;">浏览记录</a>
+                </a-menu-item>
+              </a-menu>
+           </a-dropdown>
+          <a>首页</a>    
         </div>
       </div>
       <div class="medicine-names">
@@ -27,29 +42,29 @@
               <button class="search-btn" @click="toCategory()">搜索</button>
             </div>
           </div>
-          <a-dropdown>
-            <a class="ant-dropdown-link cart-btn" @click="toCart()">
-              <a-icon type="shopping-cart" class="cart-icon"/>
-              <span class="cart-count">6</span>
-              <span class="cart-text">采购单</span>
-            </a>
-            <a-menu slot="overlay" class="cart-down">
-                <a-menu-item class="cart-down-list" v-for="(item,index) in cartList" :key="index">
+          <div class="ant-dropdown-link cart-btn" @click="toCart()" @mouseover="showList()" @mouseout="hideList()">
+            <a-icon type="shopping-cart" class="cart-icon"/>
+            <span class="cart-count">6</span>
+            <span class="cart-text">采购单</span>
+            <div class="cart-down" v-show="isShowCartList">
+              <ul class="cart-down-ul">
+                <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
                   <a href="javascript:;">
                     <img v-lazy="item.src" class="cart-img">
                     <p class="cart-goods-text">{{item.text}} <span>￥{{item.price}}元</span></p>
                     <p class="cart-goods-count">{{item.guige}}  ×  {{item.count}}</p>
                     <a-icon type="close" class="del-cart-goods"/>
                   </a>
-                </a-menu-item>
-                <a-menu-item class="total-settlement">
-                  <p>
-                    商品合计1880元
-                    <button>去购物车结算</button>
-                  </p>
-                </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+                </li>
+              </ul>
+              <div class="total-settlement">
+                <p>
+                  商品合计：<span>1880元</span>
+                  <button class="settlement-btn" @click="toCart()">去购物车结算</button>
+                </p>
+              </div>
+            </div>
+          </div>
           <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
           <div class="nav-box">
             <a href class="goods-type">商品分类</a>
@@ -95,6 +110,8 @@
     props: ['type'],
     data () {
       return {
+        isShowCartList: false,
+        isLogin: false,
         cartList: [
           {
             src:'//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg',
@@ -156,12 +173,24 @@
         this.$router.push({
           name: 'cerfiticales'
         })
-      }
+      },
+       showList() {
+         this.isShowCartList = true
+       },
+       hideList() {
+         this.isShowCartList = false
+       },
+       toCart() {
+         this.$router.push({
+          name:'shoppingCart'
+      })
+       }
     }
   }
 </script>
 <style lang='less'>
 @import "../../../components/fspace-ui/container/index.less";
+@import "../../../components/fspace-ui/button/index.less";
 a {
   text-decoration: none;
 }
@@ -199,7 +228,7 @@ li {
 }
 /* 头部 */
 .header-title {
-  width: 100%;
+  width: 1190px;
   height: 30px;
   margin: 0 auto;
 }
@@ -215,10 +244,22 @@ li {
   margin-right: 15px;
   color: #999999;
 }
+.header-left i{
+  margin-right: 5px;
+}
 .header-right {
   float: right;
   width: 445px;
   /* margin-right: 50px; */
+}
+.sign {
+  position: relative;
+  top: 3px;
+  left: 0px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ed3025;
 }
 .header-right a{
   float: right;
@@ -331,14 +372,21 @@ li {
   font-size: 22px;
 }
 .cart-down {
-  .container-size(block,300px,400px,0px,0px);
+  .container-size(block,300px,370px,0px,0px);
   overflow: auto;
-  .position(relative,0px,0px);
+  .position(relative,45px,-55px);
+  z-index: 99;
+  opacity: 1;
+}
+.cart-down-ul {
+  .container-size(block,300px,310px,0px,0px);
+  overflow: auto;
 }
 .cart-down-list {
-  .container-size(block,280px,80px,0px,0px);
-  line-height: 80px;
+  .container-size(block,283px,80px,0px,0px);
   .position(relative,0px,0px);
+  background:#ffffff;
+  line-height: 80px;
 }
 .cart-img {
   .position(absolute,5px,5px);
@@ -347,7 +395,7 @@ li {
 .cart-goods-text {
   .position(absolute,5px,80px);
   display: inline-block;
-  width: 190px;
+  width: 180px;
   .p-size(40px,40px,14px,left,0px,#666666);
   overflow: hidden;
 }
@@ -356,11 +404,28 @@ li {
   .p-size(40px,40px,14px,left,0px,#666666);
 }
 .del-cart-goods {
-  .position(absolute,35px,260px);
+  .position(absolute,35px,260px)!important;
+  font-size: 14px!important;
+  color: #666666;
 }
 .total-settlement {
-  .container-size(inline-block,280px,80px,0px,0px);
+  .container-size(inline-block,280px,70px,0px,0px);
   .position(absolute,300px,0px);
+  background: #ffffff;
+  line-height: 70px;
+}
+.total-settlement p {
+  padding-left: 10px;
+}
+.total-settlement p span {
+  color: #ed3025;
+}
+.settlement-btn{
+  .button-size (120px,45px,45px,16px,0px, 5px);
+  .button-color(none,#ed3025,#ffffff);
+   float: right;
+   margin-top: 12px;
+   margin-right: 10px;
 }
 .nav-box {
   display: block;

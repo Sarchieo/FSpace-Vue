@@ -39,10 +39,18 @@
           <div class></div>
         </div>
         <div id='hot' class="brand-hall" v-for="(item,index) in rushList" :key="index">
-          <p class="brand-hall-title">{{item.title}} <a class="all-hot">查看全部抢购  > </a></p>
+          <p class="brand-hall-title">{{item.title}} <a class="all-hot" @click="toLimited()">查看全部抢购 <a-icon type="right" /> </a></p>
           <div class="brand-div">
             <div class="brand-left">
-              <p>{{item.time}}</p>
+              <p class="brand-time">{{item.time}}</p>
+              <a-icon type="thunderbolt" class="brand-lightning"/>
+              <p class="over-distance">距离结束还有</p>
+              <p class="count-down">
+                <button>1</button>:
+                <button>05</button>:
+                <button>12</button>
+              </p>
+              <button class="see-whole">查看全部<a-icon type="right" /></button>
             </div>
             <ul class="brand-right">
               <li v-for="(items,index) in item.list" :key="index">
@@ -69,7 +77,7 @@
         </div>
         <!-- 热销专区 包邮专区 -->
         <div id="top" class="brand-hall" v-for="(item,index) in hotSelling" :key="index">
-          <p class="brand-hall-title">{{item.title}}</p>
+          <p class="brand-hall-title">{{item.title}} <a>查看全部<a-icon type="right" /></a> </p>
           <div class="brand-div">
             <ul class="brand-right hot-width">
               <li v-for="(items,index) in item.list" :key="index">
@@ -100,7 +108,7 @@
           </div>
         </div>
           <div id="free-delivery" class="brand-hall" v-for="(item,index) in freeDelivery" :key="index">
-          <p class="brand-hall-title">{{item.title}}</p>
+          <p class="brand-hall-title">{{item.title}}<a>查看全部<a-icon type="right" /></a></p>
           <div class="brand-div">
             <ul class="brand-right hot-width">
               <li v-for="(items,index) in item.list" :key="index">
@@ -161,14 +169,29 @@
       <f-space-footer></f-space-footer>
     </a-layout>
       <ul class="sider-meun">
-        <a-anchor :affix="false"  :showInkInFixed='false' wrapperClass="wrap-right">
+        <li class="right-meun">
+          <a href="">商品分类</a>
+        </li>
+        <li class="right-meun">
+          <a href="">限时抢购</a>
+        </li>
+        <li class="right-meun">
+          <a href="">热销专区</a>
+        </li>
+        <li class="right-meun">
+          <a href="">包邮专区</a>
+        </li>
+        <li class="right-meun">
+          <a href="">为你精选</a>
+        </li>
+        <!-- <a-anchor :affix="false"  :showInkInFixed='false' wrapperClass="wrap-right">
           <a-anchor-link class="right-meun" href="#components-layout-demo-basic" title="商品分类" />
           <a-anchor-link class="right-meun" href="#hot" title="限时抢购" />
           <a-anchor-link class="right-meun" href="#top" title="热销专区" />
           <a-anchor-link class="right-meun" href="#free-delivery" title="包邮专区" />
           <a-anchor-link class="right-meun" href="#choice" title="为你精选" />
           <a-back-top />
-        </a-anchor>
+        </a-anchor> -->
     </ul>
   </div>
 </template>
@@ -467,6 +490,11 @@ export default {
         path:'/product/detail'
       })
     },
+    toLimited() {
+      this.$router.push({
+        path:'/activity/limited'
+      })
+    },
     async initData() {
 
     }
@@ -671,6 +699,9 @@ li {
   background: rgb(238, 238, 238);
   font-size: 22px;
 }
+.brand-hall-title a{
+  float: right;
+}
 .brand-hall-title .all-hot{
   float: right;
   font-size: 20px;
@@ -685,13 +716,39 @@ li {
   position: relative;
   width: 228px;
   height: 280px;
-  background: #fff;
+  background: #E6E6E6;
+}
+.brand-lightning {
+  .position(absolute,60px,90px);
+  font-size: 48px;
+  color: rgb(245,47,94);
+}
+.count-down {
+  .position(absolute,160px,0px);
+  width: 220px;
+  text-align: center;
+}
+.count-down button {
+  .button-size (35px,35px,35px,14px,0,3px);
+  .button-color (1px solid transparent,#666666,#ffffff);
+   margin-right: 5px;
+}
+.over-distance {
+  .position(absolute,125px,0px);
+  width: 228px;
+  text-align: center;
+  font-size: 16px;
+}
+.see-whole {
+  .position(absolute,220px,40px);
+  .button-size (150px,40px,40px,14px,0,30px);
+  .button-color (1px solid #c40000,#F2F2F2,#c40000);
 }
 .brand-left a {
   width: 100%;
   height: 100%;
 }
-.brand-left p{
+.brand-time{
   .position(absolute,15px,0px);
   width: 228px;
   text-align: center;
@@ -816,6 +873,9 @@ li {
 }
 .sider-meun .right-meun:hover{
   background: rgb(255, 0, 54);
+  color: #ffffff;
+}
+.right-meun:hover a{
   color: #ffffff;
 }
 /* ui框架样式 */
