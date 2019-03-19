@@ -24,11 +24,11 @@
           <div class="medicine-search">
             <div class="search-box">
               <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
-              <button class="search-btn" @click="toCategory()">搜索</button>
+              <button class="search-btn" @click="toPage('category')">搜索</button>
             </div>
           </div>
           <a-dropdown>
-            <a class="ant-dropdown-link cart-btn" @click="toCart()">
+            <a class="ant-dropdown-link cart-btn" @click="toCart('shoppingCart')">
               <a-icon type="shopping-cart" class="cart-icon"/>
               <span class="cart-count">6</span>
               <span class="cart-text">采购单</span>
@@ -141,22 +141,45 @@
         ]
       }
     },
+    mounted() {
+      this.init()
+    },
     methods: {
-      toCart() {
-        this.$router.push({
-          name:'shoppingCart'
-      })
+      init() {
+        debugger
+        console.log(this.$store.state.userState)
       },
-      toCategory() {
+      toPage(name) {
         this.$router.push({
-          name:'category'
+          name: name
         })
       },
-      toPerson() {
-        this.$router.push({
-          name: 'cerfiticales'
-        })
-      }
+      // 退出登录
+      logout() {
+        let _this = this;
+        let iRequest = new inf.IRequest();
+        iRequest.cls = "LoginRegistrationModule";
+        iRequest.method = "logout";
+        iRequest.param.token = localStorage.getItem("identification")
+        this.$refcallback(
+          "userServer",
+          iRequest,
+          new this.$iceCallback(
+            function result(result) {
+              if(result.code === 200) {
+                _this.$message.success(result.data);
+                _this.$store.commit("SET_LOGOUT");
+                // 跳转页面
+                _this.$router.push({
+                  path: '/user/login'
+                })
+              }else {
+                _this.$message.error(result.message);
+              }
+            }
+          )
+        );
+      },
     }
   }
 </script>

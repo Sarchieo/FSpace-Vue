@@ -147,6 +147,7 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
+        debugger
         if (!err) {
           this.register(values, 3)
         }
@@ -162,7 +163,7 @@ export default {
       if (value && value.length === 11) {
         // 调用后台接口, 验证手机是否允许注册
         let iRequest = new inf.IRequest();
-        iRequest.cls = "UserServerImp";
+        iRequest.cls = "LoginRegistrationModule";
         iRequest.method = "checkPhoneExist";
         iRequest.param.json = JSON.stringify({
           phone: value
@@ -172,7 +173,6 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
             if(result.code === 200) {
               _this.sendAuthCode = true
               callback()
@@ -236,7 +236,7 @@ export default {
     async register(values, type) {
       let _this = this;
       let iRequest = new inf.IRequest();
-      iRequest.cls = "UserServerImp";
+      iRequest.cls = "LoginRegistrationModule";
       iRequest.method = "register";
       iRequest.param.json = JSON.stringify({
         phone: values.phone,

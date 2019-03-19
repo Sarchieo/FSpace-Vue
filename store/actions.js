@@ -1,22 +1,21 @@
 import * as types from './mutation-types'
 import {
-  saveUser
+  saveUser,
+  removeUser,
+  saveLoginState,
+  removeLoginState
 } from '../utils/cache'
 
-// export const login = (context, code) => {
-//   return new Promise(((resolve, reject) => {
-
-//   }))
-// }
-
-// // 保存用户个人信息
-// export const  setUser = function ({commit, state}, user) {
-//   commit(types.SET_USER, saveUser(user))
-// }
 const actions = {
-  async setUser({commit, state}, user) {
-    commit(types.SET_USER, saveUser(user))
+  async setUserState(store) {
+    store.commit(types.SET_LOGIN_STATE, saveLoginState(200))
+  },
+  async setUser(store, user) {
+    store.commit(types.SET_USER, saveUser(user))
+  },
+  async removeUser(store) {
+    store.commit(types.REMOVE_USER, removeUser())
+    store.commit(types.REMOVE_LOGIN_STATE, removeLoginState())
   }
 }
-
 export default actions

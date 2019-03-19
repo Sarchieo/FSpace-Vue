@@ -6,7 +6,7 @@
         <!-- <div class="right-float"> -->
           <div class="login-input">
             <p class="user-login">用户登录</p>
-            <a-form :form="form">
+            <a-form :form="form" @submit="handleSubmit">
               <a-form-item
                 :label-col="formItemLayout.labelCol"
                 :wrapper-col="formItemLayout.wrapperCol"
@@ -14,10 +14,11 @@
               >
                 <a-input
                   v-decorator="[
-                    'username',
+                    'phone',
                     {
                       rules: [ {
-                        validator: validateUserName,
+                        required: true,
+                        validator: validatePhone,
                       }],
                     }
                   ]"
@@ -32,17 +33,21 @@
                 <a-input
                   type="password"
                   v-decorator="[
-                    '',
+                    'password',
                     {
                       rules: [{
+                        required: true,
                         validator: validatePwd,
                       }],
                     }
                   ]"
-                  placeholder="请输入密码"
+                  placeholder="请输入账号密码"
                 />
               </a-form-item>
               <a-form-item
+                v-if='isCaptcha'
+                :label-col="formTailLayout.labelCol"
+                :wrapper-col="formTailLayout.wrapperCol"
                 v-bind="formItemLayout"
                 label="验证码"
               >
@@ -50,32 +55,31 @@
                   <a-col :span="12">
                     <a-input
                       v-decorator="[
-                        'captcha',
-                        {rules: [{ required: true, message: 'Please input the captcha you got!' }]}
+                        'verification',
+                        {rules: [{ required: isCaptcha, message: '请输入验证码' }]}
                       ]"
                     />
                   </a-col>
                   <a-col :span="12">
-                    <img :src="'http://192.168.1.241:8888/image_verification_code/64F2FFBC64CD46DD1473280790B9D105'">
+                    <img :src="captchaURL" @click='getCaptcha'>
                   </a-col>
                 </a-row>
               </a-form-item>
-              <a-form-item
+              <!-- <a-form-item
                 :label-col="formTailLayout.labelCol"
                 :wrapper-col="formTailLayout.wrapperCol"
               >
                 <a-checkbox
                   style="display: inline-block;"
-                  :checked="checkNick"
-                  @change="handleChange"
+                  :checked="isSavePwd"
                 >记住密码</a-checkbox>
                 <a href>忘记密码？</a>
-              </a-form-item>
+              </a-form-item> -->
               <a-form-item
                 :label-col="formTailLayout.labelCol"
                 :wrapper-col="formTailLayout.wrapperCol"
               >
-                <button class="login-btn" @click="check">登录</button>
+                <button class="login-btn" html-type="submit">登录</button>
               </a-form-item>
             </a-form>
             <p class="to-register">还没有账号？立即去
@@ -91,6 +95,8 @@
 <script>
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceFooter from "../../components/fspace-ui/footer";
+import md5 from 'md5'
+
 const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 18 }
@@ -106,49 +112,43 @@ export default {
   },
   data() {
     return {
-      checkNick: false,
+      captchaURL: '',
+      isCaptcha: false,
+      isSavePwd: false,
       formItemLayout,
       formTailLayout,
-      form: this.$form.createForm(this)
+      captchaKey: 'uncheck'
     };
   },
+  beforeCreate() {
+    this.form = this.$form.createForm(this);
+  },
   mounted() {
-    this.submitFrom;
+    // this.test()
   },
   methods: {
-    submitFrom() {
-      this.$store
-        .dispatch("login")
-        .then(res => {
-          // 保存用户信息
-          this.$store.commit("SET_USER", 1);
-        })
-        .catch(err => {
-          console.log("登录失败");
-        });
+    test() {
+       this.$router.push({
+         name: 'index'
+       })
     },
-    check() {
-      this.form.validateFields(err => {
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
         if (!err) {
-          console.info("success");
+          this.login(values)
         }
-      });
-    },
-    handleChange(e) {
-      this.checkNick = e.target.checked;
-      this.$nextTick(() => {
-        this.form.validateFields(["nickname"], { force: true });
       });
     },
     // 获取图形验证码
     getCaptcha() {
       let _this = this;
       let iRequest = new inf.IRequest();
-      iRequest.cls = "UserServerImp";
+      iRequest.cls = "LoginRegistrationModule";
       iRequest.method = "obtainVerificationCode";
       iRequest.param.json = JSON.stringify({
-        type: type
-      }) 
+        type: 1
+      })
       iRequest.param.token = '1234'
       this.$refcallback(
         "userServer",
@@ -156,16 +156,75 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if(result.code === 200) {
-              
-            }else {
-              
+              _this.captchaURL = JSON.parse(result.data).url + '?' + Math.random();
+              _this.captchaKey = JSON.parse(result.data).key
             }
           }
         )
       );
     },
-    validateUserName() {},
-    validatePwd() {}
+    login(values) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "loginStore";
+      iRequest.param.json = JSON.stringify({
+        phone: values.phone,
+        password: md5(values.password),
+        verification: values.verification ? values.verification : '',
+        key: this.captchaKey,
+        isSave: true
+      })
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            console.log(result)
+            if(result.code === 200) {
+              _this.$store
+                .dispatch("setUserState")
+                .then(res => {
+                   // 登录成功
+                  _this.$router.push({
+                    name: 'index'
+                  })
+                })
+                .catch(err => {
+                  console.log(err);
+              });
+            }else {
+              if(result && result.map && result.map.index >= 3) {
+                _this.isCaptcha = true
+                _this.getCaptcha()
+                 _this.$message.error(result.message);
+              } else {
+                _this.$message.error(result.message);
+              }
+            }
+          }
+        )
+      );
+    },
+    validatePhone(rule, value, callback) {
+      let _this = this;
+      const form = this.form;
+      if (value && value.length === 11) {
+        callback()
+      } else {
+        this.sendAuthCode = false
+        callback('请输入手机正确的手机号码');
+      }
+    },
+    validatePwd(rule, value, callback) {
+      const form = this.form;
+      if (value && value.length > 5) {
+        callback();
+      } else {
+        callback("请输入正确的密码");
+      }
+    }
   }
 };
 </script> 
