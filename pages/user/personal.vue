@@ -14,18 +14,28 @@
                 <a-icon type="profile" />
                 长沙大药房
               </p>
-               <p>
-                 <a-icon type="profile" />
-                周星星
+              <p>
+                <a-icon type="environment" />
+                湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号
               </p>
                <p>
-                 <a-icon type="profile" />
+                 <a-icon type="user" />
+                周星星
+                 <a-icon type="mobile" />
                 17621503679
               </p>
             </div>
             <div class="right">
-              <p><span>优惠券：</span>3张</p>
-              <p><span>积份：</span>268</p>
+              <p class="right-title">优惠信息</p>
+              <p><span>优惠券</span>3张</p>
+              <p><span>积分</span>268</p>
+              <p><span> 我的红包</span>5元</p>
+            </div>
+            <div class="order-info">
+              <p class="order-title">订单信息</p>
+              <p><span>待付款</span>3张 <span class="left65">待评价</span> 7单</p>
+              <p><span>待发货</span>5单 <span class="left65">退货</span> 1单</p>
+              <p><span> 待收货</span>9单</p>
             </div>
           </div>
           <div class="content">
@@ -36,23 +46,23 @@
                 mode="vertical"
                 @click="handleClick"
               >
-                <a-menu-item key="/user/personal">
+                <a-menu-item key="/user/personal" class="left-menu">
                   <a-icon type="mail" />
                   我的药店
                 </a-menu-item>
-                <a-menu-item key="/user/personal/invoice">
+                <a-menu-item key="/user/personal/invoice" class="left-menu">
                   <a-icon type="calendar" />
                   我的发票
                 </a-menu-item>
-                <a-menu-item key="/user/personal/receiver">
+                <a-menu-item key="/user/personal/receiver" class="left-menu">
                   <a-icon type="mail" />
                   我的收货人
                 </a-menu-item>
-                <a-menu-item key="/user/personal/collection">
+                <a-menu-item key="/user/personal/collection" class="left-menu">
                   <a-icon type="calendar" />
                   我的收藏
                 </a-menu-item>
-                <a-menu-item key="/user/personal/service">
+                <a-menu-item key="/user/personal/service" class="left-menu">
                   <a-icon type="calendar" />
                   售后服务
                 </a-menu-item>
@@ -114,7 +124,7 @@ export default {
     border: solid 1px #ffffff;
     .left {
       float: left;
-      width: 25%;
+      width: 36%;
       height: 120px;
       text-align:center;
       margin-top: 10px;
@@ -122,7 +132,7 @@ export default {
         background: #fbdedd;
       }
       p {
-       .p-size (40px,40px,18px,left,20px,#333333);
+       .p-size (40px,40px,14px,left,20px,#333333);
        i {
          margin-right: 15px;
          color: #ed3025;
@@ -136,13 +146,42 @@ export default {
       margin-top: 10px;
       margin-left: 80px;
       border-left: 1px solid #e0e0e0;
+      border-right: 1px solid #e0e0e0;
+      .right-title {
+        text-align: center;
+        font-size: 16px;
+        color: #666666;
+      }
       p {
-        .p-size (60px,60px,18px,left,20px,#ed3025);
+        .p-size (30px,30px,14px,left,20px,#ed3025);
         span {
-          .container-size (inline-block,110px,auto,0,0);
+          .container-size (inline-block,155px,auto,0,0);
+          text-align: center;
           color: #333333;
         }
 
+      }
+    }
+    .order-info{
+      float: left;
+      width: 32%;
+      height: 120px;
+      margin-top: 10px;
+      .order-title{
+        text-align: center;
+        font-size: 16px;
+        color: #666666;
+      }
+      p {
+        .p-size (30px,30px,14px,left,20px,#ed3025);
+        span {
+          display:inline-block;
+          width: 100px;
+          color: #666666;
+        }
+        .left65 {
+          margin-left: 65px!important;
+        }
       }
     }
   }
@@ -158,5 +197,16 @@ export default {
       margin-left: 20px;
       background: white;
     }
+  }
+  .ant-menu-item-selected {
+    color: #ed3025;
+  }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    border-left: 2px solid #ed3025;
+    background-color: #ffffff;
+    color: #ed3025;
+  }
+  .left-menu:hover {
+    color: #ed3025;
   }
 </style>

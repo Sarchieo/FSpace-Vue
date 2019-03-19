@@ -14,7 +14,6 @@
           <a>在线客服</a>
           <a>签到有礼</a>
           <a>我的订单</a>
-          <a @click="toPerson()">个人中心临时入口</a>
         </div>
       </div>
       <div class="medicine-names">
