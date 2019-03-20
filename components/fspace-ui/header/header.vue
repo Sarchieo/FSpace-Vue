@@ -12,8 +12,31 @@
         </div>
         <div class="header-right">
           <a>帮助中心</a>
-          <a>在线客服</a>
-          <a>签到有礼<span class="sign"></span></a>
+          <a class="margin-left0">在线客服</a>
+          <a class="margin-right0 margin-left0 drop-down" @mouseover="showNews()" @mouseout="hideNews()">
+            我的消息
+            <span class="sign"></span>
+            <div class="news-box" v-show="isShowNewsList">
+              <ul class="news-ul">
+                <li>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                </li>
+              </ul>
+              <div class="see-news">
+                <button @click="toInformation()">查看详情</button>
+              </div>
+            </div>
+          </a>
+          <a class="margin-right0">签到有礼<span class="sign"></span></a>
           <a>我的订单</a>
            <a-dropdown>
               <a class="ant-dropdown-link" href="#">
@@ -29,6 +52,7 @@
               </a-menu>
            </a-dropdown>
           <a>首页</a>
+          <div style="clear:both;"></div>
         </div>
       </div>
       <div class="medicine-names">
@@ -42,21 +66,13 @@
               <button class="search-btn" @click="toPage('category')">搜索</button>
             </div>
           </div>
-          <div class="ant-dropdown-link cart-btn" @click="toCart()" @mouseover="showList()" @mouseout="hideList()">
+          <div class="ant-dropdown-link cart-btn" @click="toPage('shoppingCart')" @mouseover="showList()" @mouseout="hideList()">
             <a-icon type="shopping-cart" class="cart-icon"/>
             <span class="cart-count">6</span>
             <span class="cart-text">采购单</span>
             <div class="cart-down" v-show="isShowCartList">
               <ul class="cart-down-ul">
                 <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
-          <a-dropdown>
-            <a class="ant-dropdown-link cart-btn" @click="toCart('shoppingCart')">
-              <a-icon type="shopping-cart" class="cart-icon"/>
-              <span class="cart-count">6</span>
-              <span class="cart-text">采购单</span>
-            </a>
-            <a-menu slot="overlay" class="cart-down">
-                <a-menu-item class="cart-down-list" v-for="(item,index) in cartList" :key="index">
                   <a href="javascript:;">
                     <img v-lazy="item.src" class="cart-img">
                     <p class="cart-goods-text">{{item.text}} <span>￥{{item.price}}元</span></p>
@@ -68,7 +84,7 @@
               <div class="total-settlement">
                 <p>
                   商品合计：<span>1880元</span>
-                  <button class="settlement-btn" @click="toCart()">去购物车结算</button>
+                  <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车结算</button>
                 </p>
               </div>
             </div>
@@ -118,6 +134,9 @@
     props: ['type'],
     data () {
       return {
+        isShowNewsList: false,
+        isShowCartList: false,
+        isLogin: false,
         cartList: [
           {
             src:'//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg',
@@ -164,20 +183,34 @@
         ]
       }
     },
-    asyncData (context) {
-      console.log(context)
-    }, 
     mounted() {
       this.init()
     },
     methods: {
       init() {
         debugger
-        // console.log(this.$store.state.userState)
+        console.log(this.$store.state.userState)
       },
       toPage(name) {
         this.$router.push({
           name: name
+        })
+      },
+      showList() {
+        this.isShowCartList = true
+      },
+      hideList() {
+        this.isShowCartList = false
+      },
+      showNews() {
+        this.isShowNewsList = true
+      },
+      hideNews() {
+        this.isShowNewsList = false
+      },
+      toInformation() {
+        this.$router.push({
+          path: '/user/personal/information'
         })
       },
       // 退出登录
@@ -249,7 +282,7 @@ li {
 }
 /* 头部 */
 .header-title {
-  width: 1190px;
+  width: 1200px;
   height: 30px;
   margin: 0 auto;
 }
@@ -270,22 +303,70 @@ li {
 }
 .header-right {
   float: right;
-  width: 445px;
+  width: 492px;
+  height: 30px;
   /* margin-right: 50px; */
+}
+.drop-down {
+  .position(relative,0px,0px);
+}
+.margin-right0{
+  margin-right: 0px!important;
+}
+.margin-left0{
+  margin-left: 0px!important;
 }
 .sign {
   position: relative;
   top: 3px;
-  left: 0px;
-  width: 10px;
-  height: 10px;
+  left: -5px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #ed3025;
 }
 .header-right a{
   float: right;
+  display: inline-block;
   margin-left: 15px;
   color: #999999;
+}
+.news-box {
+  .position(absolute,22px,-95px);
+  .container-size(inline-block,250px,300px,0px,0px);
+  .container-color(#ffffff,1px solid transparent,#666666);
+  opacity: 1;
+  z-index: 1;
+}
+.news-ul {
+  .position(absolute,0px,0px);
+  .container-size(inline-block,250px,248px,0px,0px);
+  .container-color(#ffffff,1px solid transparent,#666666);
+  overflow: auto;
+}
+.news-ul li{
+  // .position(absolute,0px,0px);
+  .container-size(inline-block,231px,236px,0px,0px);
+  .container-color(#ffffff,1px solid transparent,#666666);
+  p{
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    padding: 0px 8px;
+  }
+  p:hover {
+    background: #ED2F26;
+    color: #ffffff;
+  }
+}
+.see-news {
+  position: absolute;
+  bottom: 0px;
+  .container-size(inline-block,250px,50px,0px,0px);
+}
+.see-news button {
+  .button-size (246px,50px,50px,16px,0px,0px);
+  .button-color (1px solid transparent,#ED2F26,#ffffff);
 }
 .medicine-names {
   display: block;
@@ -394,8 +475,8 @@ li {
 }
 .cart-down {
   .container-size(block,300px,370px,0px,0px);
+  .position(relative,41px,-55px);
   overflow: auto;
-  .position(relative,45px,-55px);
   z-index: 99;
   opacity: 1;
 }
@@ -441,8 +522,9 @@ li {
 .total-settlement p span {
   color: #ed3025;
 }
+
 .settlement-btn{
-  .button-size (120px,45px,45px,16px,0px, 5px);
+  .button-size (120px,45px,45px,16px,0px,5px);
   .button-color(none,#ed3025,#ffffff);
    float: right;
    margin-top: 12px;

@@ -26,13 +26,13 @@
               </p>
             </div>
             <div class="right">
-              <p class="right-title">优惠信息</p>
+              <!-- <p class="right-title">优惠信息</p> -->
               <p><span>优惠券</span>3张</p>
               <p><span>积分</span>268</p>
               <p><span> 我的红包</span>5元</p>
             </div>
             <div class="order-info">
-              <p class="order-title">订单信息</p>
+              <!-- <p class="order-title">订单信息</p> -->
               <p><span>待付款</span>3张 <span class="left65">待评价</span> 7单</p>
               <p><span>待发货</span>5单 <span class="left65">退货</span> 1单</p>
               <p><span> 待收货</span>9单</p>
@@ -61,6 +61,10 @@
                 <a-menu-item key="/user/personal/collection" class="left-menu">
                   <a-icon type="calendar" />
                   我的收藏
+                </a-menu-item>
+                 <a-menu-item key="/user/personal/information" class="left-menu">
+                  <a-icon type="calendar" />
+                  我的消息
                 </a-menu-item>
                 <a-menu-item key="/user/personal/service" class="left-menu">
                   <a-icon type="calendar" />
@@ -129,6 +133,7 @@ export default {
       text-align:center;
       margin-top: 10px;
       .first {
+        border-radius: 20px 0px 0px 20px;
         background: #fbdedd;
       }
       p {
@@ -153,7 +158,7 @@ export default {
         color: #666666;
       }
       p {
-        .p-size (30px,30px,14px,left,20px,#ed3025);
+        .p-size (40px,40px,14px,left,20px,#ed3025);
         span {
           .container-size (inline-block,155px,auto,0,0);
           text-align: center;
@@ -173,7 +178,7 @@ export default {
         color: #666666;
       }
       p {
-        .p-size (30px,30px,14px,left,20px,#ed3025);
+        .p-size (40px,40px,14px,left,20px,#ed3025);
         span {
           display:inline-block;
           width: 100px;

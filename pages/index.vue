@@ -169,20 +169,20 @@
       <f-space-footer></f-space-footer>
     </a-layout>
       <ul class="sider-meun">
-        <li class="right-meun">
-          <a href="">商品分类</a>
+        <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
+          <a>商品分类</a>
+        </li> 
+        <li class="right-meun" :class="{'active': limitedTimes}"@click="limitedTime()">
+          <a>限时抢购</a>
         </li>
-        <li class="right-meun">
-          <a href="">限时抢购</a>
+        <li class="right-meun" :class="{'active': hotSells}"@click="hotSell()">
+          <a>热销专区</a>
         </li>
-        <li class="right-meun">
-          <a href="">热销专区</a>
+        <li class="right-meun" :class="{'active': freeShippings}" @click="freeShipping()">
+          <a>包邮专区</a>
         </li>
-        <li class="right-meun">
-          <a href="">包邮专区</a>
-        </li>
-        <li class="right-meun">
-          <a href="">为你精选</a>
+        <li class="right-meun" :class="{'active': chooses}"@click="choose()">
+          <a>为你精选</a>
         </li>
         <!-- <a-anchor :affix="false"  :showInkInFixed='false' wrapperClass="wrap-right">
           <a-anchor-link class="right-meun" href="#components-layout-demo-basic" title="商品分类" />
@@ -193,6 +193,10 @@
           <a-back-top />
         </a-anchor> -->
     </ul>
+    <button class="back-top" @click="goBackTop()" v-show="isShowBackTop">
+      <a-icon type="arrow-up" />
+      回到顶部
+    </button>
   </div>
 </template>
 <script>
@@ -208,6 +212,12 @@ export default {
   },
   data() {
     return {
+      goodsTypes: false,
+      limitedTimes: false,
+      hotSells: false,
+      freeShippings: false,
+      chooses: false,
+      isShowBackTop: false,
       GUID: '',
       elaborateList: [
         {
@@ -473,8 +483,48 @@ export default {
   mounted() {
     this.getBasicInfo();
     this.initData();
+    window.addEventListener('scroll', this.handleScroll);
   },
   methods: {
+    handleScroll () {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      if (scrollTop > 0) {
+        this.isShowBackTop = true
+      } else {
+        this.isShowBackTop = false
+      }
+      if (scrollTop > 100 && scrollTop < 610 ) {
+        this.goodsTypes = true
+         this.chooses = false
+         this.freeShippings = false
+         this.hotSells = false
+         this.limitedTimes = false
+      } else if (scrollTop > 620 && scrollTop < 970){
+        this.limitedTimes = true
+        this.goodsTypes = false
+         this.freeShippings = false
+         this.hotSells = false
+         this.chooses = false
+      } else if (scrollTop > 980 && scrollTop < 1330){
+         this.hotSells = true
+         this.limitedTimes = false
+         this.goodsTypes = false
+          this.freeShippings = false
+          this.chooses = false
+      } else if (scrollTop > 1340 && scrollTop < 1690){
+         this.freeShippings = true
+         this.hotSells = false
+         this.limitedTimes = false
+         this.goodsTypes = false
+         this.chooses = false
+      } else if (scrollTop > 1700){
+        this.chooses = true
+         this.freeShippings = false
+         this.hotSells = false
+         this.limitedTimes = false
+         this.goodsTypes = false
+      }
+    },
     async createFingerprint(components) {
       let _this = this
       //  setTimeout(function () {
@@ -485,6 +535,29 @@ export default {
       //     console.log(_this.GUID)
       //   })
       //  },500)
+    },
+    goodsType() {
+      document.body.scrollTop = document.documentElement.scrollTop = 100;
+      this.active =true
+    },
+    limitedTime() {
+      document.body.scrollTop = document.documentElement.scrollTop = 620;
+      this.active =true
+    },
+    hotSell() {
+      document.body.scrollTop = document.documentElement.scrollTop = 980;
+      this.active =true
+    },
+    freeShipping() {
+      document.body.scrollTop = document.documentElement.scrollTop = 1340;
+      this.active =true
+    },
+    choose() {
+      document.body.scrollTop = document.documentElement.scrollTop = 1700;
+      this.active =true
+    },
+    goBackTop() {
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     toDetailsPages() {
       this.$router.push({
@@ -586,6 +659,10 @@ li {
 }
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
+}
+.active {
+  background: #FF0036!important;
+  color: #ffffff;
 }
 /* 限时抢购 */
 .card{
@@ -864,9 +941,16 @@ li {
   position: fixed;
   top: 300px;
   right: 10px;
-  width: 120px;
-  height:530px;
+  width: 85px;
+  height:400px;
   background: rgb(238,238,238);
+}
+.back-top {
+  position: fixed;
+  bottom: 100px;
+  right: 10px;
+  .button-size (100px,100px,80px,16px,0px,50%);
+  .button-color (1px solid transparent,#FF0036,#ffffff);
 }
 .sider-meun .right-meun{
   width: 85px;
