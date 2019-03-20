@@ -141,13 +141,16 @@
         ]
       }
     },
+    asyncData (context) {
+      console.log(context)
+    }, 
     mounted() {
       this.init()
     },
     methods: {
       init() {
         debugger
-        console.log(this.$store.state.userState)
+        // console.log(this.$store.state.userState)
       },
       toPage(name) {
         this.$router.push({

@@ -51,7 +51,8 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    'cookie-universal-nuxt'
+    'cookie-universal-nuxt',
+    ['cookie-universal-nuxt', { alias: 'cookiz' }]
   ],
 
   /*

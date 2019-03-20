@@ -449,6 +449,7 @@ export default {
   },
   mounted() {
     this.getBasicInfo();
+    this.initData();
   },
   methods: {
     async createFingerprint(components) {
@@ -468,7 +469,10 @@ export default {
       })
     },
     async initData() {
-
+      // 未登录
+      if(!this.$store.getters.userState) {
+        this.getBasicInfo()
+      }
     },
     async getBasicInfo() {
       let _this = this;
