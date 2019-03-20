@@ -2,23 +2,21 @@ const UserKey = 'User'
 const LoginStateKey = 'LoginState'
 
 export function loadLoginState () {
-  // return JSON.parse(localStorage.getItem(LoginStateKey)) | false
-  return VueCookie.get(LoginStateKey)
+  return JSON.parse(localStorage.getItem(LoginStateKey)) || false
 }
 
 export function saveLoginState (state) {
-  // localStorage.setItem(LoginStateKey, JSON.stringify(state))
-  VueCookie.set(LoginStateKey, state)
+  localStorage.setItem(LoginStateKey, JSON.stringify(state))
   return userInfo
 }
 
 export function removeLoginState () {
-  // localStorage.removeItem(LoginStateKey)
+  localStorage.removeItem(LoginStateKey)
   return false
 }
 
 export function loadUser () {
-  // return JSON.parse(localStorage.getItem(UserKey))
+  return JSON.parse(localStorage.getItem(UserKey))
 }
 
 export function saveUser (userInfo) {

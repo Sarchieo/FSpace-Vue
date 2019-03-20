@@ -1,3 +1,5 @@
-export const isAuthenticated = state => state.user
+import * as caches from '../utils/cache'
 
-export const user = state => state.user
+export function userState(state) {
+  return caches.loadLoginState()
+}
