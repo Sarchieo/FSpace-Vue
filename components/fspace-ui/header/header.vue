@@ -28,7 +28,7 @@
                 </a-menu-item>
               </a-menu>
            </a-dropdown>
-          <a>首页</a>    
+          <a>首页</a>
         </div>
       </div>
       <div class="medicine-names">
@@ -39,7 +39,7 @@
           <div class="medicine-search">
             <div class="search-box">
               <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
-              <button class="search-btn" @click="toCategory()">搜索</button>
+              <button class="search-btn" @click="toPage('category')">搜索</button>
             </div>
           </div>
           <div class="ant-dropdown-link cart-btn" @click="toCart()" @mouseover="showList()" @mouseout="hideList()">
@@ -49,6 +49,14 @@
             <div class="cart-down" v-show="isShowCartList">
               <ul class="cart-down-ul">
                 <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
+          <a-dropdown>
+            <a class="ant-dropdown-link cart-btn" @click="toCart('shoppingCart')">
+              <a-icon type="shopping-cart" class="cart-icon"/>
+              <span class="cart-count">6</span>
+              <span class="cart-text">采购单</span>
+            </a>
+            <a-menu slot="overlay" class="cart-down">
+                <a-menu-item class="cart-down-list" v-for="(item,index) in cartList" :key="index">
                   <a href="javascript:;">
                     <img v-lazy="item.src" class="cart-img">
                     <p class="cart-goods-text">{{item.text}} <span>￥{{item.price}}元</span></p>
@@ -110,8 +118,6 @@
     props: ['type'],
     data () {
       return {
-        isShowCartList: false,
-        isLogin: false,
         cartList: [
           {
             src:'//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg',
@@ -158,33 +164,45 @@
         ]
       }
     },
+    mounted() {
+      this.init()
+    },
     methods: {
-      toCart() {
-        this.$router.push({
-          name:'shoppingCart'
-      })
+      init() {
+        debugger
+        console.log(this.$store.state.userState)
       },
-      toCategory() {
+      toPage(name) {
         this.$router.push({
-          name:'category'
+          name: name
         })
       },
-      toPerson() {
-        this.$router.push({
-          name: 'cerfiticales'
-        })
+      // 退出登录
+      logout() {
+        let _this = this;
+        let iRequest = new inf.IRequest();
+        iRequest.cls = "LoginRegistrationModule";
+        iRequest.method = "logout";
+        iRequest.param.token = localStorage.getItem("identification")
+        this.$refcallback(
+          "userServer",
+          iRequest,
+          new this.$iceCallback(
+            function result(result) {
+              if(result.code === 200) {
+                _this.$message.success(result.data);
+                _this.$store.commit("SET_LOGOUT");
+                // 跳转页面
+                _this.$router.push({
+                  path: '/user/login'
+                })
+              }else {
+                _this.$message.error(result.message);
+              }
+            }
+          )
+        );
       },
-       showList() {
-         this.isShowCartList = true
-       },
-       hideList() {
-         this.isShowCartList = false
-       },
-       toCart() {
-         this.$router.push({
-          name:'shoppingCart'
-      })
-       }
     }
   }
 </script>

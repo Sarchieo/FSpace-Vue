@@ -471,7 +471,7 @@ export default {
     };
   },
   mounted() {
-    this.initData();
+    this.getBasicInfo();
   },
   methods: {
     async createFingerprint(components) {
@@ -497,7 +497,36 @@ export default {
     },
     async initData() {
 
-    }
+    },
+    async getBasicInfo() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "InformationModule";
+      iRequest.method = "basicInfo";
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              console.log(result.code)
+              // _this.$store
+              //   .dispatch("login")
+              //   .then(res => {
+              //     // 保存用户信息
+              //     this.$store.commit("SET_USER", 1);
+              //   })
+              //   .catch(err => {
+              //     console.log("登录失败");
+              // });
+            }else {
+              _this.$message.error(result.message);
+            }
+          }
+        )
+      );
+    },
   }
 };
 </script>
