@@ -110,13 +110,14 @@ export default {
 @import "../../components/fspace-ui/button/index.less";
 
   .crumbs {
-    .p-size (50px,50px,16px,left,0px,#999999);
+    .p-size(50px,50px,16px,left,0px,#999999);
   }
   .base {
     width: 1200px;
     left:0;
     right:0;
     margin:0 auto;
+    background: #ffffff;
   }
   .footer {
     margin-top: 20px;

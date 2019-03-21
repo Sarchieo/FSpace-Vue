@@ -9,7 +9,7 @@
         >
           <a-form-item
             label="所属药店："
-            :label-col="{ span: 3 }"
+            :label-col="{ span: 5 }"
             :wrapper-col="{ span: 12 }"
           >
             <a-input
@@ -20,96 +20,114 @@
             />
           </a-form-item>
           <a-form-item
-          style="width: 750px;"
-          class="adress"
-            label="药店地址："
-            :label-col="{ span: 3 }"
+            label="省市区"
+            :label-col="{ span: 5 }"
             :wrapper-col="{ span: 12 }"
           >
-          <a-cascader :options="options" @change="onChange" placeholder="请选择省市区" style="width: 300px;"/>
-            <a-input
-            style="display: inline-block;width: 300px;"
-              v-decorator="[
-                'note',
-                {rules: [{ required: true, message: '请填写详细地址!' }]}
-              ]"
-            />
+            <a-cascader :options="options" @change="onChange" placeholder="请选择省市区" class="city"  v-decorator="[
+                    'shiqu',
+                    {rules: [{ required: true, message: '请选择省市区' }]}
+                  ]"/>
+          </a-form-item>
+          <a-form-item
+                label="药店详细地址："
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-input
+                placeholder="请填写营业执照上一致的药店地址"
+                  v-decorator="[
+                    'address',
+                    {rules: [{ required: true, message: '请填写药店详细地址' }]}
+                  ]"
+                />
           </a-form-item>
           <p class="authentication">认证状态: <a-icon type="profile" /> <span>已认证</span>  </p>
-          <button class="save-btn">保存</button>
-        </a-form>
-        <!-- 表单元素 -->
-        <h2 class="certificate-title">药店资质</h2>
-        <div class="photo-box">
-          <div class="business-license">
-             <a-upload
-                name="avatar"
-                listType="picture-card"
-                class="avatar-uploader"
-                :showUploadList="false"
-                action="//jsonplaceholder.typicode.com/posts/"
-                :beforeUpload="beforeUpload"
-                @change="handleChange"
+          <h2 class="certificate-title">药店资质</h2>
+          <a-form-item
+            v-bind="formItemLayout"
+            class="upload"
+          >
+            <div class="dropbox">
+              <a-upload-dragger
+                v-decorator="['dragger', {
+                  valuePropName: 'fileList',
+                  getValueFromEvent: normFile,
+                }]"
+                name="files"
+                action="/upload.do"
               >
-                <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-                <div v-else>
-                    <a-icon :type="loading ? 'loading' : 'plus'" />
-                    <div class="ant-upload-text">Upload</div>
-                </div>
-              </a-upload>
-          </div>
-          <div class="management">
-            <a-upload
-                name="avatar"
-                listType="picture-card"
-                class="avatar-uploader"
-                :showUploadList="false"
-                action="//jsonplaceholder.typicode.com/posts/"
-                :beforeUpload="beforeUpload"
-                @change="handleChange"
+                <p class="ant-upload-drag-icon">
+                  <a-icon type="plus" />
+                </p>
+                <p class="ant-upload-text">
+                  营业执照
+                </p>
+              </a-upload-dragger>
+            </div>
+          </a-form-item>
+          <a-form-item
+          class="upload"
+            v-bind="formItemLayout"
+          >
+            <div class="dropbox">
+              <a-upload-dragger
+                v-decorator="['dragger', {
+                  valuePropName: 'fileList',
+                  getValueFromEvent: normFile,
+                }]"
+                name="files"
+                action="/upload.do"
               >
-                <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-                <div v-else>
-                    <a-icon :type="loading ? 'loading' : 'plus'" />
-                    <div class="ant-upload-text">Upload</div>
-                </div>
-              </a-upload>
-          </div>
-          <div>
-            <a-upload
-                name="avatar"
-                listType="picture-card"
-                class="avatar-uploader"
-                :showUploadList="false"
-                action="//jsonplaceholder.typicode.com/posts/"
-                :beforeUpload="beforeUpload"
-                @change="handleChange"
+                <p class="ant-upload-drag-icon">
+                  <a-icon type="plus" />
+                </p>
+                <p class="ant-upload-text">
+                 药品经营许可证
+                </p>
+              </a-upload-dragger>
+            </div>
+          </a-form-item>
+          <a-form-item
+          class="upload"
+            v-bind="formItemLayout"
+          >
+            <div class="dropbox">
+              <a-upload-dragger
+                v-decorator="['dragger', {
+                  valuePropName: 'fileList',
+                  getValueFromEvent: normFile,
+                }]"
+                name="files"
+                action="/upload.do"
               >
-                <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-                <div v-else>
-                    <a-icon :type="loading ? 'loading' : 'plus'" />
-                    <div class="ant-upload-text">Upload</div>
-                </div>
-              </a-upload>
-          </div>
-        </div>
-        <p class="certificate-text">
-          <span>营业执照</span>
-          <span>药品经营许可证</span>
-          <span>GSP证书</span>
-        </p>
-        <p class="certificate-fill">
-          <span>(必填)</span>
-          <span>(必填)</span>
-          <span>(必填)</span>
-        </p>
+                <p class="ant-upload-drag-icon">
+                  <a-icon type="plus" />
+                </p>
+                <p class="ant-upload-text">
+                  GSP认证
+                </p>
+              </a-upload-dragger>
+            </div>
+          </a-form-item>
+          <!-- <button class="save-btn">保存</button> -->
+          <a-form-item
+            :wrapper-col="{ span: 12, offset: 6 }"
+          >
+            <a-button
+              class="save-btn"
+              html-type="submit"
+            >
+              保存
+            </a-button>
+          </a-form-item>
         </a-form>
         <ul class="user-info">
           <li class="two-line">
             <a-checkbox checked>已设置</a-checkbox>
             <span>登录密码</span>
             <p>安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码</p>
-            <a>修改</a>
+            <a class="one-updata">修改</a>
           </li>
           <li class="one-line">
             <a-checkbox checked>已设置</a-checkbox>
@@ -255,6 +273,7 @@ export default {
      }
      .certificate-title {
        .p-size(60px,60px,20px,left,0px,#333333);
+       margin-bottom: 10px;
      }
      .certificate-text {
        .p-size(50px,50px,20px,center,0px,#333333);
@@ -270,7 +289,7 @@ export default {
      }
      .save-btn {
        .button-display(block, 15px auto 0 auto);
-       .button-size (120px,48px,48px,18px,0px,5px);
+       .button-size(120px,48px,48px,18px,0px,5px);
        .button-color(1px solid transparent,#ed3025,#ffffff);
      }
     }
@@ -292,7 +311,7 @@ export default {
         border-bottom: 1px solid #e0e0e0;
         padding:　0　18px!important;
         p{
-          .container-size(inline-block,530px,auto,0,0px);
+          .container-size(inline-block,450px,auto,0 40px 0 45px,0px);
         }
      }
      .one-line{
@@ -300,12 +319,32 @@ export default {
      }
      .two-line{
        line-height: 37px;
+       .one-updata{
+         .position(relative,0px,86px);
+       }
        p{
-         .position(relative,17px,0px);
+         .position(relative,17px,45px);
+         margin: 0;
          height: auto;
          }
      }
   }
+  .ant-input{
+     border: 1px solid #e0e0e0;
+     border-radius: 0px!important;
+   }
+   .city {
+    width:305px;
+    border: 1px solid #e0e0e0;
+   }
+   .ant-upload.ant-upload-drag p.ant-upload-drag-icon .anticon{
+     color: #999999;
+   }
+   .upload {
+     display: inline-block;
+     width: 240px;
+     height: 200px;
+   }
 </style>
 
 

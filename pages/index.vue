@@ -486,7 +486,8 @@ export default {
     window.addEventListener('scroll', this.handleScroll);
   },
   methods: {
-    handleScroll () {
+    handleScroll () {  
+      var scrollTops=document.documentElement.scrollTop||document.body.scrollTop;
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       if (scrollTop > 0) {
         this.isShowBackTop = true
@@ -538,25 +539,46 @@ export default {
     },
     goodsType() {
       document.body.scrollTop = document.documentElement.scrollTop = 100;
-      this.active =true
+      this.goodsTypes = true
+      this.chooses = false
+      this.freeShippings = false
+      this.hotSells = false
+      this.limitedTimes = false
     },
     limitedTime() {
       document.body.scrollTop = document.documentElement.scrollTop = 620;
-      this.active =true
+      this.limitedTimes = true
+      this.goodsTypes = false
+      this.freeShippings = false
+      this.hotSells = false
+      this.chooses = false
     },
     hotSell() {
       document.body.scrollTop = document.documentElement.scrollTop = 980;
-      this.active =true
+      this.hotSells = true
+      this.limitedTimes = false
+      this.goodsTypes = false
+      this.freeShippings = false
+      this.chooses = false
     },
     freeShipping() {
       document.body.scrollTop = document.documentElement.scrollTop = 1340;
-      this.active =true
+      this.freeShippings = true
+      this.hotSells = false
+      this.limitedTimes = false
+      this.goodsTypes = false
+      this.chooses = false
     },
     choose() {
       document.body.scrollTop = document.documentElement.scrollTop = 1700;
-      this.active =true
+      this.chooses = true
+      this.freeShippings = false
+      this.hotSells = false
+      this.limitedTimes = false
+      this.goodsTypes = false
     },
     goBackTop() {
+      debugger
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     toDetailsPages() {
@@ -662,7 +684,10 @@ li {
 }
 .active {
   background: #FF0036!important;
-  color: #ffffff;
+  color: #ffffff!important;
+}
+.active a{
+  color: #ffffff!important;
 }
 /* 限时抢购 */
 .card{
@@ -947,7 +972,7 @@ li {
 }
 .back-top {
   position: fixed;
-  bottom: 100px;
+  bottom: 5%;
   right: 10px;
   .button-size (100px,100px,80px,16px,0px,50%);
   .button-color (1px solid transparent,#FF0036,#ffffff);
