@@ -487,7 +487,6 @@ export default {
   },
   methods: {
     handleScroll () {  
-      var scrollTops=document.documentElement.scrollTop||document.body.scrollTop;
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       if (scrollTop > 0) {
         this.isShowBackTop = true

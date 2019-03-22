@@ -62,6 +62,14 @@
                   <a-icon type="calendar" />
                   我的收藏
                 </a-menu-item>
+                <a-menu-item key="/user/personal/coupon" class="left-menu">
+                  <a-icon type="calendar" />
+                  我的优惠券
+                </a-menu-item>
+                 <a-menu-item key="/user/personal/integral" class="left-menu">
+                  <a-icon type="calendar" />
+                  我的积分
+                </a-menu-item>
                  <a-menu-item key="/user/personal/information" class="left-menu">
                   <a-icon type="calendar" />
                   我的消息
@@ -110,7 +118,7 @@ export default {
 @import "../../components/fspace-ui/button/index.less";
 
   .crumbs {
-    .p-size(50px,50px,16px,left,0px,#999999);
+    .p-size(50px,50px,16px,left,5px,#999999);
   }
   .base {
     width: 1200px;
@@ -126,7 +134,7 @@ export default {
     width: 1200px;
     height: 140px;
     background: white;
-    border: solid 1px #ffffff;
+    border: solid 1px #e0e0e0;
     .left {
       float: left;
       width: 36%;
@@ -195,6 +203,7 @@ export default {
     margin-top: 20px;
     .left {
       float: left;
+      border-top: 5px solid #ed3025;
     }
     .right {
       width: 985px;
@@ -202,6 +211,7 @@ export default {
       float: left;
       margin-left: 20px;
       background: white;
+      border: 1px solid #e0e0e0;
     }
   }
   .ant-menu-item-selected {

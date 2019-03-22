@@ -1,46 +1,55 @@
 <template>
   <div>
     <!-- 首页 -->
-    <a-layout-header v-if='type === "home"'>
-      <div class="header-title">
-        <div class="header-left">
-          <a-icon type="environment" v-show="isLogin">长沙</a-icon>
-          <a>欢迎来到一块医药</a>
-          <nuxt-link to='/user/login'>登录</nuxt-link>
-          <nuxt-link to='/user/register'>注册</nuxt-link>
-          <nuxt-link to='/user/personal'>我的一块</nuxt-link>
-        </div>
-        <div class="header-right">
-          <a>帮助中心</a>
-          <a class="margin-left0">在线客服</a>
-          <a class="margin-right0 margin-left0 drop-down" @mouseover="showNews()" @mouseout="hideNews()">
-            我的消息
-            <span class="sign"></span>
-            <div class="news-box" v-show="isShowNewsList">
-              <ul class="news-ul">
-                <li>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                </li>
-              </ul>
-              <div class="see-news">
-                <button @click="toInformation()">查看详情</button>
+    <a-layout-header v-if="type === "home"">
+      <div ref="home">
+        <div class="header-title">
+          <div class="header-left">
+            <a-icon type="environment" v-show="isLogin">长沙</a-icon>
+            <a>欢迎来到一块医药</a>
+            <nuxt-link to="/user/login">登录</nuxt-link>
+            <nuxt-link to="/user/register">注册</nuxt-link>
+            <nuxt-link to="/user/personal">我的一块</nuxt-link>
+          </div>
+          <div class="header-right">
+            <a>帮助中心</a>
+            <a class="margin-left0">在线客服</a>
+            <a
+              class="margin-right0 margin-left0 drop-down"
+              @mouseover="showNews()"
+              @mouseout="hideNews()"
+            >
+              我的消息
+              <span class="sign"></span>
+              <div class="news-box" v-show="isShowNewsList">
+                <ul class="news-ul">
+                  <li>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  </li>
+                </ul>
+                <div class="see-news">
+                  <button @click="toInformation()">查看详情</button>
+                </div>
               </div>
-            </div>
-          </a>
-          <a class="margin-right0">签到有礼<span class="sign"></span></a>
-          <a>我的订单</a>
-           <a-dropdown>
+            </a>
+            <a class="margin-right0">
+              签到有礼
+              <span class="sign"></span>
+            </a>
+            <a>我的订单</a>
+            <a-dropdown>
               <a class="ant-dropdown-link" href="#">
-                我的医药 <a-icon type="down" />
+                我的医药
+                <a-icon type="down"/>
               </a>
               <a-menu slot="overlay">
                 <a-menu-item>
@@ -50,61 +59,78 @@
                   <a href="javascript:;">浏览记录</a>
                 </a-menu-item>
               </a-menu>
-           </a-dropdown>
-          <a>首页</a>
-          <div style="clear:both;"></div>
+            </a-dropdown>
+            <a>首页</a>
+            <div style="clear:both;"></div>
+          </div>
         </div>
-      </div>
-      <div class="medicine-names">
-        <div class="medicine-name-box">
-          <div class="medicine-name">
-            <img src="../../../assets/img/u49.png" alt="">
-          </div>
-          <div class="medicine-search">
-            <div class="search-box">
-              <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
-              <button class="search-btn" @click="toPage('category')">搜索</button>
+        <div class="medicine-names">
+          <div class="medicine-name-box">
+            <div class="medicine-name">
+              <img src="../../../assets/img/u49.png" alt>
             </div>
-          </div>
-          <div class="ant-dropdown-link cart-btn" @click="toPage('shoppingCart')" @mouseover="showList()" @mouseout="hideList()">
-            <a-icon type="shopping-cart" class="cart-icon"/>
-            <span class="cart-count">6</span>
-            <span class="cart-text">采购单</span>
-            <div class="cart-down" v-show="isShowCartList">
-              <ul class="cart-down-ul">
-                <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
-                  <a href="javascript:;">
-                    <img v-lazy="item.src" class="cart-img">
-                    <p class="cart-goods-text">{{item.text}} <span>￥{{item.price}}元</span></p>
-                    <p class="cart-goods-count">{{item.guige}}  ×  {{item.count}}</p>
-                    <a-icon type="close" class="del-cart-goods"/>
-                  </a>
-                </li>
-              </ul>
-              <div class="total-settlement">
-                <p>
-                  商品合计：<span>1880元</span>
-                  <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车结算</button>
-                </p>
+            <div class="medicine-search">
+              <div class="search-box">
+                <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
+                <button class="search-btn" @click="toPage('category')">搜索</button>
               </div>
             </div>
+            <div
+              class="ant-dropdown-link cart-btn"
+              @click="toPage('shoppingCart')"
+              @mouseover="showList()"
+              @mouseout="hideList()"
+            >
+              <a-icon type="shopping-cart" class="cart-icon"/>
+              <span class="cart-count">6</span>
+              <span class="cart-text">采购单</span>
+              <div class="cart-down" v-show="isShowCartList">
+                <ul class="cart-down-ul">
+                  <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
+                    <a href="javascript:;">
+                      <img v-lazy="item.src" class="cart-img">
+                      <p class="cart-goods-text">
+                        {{item.text}}
+                        <span>￥{{item.price}}元</span>
+                      </p>
+                      <p class="cart-goods-count">{{item.guige}} × {{item.count}}</p>
+                      <a-icon type="close" class="del-cart-goods"/>
+                    </a>
+                  </li>
+                </ul>
+                <div class="total-settlement">
+                  <p>
+                    商品合计：
+                    <span>1880元</span>
+                    <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车结算</button>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p class="spike">
+              <a href>新人专享</a>
+              <span>|</span>
+              <a href>秒杀</a>
+              <span>|</span>
+              <a href>一块购</a>
+              <span>|</span>
+            </p>
+            <div class="nav-box">
+              <a href class="goods-type">商品分类</a>
+              <a href>新人专享</a>
+              <a href>新品上线</a>
+              <a href>热销商品</a>
+              <a href>全部商品</a>
+            </div>
           </div>
-          <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
-          <div class="nav-box">
-            <a href class="goods-type">商品分类</a>
-            <a href>新人专享</a>
-            <a href>新品上线</a>
-            <a href>热销商品</a>
-            <a href>全部商品</a>
-        </div>
         </div>
       </div>
     </a-layout-header>
     <!-- 登录 -->
-    <a-layout-header v-if='type === "login"' class="login-header">
+    <a-layout-header v-if="type === "login"" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
-          <img src="../../../assets/img/u49.png" alt="">
+          <img src="../../../assets/img/u49.png" alt>
         </div>
         <div class="ant-layout-header-back">
           <a>返回首页</a>
@@ -114,10 +140,10 @@
       </div>
     </a-layout-header>
     <!-- 注册 -->
-    <a-layout-header v-if='type === "register"' class="login-header">
+    <a-layout-header v-if="type === "register"" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
-          <img src="../../../assets/img/u49.png" alt="">
+          <img src="../../../assets/img/u49.png" alt>
         </div>
         <div class="ant-layout-header-back">
           <a class="already">已有账号</a>
@@ -129,118 +155,122 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'f-space-header',
-    props: ['type'],
-    data () {
-      return {
-        isShowNewsList: false,
-        isShowCartList: false,
-        isLogin: false,
-        cartList: [
-          {
-            src:'//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '汇仁肾宝片126片成人男性肾亏',
-            price: 322,
-            guige: '3g * 126片',
-            count: 9
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '宁夏红枸杞',
-            price: 50,
-            guige: '300g * 1袋',
-            count: 6
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '长白山人参',
-            price: 18888,
-            guige: '30g * 1株',
-            count: 1
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i4/TB1pn9kNFXXXXcfXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '东阿阿胶片',
-            price: 188,
-            guige: '3g * 126片',
-            count: 3
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '九芝堂六味地黄丸',
-            price: 88,
-            guige: '3g * 126片',
-            count: 2
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '太极五子衍宗丸',
-            price: 288,
-            guige: '3g * 126片',
-            count: 9
+export default {
+  name: "f-space-header",
+  props: ["type"],
+  data() {
+    return {
+      isShowNewsList: false,
+      isShowCartList: false,
+      isLogin: false,
+      cartList: [
+        {
+          src:
+            "//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "汇仁肾宝片126片成人男性肾亏",
+          price: 322,
+          guige: "3g * 126片",
+          count: 9
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "宁夏红枸杞",
+          price: 50,
+          guige: "300g * 1袋",
+          count: 6
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "长白山人参",
+          price: 18888,
+          guige: "30g * 1株",
+          count: 1
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i4/TB1pn9kNFXXXXcfXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "东阿阿胶片",
+          price: 188,
+          guige: "3g * 126片",
+          count: 3
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "九芝堂六味地黄丸",
+          price: 88,
+          guige: "3g * 126片",
+          count: 2
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "太极五子衍宗丸",
+          price: 288,
+          guige: "3g * 126片",
+          count: 9
+        }
+      ]
+    };
+  },
+  mounted() {
+    this.init();
+  },
+  methods: {
+    init() {
+      debugger;
+      console.log(this.$store.state.userState);
+    },
+    toPage(name) {
+      this.$router.push({
+        name: name
+      });
+    },
+    showList() {
+      this.isShowCartList = true;
+    },
+    hideList() {
+      this.isShowCartList = false;
+    },
+    showNews() {
+      this.isShowNewsList = true;
+    },
+    hideNews() {
+      this.isShowNewsList = false;
+    },
+    toInformation() {
+      this.$router.push({
+        path: "/user/personal/information"
+      });
+    },
+    // 退出登录
+    logout() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "logout";
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.data);
+            _this.$store.commit("SET_LOGOUT");
+            // 跳转页面
+            _this.$router.push({
+              path: "/user/login"
+            });
+          } else {
+            _this.$message.error(result.message);
           }
-        ]
-      }
-    },
-    mounted() {
-      this.init()
-    },
-    methods: {
-      init() {
-        debugger
-        console.log(this.$store.state.userState)
-      },
-      toPage(name) {
-        this.$router.push({
-          name: name
         })
-      },
-      showList() {
-        this.isShowCartList = true
-      },
-      hideList() {
-        this.isShowCartList = false
-      },
-      showNews() {
-        this.isShowNewsList = true
-      },
-      hideNews() {
-        this.isShowNewsList = false
-      },
-      toInformation() {
-        this.$router.push({
-          path: '/user/personal/information'
-        })
-      },
-      // 退出登录
-      logout() {
-        let _this = this;
-        let iRequest = new inf.IRequest();
-        iRequest.cls = "LoginRegistrationModule";
-        iRequest.method = "logout";
-        iRequest.param.token = localStorage.getItem("identification")
-        this.$refcallback(
-          "userServer",
-          iRequest,
-          new this.$iceCallback(
-            function result(result) {
-              if(result.code === 200) {
-                _this.$message.success(result.data);
-                _this.$store.commit("SET_LOGOUT");
-                // 跳转页面
-                _this.$router.push({
-                  path: '/user/login'
-                })
-              }else {
-                _this.$message.error(result.message);
-              }
-            }
-          )
-        );
-      },
+      );
     }
   }
+};
 </script>
 <style lang='less'>
 @import "../../../components/fspace-ui/container/index.less";
@@ -274,7 +304,7 @@ li {
   color: #999999;
 }
 .immediately {
-  color: rgb(255, 0, 54)!important;
+  color: rgb(255, 0, 54) !important;
 }
 /* 登录头部 */
 .login-header {
@@ -294,11 +324,11 @@ li {
   display: inline-block;
   width: 365px;
 }
-.header-left a{
+.header-left a {
   margin-right: 15px;
   color: #999999;
 }
-.header-left i{
+.header-left i {
   margin-right: 5px;
 }
 .header-right {
@@ -308,13 +338,13 @@ li {
   /* margin-right: 50px; */
 }
 .drop-down {
-  .position(relative,0px,0px);
+  .position(relative, 0px, 0px);
 }
-.margin-right0{
-  margin-right: 0px!important;
+.margin-right0 {
+  margin-right: 0px !important;
 }
-.margin-left0{
-  margin-left: 0px!important;
+.margin-left0 {
+  margin-left: 0px !important;
 }
 .sign {
   position: relative;
@@ -325,48 +355,48 @@ li {
   border-radius: 50%;
   background: #ed3025;
 }
-.header-right a{
+.header-right a {
   float: right;
   display: inline-block;
   margin-left: 15px;
   color: #999999;
 }
 .news-box {
-  .position(absolute,22px,-95px);
-  .container-size(inline-block,250px,300px,0px,0px);
-  .container-color(#ffffff,1px solid transparent,#666666);
+  .position(absolute, 22px, -95px);
+  .container-size(inline-block, 250px, 300px, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
   opacity: 1;
   z-index: 1;
 }
 .news-ul {
-  .position(absolute,0px,0px);
-  .container-size(inline-block,250px,248px,0px,0px);
-  .container-color(#ffffff,1px solid transparent,#666666);
+  .position(absolute, 0px, 0px);
+  .container-size(inline-block, 250px, 248px, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
   overflow: auto;
 }
-.news-ul li{
+.news-ul li {
   // .position(absolute,0px,0px);
-  .container-size(inline-block,231px,236px,0px,0px);
-  .container-color(#ffffff,1px solid transparent,#666666);
-  p{
+  .container-size(inline-block, 231px, 236px, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
+  p {
     height: 40px;
     line-height: 40px;
     overflow: hidden;
     padding: 0px 8px;
   }
   p:hover {
-    background: #ED2F26;
+    background: #ed2f26;
     color: #ffffff;
   }
 }
 .see-news {
   position: absolute;
   bottom: 0px;
-  .container-size(inline-block,250px,50px,0px,0px);
+  .container-size(inline-block, 250px, 50px, 0px, 0px);
 }
 .see-news button {
-  .button-size (246px,50px,50px,16px,0px,0px);
-  .button-color (1px solid transparent,#ED2F26,#ffffff);
+  .button-size (246px, 50px, 50px, 16px, 0px, 0px);
+  .button-color (1px solid transparent, #ed2f26, #ffffff);
 }
 .medicine-names {
   display: block;
@@ -381,13 +411,13 @@ li {
   padding-top: 20px;
   background: #ffffff;
 }
-.spike{
+.spike {
   text-indent: 29.6%;
 }
-.spike a{
+.spike a {
   margin-left: 15px;
   margin-right: 15px;
-  color: #999999!important;
+  color: #999999 !important;
 }
 .medicine-name {
   display: inline-block;
@@ -398,8 +428,8 @@ li {
 .medicine-name span {
   color: black;
 }
-.medicine-name img{
-  width:195px;
+.medicine-name img {
+  width: 195px;
   height: 62px;
 }
 .medicine-search {
@@ -414,31 +444,31 @@ li {
 /* .search-box{
   border-radius: 50%;
 } */
-.search-btn{
+.search-btn {
   width: 70px;
   height: 30px;
   background-color: rgb(255, 0, 54);
   border: none;
-  outline:none;
+  outline: none;
   color: #ffffff;
 }
-.search-btn:hover{
+.search-btn:hover {
   background-color: rgb(255, 0, 54);
   color: #ffffff;
 }
 .search-btn:active {
   background-color: rgb(255, 0, 54);
   border: none;
-  outline:none;
+  outline: none;
   color: #ffffff;
 }
-.cart-btn{
+.cart-btn {
   position: relative;
   float: right;
   width: 154px;
   height: 42px;
   background: #ffffff;
-  border: 1px solid rgb(255,0,54);
+  border: 1px solid rgb(255, 0, 54);
   border-radius: 20px;
   margin-top: 8px;
   color: #666666;
@@ -449,12 +479,12 @@ li {
   left: 65px;
   font-size: 16px;
 }
-.cart-btn:hover{
+.cart-btn:hover {
   color: #666666;
-  border: 1px solid rgb(255,0,54);
+  border: 1px solid rgb(255, 0, 54);
   /* background: rgb(255,0,54); */
 }
-.cart-btn .cart-count{
+.cart-btn .cart-count {
   position: absolute;
   top: 2px;
   left: 42px;
@@ -463,10 +493,10 @@ li {
   line-height: 20px;
   text-align: center;
   border-radius: 50%;
-  background: rgb(255,0,54);
+  background: rgb(255, 0, 54);
   color: #ffffff;
 }
-.cart-btn i{
+.cart-btn i {
   position: absolute;
   top: 8px;
   left: 30px;
@@ -474,45 +504,45 @@ li {
   font-size: 22px;
 }
 .cart-down {
-  .container-size(block,300px,370px,0px,0px);
-  .position(relative,41px,-55px);
+  .container-size(block, 300px, 370px, 0px, 0px);
+  .position(relative, 41px, -55px);
   overflow: auto;
   z-index: 99;
   opacity: 1;
 }
 .cart-down-ul {
-  .container-size(block,300px,310px,0px,0px);
+  .container-size(block, 300px, 310px, 0px, 0px);
   overflow: auto;
 }
 .cart-down-list {
-  .container-size(block,283px,80px,0px,0px);
-  .position(relative,0px,0px);
-  background:#ffffff;
+  .container-size(block, 283px, 80px, 0px, 0px);
+  .position(relative, 0px, 0px);
+  background: #ffffff;
   line-height: 80px;
 }
 .cart-img {
-  .position(absolute,5px,5px);
-  .container-size(inline-block,70px,70px,0px,0px);
+  .position(absolute, 5px, 5px);
+  .container-size(inline-block, 70px, 70px, 0px, 0px);
 }
 .cart-goods-text {
-  .position(absolute,5px,80px);
+  .position(absolute, 5px, 80px);
   display: inline-block;
   width: 180px;
-  .p-size(40px,40px,14px,left,0px,#666666);
+  .p-size(40px, 40px, 14px, left, 0px, #666666);
   overflow: hidden;
 }
 .cart-goods-count {
-  .position(absolute,35px,80px);
-  .p-size(40px,40px,14px,left,0px,#666666);
+  .position(absolute, 35px, 80px);
+  .p-size(40px, 40px, 14px, left, 0px, #666666);
 }
 .del-cart-goods {
-  .position(absolute,35px,260px)!important;
-  font-size: 14px!important;
+  .position(absolute, 35px, 260px) !important;
+  font-size: 14px !important;
   color: #666666;
 }
 .total-settlement {
-  .container-size(inline-block,280px,70px,0px,0px);
-  .position(absolute,300px,0px);
+  .container-size(inline-block, 280px, 70px, 0px, 0px);
+  .position(absolute, 300px, 0px);
   background: #ffffff;
   line-height: 70px;
 }
@@ -523,12 +553,12 @@ li {
   color: #ed3025;
 }
 
-.settlement-btn{
-  .button-size (120px,45px,45px,16px,0px,5px);
-  .button-color(none,#ed3025,#ffffff);
-   float: right;
-   margin-top: 12px;
-   margin-right: 10px;
+.settlement-btn {
+  .button-size (120px, 45px, 45px, 16px, 0px, 5px);
+  .button-color(none, #ed3025, #ffffff);
+  float: right;
+  margin-top: 12px;
+  margin-right: 10px;
 }
 .nav-box {
   display: block;
@@ -537,11 +567,11 @@ li {
   margin: 0 auto;
   background: #ffffff;
 }
-.nav-box .goods-type{
+.nav-box .goods-type {
   display: inline-block;
-  width: 196px!important;
+  width: 196px !important;
   height: 40px;
-  background: rgb(255,0,54);
+  background: rgb(255, 0, 54);
   line-height: 40px;
   text-align: center;
   color: #ffffff;
@@ -553,14 +583,14 @@ li {
   font-size: 16px;
   color: black;
 }
-.nav-box a:hover{
-  color: rgb(255,0,54);
+.nav-box a:hover {
+  color: rgb(255, 0, 54);
 }
 .ant-input {
   width: 84% !important;
   height: 38px;
   border: none;
-  border-radius: 18px 0 0 18px!important;
+  border-radius: 18px 0 0 18px !important;
 }
 /* .ant-btn {
   background-color: rgb(255, 0, 54);
@@ -590,7 +620,7 @@ li {
       margin-right: 10%;
     }
     a:nth-child(2) {
-      color: #999999
+      color: #999999;
     }
   }
   .divider {
@@ -598,5 +628,4 @@ li {
     background: #73a1f3;
   }
 }
-
 </style>
