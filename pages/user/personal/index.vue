@@ -14,7 +14,7 @@
           >
             <a-input
               v-decorator="[
-                'note',
+                'storeName',
                 {rules: [{ required: true, message: '请填写营业执照上一致的药店名!' }]}
               ]"
             />
@@ -25,7 +25,7 @@
             :wrapper-col="{ span: 12 }"
           >
             <a-cascader :options="options" @change="onChange" placeholder="请选择省市区" class="city"  v-decorator="[
-                    'shiqu',
+                    'addressCode',
                     {rules: [{ required: true, message: '请选择省市区' }]}
                   ]"/>
           </a-form-item>
@@ -34,7 +34,7 @@
                 :label-col="{ span: 5 }"
                 :wrapper-col="{ span: 12 }"
               >
-                <a-input
+                <a-textarea
                 placeholder="请填写营业执照上一致的药店地址"
                   v-decorator="[
                     'address',
@@ -42,72 +42,85 @@
                   ]"
                 />
           </a-form-item>
-          <p class="authentication">认证状态: <a-icon type="profile" /> <span>已认证</span>  </p>
+          <p class="authentication">认证状态: <a-icon type="profile" /> <span>{{ authenticationMessage }}</span>  </p>
           <h2 class="certificate-title">药店资质</h2>
           <a-form-item
             v-bind="formItemLayout"
             class="upload"
           >
             <div class="dropbox">
-              <a-upload-dragger
-                v-decorator="['dragger', {
-                  valuePropName: 'fileList',
-                  getValueFromEvent: normFile,
-                }]"
-                name="files"
-                action="/upload.do"
-              >
-                <p class="ant-upload-drag-icon">
-                  <a-icon type="plus" />
-                </p>
-                <p class="ant-upload-text">
-                  营业执照
-                </p>
-              </a-upload-dragger>
+             <a-upload
+              v-decorator="[
+               'businessImg',
+               { rules: [{ required: true, message: '请上传营业执照' }] }
+              ]"
+              name="avatar"
+              :headers= headers
+              listType="picture-card"
+              class="avatar-uploader"
+              :showUploadList="false"
+              action="http://192.168.1.145:8080/upload"
+              :beforeUpload="beforeUpload"
+              @change="handleChange"
+            >
+              <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+              <div v-else>
+                  <a-icon :type="loading ? 'loading' : 'plus'" />
+                  <div class="ant-upload-text">营业执照</div>
+              </div>
+            </a-upload>
             </div>
           </a-form-item>
           <a-form-item
           class="upload"
             v-bind="formItemLayout"
           >
-            <div class="dropbox">
-              <a-upload-dragger
-                v-decorator="['dragger', {
-                  valuePropName: 'fileList',
-                  getValueFromEvent: normFile,
-                }]"
-                name="files"
-                action="/upload.do"
-              >
-                <p class="ant-upload-drag-icon">
-                  <a-icon type="plus" />
-                </p>
-                <p class="ant-upload-text">
-                 药品经营许可证
-                </p>
-              </a-upload-dragger>
-            </div>
+            <a-upload
+              v-decorator="[
+               'GSPImg',
+               { rules: [{ required: true, message: '请上传药品经营许可证' }] }
+              ]"
+              name="avatar"
+              :headers= headers
+              listType="picture-card"
+              class="avatar-uploader"
+              :showUploadList="false"
+              action="http://192.168.1.145:8080/upload"
+              :beforeUpload="beforeUpload"
+              @change="handleChange"
+            >
+              <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+              <div v-else>
+                  <a-icon :type="loading ? 'loading' : 'plus'" />
+                  <div class="ant-upload-text">药品经营许可证</div>
+              </div>
+            </a-upload>
           </a-form-item>
           <a-form-item
           class="upload"
             v-bind="formItemLayout"
           >
             <div class="dropbox">
-              <a-upload-dragger
-                v-decorator="['dragger', {
-                  valuePropName: 'fileList',
-                  getValueFromEvent: normFile,
-                }]"
-                name="files"
-                action="/upload.do"
+               <a-upload
+                v-decorator="[
+                'DrugImg',
+                { rules: [{ required: true, message: '请上传GSP认证' }] }
+                ]"
+                name="avatar"
+                :headers= headers
+                listType="picture-card"
+                class="avatar-uploader"
+                :showUploadList="false"
+                action="http://192.168.1.145:8080/upload"
+                :beforeUpload="beforeUpload"
+                @change="handleChange"
               >
-                <p class="ant-upload-drag-icon">
-                  <a-icon type="plus" />
-                </p>
-                <p class="ant-upload-text">
-                  GSP认证
-                </p>
-              </a-upload-dragger>
+                <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+                <div v-else>
+                    <a-icon :type="loading ? 'loading' : 'plus'" />
+                    <div class="ant-upload-text">GSP认证</div>
+              </div>
+              </a-upload>
             </div>
           </a-form-item>
           <!-- <button class="save-btn">保存</button> -->
@@ -152,52 +165,119 @@ function getBase64 (img, callback) {
   reader.readAsDataURL(img)
 }
 export default {
-    data() {
-        return {
-          isSeting: true,
-          formItemLayout: {
-            labelCol: {
-              xs: { span: 24 },
-              sm: { span: 8 },
-            },
-            wrapperCol: {
-              xs: { span: 24 },
-              sm: { span: 16 },
-            },
-          },
-          form: this.$form.createForm(this),
-          loading: false,
-          imageUrl: '',
-          options: [{
-                  value: 'zhejiang',
-                  label: 'Zhejiang',
-                  children: [{
-                  value: 'hangzhou',
-                  label: 'Hangzhou',
-                  children: [{
-                      value: 'xihu',
-                      label: 'West Lake',
-                  }],
-                  }],
-              }, {
-                  value: 'jiangsu',
-                  label: 'Jiangsu',
-                  children: [{
-                  value: 'nanjing',
-                  label: 'Nanjing',
-                  children: [{
-                      value: 'zhonghuamen',
-                      label: 'Zhong Hua Men',
-                  }],
-                  }],
-              }]
-                  }
+  computed: {
+    storeInfo () {
+      return this.$store.state.user;
+    },
   },
-    methods: {
-      onChange(value) {
-        console.log(value);
-      },
-       handleChange (info) {
+  watch: {
+    storeInfo (val) {
+      this.form.setFieldsValue(val);
+    }
+  },
+  data() {
+      return {
+        businessImg: '',
+        GSPImg: '',
+        DrugImg: '',
+        authenticationMessage: '',
+        headers: {
+          "specify-path": "/2/536862982/",
+          "specify-filename": "1.jpg"
+        },
+        storeName: '',
+        addressCode: '',
+        address: '',
+        uploadInfo: {},
+        isSeting: true,
+        formItemLayout: {
+          labelCol: {
+            xs: { span: 24 },
+            sm: { span: 8 },
+          },
+          wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 16 },
+          },
+        },
+        form: this.$form.createForm(this),
+        loading: false,
+        imageUrl: '',
+        options: [{
+                value: 'zhejiang',
+                label: 'Zhejiang',
+                children: [{
+                value: 'hangzhou',
+                label: 'Hangzhou',
+                children: [{
+                    value: 'xihu',
+                    label: 'West Lake',
+                }],
+                }],
+            }, {
+                value: 'jiangsu',
+                label: 'Jiangsu',
+                children: [{
+                value: 'nanjing',
+                label: 'Nanjing',
+                children: [{
+                    value: 'zhonghuamen',
+                    label: 'Zhong Hua Men',
+                }],
+                }],
+            }]
+                }
+  },
+  mounted() {
+    // this.getBasicInfo()
+  },
+  methods: {
+    fileServerInfo() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "InformationModule";
+      iRequest.method = "fileServerInfo";
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            console.log(result)
+            if(result.code === 200) {
+              _this.uploadInfo = map
+            }else {
+              // 文件地址获取失败 .
+
+            }
+          }
+        )
+      );
+    },
+    getBasicInfo(values) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "InformationModule";
+      iRequest.method = "basicInfo";
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              _this.$store.dispatch('setUser', result.data)
+              _this.form.setFieldsValue(result.data)
+              _this.authenticationMessage = result.data.authenticationMessage
+            }else {
+            }
+          }
+        )
+      );
+    },
+    onChange(value) {
+      console.log(value);
+    },
+    handleChange (info) {
       if (info.file.status === 'uploading') {
         this.loading = true
         return
@@ -210,11 +290,36 @@ export default {
         })
       }
     },
-     handleSubmit (e) {
+    handleSubmit (e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          let _this = this;
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "StoreManageModule";
+          iRequest.method = "updateStoreInfo";
+          iRequest.param.token = localStorage.getItem("identification")
+          iRequest.param.json = JSON.stringify({
+            storeName: '红牛旗舰店',
+            addressCode: 100000,
+            address: '红牛企业广场',
+            longitude: 0,
+            latitude: 0
+          })
+          this.$refcallback(
+            "userServer",
+            iRequest,
+            new this.$iceCallback(
+              function result(result) {
+                if(result.code === 200) {
+                  console.log(result)
+                }else {
+                  // 文件地址获取失败 .
+
+                }
+              }
+            )
+          );
         }
       });
     },
@@ -223,12 +328,19 @@ export default {
       if (!isJPG) {
         this.$message.error('You can only upload JPG file!')
       }
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const isLt2M = file.size / 1024 / 1024 < 5
       if (!isLt2M) {
         this.$message.error('Image must smaller than 2MB!')
       }
       return isJPG && isLt2M
-    }
+    },
+    normFile  (e) {
+      console.log('Upload event:', e);
+      if (Array.isArray(e)) {
+        return e;
+      }
+      return e && e.fileList;
+    },
   }
 }
 </script>

@@ -1,5 +1,6 @@
 
 import { iceGridInstanceName, serverIp, serverPort, CALLBACK_ACTION } from '../config/index'
+// import Ice from '../static/Ice'
 
 let communication;
 

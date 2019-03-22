@@ -90,6 +90,12 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    storeInfo () {
+      console.log('personal' +  this.$store.state.user)
+      return this.$store.state.user;
+    },
+  },
   data() {
     return {
      

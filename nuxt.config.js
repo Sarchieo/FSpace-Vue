@@ -44,8 +44,7 @@ module.exports = {
   plugins: [
     '@/plugins/antd-ui',
     { src: '~/plugins/vue-lazyload.js', ssr: true },
-    { src: '~/plugins/fs-plugin.js', ssr: false },
-    { src: '~plugins/vue-cookie', ssr: false, injectAs: 'cookie'}
+    { src: '~/plugins/fs-plugin.js', ssr: false }
   ],
   /*
   ** Nuxt.js modules

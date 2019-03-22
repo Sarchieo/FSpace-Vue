@@ -138,7 +138,6 @@ export default {
     };
   },
   mounted() {
-    this.vueTest()
   },
   beforeCreate() {
     this.form = this.$form.createForm(this);
@@ -245,12 +244,14 @@ export default {
         smsCode: values.smsCode,
         type: type
       }) 
-      iRequest.param.token = '1234'
+      debugger
+      iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         "userServer",
         iRequest,
         new this.$iceCallback(
           function result(result) {
+            debugger
             if(result.code === 200) {
               _this.$message.success(result.data);
               // 跳转页面
@@ -263,12 +264,6 @@ export default {
           }
         )
       );
-    },
-    vueTest() {
-      this.$store.dispatch('setUser', {
-        userName: '',
-        userPhone: '22222'
-      })
     }
   }
 };

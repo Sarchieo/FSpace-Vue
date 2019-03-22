@@ -2,6 +2,14 @@
   <div>
     <!-- 首页 -->
     <a-layout-header v-if='type === "home"'>
+       <a-modal
+        title="提示"
+        :visible="isDisTip"
+        @ok="handleOk"
+        @cancel="handleCancel"
+      >
+        <p>当前门店信息未完善, 是否前往门店信息完善信息</p>
+      </a-modal>
       <div class="header-title">
         <div class="header-left">
           <a-icon type="environment" v-show="isLogin">长沙</a-icon>
@@ -19,15 +27,6 @@
             <div class="news-box" v-show="isShowNewsList">
               <ul class="news-ul">
                 <li>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
                   <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
                 </li>
               </ul>
@@ -132,8 +131,14 @@
   export default {
     name: 'f-space-header',
     props: ['type'],
+    computed: {
+      storeInfo () {
+        return this.$store.state.user;
+      },
+    },
     data () {
       return {
+        isDisTip: false,
         isShowNewsList: false,
         isShowCartList: false,
         isLogin: false,
@@ -185,11 +190,24 @@
     },
     mounted() {
       this.init()
+      this.getBasicInfo()
     },
     methods: {
       init() {
-        debugger
         console.log(this.$store.state.userState)
+        this.isDisTip = localStorage.getItem('isDisTip') ? false : true
+        if(this.isDisTip) {
+          localStorage.setItem('isDisTip', '1')
+        }
+      },
+      handleOk() {
+        // 跳转企业中心页面
+        this.$router.push({
+          path: '/user/personal'
+        })
+      },
+      handleCancel() {
+
       },
       toPage(name) {
         this.$router.push({
@@ -212,6 +230,29 @@
         this.$router.push({
           path: '/user/personal/information'
         })
+      },
+      async getBasicInfo() {
+        let _this = this;
+        let iRequest = new inf.IRequest();
+        iRequest.cls = "InformationModule";
+        iRequest.method = "basicInfo";
+        iRequest.param.token = localStorage.getItem("identification")
+        this.$refcallback(
+          "userServer",
+          iRequest,
+          new this.$iceCallback(
+            function result(result) {
+              debugger
+              console.log(result)
+              if(result.code === 200) {
+                // 设置登录
+                _this.$store.dispatch('setUserState')
+                localStorage.setItem('storeInfo', result.data)
+              }else {
+              }
+            }
+          )
+        );
       },
       // 退出登录
       logout() {
