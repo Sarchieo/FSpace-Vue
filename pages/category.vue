@@ -294,11 +294,21 @@ li {
 }
 .brand-list a,.brand-lists a{
   float: left;
-  .container-size(inline-block,110px,auto,0,0px);
+  .container-size(inline-block,110px,auto,0,5px);
+  text-align: center;
+}
+.brand-lists a:hover{
+  background:#ed3025;
+  color: #ffffff;
+}
+.brand-list a:hover{
+  background:#ed3025;
+  color: #ffffff;
 }
 .brand-list span,.brand-lists span{
   float: left;
   width: 110px;
+  text-align: center;
 }
 .goods-list-box li {
   .container-size(inline-block,228px,280px,6.5px 6.5px,0px);

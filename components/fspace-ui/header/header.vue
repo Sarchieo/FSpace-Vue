@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 首页 -->
-    <a-layout-header v-if="type === "home"">
-      <div ref="home">
-        <div class="header-title">
+    <a-layout-header v-if="type === 'home'">
+      <div>
+        <div class="header-title" v-show="isShowHeader">
           <div class="header-left">
             <a-icon type="environment" v-show="isLogin">长沙</a-icon>
             <a>欢迎来到一块医药</a>
@@ -21,6 +21,7 @@
             >
               我的消息
               <span class="sign"></span>
+               <!-- v-show="isShowNewsList" -->
               <div class="news-box" v-show="isShowNewsList">
                 <ul class="news-ul">
                   <li>
@@ -60,19 +61,19 @@
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
-            <a>首页</a>
+            <a @click="toPage('index')">首页</a>
             <div style="clear:both;"></div>
           </div>
         </div>
-        <div class="medicine-names">
-          <div class="medicine-name-box">
+        <div class="medicine-names" ref="home">
+          <div class="medicine-name-box" ref="nameBox">
             <div class="medicine-name">
               <img src="../../../assets/img/u49.png" alt>
             </div>
             <div class="medicine-search">
               <div class="search-box">
-                <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
-                <button class="search-btn" @click="toPage('category')">搜索</button>
+                <a-input v-model="goodsClass" placeholder="药品名称/药品通用名/药品助记码" class="search-input" @keyup.enter="toGoods('category')"/>
+                <button class="search-btn" @click="toGoods('category')">搜索</button>
               </div>
             </div>
             <div
@@ -107,7 +108,7 @@
                 </div>
               </div>
             </div>
-            <p class="spike">
+            <p class="spike" v-show="isShowHeader">
               <a href>新人专享</a>
               <span>|</span>
               <a href>秒杀</a>
@@ -115,7 +116,7 @@
               <a href>一块购</a>
               <span>|</span>
             </p>
-            <div class="nav-box">
+            <div class="nav-box" v-show="isShowHeader">
               <a href class="goods-type">商品分类</a>
               <a href>新人专享</a>
               <a href>新品上线</a>
@@ -127,7 +128,7 @@
       </div>
     </a-layout-header>
     <!-- 登录 -->
-    <a-layout-header v-if="type === "login"" class="login-header">
+    <a-layout-header v-if="type === 'login'" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
           <img src="../../../assets/img/u49.png" alt>
@@ -140,7 +141,7 @@
       </div>
     </a-layout-header>
     <!-- 注册 -->
-    <a-layout-header v-if="type === "register"" class="login-header">
+    <a-layout-header  v-if="type === 'register'" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
           <img src="../../../assets/img/u49.png" alt>
@@ -165,6 +166,8 @@
     },
     data () {
       return {
+        goodsClass: '',
+        isShowHeader: true,
         isDisTip: false,
         isShowNewsList: false,
         isShowCartList: false,
@@ -218,6 +221,7 @@
     mounted() {
       this.init()
       this.getBasicInfo()
+      window.addEventListener('scroll', this.handleScroll);
     },
     methods: {
       init() {
@@ -226,6 +230,27 @@
         if(this.isDisTip) {
           localStorage.setItem('isDisTip', '1')
         }
+      },
+      handleScroll () {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      var home = this.$refs.home.style
+      var nameBox = this.$refs.nameBox.style
+      if (scrollTop >= 170) {
+        home.position = 'fixed';
+        home.top = '0px';
+        home.opacity = '1'
+        home.zIndex = '1000'
+        home.width = '100%'
+        home.height = '100px'
+        nameBox.height = '70px'
+        this.isShowHeader = false 
+      } else {
+        home.position = ''
+        home.top = ''
+        home.height = '142px'
+        nameBox.height = '141px'
+        this.isShowHeader = true
+      }
       },
       handleOk() {
         // 跳转企业中心页面
@@ -237,6 +262,15 @@
 
       },
       toPage(name) {
+        this.$router.push({
+          name: name
+        })
+      },
+      toGoods(name) {
+        if (this.goodsClass === '') {
+          this.$message.warning('请输入您需要搜索的药品名称');
+          return
+        }
         this.$router.push({
           name: name
         })
@@ -401,21 +435,25 @@ li {
 }
 .news-box {
   .position(absolute, 22px, -95px);
-  .container-size(inline-block, 250px, 300px, 0px, 0px);
+  .container-size(inline-block, 250px, auto, 0px, 0px);
   .container-color(#ffffff, 1px solid transparent, #666666);
+  min-height: 300px;
   opacity: 1;
   z-index: 1;
 }
 .news-ul {
   .position(absolute, 0px, 0px);
-  .container-size(inline-block, 250px, 248px, 0px, 0px);
+  .container-size(inline-block, 250px, auto, 0px, 0px);
   .container-color(#ffffff, 1px solid transparent, #666666);
   overflow: auto;
+  max-height:245px;
+  min-height: 100px;
 }
 .news-ul li {
-  // .position(absolute,0px,0px);
-  .container-size(inline-block, 231px, 236px, 0px, 0px);
+  .container-size(inline-block, 231px, auto, 0px, 0px);
   .container-color(#ffffff, 1px solid transparent, #666666);
+  max-height:245px;
+  min-height: 100px;
   p {
     height: 40px;
     line-height: 40px;
@@ -438,12 +476,13 @@ li {
 }
 .medicine-names {
   display: block;
+  width: 100%;
   background: #ffffff;
   border-bottom: 1px solid #e0e0e0;
 }
 .medicine-name-box {
   display: block;
-  width: 1190px;
+  width: 1200px;
   height: 141px;
   margin: 0 auto;
   padding-top: 20px;
@@ -557,6 +596,9 @@ li {
   .position(relative,0px,0px);
   background:#ffffff;
   line-height: 80px;
+}
+.cart-down-list:hover {
+  background: #e0e0e0;
 }
 .cart-img {
   .position(absolute,5px,5px);

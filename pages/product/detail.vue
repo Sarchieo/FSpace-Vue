@@ -306,189 +306,7 @@
           </div>
         </a-layout-content>
         <!-- 页脚 -->
-        <a-layout-footer>
-          <div class="page-footer">
-            <div class="server-list">
-              <ul class="server-ui">
-                <li>
-                  <a href>
-                    <span>优</span>
-                    <h3>品质保障</h3>
-                    <p>品质护航 购物无忧</p>
-                  </a>
-                </li>
-                <li>
-                  <a href>
-                    <span>七</span>
-                    <h3>七天无理由退换货</h3>
-                    <p>为您提供售后无忧保障</p>
-                  </a>
-                </li>
-                <li>
-                  <a href>
-                    <span>特</span>
-                    <h3>特色服务体验</h3>
-                    <p>为您呈现不一样的服务</p>
-                  </a>
-                </li>
-                <li>
-                  <a href>
-                    <span>帮</span>
-                    <h3>帮助中心</h3>
-                    <p>您的购物指南</p>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="shoping-guide">
-              <ul class="shoping-list">
-                <li>
-                  <ul class="shoping-ui">
-                    <li class="first-server">购物指南</li>
-                    <li>
-                      <a href>免费注册</a>
-                    </li>
-                    <li>
-                      <a href>开通支付宝</a>
-                    </li>
-                    <li>
-                      <a href>支付宝充值</a>
-                    </li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                  </ul>
-                </li>
-                <li>
-                  <ul class="shoping-ui">
-                    <li class="first-server">一块医药保障</li>
-                    <li>
-                      <a href>发票保障</a>
-                    </li>
-                    <li>
-                      <a href>售后规则</a>
-                    </li>
-                    <li>
-                      <a href>缺货赔付</a>
-                    </li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                  </ul>
-                </li>
-                <li>
-                  <ul class="shoping-ui">
-                    <li class="first-server">支付方式</li>
-                    <li>
-                      <a href>快捷支付</a>
-                    </li>
-                    <li>
-                      <a href>信用卡</a>
-                    </li>
-                    <li>
-                      <a href>余额宝</a>
-                    </li>
-                    <li>
-                      <a href>蚂蚁花呗</a>
-                    </li>
-                    <li>
-                      <a href>货到付款</a>
-                    </li>
-                    <li></li>
-                  </ul>
-                </li>
-                <li>
-                  <ul class="shoping-ui">
-                    <li class="first-server">商家服务</li>
-                    <li>
-                      <a href>一块医药规则</a>
-                    </li>
-                    <li>
-                      <a href>商家入驻</a>
-                    </li>
-                    <li>
-                      <a href>商家中心</a>
-                    </li>
-                    <li>
-                      <a href>一块智库</a>
-                    </li>
-                    <li>
-                      <a href>物流服务</a>
-                    </li>
-                    <li>
-                      <a href>运营服务</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="black-footer">
-            <div>
-              <p class="footer-record">
-                <a href>关于一块医药</a>
-                <a href>帮助中心</a>
-                <a href>开放平台</a>
-                <a href>诚聘英才</a>
-                <a href>联系我们</a>
-                <a href>网站合作</a>
-                <a href>法律声明</a>
-                <a href>隐私权政策</a>
-                <a href>知识产权</a>
-                <a href>廉政举报</a>
-              </p>
-              <p class="footer-record">
-                <a href>湖南空间折叠 |</a>
-                <a href>淘宝网 |</a>
-                <a href>天猫 |</a>
-                <a href>聚划算 |</a>
-                <a href>全球速卖通 |</a>
-                <a href>阿里巴巴国际交易市场 |</a>
-                <a href>1688 |</a>
-                <a href>阿里妈妈 |</a>
-                <a href>飞猪 |</a>
-                <a href>阿里云计算 |</a>
-                <a href>AliOS |</a>
-                <a href>阿里通信 |</a>
-                <a href>万网 |</a>
-                <a href>高德 |</a>
-                <a href>UC |</a>
-                <a href>友盟 |</a>
-                <a href>虾米 |</a>
-                <a href>钉钉 |</a>
-                <a href>支付宝</a>
-              </p>
-              <p class="licence">
-                <span>增值电信业务经营许可证：</span>
-                <a href>湘A2-20110446</a>
-                <span>市场名称登记证：</span>
-                <span class="gongshang">工商网市字3301004119号</span>
-                <span>出版物网络交易平台服务经营备案证：</span>
-                <span>新出发湘备字第001号</span>
-              </p>
-              <p class="licence">
-                <span class="gongshang">互联网违法和不良信息举报电话： 0571-81683755 blxxjb@alibaba-inc.com</span>
-                <span>互联网药品信息服务资质证书编号：</span>
-                <a href>湘- (经营性) -2017-0005</a>
-                <span>
-                  <img v-lazy="'//img.alicdn.com/tps/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png'" alt>
-                </span>
-                <a href>湘公网安备33010002000120号</a>
-              </p>
-              <p class="licence">
-                <span>医疗器械网络交易服务第三方平台备案： (湘) 网械平台备字[2018]第00002号</span>
-                <span>互联网药品交易服务资格证书： 国A20150001</span>
-              </p>
-              <p class="licence">
-                <span class="gongshang">湖南省网络食品销售第三方平台提供者备案： 湘网食A33010002</span>
-                <a>12318举报</a>
-              </p>
-              <p class="licence">
-                <span>© 2003-2018 TMALL.COM 版权所有</span>
-              </p>
-            </div>
-          </div>
-        </a-layout-footer>
+        <f-space-footer></f-space-footer>
       </a-layout>
     </a-layout>
   </div>
@@ -498,11 +316,13 @@ import moment from "moment";
 const baseUrl =
   "https://raw.githubusercontent.com/vueComponent/ant-design-vue/master/components/vc-slick/assets/img/react-slick/";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
-import FSpaceButton from "../../components/fspace-ui/button/button"
+import FSpaceButton from "../../components/fspace-ui/button/button";
+import FSpaceFooter from "../../components/fspace-ui/footer";
 export default {
   components: {
     FSpaceHeader, 
-    FSpaceButton
+    FSpaceButton,
+    FSpaceFooter
   },
   data() {
     return {
@@ -768,7 +588,7 @@ li {
 /* 商品展示 */
 .goods-exhibition {
   width: 1190px;
-  height: 550px;
+  height: 560px;
   margin: 0 auto;
   padding-top: 20px;
 }
