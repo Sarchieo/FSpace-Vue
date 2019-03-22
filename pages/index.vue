@@ -175,6 +175,10 @@
         <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
           <a>限时抢购</a>
         </li>
+         <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
+          <a-icon type="to-top" />
+          <a>回到顶部</a>
+        </li>
         <li class="right-meun" :class="{'active': hotSells}" @click="hotSell()">
           <a>热销专区</a>
         </li>
@@ -184,19 +188,7 @@
         <li class="right-meun" :class="{'active': chooses}" @click="choose()">
           <a>为你精选</a>
         </li>
-        <!-- <a-anchor :affix="false"  :showInkInFixed='false' wrapperClass="wrap-right">
-          <a-anchor-link class="right-meun" href="#components-layout-demo-basic" title="商品分类" />
-          <a-anchor-link class="right-meun" href="#hot" title="限时抢购" />
-          <a-anchor-link class="right-meun" href="#top" title="热销专区" />
-          <a-anchor-link class="right-meun" href="#free-delivery" title="包邮专区" />
-          <a-anchor-link class="right-meun" href="#choice" title="为你精选" />
-          <a-back-top />
-        </a-anchor> -->
     </ul>
-    <button class="back-top" @click="goBackTop()" v-show="isShowBackTop">
-      <a-icon type="arrow-up" />
-      回到顶部
-    </button>
   </div>
 </template>
 <script>
@@ -212,6 +204,7 @@ export default {
   },
   data() {
     return {
+      isShowToTop: false,
       goodsTypes: false,
       limitedTimes: false,
       hotSells: false,
@@ -505,9 +498,15 @@ export default {
   methods: {
     handleScroll () {  
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      // var toTop = this.$refs['toTop'].style
+      // console.log(toTop)
       if (scrollTop > 0) {
+        this.isShowToTop = true
         this.isShowBackTop = true
+        toTop.height = '80px'
+        toTop.transition = 'height 2s'
       } else {
+        this.isShowToTop = false
         this.isShowBackTop = false
       }
       if (scrollTop > 100 && scrollTop < 610 ) {
@@ -552,6 +551,9 @@ export default {
       //     console.log(_this.GUID)
       //   })
       //  },500)
+    },
+    goTotop() {
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     goodsType() {
       document.body.scrollTop = document.documentElement.scrollTop = 100;
@@ -675,6 +677,9 @@ li {
   position: relative;
   width: 228px;
   height:280px;
+}
+.card:hover {
+  box-shadow:20px 10px 20px 10px #e0e0e0;
 }
 .surplus{
   .container-size(inline-block,225px,auto,0,0px);
@@ -951,13 +956,6 @@ li {
   height:400px;
   background: rgb(238,238,238);
 }
-.back-top {
-  position: fixed;
-  bottom: 5%;
-  right: 10px;
-  .button-size(100px,100px,80px,16px,0px,50%);
-  .button-color(1px solid transparent,#FF0036,#ffffff);
-}
 .sider-meun .right-meun{
   width: 85px;
   height: 80px;
@@ -965,6 +963,19 @@ li {
   text-align: center;
   background: #ffffff;
   color: #666;
+}
+.right-meun i {
+  display: block;
+  position: relative;
+  top: 7px;
+  font-size: 28px;
+}
+.to-top {
+  height: 0px;
+}
+.to-top a{
+  position: relative;
+  top: -10px;
 }
 .ant-anchor-link {
   padding: 7px 0 7px 16px;

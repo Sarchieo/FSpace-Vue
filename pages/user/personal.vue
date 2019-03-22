@@ -129,7 +129,7 @@ export default {
     left:0;
     right:0;
     margin:0 auto;
-    background: #ffffff;
+    background: #F0F2F5;
   }
   .footer {
     margin-top: 20px;
