@@ -9,14 +9,14 @@
           <div class="binnar-box">
             <a-carousel autoplay arrows>
               <div
-                slot="prevArrow" slot-scope="props"
+                slot="prevArrow"
                 class="custom-slick-arrow"
                 style="left: 10px;zIndex: 1"
               >
                 <a-icon type="left-circle" />
               </div>
               <div
-                slot="nextArrow" slot-scope="props"
+                slot="nextArrow"
                 class="custom-slick-arrow"
                 style="right: 10px"
               >
@@ -172,16 +172,16 @@
         <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
           <a>商品分类</a>
         </li> 
-        <li class="right-meun" :class="{'active': limitedTimes}"@click="limitedTime()">
+        <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
           <a>限时抢购</a>
         </li>
-        <li class="right-meun" :class="{'active': hotSells}"@click="hotSell()">
+        <li class="right-meun" :class="{'active': hotSells}" @click="hotSell()">
           <a>热销专区</a>
         </li>
         <li class="right-meun" :class="{'active': freeShippings}" @click="freeShipping()">
           <a>包邮专区</a>
         </li>
-        <li class="right-meun" :class="{'active': chooses}"@click="choose()">
+        <li class="right-meun" :class="{'active': chooses}" @click="choose()">
           <a>为你精选</a>
         </li>
         <!-- <a-anchor :affix="false"  :showInkInFixed='false' wrapperClass="wrap-right">
@@ -480,6 +480,24 @@ export default {
       ]
     };
   },
+  asyncData (context) {
+    // console.log(context)
+    // let _this = this;
+    // let iRequest = new inf.IRequest();
+    // console.log(iRequest)
+    // iRequest.cls = "InformationModule";
+    // iRequest.method = "basicInfo";
+    // iRequest.param.token = localStorage.getItem("identification")
+    // context.app.$iceCallback(
+    //   function result(result) {
+    //     console.log(result)
+    //     if(result.code === 200) {
+
+    //     }else {
+    //     }
+    //   }
+    // )
+  },
   mounted() {
     // this.initData();
     window.addEventListener('scroll', this.handleScroll);
@@ -588,12 +606,6 @@ export default {
       this.$router.push({
         path:'/activity/limited'
       })
-    },
-    async initData() {
-      debugger
-      if(!this.$store.getters.userState) {
-        this.getBasicInfo()
-      }
     }
   }
 };
@@ -833,8 +845,8 @@ li {
   text-align: center;
 }
 .count-down button {
-  .button-size (35px,35px,35px,14px,0,3px);
-  .button-color (1px solid transparent,#666666,#ffffff);
+  .button-size(35px,35px,35px,14px,0,3px);
+  .button-color(1px solid transparent,#666666,#ffffff);
    margin-right: 5px;
 }
 .over-distance {
@@ -845,8 +857,8 @@ li {
 }
 .see-whole {
   .position(absolute,220px,40px);
-  .button-size (150px,40px,40px,14px,0,30px);
-  .button-color (1px solid #c40000,#F2F2F2,#c40000);
+  .button-size(150px,40px,40px,14px,0,30px);
+  .button-color(1px solid #c40000,#F2F2F2,#c40000);
 }
 .brand-left a {
   width: 100%;
@@ -943,8 +955,8 @@ li {
   position: fixed;
   bottom: 5%;
   right: 10px;
-  .button-size (100px,100px,80px,16px,0px,50%);
-  .button-color (1px solid transparent,#FF0036,#ffffff);
+  .button-size(100px,100px,80px,16px,0px,50%);
+  .button-color(1px solid transparent,#FF0036,#ffffff);
 }
 .sider-meun .right-meun{
   width: 85px;

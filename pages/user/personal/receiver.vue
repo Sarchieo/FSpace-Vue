@@ -1,8 +1,12 @@
 <template>
    <div>
-      <p class="consignee">新增收货人</p>
+     <!-- 收货人编辑 -->
+     <a-modal
+      title="收货人编辑"
+      v-model="visible"
+      :footer= "null"
+    >
      <a-form
-        class="consignee-form"
         :form="form"
         @submit="handleSubmit"
       >
@@ -33,22 +37,29 @@
         <a-form-item
           :wrapper-col="{ span: 12, offset: 8 }"
         >
-          <a-button
-          class="submit-btn"
-            html-type="submit"
-          >
-            添加
-          </a-button>
         </a-form-item>
+        <a-button 
+          type="primary"
+          html-type="submit">
+          保存
+        </a-button>
      </a-form>
-     <p class="person-count">已保存 <span>4</span> 条收货人信息，最多保存 <span>5</span> 条</p>
+    </a-modal>
+      <div class="address-box">
+        <p class="my-address">默认收货地址</p>
+        <p class="store-info">收货门店：宁乡市汤惟丰沃达老百姓健康药房</p>
+        <p class="store-info">门店地址：湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号</p>
+      </div>
+      <!-- <p class="consignee">新增收货人</p> -->
+     
+     <p class="person-count">已保存 <span>4</span> 条收货人信息，最多保存 <span>5</span> 条</p> <a-button  type="primary" @click='addReceiver'>新增收货人</a-button>
      <a-table :columns="columns" :dataSource="data" :pagination="false" :bordered="true" style="width: 965px;margin-bottom: 100px;">
         <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
         <span slot="customTitle"> 收货人姓名</span>
         <span slot="tags" slot-scope="tags">
           <a-tag v-for="tag in tags" color="blue" :key="tag">{{tag}}</a-tag>
         </span>
-        <span slot="action" slot-scope="text, record">
+        <span slot="action">
           <a href="javascript:;">修改</a>
           <a-divider type="vertical" />
           <a href="javascript:;">删除</a>
@@ -58,11 +69,6 @@
           </a>
         </span>
       </a-table>
-      <div class="address-box">
-        <p class="my-address">我的收货地址</p>
-        <p class="store-info">收货门店：宁乡市汤惟丰沃达老百姓健康药房</p>
-        <p class="store-info">门店地址：湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号</p>
-      </div>
    </div>
 </template>
 <script>
@@ -102,6 +108,7 @@ const data = [{
 export default {
    data () {
     return {
+      visible: false,
       data,
       columns,
       form: this.$form.createForm(this),
@@ -116,6 +123,9 @@ export default {
     };
   },
   methods: {
+    addReceiver() {
+      this.visible = true
+    },
      callback (key) {
       console.log(key)
     },

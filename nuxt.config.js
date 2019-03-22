@@ -18,9 +18,9 @@ module.exports = {
     ],
     script: [
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Ice.js' },
-      { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Glacier2.js' },
-      { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/IceGrid.js' },
-      { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/IceStorm.js' },
+      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Glacier2.js' },
+      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/IceGrid.js' },
+      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/IceStorm.js' },
       { src: 'http://39.108.85.159:8080/wlq/iceInterfaces.js' }
     ]
   },
@@ -34,7 +34,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    'ant-design-vue/dist/antd.css',
+    'ant-design-vue/dist/antd.less',
     'assets/main.css'
   ],
 
@@ -63,10 +63,19 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-      // console.log('webpack config:', config)
-     if(ctx.isClient) {
-      config.module.unknownContextCritical = false
-     }
+      if(ctx.isClient) {
+        config.module.unknownContextCritical = false
+      }
+    },
+    loaders: {
+      less: {
+        modifyVars: {
+          'primary-color': '#f73030',
+          'link-color': '#f73030',
+          'border-radius-base': '1px',
+        },
+        javascriptEnabled: true
+      }
     }
   }
 }

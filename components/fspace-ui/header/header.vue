@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 首页 -->
-    <a-layout-header v-if="type === "home"">
+    <a-layout-header v-if="type === 'home'">
       <div ref="home">
         <div class="header-title">
           <div class="header-left">
@@ -60,7 +60,7 @@
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
-            <a>首页</a>
+             <nuxt-link to="/">首页</nuxt-link>
             <div style="clear:both;"></div>
           </div>
         </div>
@@ -127,27 +127,28 @@
       </div>
     </a-layout-header>
     <!-- 登录 -->
-    <a-layout-header v-if="type === "login"" class="login-header">
+    <a-layout-header v-if="type === 'login'" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
           <img src="../../../assets/img/u49.png" alt>
         </div>
         <div class="ant-layout-header-back">
-          <a>返回首页</a>
+          <nuxt-link to="/"><a>返回首页</a></nuxt-link>
+        
           <a>电商APP</a>
         </div>
         <div class="divider"></div>
       </div>
     </a-layout-header>
     <!-- 注册 -->
-    <a-layout-header v-if="type === "register"" class="login-header">
+    <a-layout-header v-if="type === 'register'" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
           <img src="../../../assets/img/u49.png" alt>
         </div>
         <div class="ant-layout-header-back">
           <a class="already">已有账号</a>
-          <a class="immediately">立即登录</a>
+           <nuxt-link to="/user/login"> <a class="immediately">立即登录</a></nuxt-link>
         </div>
         <div class="divider"></div>
       </div>
@@ -221,7 +222,6 @@
     },
     methods: {
       init() {
-        console.log(this.$store.state.userState)
         this.isDisTip = localStorage.getItem('isDisTip') ? false : true
         if(this.isDisTip) {
           localStorage.setItem('isDisTip', '1')
@@ -433,8 +433,8 @@ li {
   .container-size(inline-block, 250px, 50px, 0px, 0px);
 }
 .see-news button {
-  .button-size (246px, 50px, 50px, 16px, 0px, 0px);
-  .button-color (1px solid transparent, #ed2f26, #ffffff);
+  .button-size(246px, 50px, 50px, 16px, 0px, 0px);
+  .button-color(1px solid transparent, #ed2f26, #ffffff);
 }
 .medicine-names {
   display: block;
@@ -592,7 +592,7 @@ li {
 }
 
 .settlement-btn{
-  .button-size (120px,45px,45px,16px,0px,5px);
+  .button-size(120px,45px,45px,16px,0px,5px);
   .button-color(none,#ed3025,#ffffff);
    float: right;
    margin-top: 12px;

@@ -10,7 +10,7 @@
           <!-- 头部内容 -->
           <div class='header-personal'>
             <div class="left">
-              <p class="first">
+              <p>
                 <a-icon type="profile" />
                 长沙大药房
               </p>
@@ -19,8 +19,6 @@
                 湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号
               </p>
                <p>
-                 <a-icon type="user" />
-                周星星
                  <a-icon type="mobile" />
                 17621503679
               </p>
@@ -147,12 +145,8 @@ export default {
       height: 120px;
       text-align:center;
       margin-top: 10px;
-      .first {
-        border-radius: 20px 0px 0px 20px;
-        background: #fbdedd;
-      }
       p {
-       .p-size (40px,40px,14px,left,20px,#333333);
+       .p-size(40px,40px,14px,left,20px,#333333);
        i {
          margin-right: 15px;
          color: #ed3025;
@@ -173,9 +167,9 @@ export default {
         color: #666666;
       }
       p {
-        .p-size (40px,40px,14px,left,20px,#ed3025);
+        .p-size(40px,40px,14px,left,20px,#ed3025);
         span {
-          .container-size (inline-block,155px,auto,0,0);
+          .container-size(inline-block,155px,auto,0,0);
           text-align: center;
           color: #333333;
         }
@@ -193,7 +187,7 @@ export default {
         color: #666666;
       }
       p {
-        .p-size (40px,40px,14px,left,20px,#ed3025);
+        .p-size(40px,40px,14px,left,20px,#ed3025);
         span {
           display:inline-block;
           width: 100px;
