@@ -1,45 +1,55 @@
 <template>
   <div>
     <!-- 首页 -->
-    <a-layout-header v-if='type === "home"'>
-       <a-modal
-        title="提示"
-        :visible="isDisTip"
-        @ok="handleOk"
-        @cancel="handleCancel"
-      >
-        <p>当前门店信息未完善, 是否前往门店信息完善信息</p>
-      </a-modal>
-      <div class="header-title">
-        <div class="header-left">
-          <a-icon type="environment" v-show="isLogin">长沙</a-icon>
-          <a>欢迎来到一块医药</a>
-          <nuxt-link to='/user/login'>登录</nuxt-link>
-          <nuxt-link to='/user/register'>注册</nuxt-link>
-          <nuxt-link to='/user/personal'>我的一块</nuxt-link>
-        </div>
-        <div class="header-right">
-          <a>帮助中心</a>
-          <a class="margin-left0">在线客服</a>
-          <a class="margin-right0 margin-left0 drop-down" @mouseover="showNews()" @mouseout="hideNews()">
-            我的消息
-            <span class="sign"></span>
-            <div class="news-box" v-show="isShowNewsList">
-              <ul class="news-ul">
-                <li>
-                  <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                </li>
-              </ul>
-              <div class="see-news">
-                <button @click="toInformation()">查看详情</button>
+    <a-layout-header v-if="type === "home"">
+      <div ref="home">
+        <div class="header-title">
+          <div class="header-left">
+            <a-icon type="environment" v-show="isLogin">长沙</a-icon>
+            <a>欢迎来到一块医药</a>
+            <nuxt-link to="/user/login">登录</nuxt-link>
+            <nuxt-link to="/user/register">注册</nuxt-link>
+            <nuxt-link to="/user/personal">我的一块</nuxt-link>
+          </div>
+          <div class="header-right">
+            <a>帮助中心</a>
+            <a class="margin-left0">在线客服</a>
+            <a
+              class="margin-right0 margin-left0 drop-down"
+              @mouseover="showNews()"
+              @mouseout="hideNews()"
+            >
+              我的消息
+              <span class="sign"></span>
+              <div class="news-box" v-show="isShowNewsList">
+                <ul class="news-ul">
+                  <li>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
+                  </li>
+                </ul>
+                <div class="see-news">
+                  <button @click="toInformation()">查看详情</button>
+                </div>
               </div>
-            </div>
-          </a>
-          <a class="margin-right0">签到有礼<span class="sign"></span></a>
-          <a>我的订单</a>
-           <a-dropdown>
+            </a>
+            <a class="margin-right0">
+              签到有礼
+              <span class="sign"></span>
+            </a>
+            <a>我的订单</a>
+            <a-dropdown>
               <a class="ant-dropdown-link" href="#">
-                我的医药 <a-icon type="down" />
+                我的医药
+                <a-icon type="down"/>
               </a>
               <a-menu slot="overlay">
                 <a-menu-item>
@@ -49,61 +59,78 @@
                   <a href="javascript:;">浏览记录</a>
                 </a-menu-item>
               </a-menu>
-           </a-dropdown>
-          <a>首页</a>
-          <div style="clear:both;"></div>
+            </a-dropdown>
+            <a>首页</a>
+            <div style="clear:both;"></div>
+          </div>
         </div>
-      </div>
-      <div class="medicine-names">
-        <div class="medicine-name-box">
-          <div class="medicine-name">
-            <img src="../../../assets/img/u49.png" alt="">
-          </div>
-          <div class="medicine-search">
-            <div class="search-box">
-              <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
-              <button class="search-btn" @click="toPage('category')">搜索</button>
+        <div class="medicine-names">
+          <div class="medicine-name-box">
+            <div class="medicine-name">
+              <img src="../../../assets/img/u49.png" alt>
             </div>
-          </div>
-          <div class="ant-dropdown-link cart-btn" @click="toPage('shoppingCart')" @mouseover="showList()" @mouseout="hideList()">
-            <a-icon type="shopping-cart" class="cart-icon"/>
-            <span class="cart-count">6</span>
-            <span class="cart-text">采购单</span>
-            <div class="cart-down" v-show="isShowCartList">
-              <ul class="cart-down-ul">
-                <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
-                  <a href="javascript:;">
-                    <img v-lazy="item.src" class="cart-img">
-                    <p class="cart-goods-text">{{item.text}} <span>￥{{item.price}}元</span></p>
-                    <p class="cart-goods-count">{{item.guige}}  ×  {{item.count}}</p>
-                    <a-icon type="close" class="del-cart-goods"/>
-                  </a>
-                </li>
-              </ul>
-              <div class="total-settlement">
-                <p>
-                  商品合计：<span>1880元</span>
-                  <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车结算</button>
-                </p>
+            <div class="medicine-search">
+              <div class="search-box">
+                <a-input placeholder="药品名称/药品通用名/药品助记码" class="search-input"/>
+                <button class="search-btn" @click="toPage('category')">搜索</button>
               </div>
             </div>
+            <div
+              class="ant-dropdown-link cart-btn"
+              @click="toPage('shoppingCart')"
+              @mouseover="showList()"
+              @mouseout="hideList()"
+            >
+              <a-icon type="shopping-cart" class="cart-icon"/>
+              <span class="cart-count">6</span>
+              <span class="cart-text">采购单</span>
+              <div class="cart-down" v-show="isShowCartList">
+                <ul class="cart-down-ul">
+                  <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
+                    <a href="javascript:;">
+                      <img v-lazy="item.src" class="cart-img">
+                      <p class="cart-goods-text">
+                        {{item.text}}
+                        <span>￥{{item.price}}元</span>
+                      </p>
+                      <p class="cart-goods-count">{{item.guige}} × {{item.count}}</p>
+                      <a-icon type="close" class="del-cart-goods"/>
+                    </a>
+                  </li>
+                </ul>
+                <div class="total-settlement">
+                  <p>
+                    商品合计：
+                    <span>1880元</span>
+                    <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车结算</button>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p class="spike">
+              <a href>新人专享</a>
+              <span>|</span>
+              <a href>秒杀</a>
+              <span>|</span>
+              <a href>一块购</a>
+              <span>|</span>
+            </p>
+            <div class="nav-box">
+              <a href class="goods-type">商品分类</a>
+              <a href>新人专享</a>
+              <a href>新品上线</a>
+              <a href>热销商品</a>
+              <a href>全部商品</a>
+            </div>
           </div>
-          <p class="spike"><a href="">新人专享</a><span>|</span><a href="">秒杀</a><span>|</span><a href="">一块购</a><span>|</span></p>
-          <div class="nav-box">
-            <a href class="goods-type">商品分类</a>
-            <a href>新人专享</a>
-            <a href>新品上线</a>
-            <a href>热销商品</a>
-            <a href>全部商品</a>
-        </div>
         </div>
       </div>
     </a-layout-header>
     <!-- 登录 -->
-    <a-layout-header v-if='type === "login"' class="login-header">
+    <a-layout-header v-if="type === "login"" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
-          <img src="../../../assets/img/u49.png" alt="">
+          <img src="../../../assets/img/u49.png" alt>
         </div>
         <div class="ant-layout-header-back">
           <a>返回首页</a>
@@ -113,10 +140,10 @@
       </div>
     </a-layout-header>
     <!-- 注册 -->
-    <a-layout-header v-if='type === "register"' class="login-header">
+    <a-layout-header v-if="type === "register"" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
-          <img src="../../../assets/img/u49.png" alt="">
+          <img src="../../../assets/img/u49.png" alt>
         </div>
         <div class="ant-layout-header-back">
           <a class="already">已有账号</a>
@@ -315,7 +342,7 @@ li {
   color: #999999;
 }
 .immediately {
-  color: rgb(255, 0, 54)!important;
+  color: rgb(255, 0, 54) !important;
 }
 /* 登录头部 */
 .login-header {
@@ -335,11 +362,11 @@ li {
   display: inline-block;
   width: 365px;
 }
-.header-left a{
+.header-left a {
   margin-right: 15px;
   color: #999999;
 }
-.header-left i{
+.header-left i {
   margin-right: 5px;
 }
 .header-right {
@@ -349,13 +376,13 @@ li {
   /* margin-right: 50px; */
 }
 .drop-down {
-  .position(relative,0px,0px);
+  .position(relative, 0px, 0px);
 }
-.margin-right0{
-  margin-right: 0px!important;
+.margin-right0 {
+  margin-right: 0px !important;
 }
-.margin-left0{
-  margin-left: 0px!important;
+.margin-left0 {
+  margin-left: 0px !important;
 }
 .sign {
   position: relative;
@@ -373,41 +400,41 @@ li {
   color: #999999;
 }
 .news-box {
-  .position(absolute,22px,-95px);
-  .container-size(inline-block,250px,300px,0px,0px);
-  .container-color(#ffffff,1px solid transparent,#666666);
+  .position(absolute, 22px, -95px);
+  .container-size(inline-block, 250px, 300px, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
   opacity: 1;
   z-index: 1;
 }
 .news-ul {
-  .position(absolute,0px,0px);
-  .container-size(inline-block,250px,248px,0px,0px);
-  .container-color(#ffffff,1px solid transparent,#666666);
+  .position(absolute, 0px, 0px);
+  .container-size(inline-block, 250px, 248px, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
   overflow: auto;
 }
-.news-ul li{
+.news-ul li {
   // .position(absolute,0px,0px);
-  .container-size(inline-block,231px,236px,0px,0px);
-  .container-color(#ffffff,1px solid transparent,#666666);
-  p{
+  .container-size(inline-block, 231px, 236px, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
+  p {
     height: 40px;
     line-height: 40px;
     overflow: hidden;
     padding: 0px 8px;
   }
   p:hover {
-    background: #ED2F26;
+    background: #ed2f26;
     color: #ffffff;
   }
 }
 .see-news {
   position: absolute;
   bottom: 0px;
-  .container-size(inline-block,250px,50px,0px,0px);
+  .container-size(inline-block, 250px, 50px, 0px, 0px);
 }
 .see-news button {
-  .button-size (246px,50px,50px,16px,0px,0px);
-  .button-color (1px solid transparent,#ED2F26,#ffffff);
+  .button-size (246px, 50px, 50px, 16px, 0px, 0px);
+  .button-color (1px solid transparent, #ed2f26, #ffffff);
 }
 .medicine-names {
   display: block;
@@ -422,13 +449,13 @@ li {
   padding-top: 20px;
   background: #ffffff;
 }
-.spike{
+.spike {
   text-indent: 29.6%;
 }
-.spike a{
+.spike a {
   margin-left: 15px;
   margin-right: 15px;
-  color: #999999!important;
+  color: #999999 !important;
 }
 .medicine-name {
   display: inline-block;
