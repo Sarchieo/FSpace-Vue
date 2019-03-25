@@ -65,16 +65,6 @@
                   </a-col>
                 </a-row>
               </a-form-item>
-              <!-- <a-form-item
-                :label-col="formTailLayout.labelCol"
-                :wrapper-col="formTailLayout.wrapperCol"
-              >
-                <a-checkbox
-                  style="display: inline-block;"
-                  :checked="isSavePwd"
-                >记住密码</a-checkbox>
-                <a href>忘记密码？</a>
-              </a-form-item> -->
               <a-form-item
                 :label-col="formTailLayout.labelCol"
                 :wrapper-col="formTailLayout.wrapperCol"
@@ -123,15 +113,7 @@ export default {
   beforeCreate() {
     this.form = this.$form.createForm(this);
   },
-  mounted() {
-    // this.test()
-  },
   methods: {
-    test() {
-       this.$router.push({
-         name: 'index'
-       })
-    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
@@ -181,10 +163,9 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            console.log(result)
             if(result.code === 200) {
               _this.$store
-                .dispatch("setUserState")
+                .dispatch("setUserState", { context: _this })
                 .then(res => {
                    // 登录成功
                   _this.$router.push({

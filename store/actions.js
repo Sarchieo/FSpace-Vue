@@ -7,8 +7,9 @@ import {
 } from '../utils/cache'
 
 const actions = {
-  async setUserState(store) {
-    store.commit(types.SET_LOGIN_STATE, saveLoginState(200))
+  async setUserState(store, { context }) {
+    debugger
+    store.commit(types.SET_LOGIN_STATE, saveLoginState(true, context))
   },
   async setUser(store, user) {
     store.commit(types.SET_USER, saveUser(user))
@@ -19,7 +20,6 @@ const actions = {
   },
   async nuxtServerInit (store, { params, route, req }) {
     // 初始化基础数据
-    
     // return axios.get(process.env.url + '服务器地址').then((res) => {
     //   //code
     //   store.commit('setData', r.data)

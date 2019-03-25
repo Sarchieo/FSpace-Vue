@@ -1,5 +1,5 @@
 
 export default {
   user: {},
-  userState: false
+  userStatus: false
 }
