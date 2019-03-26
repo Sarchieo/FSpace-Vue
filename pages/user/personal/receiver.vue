@@ -17,7 +17,7 @@
         >
           <a-input
             v-decorator="[
-              'note',
+              'contactname',
               {rules: [{ required: true, message: '请填写收货人姓名' }]}
             ]"
           />
@@ -29,8 +29,8 @@
         >
           <a-input
             v-decorator="[
-              'branch',
-              {rules: [{ required: true, message: '请填写收货人电话' }]}
+              'contactphone',
+              {rules: [{ required: true, validator: validatePhone}]}
             ]"
           />
         </a-form-item>
@@ -51,65 +51,47 @@
         <p class="store-info">门店地址：湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号</p>
       </div>
       <!-- <p class="consignee">新增收货人</p> -->
-     
-     <p class="person-count">已保存 <span>4</span> 条收货人信息，最多保存 <span>5</span> 条</p> <a-button  type="primary" @click='addReceiver'>新增收货人</a-button>
-     <a-table :columns="columns" :dataSource="data" :pagination="false" :bordered="true" style="width: 965px;margin-bottom: 100px;">
-        <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
-        <span slot="customTitle"> 收货人姓名</span>
-        <span slot="tags" slot-scope="tags">
-          <a-tag v-for="tag in tags" color="blue" :key="tag">{{tag}}</a-tag>
-        </span>
-        <span slot="action">
-          <a href="javascript:;">修改</a>
+     <a-button  type="primary" @click='addReceiver'>新增收货人</a-button>
+     <a-table :columns="columns" :dataSource="data" :pagination="false" :bordered="true" rowKey="shipid" style="width: 965px;margin-bottom: 100px;">
+        <span slot="action" slot-scope="record">
+          <a href="javascript:;" @click='updConsignee(record)'>修改</a>
           <a-divider type="vertical" />
-          <a href="javascript:;">删除</a>
+          <a href="javascript:;" @click='delConsignee(record)'>删除</a>
           <a-divider type="vertical" />
-          <a href="javascript:;" class="ant-dropdown-link">
+          <a v-if='!(record.cstatus & 2) > 0' href="javascript:;" class="ant-dropdown-link" @click='setDefault(record)'>
             设为默认收货人
+          </a>
+          <a v-else href="javascript:;" class="ant-dropdown-link">
+            默认收货人
           </a>
         </span>
       </a-table>
+      <p class="person-count">已保存 <span>{{ data.length }}</span> 条收货人信息，最多保存 <span>5</span> 条</p>
    </div>
 </template>
 <script>
 const columns = [{
-  dataIndex: 'name',
-  key: 'name',
-  slots: { title: 'customTitle' },
-  scopedSlots: { customRender: 'name' },
+  title: '收货人电话',
+  dataIndex: 'contactname',
+  key: 'contactname',
+  dataIndex: 'contactname',
 }, {
   title: '收货人电话',
-  dataIndex: 'phone',
-  key: 'phone',
+  dataIndex: 'contactphone',
+  key: 'contactphone',
 },{
   title: '操作',
   key: 'action',
   scopedSlots: { customRender: 'action' },
 }];
 
-const data = [{
-  key: '1',
-  name: '惠哥',
-  phone: 18373270790,
-}, {
-  key: '2',
-  name: '亮叔',
-  phone: 15116166746,
-}, {
-  key: '3',
-  name: '大表哥',
-  phone: 15773146800,
-},
-{
-  key: '4',
-  name: '表哥',
-  phone: 18373380987,
-}];
 export default {
    data () {
     return {
+      compid: 3123123,
+      shipid: 0,
       visible: false,
-      data,
+      data: [],
       columns,
       form: this.$form.createForm(this),
       labelCol: {
@@ -122,21 +104,142 @@ export default {
       }
     };
   },
+  mounted() {
+    this.queryMyConsignee()
+  },
   methods: {
-    addReceiver() {
+    queryMyConsignee() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyDrugStoreInfoModule";
+      iRequest.method = "queryMyConsignee";
+      iRequest.param.json = JSON.stringify({
+        compid: _this.compid
+      })
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              console.log(result)
+              _this.data = result.data
+            }else {
+             _this.$message.error(result.message);
+            }
+          }
+        )
+      );
+    },
+    //设为默认
+    setDefault(record) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyDrugStoreInfoModule";
+      iRequest.method = "setDefault";
+      iRequest.param.json = JSON.stringify({
+        compid: _this.compid,
+        shipid: record.shipid
+      })
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            console.log(result)
+            if(result.code === 200) {
+              _this.$message.success(result.message)
+              _this.queryMyConsignee()
+            }else {
+              _this.$message.error(result.message)
+            }
+          }
+        )
+      );
+    },
+    updConsignee(record) {
+      this.shipid = record.shipid
+      this.form.setFieldsValue(record)
       this.visible = true
     },
-     callback (key) {
+    // 删除
+    delConsignee(record) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyDrugStoreInfoModule";
+      iRequest.method = "delConsignee";
+      iRequest.param.json = JSON.stringify({
+        shipid: record.shipid
+      })
+      debugger
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              _this.$message.success(result.message)
+              _this.queryMyConsignee()
+            }else {
+             _this.$message.error(result.message)
+            }
+          }
+        )
+      );
+    },
+    addReceiver() {
+      this.shipid = 0
+      this.visible = true
+    },
+    callback (key) {
       console.log(key)
     },
     handleSubmit (e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          let _this = this;
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "MyDrugStoreInfoModule";
+          iRequest.method = "insertOrUpdConsignee";
+          iRequest.param.json = JSON.stringify({
+            compid: _this.compid,
+            contactname: values.contactname,
+            contactphone: values.contactphone,
+            shipid: this.shipid
+          })
+          iRequest.param.token = localStorage.getItem("identification")
+          this.$refcallback(
+            "userServer",
+            iRequest,
+            new this.$iceCallback(
+              function result(result) {
+                if(result.code === 200) {
+                  _this.visible = false
+                  _this.queryMyConsignee()
+                  _this.$message.success(result.message)
+                }else {
+                  _this.$message.error(result.message)
+                }
+              }
+            )
+          );
         }
       });
-    }
+    },
+    validatePhone(rule, value, callback) {
+      let _this = this;
+      const form = this.form;
+      if (value && /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/.test(value)) {
+        callback()
+      } else {
+        this.sendAuthCode = false
+        callback('收货人手机号码有误');
+      }
+    },
   }
 }
 </script>

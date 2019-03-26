@@ -175,15 +175,15 @@
         <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
           <a>限时抢购</a>
         </li>
-         <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
-          <a-icon type="to-top" />
-          <a>回到顶部</a>
-        </li>
         <li class="right-meun" :class="{'active': hotSells}" @click="hotSell()">
           <a>热销专区</a>
         </li>
         <li class="right-meun" :class="{'active': freeShippings}" @click="freeShipping()">
           <a>包邮专区</a>
+        </li>
+        <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
+          <a-icon type="to-top" />
+          <a>回到顶部</a>
         </li>
         <li class="right-meun" :class="{'active': chooses}" @click="choose()">
           <a>为你精选</a>
@@ -485,8 +485,6 @@ export default {
       if (scrollTop > 0) {
         this.isShowToTop = true
         this.isShowBackTop = true
-        toTop.height = '80px'
-        toTop.transition = 'height 2s'
       } else {
         this.isShowToTop = false
         this.isShowBackTop = false

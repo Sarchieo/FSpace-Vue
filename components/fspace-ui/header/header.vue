@@ -218,7 +218,7 @@
     },
     mounted() {
       this.init()
-      this.getBasicInfo()
+      // this.getBasicInfo()
       window.addEventListener('scroll', this.handleScroll);
     },
     methods: {

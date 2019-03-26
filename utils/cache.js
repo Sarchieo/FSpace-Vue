@@ -5,9 +5,12 @@ export function loadLoginState () {
   return JSON.parse(localStorage.getItem(LoginStateKey)) || false
 }
 
-export function saveLoginState (state) {
-  localStorage.setItem(LoginStateKey, JSON.stringify(state))
-  return userInfo
+export function saveLoginState (state, context) {
+  context.$cookies.set(LoginStateKey, state, { 
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7
+  })
+  return true
 }
 
 export function removeLoginState () {
