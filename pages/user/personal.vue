@@ -31,7 +31,7 @@
             </div>
             <div class="order-info">
               <!-- <p class="order-title">订单信息</p> -->
-              <p><span>待付款</span>3张 <span class="left65">待评价</span> 7单</p>
+              <p><span>待付款</span>3单 <span class="left65">待评价</span> 7单</p>
               <p><span>待发货</span>5单 <span class="left65">退货</span> 1单</p>
               <p><span> 待收货</span>9单</p>
             </div>
@@ -48,6 +48,10 @@
                   <a-icon type="mail" />
                   我的药店
                 </a-menu-item>
+                <a-menu-item key="/user/personal/myorder" class="left-menu">
+                  <a-icon type="calendar" />
+                  我的订单
+                </a-menu-item>
                 <a-menu-item key="/user/personal/invoice" class="left-menu">
                   <a-icon type="calendar" />
                   我的发票
@@ -59,6 +63,10 @@
                 <a-menu-item key="/user/personal/collection" class="left-menu">
                   <a-icon type="calendar" />
                   我的收藏
+                </a-menu-item>
+                 <a-menu-item key="/user/personal/footprint" class="left-menu">
+                  <a-icon type="calendar" />
+                  我的足迹
                 </a-menu-item>
                 <a-menu-item key="/user/personal/coupon" class="left-menu">
                   <a-icon type="calendar" />
@@ -212,6 +220,7 @@ export default {
       margin-left: 20px;
       background: white;
       border: 1px solid #e0e0e0;
+      overflow: auto;
     }
   }
   .ant-menu-item-selected {

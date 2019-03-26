@@ -9,14 +9,14 @@
           <div class="binnar-box">
             <a-carousel autoplay arrows>
               <div
-                slot="prevArrow"
+                slot="prevArrow" slot-scope="props"
                 class="custom-slick-arrow"
                 style="left: 10px;zIndex: 1"
               >
                 <a-icon type="left-circle" />
               </div>
               <div
-                slot="nextArrow"
+                slot="nextArrow" slot-scope="props"
                 class="custom-slick-arrow"
                 style="right: 10px"
               >
@@ -473,24 +473,6 @@ export default {
       ]
     };
   },
-  asyncData (context) {
-    // console.log(context)
-    // let _this = this;
-    // let iRequest = new inf.IRequest();
-    // console.log(iRequest)
-    // iRequest.cls = "InformationModule";
-    // iRequest.method = "basicInfo";
-    // iRequest.param.token = localStorage.getItem("identification")
-    // context.app.$iceCallback(
-    //   function result(result) {
-    //     console.log(result)
-    //     if(result.code === 200) {
-
-    //     }else {
-    //     }
-    //   }
-    // )
-  },
   mounted() {
     // this.initData();
     window.addEventListener('scroll', this.handleScroll);
@@ -608,6 +590,12 @@ export default {
       this.$router.push({
         path:'/activity/limited'
       })
+    },
+    async initData() {
+      debugger
+      if(!this.$store.getters.userState) {
+        this.getBasicInfo()
+      }
     }
   }
 };
@@ -850,8 +838,8 @@ li {
   text-align: center;
 }
 .count-down button {
-  .button-size(35px,35px,35px,14px,0,3px);
-  .button-color(1px solid transparent,#666666,#ffffff);
+  .button-size (35px,35px,35px,14px,0,3px);
+  .button-color (1px solid transparent,#666666,#ffffff);
    margin-right: 5px;
 }
 .over-distance {
@@ -862,8 +850,8 @@ li {
 }
 .see-whole {
   .position(absolute,220px,40px);
-  .button-size(150px,40px,40px,14px,0,30px);
-  .button-color(1px solid #c40000,#F2F2F2,#c40000);
+  .button-size (150px,40px,40px,14px,0,30px);
+  .button-color (1px solid #c40000,#F2F2F2,#c40000);
 }
 .brand-left a {
   width: 100%;

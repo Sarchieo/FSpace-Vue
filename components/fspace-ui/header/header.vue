@@ -16,8 +16,6 @@
             <a class="margin-left0">在线客服</a>
             <a
               class="margin-right0 margin-left0 drop-down"
-              @mouseover="showNews()"
-              @mouseout="hideNews()"
             >
               我的消息
               <span class="sign"></span>
@@ -46,7 +44,7 @@
               签到有礼
               <span class="sign"></span>
             </a>
-            <a>我的订单</a>
+            <a @click="toMyOrder()">我的订单</a>
             <a-dropdown>
               <a class="ant-dropdown-link" href="#">
                 我的医药
@@ -281,15 +279,14 @@
       hideList() {
         this.isShowCartList = false
       },
-      showNews() {
-        this.isShowNewsList = true
-      },
-      hideNews() {
-        this.isShowNewsList = false
-      },
       toInformation() {
         this.$router.push({
           path: '/user/personal/information'
+        })
+      },
+      toMyOrder(){
+        this.$router.push({
+          path: '/user/personal/myorder'
         })
       },
       async getBasicInfo() {
