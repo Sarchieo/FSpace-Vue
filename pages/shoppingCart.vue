@@ -23,17 +23,21 @@
                   <!-- <input type="radio" class="pick-input"> -->
                   <img  v-lazy="item.src" alt="">
                   <p class="goods-name">{{item.name}}</p>
-                  <p class="goods-guige">{{item.guige}}}</p>
+                  <p class="goods-guige">{{item.guige}}</p>
                   <p class="manufactor">{{item.changshang}}</p>
+                  <p class="icon"><a-icon type="chrome"/><a-icon type="apple"/><a-icon type="wechat"/></p>
                   <p class="old-price">￥ {{item.price}}</p>
+                  <p class="original">原价：￥{{item.original}}</p>
                   <p class="validity">有效期：{{item.time}}</p>
                   <p class="btn-p">
                     <button @click="addCount(index)">+</button>
                     <button class="goods-count">{{item.count}}</button>
-                    <!-- <input type="text" readonly="readonly" v-model="item.count" class="goods-count"> -->
                     <button @click="reduceCount(index)">-</button>
+                    
                   </p>
+                  <p class="limit">( 限购{{item.limit}}盒 )</p>
                   <p class="new-price">￥{{item.price*item.count}}</p>
+                  <p class="omit">为您节省￥{{item.original - item.price}}</p>
                   <p class="move">移入收藏夹</p>
                   <p class="del-goods" @click="removeList(index)">删除</p>
                 </div>
@@ -74,6 +78,8 @@ export default {
           guige: '0.4g*12粒',
           changshang: '吉林市吴太感康药业有限公司',
           price: 88,
+          original: 100,
+          limit: 10,
           count: 1,
           time: '2022-02-30',
           checked: false
@@ -84,6 +90,8 @@ export default {
           guige: '0.4g*12粒',
           changshang: '吉林市吴太感康药业有限公司',
           price: 199,
+          original: 210,
+          limit: 9,
           count: 1,
           time: '2022-02-30',
           checked: false
@@ -94,6 +102,8 @@ export default {
           guige: '0.4g*12粒',
           changshang: '吉林市吴太感康药业有限公司',
           price: 99,
+          original: 100,
+          limit: 11,
           count: 1,
           time: '2022-02-30',
           checked: false
@@ -244,12 +254,22 @@ li {
 }
 .goods-name {
   .position(absolute,20px,180px);
+  .p-size(30px,30px,18px,left,0px,#333333);
 }
 .goods-guige {
-  .position(absolute,50px,180px);
+  .position(absolute,52px,180px);
+  .p-size(30px,30px,14px,left,0px,#999999);
 }
 .manufactor {
   .position(absolute,80px,180px);
+  .p-size(30px,30px,14px,left,0px,#999999);
+  height: auto!important;
+  line-height: 14px!important;
+}
+.icon{
+  .position(absolute,100px,180px);
+  .p-size(20px,20px,14px,left,0px,#999999);
+  height: 20px!important;
 }
 .goods-count {
    .container-size(inline-block,20px,20px,0,0px);
@@ -257,10 +277,17 @@ li {
 }
 .old-price {
   .position(absolute,40px,410px);
+  font-size: 16px;
+  color: #000000;
+}
+.original{
+  .position(absolute,65px,410px);
+  color: #999999;
 }
 .validity {
-  .position(absolute,70px,410px);
+  .position(absolute,90px,410px);
   text-align: left;
+   color: #999999;
 }
 .goods-count {
  width: 40px;
@@ -271,7 +298,11 @@ li {
 .btn-p {
   height: 40px;
   line-height:40px;
-  .position(absolute,55px,580px);
+  .position(absolute,60px,580px);
+}
+.limit{
+.position(absolute,90px,580px);
+color: #999999;
 }
 .btn-p button {
   width: 40px;
@@ -282,6 +313,13 @@ li {
 }
 .new-price {
   .position(absolute,55px,840px);
+  text-indent: 4px;
+  color: #ed2f26;
+  font-size: 18px;
+}
+.omit{
+  .position(absolute,90px,790px);
+  color: #999999;
 }
 .move {
   .position(absolute,42px,1000px);
@@ -306,7 +344,7 @@ li {
 }
 .order-btn {
   .button-size(180px,72px,72px,18px,0px,0px);
-  .button-color(1px solid transparent,red,#fff);
+  .button-color(1px solid transparent,#ed2f26,#fff);
 }
 </style>
 

@@ -167,9 +167,8 @@ export default {
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
 .collection-text {
-  .p-size(55px, 55px, 20px, left, 30px, #ed3025);
+  .p-size(55px, 55px, 20px, left, 20px, #000000);
   background: #f6f6f6;
-  font-weight: bold;
 }
 .collection-box {
   .container-size(block, 983px, auto, 0px, 0px);
@@ -178,7 +177,7 @@ export default {
   .p-size(55px, 55px, 30px, left, 20px, #333333);
   span {
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 10px;
     margin-left: 20px;
     font-size: 18px;
   }
@@ -189,9 +188,9 @@ export default {
 }
 .line {
   display: inline-block;
-  width: 685px;
+  width: 705px;
   height: 1px;
-  border: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
 }
 .goods-list-box {
   .container-size(block, 983px, auto, 0 auto, 0px);
@@ -207,13 +206,13 @@ export default {
   border: 1px solid #e0e0e0;
 }
 .surplus {
-  .position(absolute, 250px, 0px);
+  .position(absolute, 245px, 0px);
   width: 225px;
   text-align: center;
-  color: rgb(255, 0, 54);
+  color: #333333;
 }
 .card-img {
-  .position(absolute, 8px, 0px);
+  .position(absolute, 0px, 0px);
   width: 224px;
   height: 190px;
 }
@@ -228,7 +227,7 @@ export default {
   text-align: center;
 }
 .card-price {
-  .position(absolute, 230px, 0px);
+  .position(absolute, 225px, 0px);
   width: 225px;
   text-align: center;
   font-weight: bold;
@@ -238,7 +237,7 @@ export default {
   color: #999999;
 }
 .validity {
-  .position(absolute, 210px, 0px);
+  .position(absolute, 200px, 0px);
   .p-size(20px, 20px, 14px, center, 0px, #666666);
   width: 224px;
   background: rgb(228, 228, 228);
@@ -258,13 +257,13 @@ export default {
 }
 .manufacturer {
   display: inline-block;
-  .position(absolute, 290px, 0px);
+  .position(absolute, 287px, 0px);
   width: 225px;
   text-align: center;
 }
 .specifications {
   display: inline-block;
-  .position(absolute, 270px, 0px);
+  .position(absolute, 265px, 0px);
   width: 225px;
   text-align: center;
 }

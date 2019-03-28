@@ -29,10 +29,6 @@
               加入采购单
             </button>
           </p>
-
-
-
-
           <a-card-meta
             class="card-info"
             :title="item.text">
@@ -182,13 +178,13 @@ export default {
   border: 1px solid #e0e0e0;
 }
 .surplus{
-  .position(absolute,250px,0px);
+  .position(absolute,245px,0px);
   width: 225px;
   text-align: center;
-  color: rgb(255, 0, 54);
+  color: #333333;
 }
 .card-img{
-  .position(absolute,8px,0px);
+  .position(absolute,0px,0px);
   width: 224px;
   height: 190px;
 }
@@ -203,7 +199,7 @@ export default {
   text-align: center;
 }
 .card-price{
-  .position(absolute,230px,0px);
+  .position(absolute,225px,0px);
   width: 225px;
   text-align: center;
   font-weight: bold;
@@ -213,7 +209,7 @@ export default {
   color: #999999;
 }
 .validity {
-  .position(absolute,210px,0px);
+  .position(absolute,202px,0px);
   .p-size(20px,20px,14px,center,0px,#666666);
   width: 224px;
   background: rgb(228,228,228);
@@ -239,7 +235,7 @@ export default {
 }
 .specifications {
   display: inline-block;
-  .position(absolute,270px,0px);
+  .position(absolute,268px,0px);
   width: 225px;
   text-align: center;
 }

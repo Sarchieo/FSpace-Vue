@@ -665,13 +665,13 @@ li {
   height:280px;
 }
 .card:hover {
-  box-shadow:20px 10px 20px 10px #e0e0e0;
+  box-shadow:5px 5px 5px 5px #e0e0e0;
 }
 .surplus{
   .container-size(inline-block,225px,auto,0,0px);
   .position(absolute,168px,0px);
   text-indent: 40px;
-  color: rgb(255, 0, 54);
+  color:#000000;
 }
 .card-img{
   .position(absolute,15px,45px);
@@ -812,7 +812,7 @@ li {
 .brand-hall-title .all-hot{
   float: right;
   font-size: 20px;
-  color:  #c40000;
+  color:  #000000;
 }
 .brand-div {
   .container-size(block,1190px,280px,0 auto,0px);
