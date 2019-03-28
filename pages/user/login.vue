@@ -165,7 +165,7 @@ export default {
           function result(result) {
             if(result.code === 200) {
               _this.$store
-                .dispatch("setUserState", { context: _this })
+                .dispatch("setUserStatus", { context: _this })
                 .then(res => {
                    // 登录成功
                   _this.$router.push({
@@ -179,11 +179,13 @@ export default {
               if(result && result.map && result.map.index >= 3) {
                 _this.isCaptcha = true
                 _this.getCaptcha()
-                 _this.$message.error(result.message);
+                _this.$message.error(result.message);
               } else {
                 _this.$message.error(result.message);
               }
             }
+          },function error(error) {
+            debugger
           }
         )
       );

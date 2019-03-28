@@ -2,17 +2,15 @@ import * as types from './mutation-types'
 import {
   saveUser,
   removeUser,
-  saveLoginState,
-  removeLoginState
+  saveUserStatus
 } from '../utils/cache'
 
 const actions = {
-  async setUserState(store, { context }) {
-    debugger
-    store.commit(types.SET_LOGIN_STATE, saveLoginState(true, context))
+  async setUserStatus(store, { context }) {
+    store.commit(types.SET_LOGIN_STATE, saveUserStatus(true, context))
   },
-  async setUser(store, user) {
-    store.commit(types.SET_USER, saveUser(user))
+  async setUser(store, { context, user } ) {
+    store.commit(types.SET_USER, saveUser(user, context))
   },
   async removeUser(store) {
     store.commit(types.REMOVE_USER, removeUser())

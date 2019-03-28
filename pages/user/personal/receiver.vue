@@ -47,8 +47,8 @@
     </a-modal>
       <div class="address-box">
         <p class="my-address">默认收货地址</p>
-        <p class="store-info">收货门店：宁乡市汤惟丰沃达老百姓健康药房</p>
-        <p class="store-info">门店地址：湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号</p>
+        <p class="store-info">收货门店：{{ storeInfo.storeName }}</p>
+        <p class="store-info">门店地址：{{ storeInfo.address }}</p>
       </div>
       <!-- <p class="consignee">新增收货人</p> -->
      <a-button  type="primary" @click='addReceiver'>新增收货人</a-button>
@@ -103,6 +103,11 @@ export default {
         sm: { span: 12 }
       }
     };
+  },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
   },
   mounted() {
     this.queryMyConsignee()

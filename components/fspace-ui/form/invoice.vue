@@ -4,8 +4,8 @@
     :form="form"
     @submit="handleSubmit"
     >
-    <p class="comp-name-address"><span>公司名称：</span>长沙市中联健康大药房</p>
-    <p class="comp-name-address"><span>公司注册地址：</span>湖南省长沙市雨花区圭塘中路112号</p>
+    <p class="comp-name-address"><span>公司名称：</span>{{ storeInfo.storeName }}</p>
+    <p class="comp-name-address"><span>公司注册地址：</span>{{ storeInfo.address }}</p>
     <a-form-item
         label="纳税人识别号："
         :label-col="{ span: 5 }"
@@ -76,6 +76,11 @@
 export default {
   name: "f-space-form-invoice",
   props: ['vat', 'values'],
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -98,7 +103,6 @@ export default {
           let iRequest = new inf.IRequest();
           iRequest.cls = "MyInvoiceModule";
           iRequest.method = "saveInvoice";
-          debugger
           iRequest.param.json = JSON.stringify({
             taxpayer: values.taxpayer,
             bankers: values.bankers,

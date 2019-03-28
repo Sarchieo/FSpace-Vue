@@ -14,34 +14,9 @@
           <div class="header-right">
             <a>帮助中心</a>
             <a class="margin-left0">在线客服</a>
-            <a
-              class="margin-right0 margin-left0 drop-down"
-              @mouseover="showNews()"
-              @mouseout="hideNews()"
-            >
-              我的消息
-              <span class="sign"></span>
-               <!-- v-show="isShowNewsList" -->
-              <div class="news-box" v-show="isShowNewsList">
-                <ul class="news-ul">
-                  <li>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                    <p>你的资质申请已通过本平台后审核，您可以获得本平台的更多权限，</p>
-                  </li>
-                </ul>
-                <div class="see-news">
-                  <button @click="toInformation()">查看详情</button>
-                </div>
-              </div>
-            </a>
+            <!-- 我的消息 -->
+            <header-notice/>
+            <!-- 签到有礼 -->
             <a class="margin-right0">
               签到有礼
               <span class="sign"></span>
@@ -156,9 +131,13 @@
   </div>
 </template>
 <script>
+  import HeaderNotice from './HeaderNotice'
   export default {
     name: 'f-space-header',
     props: ['type'],
+    components: {
+      HeaderNotice
+    },
     computed: {
       storeInfo () {
         return this.$store.state.user;
@@ -169,7 +148,6 @@
         goodsClass: '',
         isShowHeader: true,
         isDisTip: false,
-        isShowNewsList: false,
         isShowCartList: false,
         isLogin: false,
         cartList: [
@@ -280,12 +258,6 @@
       },
       hideList() {
         this.isShowCartList = false
-      },
-      showNews() {
-        this.isShowNewsList = true
-      },
-      hideNews() {
-        this.isShowNewsList = false
       },
       toInformation() {
         this.$router.push({

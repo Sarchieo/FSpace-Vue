@@ -16,6 +16,11 @@ export default {
   components: {
     FSpaceFormInvoice
   },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
   data () {
     return {
       invoice: {

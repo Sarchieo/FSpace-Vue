@@ -1,89 +1,95 @@
 <template>
   <div>
     <a-layout>
-       <f-space-header type='home'></f-space-header>
-       <a-layout-content class="base">
-          <a-breadcrumb separator=">" class="crumbs">
-            <a-breadcrumb-item>首页</a-breadcrumb-item>
-            <a-breadcrumb-item>我的一块</a-breadcrumb-item>
-          </a-breadcrumb>
-          <!-- 头部内容 -->
-          <div class='header-personal'>
-            <div class="left">
-              <p>
-                <a-icon type="profile" />
-                长沙大药房
-              </p>
-              <p>
-                <a-icon type="environment" />
-                湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号
-              </p>
-               <p>
-                 <a-icon type="mobile" />
-                17621503679
-              </p>
-            </div>
-            <div class="right">
-              <!-- <p class="right-title">优惠信息</p> -->
-              <p><span>优惠券</span>3张</p>
-              <p><span>积分</span>268</p>
-              <p><span> 我的红包</span>5元</p>
-            </div>
-            <div class="order-info">
-              <!-- <p class="order-title">订单信息</p> -->
-              <p><span>待付款</span>3张 <span class="left65">待评价</span> 7单</p>
-              <p><span>待发货</span>5单 <span class="left65">退货</span> 1单</p>
-              <p><span> 待收货</span>9单</p>
-            </div>
+      <f-space-header type="home"></f-space-header>
+      <a-layout-content class="base">
+        <a-breadcrumb separator=">" class="crumbs">
+          <a-breadcrumb-item>首页</a-breadcrumb-item>
+          <a-breadcrumb-item>我的一块</a-breadcrumb-item>
+        </a-breadcrumb>
+        <!-- 头部内容 -->
+        <div class="header-personal">
+          <div class="left">
+            <p>
+              <a-icon type="profile"/>
+              {{ storeInfo.storeName }}
+            </p>
+            <p>
+              <a-icon type="environment"/> 
+              {{ storeInfo.address }}
+            </p>
+            <p>
+              <a-icon type="mobile"/>
+               {{ storeInfo.phone }}
+            </p>
           </div>
-          <div class="content">
-            <div class="left">
-              <a-menu
-                :defaultSelectedKeys="['/user/personal']"
-                style="width: 194px;height:1017px;"
-                mode="vertical"
-                @click="handleClick"
-              >
-                <a-menu-item key="/user/personal" class="left-menu">
-                  <a-icon type="mail" />
-                  我的药店
-                </a-menu-item>
-                <a-menu-item key="/user/personal/invoice" class="left-menu">
-                  <a-icon type="calendar" />
-                  我的发票
-                </a-menu-item>
-                <a-menu-item key="/user/personal/receiver" class="left-menu">
-                  <a-icon type="mail" />
-                  我的收货人
-                </a-menu-item>
-                <a-menu-item key="/user/personal/collection" class="left-menu">
-                  <a-icon type="calendar" />
-                  我的收藏
-                </a-menu-item>
-                <a-menu-item key="/user/personal/coupon" class="left-menu">
-                  <a-icon type="calendar" />
-                  我的优惠券
-                </a-menu-item>
-                 <a-menu-item key="/user/personal/integral" class="left-menu">
-                  <a-icon type="calendar" />
-                  我的积分
-                </a-menu-item>
-                 <a-menu-item key="/user/personal/information" class="left-menu">
-                  <a-icon type="calendar" />
-                  我的消息
-                </a-menu-item>
-                <a-menu-item key="/user/personal/service" class="left-menu">
-                  <a-icon type="calendar" />
-                  售后服务
-                </a-menu-item>
-              </a-menu>
-            </div>
-            <div class="right">
-              <nuxt-child></nuxt-child>
-            </div>
+          <div class="right">
+            <!-- <p class="right-title">优惠信息</p> -->
+            <p>
+              <span>优惠券</span>3张
+            </p>
+            <p>
+              <span>积分</span>268
+            </p>
+            <p>
+              <span>我的红包</span>5元
+            </p>
           </div>
-       </a-layout-content>
-       <f-space-footer class="footer"></f-space-footer>
+          <div class="order-info">
+            <!-- <p class="order-title">订单信息</p> -->
+            <p>
+              <span>待付款</span>3张
+              <span class="left65">待评价</span> 7单
+            </p>
+            <p>
+              <span>待发货</span>5单
+              <span class="left65">退货</span> 1单
+            </p>
+            <p>
+              <span>待收货</span>9单
+            </p>
+          </div>
+        </div>
+        <div class="content">
+          <div class="left">
+            <a-menu
+              :defaultSelectedKeys="['/user/personal']"
+              style="width: 194px;height:1017px;"
+              mode="vertical"
+              @click="handleClick"
+            >
+              <a-menu-item key="/user/personal" class="left-menu">
+                <a-icon type="mail"/>我的药店
+              </a-menu-item>
+              <a-menu-item key="/user/personal/invoice" class="left-menu">
+                <a-icon type="calendar"/>我的发票
+              </a-menu-item>
+              <a-menu-item key="/user/personal/receiver" class="left-menu">
+                <a-icon type="mail"/>我的收货人
+              </a-menu-item>
+              <a-menu-item key="/user/personal/collection" class="left-menu">
+                <a-icon type="calendar"/>我的收藏
+              </a-menu-item>
+              <a-menu-item key="/user/personal/coupon" class="left-menu">
+                <a-icon type="calendar"/>我的优惠券
+              </a-menu-item>
+              <a-menu-item key="/user/personal/integral" class="left-menu">
+                <a-icon type="calendar"/>我的积分
+              </a-menu-item>
+              <a-menu-item key="/user/personal/information" class="left-menu">
+                <a-icon type="calendar"/>我的消息
+              </a-menu-item>
+              <a-menu-item key="/user/personal/service" class="left-menu">
+                <a-icon type="calendar"/>售后服务
+              </a-menu-item>
+            </a-menu>
+          </div>
+          <div class="right">
+            <nuxt-child></nuxt-child>
+          </div>
+        </div>
+      </a-layout-content>
+      <f-space-footer class="footer"></f-space-footer>
     </a-layout>
   </div>
 </template>
@@ -97,21 +103,44 @@ export default {
     FSpaceFooter
   },
   computed: {
-    storeInfo () {
+    storeInfo() {
       return this.$store.state.user;
-    },
-  },
-  data() {
-    return {
-     
     }
   },
+  data() {
+    return {};
+  },
+  mounted() {
+    this.getBasicInfo();
+  },
   methods: {
-    handleClick (e) {
+    getBasicInfo() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "InformationModule";
+      iRequest.method = "basicInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            console.log(result.data)
+            _this.$store.dispatch("setUser", {
+              context: _this,
+              user: result.data
+            });
+            _this.authenticationMessage = result.data.authenticationMessage;
+          } else {
+          }
+        })
+      );
+    },
+    handleClick(e) {
       this.$router.push({
         path: e.key
-      })
-      console.log('click ', e)
+      });
+      console.log("click ", e);
     }
   }
 };
@@ -120,108 +149,107 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 
-  .crumbs {
-    .p-size(50px,50px,16px,left,5px,#999999);
+.crumbs {
+  .p-size(50px, 50px, 16px, left, 5px, #999999);
+}
+.base {
+  width: 1200px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background: #f0f2f5;
+}
+.footer {
+  margin-top: 20px;
+}
+.header-personal {
+  width: 1200px;
+  height: 140px;
+  background: white;
+  border: solid 1px #e0e0e0;
+  .left {
+    float: left;
+    width: 36%;
+    height: 120px;
+    text-align: center;
+    margin-top: 10px;
+    p {
+      .p-size(40px, 40px, 14px, left, 20px, #333333);
+      i {
+        margin-right: 15px;
+        color: #ed3025;
+      }
+    }
   }
-  .base {
-    width: 1200px;
-    left:0;
-    right:0;
-    margin:0 auto;
-    background: #F0F2F5;
+  .right {
+    float: left;
+    width: 25%;
+    height: 120px;
+    margin-top: 10px;
+    margin-left: 80px;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    .right-title {
+      text-align: center;
+      font-size: 16px;
+      color: #666666;
+    }
+    p {
+      .p-size(40px, 40px, 14px, left, 20px, #ed3025);
+      span {
+        .container-size(inline-block, 155px, auto, 0, 0);
+        text-align: center;
+        color: #333333;
+      }
+    }
   }
-  .footer {
-    margin-top: 20px;
+  .order-info {
+    float: left;
+    width: 32%;
+    height: 120px;
+    margin-top: 10px;
+    .order-title {
+      text-align: center;
+      font-size: 16px;
+      color: #666666;
+    }
+    p {
+      .p-size(40px, 40px, 14px, left, 20px, #ed3025);
+      span {
+        display: inline-block;
+        width: 100px;
+        color: #666666;
+      }
+      .left65 {
+        margin-left: 65px !important;
+      }
+    }
   }
-  .header-personal {
-    width: 1200px;
-    height: 140px;
+}
+.content {
+  margin-top: 20px;
+  .left {
+    float: left;
+    border-top: 5px solid #ed3025;
+  }
+  .right {
+    width: 985px;
+    height: 1017px;
+    float: left;
+    margin-left: 20px;
     background: white;
-    border: solid 1px #e0e0e0;
-    .left {
-      float: left;
-      width: 36%;
-      height: 120px;
-      text-align:center;
-      margin-top: 10px;
-      p {
-       .p-size(40px,40px,14px,left,20px,#333333);
-       i {
-         margin-right: 15px;
-         color: #ed3025;
-       }
-      }
-    }
-    .right {
-      float: left;
-      width: 25%;
-      height: 120px;
-      margin-top: 10px;
-      margin-left: 80px;
-      border-left: 1px solid #e0e0e0;
-      border-right: 1px solid #e0e0e0;
-      .right-title {
-        text-align: center;
-        font-size: 16px;
-        color: #666666;
-      }
-      p {
-        .p-size(40px,40px,14px,left,20px,#ed3025);
-        span {
-          .container-size(inline-block,155px,auto,0,0);
-          text-align: center;
-          color: #333333;
-        }
-
-      }
-    }
-    .order-info{
-      float: left;
-      width: 32%;
-      height: 120px;
-      margin-top: 10px;
-      .order-title{
-        text-align: center;
-        font-size: 16px;
-        color: #666666;
-      }
-      p {
-        .p-size(40px,40px,14px,left,20px,#ed3025);
-        span {
-          display:inline-block;
-          width: 100px;
-          color: #666666;
-        }
-        .left65 {
-          margin-left: 65px!important;
-        }
-      }
-    }
+    border: 1px solid #e0e0e0;
   }
-  .content {
-    margin-top: 20px;
-    .left {
-      float: left;
-      border-top: 5px solid #ed3025;
-    }
-    .right {
-      width: 985px;
-      height: 1017px;
-      float: left;
-      margin-left: 20px;
-      background: white;
-      border: 1px solid #e0e0e0;
-    }
-  }
-  .ant-menu-item-selected {
-    color: #ed3025;
-  }
-  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    border-left: 2px solid #ed3025;
-    background-color: #ffffff;
-    color: #ed3025;
-  }
-  .left-menu:hover {
-    color: #ed3025;
-  }
+}
+.ant-menu-item-selected {
+  color: #ed3025;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  border-left: 2px solid #ed3025;
+  background-color: #ffffff;
+  color: #ed3025;
+}
+.left-menu:hover {
+  color: #ed3025;
+}
 </style>
