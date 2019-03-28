@@ -3,8 +3,7 @@
     <a-layout>
       <a-layout>
         <!-- 头部组件 -->
-        <f-space-header></f-space-header>
-        <f-space-button name="蓝色" color="blue"></f-space-button>
+        <f-space-header type="home"></f-space-header>
         <a-layout-content>
           <div class="goods-exhibition">
             <a-breadcrumb class="crumbs">
@@ -13,7 +12,7 @@
                 <a href>限时抢购</a>
               </a-breadcrumb-item>
               <a-breadcrumb-item>
-                <a href>汇仁牌 肾宝片</a>
+                <a href>思密达 蒙脱石散</a>
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
@@ -811,6 +810,7 @@ li {
   float: left;
   width: 905px;
   height: 1900px;
+  border: 1px solid rgb(238,238,238);
 }
 .goods-detail {
   width: 900px;

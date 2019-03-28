@@ -21,7 +21,7 @@
               签到有礼
               <span class="sign"></span>
             </a>
-            <a>我的订单</a>
+            <a @click="toMyOrder()">我的订单</a>
             <a-dropdown>
               <a class="ant-dropdown-link" href="#">
                 我的医药
@@ -262,6 +262,11 @@
       toInformation() {
         this.$router.push({
           path: '/user/personal/information'
+        })
+      },
+      toMyOrder(){
+        this.$router.push({
+          path: '/user/personal/myorder'
         })
       },
       async getBasicInfo() {

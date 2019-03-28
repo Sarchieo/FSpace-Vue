@@ -15,7 +15,7 @@
               {{ storeInfo.storeName }}
             </p>
             <p>
-              <a-icon type="environment"/> 
+              <a-icon type="environment"/>
               {{ storeInfo.address }}
             </p>
             <p>

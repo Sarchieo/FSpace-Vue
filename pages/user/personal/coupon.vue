@@ -10,7 +10,11 @@
               <span class="satisfy">满600元可用</span>
               <p>全场折扣券</p>
               <p>2019-03-27至2019-04-20可用</p>
+              <!-- <img class="state-pic" src="../../../assets/img/Invalid.png" alt=""> -->
+              <!-- <img class="state-pic" src="../../../assets/img/invalied.png" alt=""> -->
+              <img class="state-pic" src="../../../assets/img/already.png" alt="">
             </div>
+            <img class="right-img" src="../../../assets/img/receives.png" alt="">
           </div>
           <div class="condition-price">
             <div class="discount">
@@ -19,7 +23,9 @@
               <span class="satisfy">满600元可用</span>
               <p>全场折扣券</p>
               <p>2019-03-27至2019-04-20可用</p>
+               <img class="state-pic" src="../../../assets/img/already.png" alt="">
             </div>
+            <img class="right-img" src="../../../assets/img/receives.png" alt="">
           </div>
           <div class="condition-price">
             <div class="discount">
@@ -28,15 +34,17 @@
               <span class="satisfy">满600元可用</span>
               <p>全场折扣券</p>
               <p>2019-03-27至2019-04-20可用</p>
+              <img class="state-pic" src="../../../assets/img/already.png" alt="">
             </div>
+             <img class="right-img" src="../../../assets/img/receives.png" alt="">
           </div>
         </div>
       </a-tab-pane>
       <a-tab-pane tab="已使用" key="2" forceRender>
-        <div class="haved-coupon"></div>
+        <div class="haved-coupon">可使用</div>
       </a-tab-pane>
       <a-tab-pane tab="已失效" key="3">
-        <div class="haved-coupon"></div>
+        <div class="haved-coupon">已失效</div>
       </a-tab-pane>
     </a-tabs>
     <div class="more-coupon">
@@ -49,7 +57,9 @@
             <span class="satisfy">满600元可用</span>
             <p>全场折扣券</p>
             <p>2019-03-27至2019-04-20可用</p>
+            <img class="state-pic" src="../../../assets/img/already.png" alt="">
           </div>
+          <img class="right-img" src="../../../assets/img/receives.png" alt="">
         </div>
       </div>
     </div>
@@ -71,18 +81,27 @@ export default {
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
 .haved-coupon {
-  .container-size(inline-block, 968px, 400px, 10px 0px 20px 0px, 0px);
+  .container-size(inline-block, 968px, 400px, 10px 0px 20px 6px, 0px);
   padding: 15px 0 0 15px;
   overflow: auto;
   // border: 1px solid #e0e0e0;
   .condition-price {
     .container-size(inline-block, 303px, 175px, 0, 0px);
+    cursor:pointer;
     margin-bottom: 10px;
     margin-right: 10px;
+    .right-img{
+      float: right;
+      width: 55px;
+      height: 175px;
+    }
     .discount {
       .container-size(inline-block, 245px, 175px, 0, 0px);
       .position(relative, 0px, 0px);
       border: 1px solid #e0e0e0;
+      .state-pic {
+        .position(relative, -90px, 140px);
+      }
       .discount-count {
         .container-size(inline-block, 100px, 100px, 0, 0px);
         .p-size(80px, 80px, 60px, center, 0px, #ed3025);
@@ -126,10 +145,19 @@ export default {
       .container-size(inline-block, 303px, 175px, 0, 0px);
       margin-bottom: 10px;
       margin-right: 10px;
+      cursor:pointer;
+      .right-img {
+         float: right;
+          width: 55px;
+          height: 175px;
+      }
       .discount {
         .container-size(inline-block, 245px, 175px, 0, 0px);
         .position(relative, 0px, 0px);
         border: 1px solid #e0e0e0;
+        .state-pic{
+          .position(relative, -90px, 140px);
+        }
         .discount-count {
           .container-size(inline-block, 100px, 100px, 0, 0px);
           .p-size(80px, 80px, 60px, center, 0px, #ed3025);

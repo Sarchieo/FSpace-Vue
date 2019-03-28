@@ -9,14 +9,14 @@
           <div class="binnar-box">
             <a-carousel autoplay arrows>
               <div
-                slot="prevArrow"
+                slot="prevArrow" slot-scope="props"
                 class="custom-slick-arrow"
                 style="left: 10px;zIndex: 1"
               >
                 <a-icon type="left-circle" />
               </div>
               <div
-                slot="nextArrow"
+                slot="nextArrow" slot-scope="props"
                 class="custom-slick-arrow"
                 style="right: 10px"
               >
@@ -476,7 +476,7 @@ export default {
 
   },
   mounted() {
-    this.initData();
+    // this.initData();
     window.addEventListener('scroll', this.handleScroll);
   },
   methods: {
@@ -497,7 +497,7 @@ export default {
           )
       );
     },
-    handleScroll () {  
+    handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       // var toTop = this.$refs['toTop'].style
       // console.log(toTop)
