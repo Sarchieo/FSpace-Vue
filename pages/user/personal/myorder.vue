@@ -2,19 +2,23 @@
   <div>
     <a-tabs defaultActiveKey="1" @change="callback">
       <a-tab-pane tab="全部订单" key="1">
+        <f-space-order>
+             <div slot="tabledata">
+               <p>这是插入的内容</p>
+             </div>
+            </f-space-order>
         <a-table :columns="columns" :dataSource="data" bordered>
-          <!-- <p href="" v-for="(item,index) in list" :key="index">{{item.price}}
-                <a href="" v-for="(items,index) in item.list" :key="index">{{items.text}}</a>
-          </p>-->
+           
           <template slot="name" slot-scope="text">
-            <a href="javascript:;">{{text}}</a>
+            
+            <a href="javascript:;">{{text}}
+           
+            </a>
+           
           </template>
-          <template>
-            <div>
-              <p>2232</p>
-            </div>
-          </template>
+           
         </a-table>
+        
         <!-- <p class="table-title">
           <span class="width33">药品</span>
           <span class="width11">单价</span>
@@ -86,6 +90,7 @@
   </div>
 </template>
 <script>
+import FSpaceOrder from "../../../components/table/order";
 const renderContent = (value, row, index) => {
   const obj = {
     children: value,
@@ -162,6 +167,9 @@ const data = [
 ];
 
 export default {
+  components: {
+    FSpaceOrder
+  },
   data() {
     const columns = [
       {

@@ -5,10 +5,11 @@
       <div>
         <div class="header-title" v-show="isShowHeader">
           <div class="header-left">
-            <a-icon type="environment" v-show="isLogin">长沙</a-icon>
+            <a v-show="isLogin"><a-icon type="environment"></a-icon>长沙</a>
             <a>欢迎来到一块医药</a>
-            <nuxt-link to="/user/login">登录</nuxt-link>
-            <nuxt-link to="/user/register">注册</nuxt-link>
+            <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
+            <nuxt-link to="/user/register" v-show="!isLogin">注册</nuxt-link>
+            <nuxt-link to="/" v-show="isLogin">登出</nuxt-link>
             <nuxt-link to="/user/personal">我的一块</nuxt-link>
           </div>
           <div class="header-right">
@@ -149,7 +150,7 @@
         isShowHeader: true,
         isDisTip: false,
         isShowCartList: false,
-        isLogin: false,
+        isLogin: this.$store.state.userStatus,
         cartList: [
           {
             src:'//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg',
