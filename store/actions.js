@@ -2,7 +2,8 @@ import * as types from './mutation-types'
 import {
   saveUser,
   removeUser,
-  saveUserStatus
+  saveUserStatus,
+  saveAreas
 } from '../utils/cache'
 
 const actions = {
@@ -12,18 +13,15 @@ const actions = {
   async setUser(store, { context, user } ) {
     store.commit(types.SET_USER, saveUser(user, context))
   },
+  async setAreas(store, { context, areas } ) {
+    store.commit(types.SET_AREAS, saveAreas(areas, context))
+  },
   async removeUser(store) {
     store.commit(types.REMOVE_USER, removeUser())
     store.commit(types.REMOVE_LOGIN_STATE, removeLoginState())
   },
-  async nuxtServerInit (store, { params, route, req }) {
-    // 初始化基础数据
-    // return axios.get(process.env.url + '服务器地址').then((res) => {
-    //   //code
-    //   store.commit('setData', r.data)
-    // }).catch((error) => {
-    //   console.log(error)
-    // })
+  async nuxtServerInit ({ commit }, { req }) {
+    
   }
 }
 export default actions

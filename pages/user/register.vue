@@ -182,15 +182,6 @@ export default {
           }
         )
       );
-        // setTimeout(() => {
-        //   if(value === '17621503608'){
-        //     callback('手机号码已注册')
-        //     this.sendAuthCode = false
-        //   } else {
-        //     this.sendAuthCode = true
-        //     callback()
-        //   }
-        // },1500)
       } else {
         this.sendAuthCode = false
         callback('请输入手机正确的手机号码');
@@ -201,7 +192,7 @@ export default {
       if (value && value.length > 5) {
         callback();
       } else {
-        callback("请设置密码");
+        callback("请输入旧密码");
       }
     },
     validatePwd2(rule, value, callback) {
@@ -244,7 +235,6 @@ export default {
         smsCode: values.smsCode,
         type: type
       }) 
-      debugger
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         "userServer",

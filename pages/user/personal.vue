@@ -111,9 +111,26 @@ export default {
     return {};
   },
   mounted() {
-    this.getBasicInfo();
+    this.initData();
   },
   methods: {
+    async initData() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "CommonModule";
+      iRequest.method = "getAreas";
+      this.$refcallback(
+          "userServer",
+          iRequest,
+          new this.$iceCallback(
+            function result(result) {
+              if(result.code === 200) {
+                _this.$store.dispatch('setAreas', { context: _this , areas: result.data })
+              }
+            }
+          )
+      );
+    },
     getBasicInfo() {
       let _this = this;
       let iRequest = new inf.IRequest();
