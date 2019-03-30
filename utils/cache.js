@@ -1,5 +1,6 @@
 const UserKey = 'User' 
 const saveUserStatusKey = 'userState'
+const saveAreasKey = 'areas'
 
 
 export function saveUserStatus (state, context) {
@@ -8,6 +9,19 @@ export function saveUserStatus (state, context) {
     maxAge: 60 * 60 * 24 * 7
   })
   return true
+}
+
+export function saveAreas (data, context) {
+  // context.$cookies.set(saveAreasKey, data, { 
+  //   path: '/',
+  //   maxAge: 60 * 60 * 24 * 7
+  // })
+  localStorage.setItem(saveAreasKey, data)
+  return true
+}
+
+export function loadAreas() {
+  return JSON.parse(localStorage.getItem(saveAreasKey))
 }
 
 export function removesaveUserStatus () {

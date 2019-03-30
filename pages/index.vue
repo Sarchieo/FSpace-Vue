@@ -475,28 +475,12 @@ export default {
   asyncData (context) {
 
   },
-  mounted() {
+  mounted() { 
     // this.initData();
     window.addEventListener('scroll', this.handleScroll);
   },
   methods: {
-    initData() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "CommonModule";
-      iRequest.method = "getAreas";
-      this.$refcallback(
-          "userServer",
-          iRequest,
-          new this.$iceCallback(
-              function result(result) {
-                  if(result.code === 200) {
-                     debugger
-                  }
-              }
-          )
-      );
-    },
+    
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       // var toTop = this.$refs['toTop'].style
