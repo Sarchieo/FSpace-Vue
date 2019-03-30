@@ -2,7 +2,7 @@
   <div>
     <a-tabs defaultActiveKey="1" @change="callback">
       <a-tab-pane tab="全部订单" key="1">
-        <f-space-order>
+        <!-- <f-space-order>
              <div slot="tabledata">
                <p>这是插入的内容</p>
              </div>
@@ -17,9 +17,9 @@
            
           </template>
            
-        </a-table>
+        </a-table> -->
         
-        <!-- <p class="table-title">
+        <p class="table-title">
           <span class="width33">药品</span>
           <span class="width11">单价</span>
           <span class="width11">数量</span>
@@ -73,13 +73,13 @@
               </div>
               
               <div class="width12 operation">
-                <p>评论</p>
+                <p @click="toEvaluate()" ref="toevaluate"><a>评论</a></p>
                 
               </div>
             </div>
           </li>
            <a-pagination :defaultCurrent="1" :total="10" class="paging"/>
-        </ul>-->
+        </ul>
       </a-tab-pane>
       <a-tab-pane tab="待付款" key="2" forceRender>待付款</a-tab-pane>
       <a-tab-pane tab="待发货" key="3">待发货</a-tab-pane>
@@ -416,12 +416,20 @@ export default {
       });
     },
     toDetails() {
-      this.$router.push({
-        path: "/product/detail"
-      });
+     var routeData = this.$router.resolve({
+            path: "/user/order-detail"
+          });
+        window.open(routeData.href, '_blank');
     },
     callback(key) {
       console.log(key);
+    },
+    toEvaluate() {
+      var routeData = this.$router.resolve({
+            path: "/user/evaluate"
+          });
+        window.open(routeData.href, '_blank');
+
     }
   }
 };
@@ -430,145 +438,145 @@ export default {
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
 
-// .order-box-li:hover{
-//     border: 1px solid #e0e0e0;
-// }
-// .width33 {
-//   .position(relative, 0px, 0px);
-//   width: 33%;
-//   img {
-//     .position(absolute, 14px, 14px);
-//     width: 80px;
-//     height: 80px;
-//   }
-// }
-// .width11 {
-//   width: 10.5%;
-// }
-// .width12 {
-//   width: 11%;
-// }
-// .table-title {
-//   .p-size(50px, 50px, 16px, center, 0px, #666666);
-//   display: block;
-//   width: 945px;
-//   margin: 0 auto;
-//   background: #f2f2f2;
-//   span {
-//     display: inline-block;
-//     height: 50px;
-//     line-height: 50px;
-//   }
-// }
-// .order-box {
-//   .container-size(block, 985px, 905px, 0 auto, 0px);
-//   overflow: auto;
-//   li{
-//     .container-size(block, 945px, 153px, 0 auto, 0px);
-//     .container-color(#ffffff, 1px solid #f2f2f2, #666666);
-//     margin-top: 10px;
-//     margin-bottom: 10px;
-//     .order-info-text {
-//       .p-size(45px, 45px, 16px, left, 20px, #666666);
-//       background: #f2f2f2;
-//       .time{
-//           font-weight: bold;
-//       }
-//       .yikuai {
-//           margin-right: 38px;
-//       }
-//       .contact:hover{
-//            cursor: pointer;
-//           color: #ed3025;
-//       }
-//       .share {
-//         margin-left: 295px;
-//       }
-//       i {
-//         font-size: 18px;
-//       }
-//       span {
-//         margin-right: 23px;
-//       }
-//     }
-//     .goods-box {
-//       .container-size(block, 943px, 108px, 0 auto, 0px);
-//       div {
-//         display: inline-block;
-//         height: 108px;
-//       }
-//       .goods-pic {
-//         .goods-text {
-//           .position(absolute, 10px, 110px);
-//           width: 200px;
-//           height: auto;
-//         }
-//         .goods-text:hover {
-//           cursor: pointer;
-//           color: #ed3025;
-//         }
-//         .guige {
-//           .position(absolute, 70px, 110px);
-//           width: 200px;
-//           height: auto;
-//         }
-//       }
-//       .count,
-//       .sale,
-//       .price,
-//       .operation {
-//         .position(relative, 0px, 0px);
-//         p {
-//           .position(absolute, 0px, 0px);
-//           width: 100%;
-//           height: 100%;
-//           line-height: 108px;
-//           text-align: center;
-//         }
-//       }
-//       .operation:hover{
-//           cursor: pointer;
-//         color: #ed3025;
-//       }
-//       .sale p:hover {
-//         cursor: pointer;
-//         color: #ed3025;
-//       }
-//       .state {
-//         .position(relative, 0px, 0px);
-//         .sucess {
-//           .position(absolute, 28px, 0px);
-//           width: 100%;
-//           text-align: center;
-//         }
-//         .detail {
-//           .position(absolute, 56px, 0px);
-//           width: 100%;
-//           text-align: center;
-//         }
-//         .detail:hover {
-//           cursor: pointer;
-//           color: #ed3025;
-//         }
-//       }
-//     }
-//   }
-// }
-// .paging{
-//     float: right;
-//     margin-right: 20px;
-// }
-// .pay{
-//     .position(relative, 0px, 0px);
-//     .shiji{
-//         .position(absolute, 28px, 0px);
-//         width: 100%;
-//         text-align: center;
-//     }
-//     .freight{
-//         .position(absolute, 56px, 0px);
-//          width: 100%;
-//         text-align: center;
-//     }
-// }
+.order-box-li:hover{
+    border: 1px solid #e0e0e0;
+}
+.width33 {
+  .position(relative, 0px, 0px);
+  width: 33%;
+  img {
+    .position(absolute, 14px, 14px);
+    width: 80px;
+    height: 80px;
+  }
+}
+.width11 {
+  width: 10.5%;
+}
+.width12 {
+  width: 11%;
+}
+.table-title {
+  .p-size(50px, 50px, 16px, center, 0px, #666666);
+  display: block;
+  width: 945px;
+  margin: 0 auto;
+  background: #f2f2f2;
+  span {
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+  }
+}
+.order-box {
+  .container-size(block, 985px, 905px, 0 auto, 0px);
+  overflow: auto;
+  li{
+    .container-size(block, 945px, 153px, 0 auto, 0px);
+    .container-color(#ffffff, 1px solid #f2f2f2, #666666);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    .order-info-text {
+      .p-size(45px, 45px, 16px, left, 20px, #666666);
+      background: #f2f2f2;
+      .time{
+          font-weight: bold;
+      }
+      .yikuai {
+          margin-right: 38px;
+      }
+      .contact:hover{
+           cursor: pointer;
+          color: #ed3025;
+      }
+      .share {
+        margin-left: 295px;
+      }
+      i {
+        font-size: 18px;
+      }
+      span {
+        margin-right: 23px;
+      }
+    }
+    .goods-box {
+      .container-size(block, 943px, 108px, 0 auto, 0px);
+      div {
+        display: inline-block;
+        height: 108px;
+      }
+      .goods-pic {
+        .goods-text {
+          .position(absolute, 10px, 110px);
+          width: 200px;
+          height: auto;
+        }
+        .goods-text:hover {
+          cursor: pointer;
+          color: #ed3025;
+        }
+        .guige {
+          .position(absolute, 70px, 110px);
+          width: 200px;
+          height: auto;
+        }
+      }
+      .count,
+      .sale,
+      .price,
+      .operation {
+        .position(relative, 0px, 0px);
+        p {
+          .position(absolute, 0px, 0px);
+          width: 100%;
+          height: 100%;
+          line-height: 108px;
+          text-align: center;
+        }
+      }
+      .operation:hover{
+          cursor: pointer;
+        color: #ed3025;
+      }
+      .sale p:hover {
+        cursor: pointer;
+        color: #ed3025;
+      }
+      .state {
+        .position(relative, 0px, 0px);
+        .sucess {
+          .position(absolute, 28px, 0px);
+          width: 100%;
+          text-align: center;
+        }
+        .detail {
+          .position(absolute, 56px, 0px);
+          width: 100%;
+          text-align: center;
+        }
+        .detail:hover {
+          cursor: pointer;
+          color: #ed3025;
+        }
+      }
+    }
+  }
+}
+.paging{
+    float: right;
+    margin-right: 20px;
+}
+.pay{
+    .position(relative, 0px, 0px);
+    .shiji{
+        .position(absolute, 28px, 0px);
+        width: 100%;
+        text-align: center;
+    }
+    .freight{
+        .position(absolute, 56px, 0px);
+         width: 100%;
+        text-align: center;
+    }
+}
 </style>

@@ -383,7 +383,7 @@ li {
 }
 .header-right {
   float: right;
-  width: 492px;
+  width: 510px;
   height: 30px;
   /* margin-right: 50px; */
 }
