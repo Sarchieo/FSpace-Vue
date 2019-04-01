@@ -39,7 +39,7 @@
           <div class></div>
         </div>
         <div id='hot' class="brand-hall" v-for="(item,index) in rushList" :key="index">
-          <p class="brand-hall-title">{{item.title}} <a class="all-hot" @click="toLimited()">查看全部抢购 <a-icon type="right" /> </a></p>
+          <p class="brand-hall-title">{{item.title}} <a class="all-hot" @click="toLimited()">查看全部抢购<a-icon type="right" /> </a></p>
           <div class="brand-div">
             <div class="brand-left">
               <p class="brand-time">{{item.time}}</p>
@@ -180,12 +180,12 @@
         <li class="right-meun" :class="{'active': freeShippings}" @click="freeShipping()">
           <a>包邮专区</a>
         </li>
-        <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
-          <a-icon type="to-top" />
-          <a>回到顶部</a>
-        </li>
         <li class="right-meun" :class="{'active': chooses}" @click="choose()">
           <a>为你精选</a>
+        </li>
+         <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
+          <a-icon type="to-top" />
+          <a>回到顶部</a>
         </li>
     </ul>
   </div>
@@ -659,10 +659,10 @@ li {
 .card{
   position: relative;
   width: 228px;
-  height:280px;
+  height:310px;
 }
 .card:hover {
-  box-shadow:5px 5px 5px 5px #e0e0e0;
+  box-shadow:0px 0px 30px 10px #e0e0e0;
 }
 .surplus{
   .container-size(inline-block,225px,auto,0,0px);
@@ -688,8 +688,13 @@ li {
   .position(absolute,235px,0px);
   width: 225px;
   text-align: center;
+  font-size: 18px;
   font-weight: bold;
   color: rgb(255, 0, 54);
+  del{
+    font-size: 14px!important;
+    font-weight: normal;
+  }
 }
 .card-price del{
   color: #999999;
@@ -699,24 +704,25 @@ li {
 }
 .validity{
   .position(absolute,145px,0px);
-  width: 228px;
+  width: 226px;
   text-align: center;
+  background: #e0e0e0;
 }
 .top165{
-  top: 165px!important;
+  top: 171px!important;
 }
 .top185{
-  top: 185px!important;
+  top: 198px!important;
 }
 .specifications{
-  .position(absolute,205px,0px);
+  .position(absolute,225px,0px);
   width: 228px;
   text-indent: 24px;
   color: #999;
 }
 .manufacturer{
-  .position(absolute,225px,0px);
-  width: 228px;
+  .position(absolute,250px,0px);
+  width: 226px;
   text-indent: 24px;
   color: #999;
 }
@@ -753,6 +759,9 @@ li {
   .position(relative,0px,0px);
   .container-size(inline-block,383px,220px,0,0px);
 }
+.elaborate-card:hover{
+  box-shadow:0px 0px 30px 10px #e0e0e0;
+}
 .elaborate-card img{
   .position(absolute,25px,10px);
   .container-size(inline-block,170px,170px,0,0px);
@@ -760,26 +769,27 @@ li {
 .elaborate-text{
   .position(absolute,32px,200px);
   width: 170px;
-  color: #000000;
+  color: #333333;
   font-size: 16px;
 }
 .elaborate-specifications{
   .position(absolute,54px,200px);
   width: 170px;
+  color: #333333;
 }
 .elaborate-manufacturer{
-  .position(absolute,76px,198px);
+  .position(absolute,85px,198px);
   width: 170px;
 }
 .elaborate-validity{
-  .position(absolute,98px,198px);
+  .position(absolute,105px,198px);
   width: 170px;
 }
 .elaborate-price{
-  .position(absolute,130px,195px);
+  .position(absolute,140px,195px);
   width: 170px;
   color: rgb(238,47,38);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 }
 .elaborate-sold{
@@ -793,7 +803,7 @@ li {
 }
 /* 热销专区，包邮专区 */
 .brand-hall {
-  .container-size(block,1190px,330px,0 auto,0px);
+  .container-size(block,1190px,360px,0 auto,0px);
   background: #ffffff;
   margin-bottom: 20px;
 }
@@ -802,13 +812,18 @@ li {
   line-height: 50px;
   background: rgb(238, 238, 238);
   font-size: 22px;
+  font-weight: bold;
+  color: #333333;
 }
 .brand-hall-title a{
   float: right;
+  font-size: 16px;
+  font-weight:normal;
 }
 .brand-hall-title .all-hot{
   float: right;
-  font-size: 20px;
+  font-size: 16px;
+  font-weight:normal;
   color:  #000000;
 }
 .brand-div {
@@ -865,7 +880,7 @@ li {
   display: flex;
   justify-content: space-between;
   width: 950px;
-  height: 280px;
+  height: 310px;
   background: rgb(238,238,238);
 }
 .text-Center{

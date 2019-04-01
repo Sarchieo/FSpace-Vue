@@ -71,41 +71,60 @@
         </div>
         <div class="logistics-box-info">
           <div class="logistics-left">
-              <p>送货方式：普通快递</p>
-              <p>承运人： 中国邮政</p>
-              <p>货运单号：5941557574860</p>
+            <p>送货方式：普通快递</p>
+            <p>承运人： 中国邮政</p>
+            <p>货运单号：5941557574860</p>
           </div>
-          <div class="line height220">
-          </div>
+          <div class="line height220"></div>
           <div class="logistics-right">
             <a-steps direction="vertical" size="small" :current="1">
-                <a-step title="完成" description="2019-03-30 08：32：47您提交了订单，等待系统确认" />
-                <a-step title="进行中" description="2019-03-30 09：32：47您付款成功，等待仓库出库" />
-                <a-step title="未进行" description="2019-03-30 10：32：47仓库出货，准备分发至长沙仓库中心" />
-                <a-step title="未进行" description="2019-03-30 11：32：47到达湘潭仓库中心，准备分发至易俗河仓库中心" />
-                <a-step title="未进行" description="2019-03-30 12：32：47到达易俗河仓库中心，您准备接收快递" />
+              <a-step title="完成" description="2019-03-30 08：32：47您提交了订单，等待系统确认"/>
+              <a-step title="进行中" description="2019-03-30 09：32：47您付款成功，等待仓库出库"/>
+              <a-step title="未进行" description="2019-03-30 10：32：47仓库出货，准备分发至长沙仓库中心"/>
+              <a-step title="未进行" description="2019-03-30 11：32：47到达湘潭仓库中心，准备分发至易俗河仓库中心"/>
+              <a-step title="未进行" description="2019-03-30 12：32：47到达易俗河仓库中心，您准备接收快递"/>
             </a-steps>
           </div>
         </div>
         <div class="consignee-info">
           <div class="consignee-left float-left">
-              <h3>收货人信息</h3>
-              <p><span>收货人：</span> 刘琦</p>
-              <p class="address"><span>地址：</span>湖南省长沙市开福区马厂江畔豪庭88栋</p>
-              <p><span>手机号:</span> 13688888888</p>
+            <h3>收货人信息</h3>
+            <p>
+              <span class="three">收货人：</span> 刘琦
+            </p>
+            <p class="address">
+              <span class="three">地址：</span>
+              <span class="address-goods">
+                  湖南省长沙sfsfsfsfsfsfsfsfsfsfsfsfsfsf市开福区江畔豪庭88栋
+              </span>
+              
+            </p>
+            <p>
+              <span class="three">手机号:</span> 13688888888
+            </p>
           </div>
           <div class="line height220 float-left"></div>
           <div class="consignee-middle float-left">
-              <h3>付款信息</h3>
-              <p><span>付款方式：</span>线上支付</p>
-              <p><span>商品总额：</span>￥ 520元</p>
-              <p><span>应支付金额：</span>￥ 520元</p>
-              <p><span>运费金额：</span>￥ 0元</p>
+            <h3>付款信息</h3>
+            <p>
+              <span>付款方式：</span>线上支付
+            </p>
+            <p>
+              <span>商品总额：</span>￥ 520元
+            </p>
+            <p>
+              <span>应支付金额：</span>￥ 520元
+            </p>
+            <p>
+              <span>运费金额：</span>￥ 0元
+            </p>
           </div>
           <div class="line height220"></div>
           <div class="consignee-right float-right">
-              <h3>发票信息</h3>
-              <p><span>发票类型：</span>不开发票</p>
+            <h3>发票信息</h3>
+            <p>
+              <span>发票类型：</span>不开发票
+            </p>
           </div>
         </div>
         <p class="goods-title">
@@ -123,8 +142,53 @@
                 <span>一块医药自营</span>
               </p>
             </thead>
-            <tbody class="t-body"></tbody>
-            <tfoot class="t-footer"></tfoot>
+            <tbody class="t-body">
+              <tr class="goods-list">
+                <td class="pic-box widths40">
+                  <div>
+                    <img
+                      src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+                      alt
+                    >
+                    <span class="goods-name">金感胶囊</span>
+                    <span>0.25g*30片</span>
+                    <span>北京振东康远制药有限公司</span>
+                    <!-- <p class="spec">0.25g*30片</p>
+                    <p class="manufactor"></p>-->
+                  </div>
+                </td>
+                <td class="price widths15 td-center padding-left5">
+                  ￥35
+                </td>
+                <td class="count widths15 td-center padding-left5">
+                  1
+                </td>
+                <td class="subtotal widths15 td-center padding-left10">
+                  ￥35
+                </td>
+                <div style="clear: both;"></div>
+                <!-- <td class="total width15 td-center padding-left15">
+                  ￥35
+                </td> -->
+              </tr>
+              <div class="total td-center padding-left15">
+                 ￥35
+              </div>
+            </tbody>
+            <tfoot class="t-footer">
+              <div class="pay-title">
+                <p>商品总额：</p>
+                <p>优惠活动：</p>
+                <p>运费：</p>
+                <p class="red-size">应付总额：</p>
+              </div>
+              <div class="pay-count">
+                <p>￥520</p>
+                <p>￥0</p>
+                <p>￥0</p>
+                <p class="total-red">￥520</p>
+              </div>
+            </tfoot>
           </table>
         </div>
       </a-layout-content>
@@ -185,16 +249,24 @@ export default {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
-.address{
-    height: auto!important;
-    line-height: auto!important;
-    margin-bottom: 10px;
+.address {
+  height: auto !important;
+  line-height: 40px!important;
+  .address-goods{
+    width: 270px!important;
+    height: auto;
+    min-height: 40px;
+    line-height: 40px;
+    text-align: left;
+    text-indent: 0px!important;
+    vertical-align: top;
+  }
 }
-.float-left{
-    float: left;
+.float-left {
+  float: left;
 }
-.float-right{
-     float: right;
+.float-right {
+  float: right;
 }
 .cancel-reason {
   width: 220px;
@@ -202,6 +274,13 @@ export default {
   margin-bottom: 10px;
   text-align: center;
 }
+.widths40 {
+  width: 44%;
+}
+.widths15 {
+  width: 18.5%;
+}
+
 .width40 {
   width: 38%;
 }
@@ -215,7 +294,7 @@ export default {
   .container-size(inline-block, 1px, 170px, 0 auto, 0px);
   border-right: 1px solid #e0e0e0;
   margin-bottom: 15px;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 .bread {
   .container-size(block, 1190px, 50px, 0 auto, 0px);
@@ -226,6 +305,7 @@ export default {
   .container-size(block, 1190px, 220px, 0 auto, 0px);
   border-top: 3px solid #ed3025;
   margin-bottom: 20px;
+  border: 1px solid #f2f2f2;
   .step-left {
     float: left;
     .container-size(inline-block, 300px, 220px, 0 auto, 0px);
@@ -260,23 +340,24 @@ export default {
   .step-right {
     .container-size(inline-block, 879px, 220px, 0 auto, 0px);
     padding: 0px 20px;
-    .setps-box{
-        .position(relative,-120px,0px);
+    .setps-box {
+      .position(relative, -120px, 0px);
     }
   }
 }
 .logistics-box-info {
   .container-size(block, 1190px, 260px, 0 auto, 0px);
   margin-bottom: 20px;
+  border: 1px solid #f2f2f2;
   .logistics-left {
-      float: left;
+    float: left;
     .container-size(inline-block, 300px, 260px, 0 auto, 0px);
-    p{
-       .p-size(55px, 55px, 16px, center, 0px, #666666); 
+    p {
+      .p-size(55px, 55px, 16px, center, 0px, #666666);
     }
   }
   .logistics-right {
-    .position(relative,-40px,0px);
+    .position(relative, -40px, 0px);
     .container-size(inline-block, 879px, 200px, 0 auto, 0px);
     overflow: auto;
     padding: 15px 15px;
@@ -285,24 +366,28 @@ export default {
 .consignee-info {
   .container-size(block, 1190px, 255px, 0 auto, 0px);
   margin-bottom: 20px;
+  border: 1px solid #f2f2f2;
   .consignee-left,
   .consignee-middle,
   .consignee-right {
     .container-size(inline-block, 389px, 255px, 0 auto, 0px);
-    h3{
-        .p-size(40px,40px,16px,center,0px,#666666);
-        font-weight: bold;
+    h3 {
+      .p-size(40px, 40px, 16px, center, 0px, #666666);
+      font-weight: bold;
     }
-    p{
-        .p-size(40px,40px,16px,left,20px,#999999);
-        span{
-            display:inline-block;
-            width: 120px;
-        }
+    p {
+      .p-size(40px, 40px, 16px, left, 20px, #999999);
+      span {
+        display: inline-block;
+        width: 120px;
+      }
+      .three{
+        width: 85px!important;
+      }
     }
   }
-  .consignee-middle{
-      margin-left: 10px;
+  .consignee-middle {
+    margin-left: 10px;
   }
 }
 .goods-title {
@@ -332,15 +417,101 @@ export default {
       border-bottom: 1px solid #eeeeee;
       i {
         margin-right: 10px;
+        font-size: 18px;
       }
     }
     .t-body {
       .container-size(block, 1190px, auto, 0 auto, 0px);
       min-height: 120px;
       border-bottom: 1px solid #eeeeee;
+      .goods-list {
+        .container-size(inline-block, 1000px, 120px, 0 auto, 0px);
+        .td-center{
+          text-align: center;
+          line-height: 120px;
+        }
+        .padding-left10{
+          padding-left: 8px;
+        }
+        .padding-left15{
+          padding-left: 15px;
+        }
+        .padding-left5{
+          padding-left: 24px;
+        }
+        .subtotal{
+          color: #ed3025;
+        }
+       
+        td {
+          display: inline-block;
+          height: 100%;
+        }
+        .pic-box {
+          display: table;
+          float: left;
+          div {
+            display: table-cell;
+            vertical-align: middle;
+            height: 100%;
+            padding-left: 20px;
+            img {
+              float: left;
+              width: 75px;
+              height: 75px;
+            }
+            span {
+              display: inline-block;
+              width: 77%;
+              margin-left: 10px;
+              margin-top: 3px;
+            }
+          }
+        }
+        .price {
+          float: left;
+        }
+      }
+       .total{
+          float: right;
+          width: 190px;
+          height: 100%;
+          text-align: center;
+          padding-top: 48px;
+          min-height: 120px;
+          background: #f2f2f2;
+          border-left: 1px solid #eeeeee;
+          font-size: 18px;
+          font-weight: bold;
+          color: #ed3025;
+        }
     }
     .t-footer {
       .container-size(block, 1190px, 210px, 0 auto, 0px);
+      .pay-title{
+        .container-size(inline-block, 992px, 210px, 0 auto, 0px);
+        float: left;
+        padding: 20px 0px;
+        p{
+          .p-size(40px, 40px, 16px, right, 20px, #333333);
+        }
+        .red-size{
+          color: #ed3025;
+        }
+      }
+      .pay-count{
+        .container-size(inline-block, 190px, 210px, 0 auto, 0px);
+         float: right;
+        background: #f2f2f2;
+        padding: 20px 0px;
+        p{
+          .p-size(40px, 40px, 16px, center, 0px, #333333);
+        }
+        .total-red{
+          font-size: 24px!important;
+          color: #ed3025!important;
+        }
+      }
     }
   }
 }

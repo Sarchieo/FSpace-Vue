@@ -266,12 +266,13 @@ li {
   width: 1190px;
   margin: 0 auto;
   padding-top: 12px;
-  .p-size (45px,45px,14px,left,30px,#666666);
+  .p-size(45px,45px,14px,left,30px,#666666);
 }
 .condition-box {
-   .container-size (block,1190px,250px,0 auto 15px auto,0px);
+   .container-size(block,1190px,250px,0 auto 15px auto,0px);
    padding: 20px 30px;
    background: #ffffff;
+  
 }
 .collapse {
     display: inline-block;
@@ -280,7 +281,8 @@ li {
 }
 // 商品分类展示
 .goods-list-box {
-    .container-size(block,1206px,auto,0 auto,0px);
+    .container-size(block,1202px,auto,0 auto,0px);
+    margin-bottom: 20px;
 }
 .brand-list {
   display: inline-block;
@@ -311,7 +313,7 @@ li {
   text-align: center;
 }
 .goods-list-box li {
-  .container-size(inline-block,228px,280px,6.5px 6.5px,0px);
+  .container-size(inline-block,228px,310px,6.5px 6.2px,0px);
   .container-color(#ffffff,none,#999);
 }
 .goods-pic {
@@ -325,11 +327,11 @@ li {
 }
 .card{
   .position(relative,0px,0px);
-  .container-size(inline-block,226px,278px,0px,0px);
+  .container-size(inline-block,226px,310px,0px,0px);
   border: 1px solid #ffffff;
 }
 .card:hover {
-  border: 1px solid red;
+  box-shadow:0px 0px 30px 10px #e0e0e0;
 }
 .card:hover .specifications{
   display: none;
@@ -348,10 +350,11 @@ li {
 }
 
 .surplus{
-  .position(absolute,190px,0px);
+  .position(absolute,197px,0px);
   width: 225px;
-  text-align: center;
-  color: rgb(255, 0, 54);
+  text-align: left;
+  text-indent: 20px;
+  color: #333333;
 }
 .card-img{
   .position(absolute,15px,45px);
@@ -369,25 +372,33 @@ li {
   text-align: center;
 }
 .card-price{
-  .position(absolute,168px,0px);
+  .position(absolute,172px,0px);
   width: 225px;
-  text-align: center;
+  text-align: left;
+  text-indent: 17px;
+  font-size: 18px;
   font-weight: bold;
   color: rgb(255, 0, 54);
+  del{
+    font-size: 14px!important;
+    font-weight: normal;
+  }
 }
 .card-price del{
   color: #999999;
 }
 .validity {
-  .position(absolute,145px,0px);
-  .p-size (20px,20px,14px,center,0px,#666666);
-  width: 224px;
-  background: rgb(228,228,228);
+  .position(absolute,149px,0px);
+  .p-size(20px,20px,14px,center,0px,#666666);
+  width: 226px;
+  background:#e0e0e0;
 }
 .sold {
   display: inline-block;
   width: 225px;
-  .position(absolute,255px,0px);
+  height: 40px;
+  line-height: 40px;
+  .position(absolute,268px,0px);
   border-top: 1px solid #e0e0e0;
   padding: 0px 5px;
 }
@@ -399,15 +410,17 @@ li {
 }
 .manufacturer {
   display: inline-block;
-  .position(absolute,231px,0px);
+  .position(absolute,240px,0px);
   width: 225px;
-  text-align: center;
+  text-align: left;
+  text-indent: 20px;
 }
 .specifications {
   display: inline-block;
-  .position(absolute,210px,0px);
+  .position(absolute,218px,0px);
   width: 225px;
-  text-align: center;
+  text-align: left;
+  text-indent: 20px;
 }
 
 .add-card {
