@@ -5,7 +5,7 @@
       <a-form class="form-box" :form="form" @submit="handleSubmit">
         <a-form-item label="所属药店：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
-            :disabled= !isEditor
+            :disabled="!isEditor"
             v-decorator="[
                 'storeName',
                 {rules: [{ required: true, message: '请填写营业执照上一致的药店名!' }]}
@@ -14,7 +14,7 @@
         </a-form-item>
         <a-form-item label="省市区" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-cascader
-            :disabled= !isEditor
+            :disabled="!isEditor"
             :options="areas"
             @change="onChange"
             placeholder="请选择省市区"
@@ -27,7 +27,7 @@
         </a-form-item>
         <a-form-item label="药店详细地址：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-textarea
-            :disabled= !isEditor
+            :disabled="!isEditor"
             placeholder="请填写营业执照上一致的药店地址"
             v-decorator="[
                 'address',
@@ -35,38 +35,45 @@
               ]"
           />
         </a-form-item>
+        <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
+          <a-button v-if="isEditor" class="save-btn" html-type="submit">保存</a-button>
+        </a-form-item>
         <p class="authentication">
           认证状态:
           <a-icon type="profile"/>
           <span>{{ authenticationMessage }}</span>
         </p>
-        <h2 class="certificate-title">药店资质</h2>
-        <a-form-item v-bind="formItemLayout" class="upload" v-for="(item, index) in uploadList" :key="index">
-          <div @click="setUploadIndex(index)">
-            <a-upload
-              :fileList="item.fileList"
-              :headers="headers"
-              listType="picture-card"
-              class="avatar-uploader"
-              :showUploadList="showUpload"
-              :action="uploadInfo.upUrl"
-              :beforeUpload="beforeUpload"
-              :supportServerRender='true'
-              :remove='remove'
-              @change="handleChange"
-              @preview="handlePreview"
-            >
-              <div v-if="item.fileList.length < 1">
-                <a-icon :type="loading ? 'loading' : 'plus'"/>
-                <div class="ant-upload-text">{{ item.name }}</div>
-              </div>
-            </a-upload>
-          </div>
-        </a-form-item>
-
-        <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-          <a-button v-if='isEditor' class="save-btn" html-type="submit">保存</a-button>
-        </a-form-item>
+        <div v-if="isRelated">
+          <h2 class="certificate-title" v-if="isRelated">药店资质</h2>
+          <a-form-item
+            v-bind="formItemLayout"
+            class="upload"
+            v-for="(item, index) in uploadList"
+            :key="index"
+          >
+            <div @click="setUploadIndex(index)">
+              <a-upload
+                :fileList="item.fileList"
+                :headers="headers"
+                listType="picture-card"
+                class="avatar-uploader"
+                :showUploadList="showUpload"
+                :action="uploadInfo.upUrl"
+                :beforeUpload="beforeUpload"
+                :supportServerRender="true"
+                :remove="remove"
+                @change="handleChange"
+                @preview="handlePreview"
+              >
+                <div v-if="item.fileList.length < 1">
+                  <a-icon :type="loading ? 'loading' : 'plus'"/>
+                  <div class="ant-upload-text">{{ item.name }}</div>
+                </div>
+              </a-upload>
+            </div>
+          </a-form-item>
+        </div>
+        
       </a-form>
       <ul class="user-info">
         <li class="two-line">
@@ -82,40 +89,43 @@
           <a @click="isChangePhone = true">修改</a>
         </li>
         <li class="one-line">
-          <a-checkbox :checked='!isEditor'>已设置</a-checkbox>
+          <a-checkbox :checked="!isEditor">已设置</a-checkbox>
           <span>所属药店</span>
           <p>加入药店通过资质认证后可享受平台丰富的优惠活动</p>
-          <a @click='setEditor'>{{ isEditor ? '取消' : '修改' }}</a>
+          <a @click="setEditor">{{ isEditor ? '取消' : '修改' }}</a>
         </li>
       </ul>
     </div>
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-      <img alt="example" style="width: 100%" :src="previewImage" />
+      <img alt="example" style="width: 100%" :src="previewImage">
     </a-modal>
-    <f-space-modal-pwd :visible='isChangePwd' @handleCancel='changePwdCancel()'></f-space-modal-pwd>
-     <f-space-modal-phone :visible='isChangePhone' @handleCancel='changePhoneCancel()'></f-space-modal-phone>
+    <f-space-modal-pwd :visible="isChangePwd" @handleCancel="changePwdCancel()"></f-space-modal-pwd>
+    <f-space-modal-phone :visible="isChangePhone" @handleCancel="changePhoneCancel()"></f-space-modal-phone>
   </div>
 </template>
 <script>
-
-import FSpaceModalPwd from '../../../components/modal/changePwd'
-import FSpaceModalPhone from '../../../components/modal/changePhone'
+import FSpaceModalPwd from "../../../components/modal/changePwd";
+import FSpaceModalPhone from "../../../components/modal/changePhone";
 
 export default {
-  components: { FSpaceModalPwd,FSpaceModalPhone },
+  components: { FSpaceModalPwd, FSpaceModalPhone },
   computed: {
     storeInfo() {
       return this.$store.state.user;
     },
     areas() {
-      return this.$store.getters.areas
+      return this.$store.getters.areas;
     }
   },
   watch: {
     storeInfo(val) {
-      if(val.addressCode) {
-        let code = val.addressCode.toString()
-        val.addressCode = [code.substr(0, 2) + '0000', code.substr(0, 4) + '00' ,  code].map(Number)
+      if (val.addressCode) {
+        let code = val.addressCode.toString();
+        val.addressCode = [
+          code.substr(0, 2) + "0000",
+          code.substr(0, 4) + "00",
+          code
+        ].map(Number);
       }
       this.form.setFieldsValue(val);
     }
@@ -123,47 +133,48 @@ export default {
   data() {
     return {
       changePwdForm: {
-        oldPwd: '',
-        newPwd: '',
-        newPwd2: ''
+        oldPwd: "",
+        newPwd: "",
+        newPwd2: ""
       },
+      isRelated: false,
       isChangePhone: false,
       isChangePwd: false,
-      showUpload: { 
-        'showPreviewIcon': true, 
-        'showRemoveIcon': false 
+      showUpload: {
+        showPreviewIcon: true,
+        showRemoveIcon: false
       },
       fileList: [],
-      isEditor: false,
-      companyFileDir: '',
+      isEditor: true,
+      companyFileDir: "",
       previewVisible: false,
-      previewImage: '',
+      previewImage: "",
       businessImg: "",
       GSPImg: "",
       DrugImg: "",
       authenticationMessage: "",
       headers: {
-        "specify-path": '',
-        "specify-filename": ''
+        "specify-path": "",
+        "specify-filename": ""
       },
       uploadList: [
         {
           fileList: [],
-          url: '',
-          name: '营业执照',
-          message: '请上传营业执照'
-        },
-         {
-          fileList: [],
-          url: '',
-          name: '药店经营许可证',
-          message: '请上传药店经营许可证'
+          url: "",
+          name: "营业执照",
+          message: "请上传营业执照"
         },
         {
           fileList: [],
-          url: '', 
-          name: 'GSP认证',
-          message: '请上传GSP认证'
+          url: "",
+          name: "药店经营许可证",
+          message: "请上传药店经营许可证"
+        },
+        {
+          fileList: [],
+          url: "",
+          name: "GSP认证",
+          message: "请上传GSP认证"
         }
       ],
       uploadInfo: {},
@@ -192,72 +203,52 @@ export default {
       addressCode: ""
     });
     this.getBasicInfo();
-    this.fileServerInfo();
-    this.getFilePathPrev();
-
   },
   methods: {
     setEditor() {
-      this.isEditor = !this.isEditor
-      this.showUpload.showRemoveIcon = this.isEditor
+      this.isEditor = !this.isEditor;
+      this.showUpload.showRemoveIcon = this.isEditor;
     },
     setUploadIndex(index) {
       this.headers["specify-filename"] = index + ".jpg";
+      this.headers["specify-path"] =  this.uploadInfo.companyFilePath
       this.uploadIndex = index;
     },
     remove(file) {
-      this.uploadList[file.uid].fileList = []
-      this.uploadList[file.uid].url = ''
+      this.uploadList[file.uid].fileList = [];
+      this.uploadList[file.uid].url = "";
     },
     onChange(value) {
       console.log(value);
     },
-    handlePreview (file) {
-      this.previewImage = file.url || file.thumbUrl
-      this.previewVisible = true
+    handlePreview(file) {
+      this.previewImage = file.url || file.thumbUrl;
+      this.previewVisible = true;
     },
-    handleCancel () {
-      this.previewVisible = false
+    handleCancel() {
+      this.previewVisible = false;
     },
-    handleChange ({file, fileList, event }) {
-      if(file && file.response) {
-        this.uploadList[this.uploadIndex].url = file.response[0].httpUrl
+    handleChange({ file, fileList, event }) {
+      if (file && file.response) {
+        this.uploadList[this.uploadIndex].url = file.response.data[0].httpUrl;
       }
-      fileList.uid = this.uploadIndex
-      this.uploadList[this.uploadIndex].fileList = fileList
+      fileList.uid = this.uploadIndex;
+      this.uploadList[this.uploadIndex].fileList = fileList;
     },
     beforeUpload(file) {
       // 修改uid 便于删除～
-      file.uid = this.uploadIndex
+      file.uid = this.uploadIndex;
     },
     changePhoneCancel() {
-      this.isChangePhone = false
+      this.isChangePhone = false;
     },
     changePwdCancel() {
-      this.isChangePwd = false
-    },
-    fileServerInfo() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "InformationModule";
-      iRequest.method = "fileServerInfo";
-      this.$refcallback(
-        "userServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.uploadInfo = result.map;
-          } else {
-            // 文件地址获取失败 .
-            _this.$message.error('文件地址获取失败')
-          }
-        })
-      );
+      this.isChangePwd = false;
     },
     getBasicInfo() {
       let _this = this;
       let iRequest = new inf.IRequest();
-      iRequest.cls = "InformationModule";
+      iRequest.cls = "LoginRegistrationModule";
       iRequest.method = "basicInfo";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -265,12 +256,14 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            console.log(result.data)
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
             });
+            _this.getFilePathPrev();
             _this.authenticationMessage = result.data.authenticationMessage;
+            _this.isRelated = result.data.isRelated;
+            _this.isEditor = !_this.isRelated
           } else {
           }
         })
@@ -279,42 +272,45 @@ export default {
     getFilePathPrev() {
       let _this = this;
       let iRequest = new inf.IRequest();
-      iRequest.cls = "InformationModule";
-      iRequest.method = "companyFilePathPrev";
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.json = JSON.stringify({
+        compid: this.$store.state.user.storeId
+      })
+
       this.$refcallback(
-        "userServer",
+        "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-             _this.companyFileDir = result.map.companyFileDir
-             _this.headers["specify-path"] =  _this.companyFileDir
-            //  var purl = _this.serverPrev + "/";
-              var path = _this.uploadInfo.downPrev + "/ergodic";
+            _this.uploadInfo = result.data;
+            // 获取默认图片
+              var path = result.data.ergodicUrl;
               var xhr = new XMLHttpRequest();
               xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                   var data = xhr.responseText;
-                  data = JSON.parse(data).data;
+                  data = JSON.parse(data).data.sort();
                   for (var i in data) {
                     if (i !== 7) {
-                      _this.uploadList[i].fileList.push({
+                       _this.uploadList[i].fileList.push({
                         uid: i,
                         name: data[i],
                         status: 'done',
-                        url: _this.uploadInfo.downPrev + _this.companyFileDir + data[i] + "?" + new Date().getSeconds(),
+                        url: result.data.downPrev + result.data.companyFilePath + data[i] + "?" + new Date().getSeconds(),
                       })
-                      _this.uploadList[i].url = _this.uploadInfo.downPrev + _this.companyFileDir + data[i] + "?" + new Date().getSeconds()
+                      _this.uploadList[i].url = result.data.downPrev + result.data.companyFilePath + data[i] + "?" + new Date().getSeconds()
                     }
                   }
                 }
               };
               xhr.open("POST", path, true);
-              xhr.setRequestHeader("specify-path", _this.companyFileDir);
+              xhr.setRequestHeader("specify-path", result.data.companyFilePath);
               xhr.setRequestHeader("ergodic-sub", "false");
               xhr.send(null);
           } else {
-            _this.$message.error('文件地址获取失败, 请稍后重试')
+            _this.$message.error("文件地址获取失败, 请稍后重试");
           }
         })
       );
@@ -328,10 +324,9 @@ export default {
           iRequest.cls = "StoreManageModule";
           iRequest.method = "updateStoreInfo";
           iRequest.param.token = localStorage.getItem("identification");
-          debugger
           iRequest.param.json = JSON.stringify({
             storeName: values.storeName,
-            addressCode: values.addressCode[values.addressCode.length-1],
+            addressCode: values.addressCode[values.addressCode.length - 1],
             address: values.address,
             longitude: 0,
             latitude: 0
@@ -341,20 +336,20 @@ export default {
             iRequest,
             new this.$iceCallback(function result(result) {
               if (result.code === 200) {
-                _this.getBasicInfo()
-                _this.setEditor()
+                _this.getBasicInfo();
+                _this.setEditor();
                 _this.$success({
-                  title: '提交成功',
+                  title: "提交成功",
                   content: (
                     <div>
                       <p>您的门店信息已提交成功</p>
                       <p>我们将会在1-3个工作日内处理您的申请</p>
                       <p>如有疑问请拨打客服电话: 0731-88159987</p>
                     </div>
-                  ),
-              });
+                  )
+                });
               } else {
-                _this.$message.error(result.message)
+                _this.$message.error(result.message);
               }
             })
           );
@@ -367,24 +362,24 @@ export default {
 <style scoped lang="less">
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
- .avatar-uploader > .ant-upload {
-    width: 128px;
-    height: 128px;
-  }
-  .ant-upload-select-picture-card i {
-    font-size: 32px;
-    color: #999;
-  }
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
 
-  .ant-upload-select-picture-card .ant-upload-text {
-    margin-top: 8px;
-    color: #666;
-  }
-  .upload-list-inline > .ant-upload-list-item {
-    float: left;
-    width: 200px;
-    margin-right: 8px;
-  }
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+.upload-list-inline > .ant-upload-list-item {
+  float: left;
+  width: 200px;
+  margin-right: 8px;
+}
 .certificates-box {
   .container-size(block, 985px, 1015px, 0, 0px);
   padding: 40px 0;
@@ -483,7 +478,7 @@ export default {
   width: 240px;
   height: 200px;
 }
-.ant-upload-list-picture-card .ant-upload-list-item{
+.ant-upload-list-picture-card .ant-upload-list-item {
   width: 150px;
   height: 150px;
 }

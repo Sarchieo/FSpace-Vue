@@ -164,6 +164,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if(result.code === 200) {
+              debugger
               _this.$store
                 .dispatch("setUserStatus", { context: _this })
                 .then(res => {

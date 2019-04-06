@@ -5,18 +5,21 @@
       <div>
         <div class="header-title" v-show="isShowHeader">
           <div class="header-left">
-            <a v-show="isLogin"><a-icon type="environment"></a-icon>长沙</a>
+            <a v-show="isLogin">
+              <a-icon type="environment"></a-icon>长沙
+            </a>
             <a>欢迎来到一块医药</a>
             <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
             <nuxt-link to="/user/register" v-show="!isLogin">注册</nuxt-link>
-            <nuxt-link to="/" v-show="isLogin">登出</nuxt-link>
+            <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
+            <a @click="logout()">登出</a>
             <nuxt-link to="/user/personal">我的一块</nuxt-link>
           </div>
           <div class="header-right">
             <a>帮助中心</a>
             <a class="margin-left0">在线客服</a>
             <!-- 我的消息 -->
-            <header-notice/>
+            <!-- <header-notice/> -->
             <!-- 签到有礼 -->
             <a class="margin-right0">
               签到有礼
@@ -37,7 +40,7 @@
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
-             <nuxt-link to="/">首页</nuxt-link>
+            <nuxt-link to="/">首页</nuxt-link>
             <div style="clear:both;"></div>
           </div>
         </div>
@@ -48,7 +51,12 @@
             </div>
             <div class="medicine-search">
               <div class="search-box">
-                <a-input v-model="goodsClass" placeholder="药品名称/药品通用名/药品助记码" class="search-input" @keyup.enter="toGoods('category')"/>
+                <a-input
+                  v-model="goodsClass"
+                  placeholder="药品名称/药品通用名/药品助记码"
+                  class="search-input"
+                  @keyup.enter="toGoods('category')"
+                />
                 <button class="search-btn" @click="toGoods('category')">搜索</button>
               </div>
             </div>
@@ -110,14 +118,16 @@
           <img src="../../../assets/img/u49.png" alt>
         </div>
         <div class="ant-layout-header-back">
-          <nuxt-link to="/"><a>返回首页</a></nuxt-link>
+          <nuxt-link to="/">
+            <a>返回首页</a>
+          </nuxt-link>
           <a>电商APP</a>
         </div>
         <div class="divider"></div>
       </div>
     </a-layout-header>
     <!-- 注册 -->
-    <a-layout-header  v-if="type === 'register'" class="login-header">
+    <a-layout-header v-if="type === 'register'" class="login-header">
       <div class="ant-layout-header-login">
         <div class="medicine-name-login">
           <img src="../../../assets/img/u49.png" alt>
@@ -129,198 +139,225 @@
         <div class="divider"></div>
       </div>
     </a-layout-header>
+    <a-modal
+      title="提示"
+      :visible="isLogout"
+      @ok="handleOk"
+      :confirmLoading="confirmLoading"
+      @cancel="handleCancel"
+    >
+      <p>{{ModalText}}</p>
+    </a-modal>
   </div>
 </template>
 <script>
-  import HeaderNotice from './HeaderNotice'
-  export default {
-    name: 'f-space-header',
-    props: ['type'],
-    components: {
-      HeaderNotice
-    },
-    computed: {
-      storeInfo () {
-        return this.$store.state.user;
-      },
-    },
-    data () {
-      return {
-        goodsClass: '',
-        isShowHeader: true,
-        isDisTip: false,
-        isShowCartList: false,
-        isLogin: this.$store.state.userStatus,
-        cartList: [
-          {
-            src:'//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '汇仁肾宝片126片成人男性肾亏',
-            price: 322,
-            guige: '3g * 126片',
-            count: 9
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '宁夏红枸杞',
-            price: 50,
-            guige: '300g * 1袋',
-            count: 6
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '长白山人参',
-            price: 18888,
-            guige: '30g * 1株',
-            count: 1
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i4/TB1pn9kNFXXXXcfXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '东阿阿胶片',
-            price: 188,
-            guige: '3g * 126片',
-            count: 3
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '九芝堂六味地黄丸',
-            price: 88,
-            guige: '3g * 126片',
-            count: 2
-          },
-           {
-            src:'//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-            text: '太极五子衍宗丸',
-            price: 288,
-            guige: '3g * 126片',
-            count: 9
-          }
-        ]
-      }
-    },
-    mounted() {
-      this.init()
-      // this.getBasicInfo()
-      window.addEventListener('scroll', this.handleScroll);
-    },
-    methods: {
-      init() {
-        console.log(this.$store.state.userState)
-        this.isDisTip = localStorage.getItem('isDisTip') ? false : true
-        if(this.isDisTip) {
-          localStorage.setItem('isDisTip', '1')
-        }
-      },
-      handleScroll () {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      var home = this.$refs.home.style
-      var nameBox = this.$refs.nameBox.style
-      if (scrollTop >= 170) {
-        home.position = 'fixed';
-        home.top = '0px';
-        home.opacity = '1'
-        home.zIndex = '1000'
-        home.width = '100%'
-        home.height = '100px'
-        nameBox.height = '70px'
-        this.isShowHeader = false
-      } else {
-        home.position = ''
-        home.top = ''
-        home.height = '142px'
-        nameBox.height = '141px'
-        this.isShowHeader = true
-      }
-      },
-      handleOk() {
-        // 跳转企业中心页面
-        this.$router.push({
-          path: '/user/personal'
-        })
-      },
-      handleCancel() {
-
-      },
-      toPage(name) {
-        this.$router.push({
-          name: name
-        })
-      },
-      toGoods(name) {
-        if (this.goodsClass === '') {
-          this.$message.warning('请输入您需要搜索的药品名称');
-          return
-        }
-        this.$router.push({
-          name: name
-        })
-      },
-      showList() {
-        this.isShowCartList = true
-      },
-      hideList() {
-        this.isShowCartList = false
-      },
-      toInformation() {
-        this.$router.push({
-          path: '/user/personal/information'
-        })
-      },
-      toMyOrder(){
-        this.$router.push({
-          path: '/user/personal/myorder'
-        })
-      },
-      async getBasicInfo() {
-        let _this = this;
-        let iRequest = new inf.IRequest();
-        iRequest.cls = "InformationModule";
-        iRequest.method = "basicInfo";
-        iRequest.param.token = localStorage.getItem("identification")
-        this.$refcallback(
-          "userServer",
-          iRequest,
-          new this.$iceCallback(
-            function result(result) {
-              debugger
-              console.log(result)
-              if(result.code === 200) {
-                // 设置登录
-                _this.$store.dispatch('setUserState')
-                localStorage.setItem('storeInfo', result.data)
-              }else {
-              }
-            }
-          )
-        );
-      },
-      // 退出登录
-      logout() {
-        let _this = this;
-        let iRequest = new inf.IRequest();
-        iRequest.cls = "LoginRegistrationModule";
-        iRequest.method = "logout";
-        iRequest.param.token = localStorage.getItem("identification")
-        this.$refcallback(
-          "userServer",
-          iRequest,
-          new this.$iceCallback(
-            function result(result) {
-              if(result.code === 200) {
-                _this.$message.success(result.data);
-                _this.$store.commit("SET_LOGOUT");
-                // 跳转页面
-                _this.$router.push({
-                  path: '/user/login'
-                })
-              }else {
-                _this.$message.error(result.message);
-              }
-            }
-          )
-        );
-      },
+// import HeaderNotice from './HeaderNotice'
+export default {
+  name: "f-space-header",
+  props: ["type"],
+  // components: {
+  //   HeaderNotice
+  // },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
     }
+  },
+  data() {
+    return {
+      confirmLoading: false,
+      ModalText: "您确定要退出登录吗?",
+      isLogout: false,
+      goodsClass: "",
+      isShowHeader: true,
+      isDisTip: false,
+      isShowCartList: false,
+      isLogin: this.$store.getters.userStatus(this),
+      cartList: [
+        {
+          src:
+            "//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "汇仁肾宝片126片成人男性肾亏",
+          price: 322,
+          guige: "3g * 126片",
+          count: 9
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "宁夏红枸杞",
+          price: 50,
+          guige: "300g * 1袋",
+          count: 6
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "长白山人参",
+          price: 18888,
+          guige: "30g * 1株",
+          count: 1
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i4/TB1pn9kNFXXXXcfXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "东阿阿胶片",
+          price: 188,
+          guige: "3g * 126片",
+          count: 3
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "九芝堂六味地黄丸",
+          price: 88,
+          guige: "3g * 126片",
+          count: 2
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "太极五子衍宗丸",
+          price: 288,
+          guige: "3g * 126片",
+          count: 9
+        }
+      ]
+    };
+  },
+  mounted() {
+    this.init();
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  methods: {
+    init() {
+      this.isDisTip = localStorage.getItem("isDisTip") ? false : true;
+      if (this.isDisTip) {
+        localStorage.setItem("isDisTip", "1");
+      }
+    },
+    handleOk(e) {
+      this.confirmLoading = true;
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "logout";
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.data);
+            _this.$store
+              .dispatch("setLogout", { context: _this })
+              .then(res => {
+                _this.visible = false;
+                _this.confirmLoading = false;
+                // 跳转页面
+                setTimeout(() => {
+                  _this.$router.push({
+                    path: "/user/login"
+                  });
+                }, 1000);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    handleCancel(e) {
+      this.visible = false;
+    },
+    handleScroll() {
+      var scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      var home = this.$refs.home.style;
+      var nameBox = this.$refs.nameBox.style;
+      if (scrollTop >= 170) {
+        home.position = "fixed";
+        home.top = "0px";
+        home.opacity = "1";
+        home.zIndex = "1000";
+        home.width = "100%";
+        home.height = "100px";
+        nameBox.height = "70px";
+        this.isShowHeader = false;
+      } else {
+        home.position = "";
+        home.top = "";
+        home.height = "142px";
+        nameBox.height = "141px";
+        this.isShowHeader = true;
+      }
+    },
+    handleOk() {
+      // 跳转企业中心页面
+      this.$router.push({
+        path: "/user/personal"
+      });
+    },
+    handleCancel() {},
+    toPage(name) {
+      this.$router.push({
+        name: name
+      });
+    },
+    toGoods(name) {
+      if (this.goodsClass === "") {
+        this.$message.warning("请输入您需要搜索的药品名称");
+        return;
+      }
+      this.$router.push({
+        name: name
+      });
+    },
+    showList() {
+      this.isShowCartList = true;
+    },
+    hideList() {
+      this.isShowCartList = false;
+    },
+    toInformation() {
+      this.$router.push({
+        path: "/user/personal/information"
+      });
+    },
+    toMyOrder() {
+      this.$router.push({
+        path: "/user/personal/myorder"
+      });
+    },
+    async getBasicInfo() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "basicInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          console.log(result);
+          if (result.code === 200) {
+            // 设置登录
+            _this.$store.dispatch("setUserState");
+            localStorage.setItem("storeInfo", result.data);
+          } else {
+          }
+        })
+      );
+    },
+    // 退出登录
+    logout() {}
   }
+};
 </script>
 <style lang='less'>
 @import "../../../components/fspace-ui/container/index.less";
@@ -405,7 +442,7 @@ li {
   border-radius: 50%;
   background: #ed3025;
 }
-.header-right a{
+.header-right a {
   float: right;
   display: inline-block;
   margin-left: 15px;
@@ -424,13 +461,13 @@ li {
   .container-size(inline-block, 250px, auto, 0px, 0px);
   .container-color(#ffffff, 1px solid transparent, #666666);
   overflow: auto;
-  max-height:245px;
+  max-height: 245px;
   min-height: 100px;
 }
 .news-ul li {
   .container-size(inline-block, 231px, auto, 0px, 0px);
   .container-color(#ffffff, 1px solid transparent, #666666);
-  max-height:245px;
+  max-height: 245px;
   min-height: 100px;
   p {
     height: 40px;
@@ -483,8 +520,8 @@ li {
 .medicine-name span {
   color: black;
 }
-.medicine-name img{
-  width:195px;
+.medicine-name img {
+  width: 195px;
   height: 62px;
 }
 .medicine-search {
@@ -499,31 +536,31 @@ li {
 /* .search-box{
   border-radius: 50%;
 } */
-.search-btn{
+.search-btn {
   width: 70px;
   height: 30px;
   background-color: rgb(255, 0, 54);
   border: none;
-  outline:none;
+  outline: none;
   color: #ffffff;
 }
-.search-btn:hover{
+.search-btn:hover {
   background-color: rgb(255, 0, 54);
   color: #ffffff;
 }
 .search-btn:active {
   background-color: rgb(255, 0, 54);
   border: none;
-  outline:none;
+  outline: none;
   color: #ffffff;
 }
-.cart-btn{
+.cart-btn {
   position: relative;
   float: right;
   width: 154px;
   height: 42px;
   background: #ffffff;
-  border: 1px solid rgb(255,0,54);
+  border: 1px solid rgb(255, 0, 54);
   border-radius: 20px;
   margin-top: 8px;
   color: #666666;
@@ -534,12 +571,12 @@ li {
   left: 65px;
   font-size: 16px;
 }
-.cart-btn:hover{
+.cart-btn:hover {
   color: #666666;
-  border: 1px solid rgb(255,0,54);
+  border: 1px solid rgb(255, 0, 54);
   /* background: rgb(255,0,54); */
 }
-.cart-btn .cart-count{
+.cart-btn .cart-count {
   position: absolute;
   top: 2px;
   left: 42px;
@@ -548,10 +585,10 @@ li {
   line-height: 20px;
   text-align: center;
   border-radius: 50%;
-  background: rgb(255,0,54);
+  background: rgb(255, 0, 54);
   color: #ffffff;
 }
-.cart-btn i{
+.cart-btn i {
   position: absolute;
   top: 8px;
   left: 30px;
@@ -559,48 +596,48 @@ li {
   font-size: 22px;
 }
 .cart-down {
-  .container-size(block,300px,370px,0px,0px);
-  .position(relative,41px,-55px);
+  .container-size(block, 300px, 370px, 0px, 0px);
+  .position(relative, 41px, -55px);
   overflow: auto;
   z-index: 99;
   opacity: 1;
 }
 .cart-down-ul {
-  .container-size(block,300px,310px,0px,0px);
+  .container-size(block, 300px, 310px, 0px, 0px);
   overflow: auto;
 }
 .cart-down-list {
-  .container-size(block,283px,80px,0px,0px);
-  .position(relative,0px,0px);
-  background:#ffffff;
+  .container-size(block, 283px, 80px, 0px, 0px);
+  .position(relative, 0px, 0px);
+  background: #ffffff;
   line-height: 80px;
 }
 .cart-down-list:hover {
   background: #e0e0e0;
 }
 .cart-img {
-  .position(absolute,5px,5px);
-  .container-size(inline-block,70px,70px,0px,0px);
+  .position(absolute, 5px, 5px);
+  .container-size(inline-block, 70px, 70px, 0px, 0px);
 }
 .cart-goods-text {
-  .position(absolute,5px,80px);
+  .position(absolute, 5px, 80px);
   display: inline-block;
   width: 180px;
-  .p-size(40px,40px,14px,left,0px,#666666);
+  .p-size(40px, 40px, 14px, left, 0px, #666666);
   overflow: hidden;
 }
 .cart-goods-count {
-  .position(absolute,35px,80px);
-  .p-size(40px,40px,14px,left,0px,#666666);
+  .position(absolute, 35px, 80px);
+  .p-size(40px, 40px, 14px, left, 0px, #666666);
 }
 .del-cart-goods {
-  .position(absolute,35px,260px)!important;
-  font-size: 14px!important;
+  .position(absolute, 35px, 260px) !important;
+  font-size: 14px !important;
   color: #666666;
 }
 .total-settlement {
-  .container-size(inline-block,280px,70px,0px,0px);
-  .position(absolute,300px,0px);
+  .container-size(inline-block, 280px, 70px, 0px, 0px);
+  .position(absolute, 300px, 0px);
   background: #ffffff;
   line-height: 70px;
 }
@@ -611,12 +648,12 @@ li {
   color: #ed3025;
 }
 
-.settlement-btn{
-  .button-size (120px,45px,45px,16px,0px,5px);
-  .button-color(none,#ed3025,#ffffff);
-   float: right;
-   margin-top: 12px;
-   margin-right: 10px;
+.settlement-btn {
+  .button-size (120px, 45px, 45px, 16px, 0px, 5px);
+  .button-color(none, #ed3025, #ffffff);
+  float: right;
+  margin-top: 12px;
+  margin-right: 10px;
 }
 .nav-box {
   display: block;
@@ -625,11 +662,11 @@ li {
   margin: 0 auto;
   background: #ffffff;
 }
-.nav-box .goods-type{
+.nav-box .goods-type {
   display: inline-block;
-  width: 196px!important;
+  width: 196px !important;
   height: 40px;
-  background: rgb(255,0,54);
+  background: rgb(255, 0, 54);
   line-height: 40px;
   text-align: center;
   color: #ffffff;
@@ -641,14 +678,14 @@ li {
   font-size: 16px;
   color: black;
 }
-.nav-box a:hover{
-  color: rgb(255,0,54);
+.nav-box a:hover {
+  color: rgb(255, 0, 54);
 }
 .ant-input {
   width: 84% !important;
   height: 38px;
   border: none;
-  border-radius: 18px 0 0 18px!important;
+  border-radius: 18px 0 0 18px !important;
 }
 /* .ant-btn {
   background-color: rgb(255, 0, 54);
@@ -678,7 +715,7 @@ li {
       margin-right: 10%;
     }
     a:nth-child(2) {
-      color: #999999
+      color: #999999;
     }
   }
   .divider {
@@ -686,5 +723,4 @@ li {
     background: #73a1f3;
   }
 }
-
 </style>

@@ -1,10 +1,22 @@
 import * as caches from '../utils/cache'
 
-export function userState(state) {
-  return state.userState
+export function userStatus() {
+  return function(context) {
+    if(process.client) {
+      return caches.loadUserStatus(context)
+    }
+  }
 }
 
-export function areas() {
+export function user() {
+  return function(context) {
+    if(process.client) {
+      return caches.loadUser(context)
+    }
+  }
+}
+
+export function areas(state, getters) {
   if(process.client) {
     return caches.loadAreas()
   }

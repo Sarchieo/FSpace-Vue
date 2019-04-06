@@ -192,7 +192,7 @@ export default {
       if (value && value.length > 5) {
         callback();
       } else {
-        callback("请输入旧密码");
+        callback("请输入密码");
       }
     },
     validatePwd2(rule, value, callback) {

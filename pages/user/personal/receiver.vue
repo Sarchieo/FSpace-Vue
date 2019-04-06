@@ -66,7 +66,7 @@
           </a>
         </span>
       </a-table>
-      <p class="person-count">已保存 <span>{{ data.length }}</span> 条收货人信息，最多保存 <span>5</span> 条</p>
+      <p class="person-count">已保存 <span>{{ data.length|| 0 }}</span> 条收货人信息，最多保存 <span>5</span> 条</p>
    </div>
 </template>
 <script>
@@ -129,7 +129,10 @@ export default {
           function result(result) {
             if(result.code === 200) {
               console.log(result)
-              _this.data = result.data
+              debugger
+              if(result.data) {
+                _this.data = result.data
+              }
             }else {
              _this.$message.error(result.message);
             }
@@ -178,7 +181,6 @@ export default {
       iRequest.param.json = JSON.stringify({
         shipid: record.shipid
       })
-      debugger
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         "userServer",

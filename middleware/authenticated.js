@@ -1,5 +1,5 @@
-export default function ({ store, redirect,route }) {
-  // if (!store.getters.isAuthenticated) {
-  //   return redirect('/user/login')
-  // }
+export default function ({ store, redirect, app }) {
+  if (!store.getters.userStatus(app)) {
+    return redirect('/user/login')
+  }
 }

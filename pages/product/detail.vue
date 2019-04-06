@@ -497,9 +497,29 @@ export default {
     };
   },
   mounted() {
-    this.initData();
+    this.getProd();
   },
   methods: {
+    getProd() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "BackgroundProdModule";
+      iRequest.method = "getProd";
+      iRequest.param.array = [11000000010105]
+      iRequest.param.token = localStorage.getItem("identification");
+      debugger
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            debugger
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     like() {
       this.likes = 1;
       this.dislikes = 0;
@@ -515,18 +535,6 @@ export default {
     },
     handleChange(value) {
       console.log(`selected ${value}`);
-    },
-    async initData() {
-      this.$queryIce(
-        InfoModule.OrderServerPrx,
-        "osB",
-        "queryByUserId",
-        new this.$iceCallback(function result(result) {
-          console.log(result);
-        }),
-        10000,
-        this.$commom.num2jlong(1000010000)
-      );
     },
     callback(key) {
       console.log(key);

@@ -3,7 +3,8 @@ import {
   saveUser,
   removeUser,
   saveUserStatus,
-  saveAreas
+  saveAreas,
+  removeUserStatus
 } from '../utils/cache'
 
 const actions = {
@@ -19,6 +20,11 @@ const actions = {
   async removeUser(store) {
     store.commit(types.REMOVE_USER, removeUser())
     store.commit(types.REMOVE_LOGIN_STATE, removeLoginState())
+  },
+  async setLogout(store, { context }) {
+    store.commit(types.SET_USER, removeUser())
+    store.commit(types.SET_LOGIN_STATE, removeUserStatus(context))
+    
   },
   async nuxtServerInit ({ commit }, { req }) {
     

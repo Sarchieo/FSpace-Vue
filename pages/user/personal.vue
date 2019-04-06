@@ -107,6 +107,7 @@ export default {
       return this.$store.state.user;
     }
   },
+  middleware: 'authenticated',
   data() {
     return {};
   },
@@ -120,21 +121,21 @@ export default {
       iRequest.cls = "CommonModule";
       iRequest.method = "getAreas";
       this.$refcallback(
-          "userServer",
-          iRequest,
-          new this.$iceCallback(
-            function result(result) {
-              if(result.code === 200) {
-                _this.$store.dispatch('setAreas', { context: _this , areas: result.data })
-              }
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              _this.$store.dispatch('setAreas', { context: _this , areas: result.data })
             }
-          )
+          }
+        )
       );
     },
     getBasicInfo() {
       let _this = this;
       let iRequest = new inf.IRequest();
-      iRequest.cls = "InformationModule";
+      iRequest.cls = "LoginRegistrationModule";
       iRequest.method = "basicInfo";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -142,7 +143,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            console.log(result.data)
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
