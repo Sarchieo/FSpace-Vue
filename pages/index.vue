@@ -827,14 +827,14 @@ li {
   color:  #000000;
 }
 .brand-div {
-  .container-size(block,1190px,280px,0 auto,0px);
+  .container-size(block,1190px,310px,0 auto,0px);
   background: rgb(238,238,238);
 }
 .brand-left {
   float: left;
   position: relative;
   width: 228px;
-  height: 280px;
+  height: 310px;
   background: #E6E6E6;
 }
 .brand-lightning {
@@ -843,8 +843,8 @@ li {
   color: rgb(245,47,94);
 }
 .count-down {
-  .position(absolute,160px,0px);
-  width: 220px;
+  .position(absolute,175px,0px);
+  width: 228px;
   text-align: center;
 }
 .count-down button {
@@ -859,7 +859,7 @@ li {
   font-size: 16px;
 }
 .see-whole {
-  .position(absolute,220px,40px);
+  .position(absolute,240px,40px);
   .button-size(150px,40px,40px,14px,0,30px);
   .button-color(1px solid #c40000,#F2F2F2,#c40000);
 }
