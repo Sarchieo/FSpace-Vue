@@ -66,7 +66,7 @@ export default {
   color: #000;
   height: 240px;
   background: white;
-  border-top: 1px #000;
+  border-top: 1px solid #f2f2f2;
 }
 .footer-message-item {
   text-align: center;
@@ -152,6 +152,9 @@ export default {
 .p-left {
   width: 90px!important;
   text-align: center!important;
+}
+.ant-layout-footer {
+  padding: 0px!important;
 }
 </style>
 

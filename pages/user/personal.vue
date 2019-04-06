@@ -61,6 +61,9 @@
               <a-menu-item key="/user/personal" class="left-menu">
                 <a-icon type="mail"/>我的药店
               </a-menu-item>
+              <a-menu-item key="/user/personal/myorder" class="left-menu">
+                <a-icon type="mail"/>我的订单
+              </a-menu-item>
               <a-menu-item key="/user/personal/invoice" class="left-menu">
                 <a-icon type="calendar"/>我的发票
               </a-menu-item>

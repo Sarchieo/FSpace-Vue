@@ -16,14 +16,15 @@
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
-              <a-carousel arrows dotsClass="slick-dots slick-thumb">
+              <img src="https://img.ysbang.cn/uploads/sale/2015/09/03/55e7a30dc3f92.jpg" alt="">
+              <!-- <a-carousel arrows dotsClass="slick-dots slick-thumb">
                 <a slot="customPaging" slot-scope="props">
                   <img :src="getImgUrl(props.i)">
                 </a>
                 <div v-for="(item,index) in 4" :key="index">
                   <img :src="baseUrl+'abstract0'+item+'.jpg'">
                 </div>
-              </a-carousel>
+              </a-carousel> -->
             </div>
             <div class="goods-info">
               <p class="goods-name">思密达 蒙脱石散</p>
@@ -765,7 +766,7 @@ li {
   margin-right: 10px;
 }
 .meal-card img {
-  width: 200px;
+  width: 198px;
   height: 180px;
 }
 .meal-price {
@@ -1091,30 +1092,5 @@ li {
 }
 .ant-layout-footer {
   padding: 0px;
-}
-/* 轮播样式 */
-.ant-carousel >>> .slick-dots {
-  height: auto;
-}
-.ant-carousel >>> .slick-slide img {
-  border: 5px solid #fff;
-  display: block;
-  margin: auto;
-  max-width: 80%;
-}
-.ant-carousel >>> .slick-thumb {
-  bottom: -70px;
-}
-.ant-carousel >>> .slick-thumb li {
-  width: 60px;
-  height: 45px;
-}
-.ant-carousel >>> .slick-thumb li img {
-  width: 100%;
-  height: 100%;
-  filter: grayscale(100%);
-}
-.ant-carousel >>> .slick-thumb li.slick-active img {
-  filter: grayscale(0%);
 }
 </style>

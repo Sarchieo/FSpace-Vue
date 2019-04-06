@@ -201,7 +201,7 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 .limited-box {
-  .container-size (block, 1190px, auto, 0 auto, 0px);
+  .container-size(block, 1190px, auto, 0 auto, 0px);
   background: #ffffff;
 }
 // 广告位样式
@@ -251,8 +251,8 @@ export default {
     background: #ffffff;
     button {
         .position(absolute,160px,250px);
-        .button-size (120px,40px,40px,14px,0px,5px);
-        .button-color (1px solid transparent,#ED2F26,#ffffff);
+        .button-size(120px,40px,40px,14px,0px,5px);
+        .button-color(1px solid transparent,#ED2F26,#ffffff);
     }
 }
 .goods-pic {

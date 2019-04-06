@@ -381,7 +381,7 @@ li {
   padding: 0;
 }
 .ant-layout-header {
-  height: 170px;
+  height: 200px;
   line-height: 30px;
   padding: 0px;
   background: rgb(242, 242, 242);
@@ -420,7 +420,7 @@ li {
 }
 .header-right {
   float: right;
-  width: 492px;
+  width: 510px;
   height: 30px;
   /* margin-right: 50px; */
 }
@@ -486,8 +486,8 @@ li {
   .container-size(inline-block, 250px, 50px, 0px, 0px);
 }
 .see-news button {
-  .button-size (246px, 50px, 50px, 16px, 0px, 0px);
-  .button-color (1px solid transparent, #ed2f26, #ffffff);
+  .button-size(246px, 50px, 50px, 16px, 0px, 0px);
+  .button-color(1px solid transparent, #ed2f26, #ffffff);
 }
 .medicine-names {
   display: block;
@@ -498,13 +498,15 @@ li {
 .medicine-name-box {
   display: block;
   width: 1200px;
-  height: 141px;
+  height: 170px;
   margin: 0 auto;
   padding-top: 20px;
   background: #ffffff;
 }
 .spike {
-  text-indent: 29.6%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-indent: 27.4%;
 }
 .spike a {
   margin-left: 15px;
@@ -526,10 +528,10 @@ li {
 }
 .medicine-search {
   display: inline-block;
-  width: 500px;
+  width: 600px;
   height: 42px;
   border-radius: 20px;
-  margin-left: 150px;
+  margin-left: 125px;
   border: 2px solid rgb(255, 0, 54);
   background: rgb(255, 0, 54);
 }
@@ -537,7 +539,7 @@ li {
   border-radius: 50%;
 } */
 .search-btn {
-  width: 70px;
+  width: 83px;
   height: 30px;
   background-color: rgb(255, 0, 54);
   border: none;
