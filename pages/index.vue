@@ -1,7 +1,7 @@
 <template>
   <div id="components-layout-demo-basic">
     <a-layout>
-      <f-space-header type='home'></f-space-header>
+      <f-space-header type="home"></f-space-header>
       <!-- 左侧菜单，轮播，广告位及物价区 -->
       <a-layout-content>
         <div class="goods-nav-box">
@@ -9,37 +9,57 @@
           <div class="binnar-box">
             <a-carousel autoplay arrows>
               <div
-                slot="prevArrow" slot-scope="props"
+                slot="prevArrow"
+                slot-scope="props"
                 class="custom-slick-arrow"
                 style="left: 10px;zIndex: 1"
               >
-                <a-icon type="left-circle" />
+                <a-icon type="left-circle"/>
               </div>
               <div
-                slot="nextArrow" slot-scope="props"
+                slot="nextArrow"
+                slot-scope="props"
                 class="custom-slick-arrow"
                 style="right: 10px"
               >
-                <a-icon type="right-circle" />
+                <a-icon type="right-circle"/>
               </div>
               <div>
-                <img v-lazy="'//m.360buyimg.com/babel/jfs/t1/26491/29/9870/42039/5c820018E6ac9f854/55c42a68a489cd18.jpg'" class="banner-pic">
+                <img
+                  v-lazy="'//m.360buyimg.com/babel/jfs/t1/26491/29/9870/42039/5c820018E6ac9f854/55c42a68a489cd18.jpg'"
+                  class="banner-pic"
+                >
               </div>
               <div>
-                <img v-lazy="'//img30.360buyimg.com/img/jfs/t15169/46/1365117661/178502/d02d6948/5a4ddc4eNbd55867a.jpg'" class="banner-pic">
+                <img
+                  v-lazy="'//img30.360buyimg.com/img/jfs/t15169/46/1365117661/178502/d02d6948/5a4ddc4eNbd55867a.jpg'"
+                  class="banner-pic"
+                >
               </div>
               <div>
-                <img v-lazy="'//img30.360buyimg.com/img/jfs/t16327/24/1234872079/191114/a510775d/5a4ddbc6N2d73dd08.jpg'" class="banner-pic">
+                <img
+                  v-lazy="'//img30.360buyimg.com/img/jfs/t16327/24/1234872079/191114/a510775d/5a4ddbc6N2d73dd08.jpg'"
+                  class="banner-pic"
+                >
               </div>
               <div>
-                <img v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'" class="banner-pic">
+                <img
+                  v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'"
+                  class="banner-pic"
+                >
               </div>
             </a-carousel>
           </div>
           <div class></div>
         </div>
-        <div id='hot' class="brand-hall" v-for="(item,index) in rushList" :key="index">
-          <p class="brand-hall-title">{{item.title}} <a class="all-hot" @click="toLimited()">查看全部抢购<a-icon type="right" /> </a></p>
+        <!-- <div id="hot" class="brand-hall" v-for="(item,index) in rushList" :key="index">
+          <p class="brand-hall-title">
+            {{item.title}}
+            <a class="all-hot" @click="toLimited()">
+              查看全部抢购
+              <a-icon type="right"/>
+            </a>
+          </p>
           <div class="brand-div">
             <div class="brand-left">
               <p class="brand-time">{{item.time}}</p>
@@ -50,143 +70,135 @@
                 <button>05</button>:
                 <button>12</button>
               </p>
-              <button class="see-whole">查看全部<a-icon type="right" /></button>
+              <button class="see-whole">
+                查看全部
+                <a-icon type="right"/>
+              </button>
             </div>
             <ul class="brand-right">
               <li v-for="(items,index) in item.list" :key="index">
-                <a-card
-                  hoverable
-                  class="card"
-                >
-                  <img
-                    class="card-img"
-                    v-lazy="items.src"
-                    slot="cover"
+                <a-card hoverable class="card">
+                  <img class="card-img" v-lazy="items.src" slot="cover">
+                  <a-progress
+                    :percent="items.surplus"
+                    style="position:absolute;top:145px;left:37.5px;width: 150px;"
+                    :showInfo="false"
+                    status="exception"
                   />
-                  <a-progress :percent="items.surplus" style="position:absolute;top:145px;left:37.5px;width: 150px;" :showInfo="false" status="exception"/>
                   <p class="surplus">还剩{{items.surplus}}支</p>
-                  <a-card-meta
-                    class="card-info"
-                    :title="items.text">
-                  </a-card-meta>
-                  <p class="card-price">￥{{items.new}} <del>￥{{items.old}}</del></p>
+                  <a-card-meta class="card-info" :title="items.text"></a-card-meta>
+                  <p class="card-price">
+                    ￥{{items.new}}
+                    <del>￥{{items.old}}</del>
+                  </p>
                 </a-card>
               </li>
             </ul>
           </div>
-        </div>
+        </div>-->
         <!-- 热销专区 包邮专区 -->
-        <div id="top" class="brand-hall" v-for="(item,index) in hotSelling" :key="index">
-          <p class="brand-hall-title">{{item.title}} <a>查看全部<a-icon type="right" /></a> </p>
+        <div class="brand-hall" v-if="list.hot">
+          <p class="brand-hall-title">
+            热销专区
+            <a>
+              查看全部
+              <a-icon type="right"/>
+            </a>
+          </p>
           <div class="brand-div">
             <ul class="brand-right hot-width">
-              <li v-for="(items,index) in item.list" :key="index">
-                <a-card
-                  hoverable
-                  class="card"
-                  @click="toDetailsPages"
-                >
-                  <img
-                    class="card-img"
-                    v-lazy="items.src"
-                    slot="cover"
-                  />
-                  <p class="surplus text-Center top185">{{items.text}}</p>
-                  <p class="validity">有效期至{{items.validity}}</p>
-                  <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
-                  <p class="specifications">{{items.specifications}}</p>
-                  <p class="manufacturer">{{items.manufacturer}}</p>
-                  <p class="sold">已售{{items.sold}}盒</p>
-                  <a-card-meta
-                    class="card-info"
-                    :title="item.text">
-                  </a-card-meta>
-                  
+              <li v-for="(item,index) in list.hot" :key="index">
+                <a-card hoverable class="card" @click="toDetail(item.sku)">
+                  <img class="card-img" v-lazy="imgSrc" slot="cover">
+                  <p class="surplus text-Center top185">{{item.prodname}}</p>
+                  <p class="validity">有效期至{{item.vaildedate}}</p>
+                  <p class="card-price top165">
+                    ￥{{item.vatp}}
+                    <del>￥{{item.mp}}</del>
+                  </p>
+                  <p class="specifications">{{item.spec}}</p>
+                  <p class="manufacturer">{{item.manuName}}</p>
+                  <p class="sold">已售{{item.wholenum}}{{item.unitName}}</p>
                 </a-card>
               </li>
             </ul>
           </div>
         </div>
-          <div id="free-delivery" class="brand-hall" v-for="(item,index) in freeDelivery" :key="index">
-          <p class="brand-hall-title">{{item.title}}<a>查看全部<a-icon type="right" /></a></p>
-          <div class="brand-div">
-            <ul class="brand-right hot-width">
-              <li v-for="(items,index) in item.list" :key="index">
-                <a-card
-                  hoverable
-                  class="card"
-                  @click="toDetailsPages"
-                >
-                  <img
-                    class="card-img"
-                    v-lazy="items.src"
-                    slot="cover"
-                  />
-                  <p class="surplus text-Center top185">{{items.text}}</p>
-                  <p class="validity">有效期至{{items.validity}}</p>
-                  <p class="card-price top165">￥{{items.new}} <del>￥{{items.old}}</del></p>
-                  <p class="specifications">{{items.specifications}}</p>
-                  <p class="manufacturer">{{items.manufacturer}}</p>
-                  <p class="sold">已售{{items.sold}}盒</p>
-                  <a-card-meta
-                    class="card-info"
-                    :title="item.text">
-                  </a-card-meta>
-                </a-card>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- 为你精选 -->
-        <div id='choice' class="elaborate" v-for="(item,index) in elaborateList" :key="index">
-          <p class="elaborate-title">{{item.title}}</p>
+        <!-- 新品专区 -->
+        <div id="choice" class="elaborate">
+          <p class="elaborate-title">新品专区</p>
           <ul class="elaborate-ui">
-            <li v-for="(items,index) in item.list" :key="index">
-              <a-card
-                  hoverable
-                  class="elaborate-card"
-                >
-                  <img
-                    v-lazy="items.src"
-                    slot="cover"
-                  />
-                  <p class="elaborate-text">{{items.text}}</p>
-                  <p class="elaborate-specifications">{{items.specifications}}</p>
-                  <p class="elaborate-manufacturer">{{items.manufacturer}}</p>
-                  <p class="elaborate-validity">有效期至{{items.validity}}</p>
-                  <p class="elaborate-price">￥{{items.old}} 至 ￥{{items.new}}</p>
-                  <p class="elaborate-sold">已售{{items.sold}}瓶</p>
-                  <a-card-meta
-                    >
-                  </a-card-meta>
-                   <p></p>
-                </a-card>
+            <li v-for="(item,index) in list.new" :key="index">
+              <a-card hoverable class="elaborate-card" @click="toDetail(item.sku)">
+                <img v-lazy="imgSrc" slot="cover">
+                <p class="elaborate-text">{{item.prodname}}</p>
+                <p class="elaborate-specifications">{{item.spec}}</p>
+                <p class="elaborate-manufacturer">{{item.manuName}}</p>
+                <p class="elaborate-validity">有效期至{{item.vaildedate}}</p>
+                <p class="elaborate-price">￥{{item.vatp}}</p>
+                <p class="elaborate-sold">已售{{item.wholenum}}{{item.unitName}}</p>
+                <a-card-meta></a-card-meta>
+                <p></p>
+              </a-card>
             </li>
           </ul>
         </div>
+        <!-- <div
+          id="free-delivery"
+          class="brand-hall"
+          v-for="(item,index) in freeDelivery"
+          :key="index"
+        >
+          <p class="brand-hall-title">
+            {{item.title}}
+            <a>
+              查看全部
+              <a-icon type="right"/>
+            </a>
+          </p>
+          <div class="brand-div">
+            <ul class="brand-right hot-width">
+              <li v-for="(items,index) in item.list" :key="index">
+                <a-card hoverable class="card" @click="toDetailsPages">
+                  <img class="card-img" v-lazy="items.src" slot="cover">
+                  <p class="surplus text-Center top185">{{items.text}}</p>
+                  <p class="validity">有效期至{{items.validity}}</p>
+                  <p class="card-price top165">
+                    ￥{{items.new}}
+                    <del>￥{{items.old}}</del>
+                  </p>
+                  <p class="specifications">{{items.specifications}}</p>
+                  <p class="manufacturer">{{items.manufacturer}}</p>
+                  <p class="sold">已售{{items.sold}}盒</p>
+                  <a-card-meta class="card-info" :title="item.text"></a-card-meta>
+                </a-card>
+              </li>
+            </ul>
+          </div>
+        </div>-->
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
-      <ul class="sider-meun">
-        <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
-          <a>商品分类</a>
-        </li> 
-        <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
-          <a>限时抢购</a>
-        </li>
-        <li class="right-meun" :class="{'active': hotSells}" @click="hotSell()">
-          <a>热销专区</a>
-        </li>
-        <li class="right-meun" :class="{'active': freeShippings}" @click="freeShipping()">
-          <a>包邮专区</a>
-        </li>
-        <li class="right-meun" :class="{'active': chooses}" @click="choose()">
-          <a>为你精选</a>
-        </li>
-         <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
-          <a-icon type="to-top" />
-          <a>回到顶部</a>
-        </li>
+    <ul class="sider-meun">
+      <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
+        <a>商品分类</a>
+      </li>
+      <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
+        <a>限时抢购</a>
+      </li>
+      <li class="right-meun" :class="{'active': hotSells}" @click="hotSell()">
+        <a>热销专区</a>
+      </li>
+      <li class="right-meun" :class="{'active': freeShippings}" @click="freeShipping()">
+        <a>包邮专区</a>
+      </li>
+      <li class="right-meun" :class="{'active': chooses}" @click="choose()">
+        <a>为你精选</a>
+      </li>
+      <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
+        <a-icon type="to-top"/>
+        <a>回到顶部</a>
+      </li>
     </ul>
   </div>
 </template>
@@ -203,6 +215,8 @@ export default {
   },
   data() {
     return {
+      imgSrc:
+        "//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg",
       isShowToTop: false,
       goodsTypes: false,
       limitedTimes: false,
@@ -210,322 +224,89 @@ export default {
       freeShippings: false,
       chooses: false,
       isShowBackTop: false,
-      GUID: '',
-      elaborateList: [
-        {
-          title: '为你精选',
-          list: [
-            {
-              src: '//img.alicdn.com/imgextra/i2/2928278102/O1CN01CglrRQ29ilQVNceiu_!!0-item_pic.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 12
-            },
-             {
-              src: '//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 22
-            },
-             {
-              src: '//img.alicdn.com/imgextra/i3/TB1hNj_PXXXXXcrXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 3
-            },
-             {
-              src: '//img.alicdn.com/imgextra/i2/TB1cFVoNVXXXXbhapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 4
-            },
-             {
-              src: '//img.alicdn.com/imgextra/i1/TB11m47NpXXXXXzaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 5
-            },
-             {
-              src: '//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 6
-            },
-             {
-              src: '//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 7
-            },
-             {
-              src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 8
-            }, 
-            {
-              src: 'http://img.alicdn.com/imgextra/i7/TB1kLY0MXXXXXXKXXXXhFn4.FXX_110224.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 9
-            },
-             {
-              src: 'http://img.alicdn.com/imgextra/i5/TB1YqVlLpXXXXakXpXX9fLt8XXX_020819.jpg_160x160q90.jpg',
-              text: '九芝堂六味地黄丸',
-              specifications: '0.5g*50片',
-              manufacturer: '上海强生制药有限公司',
-              validity: '2019-05-01',
-              old: 20,
-              new: 30,
-              sold: 0
-            }
-          ]
-        }
-      ],
-      freeDelivery: [
-         {
-          title: '包邮专区',
-          list: [
-            {
-              src:'//img.alicdn.com/imgextra/i2/TB1RMTfIFXXXXX.XVXXLJcJ8VXX_033554.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            },
-             {
-              src:'//img.alicdn.com/imgextra/i5/TB1YqVlLpXXXXakXpXX9fLt8XXX_020819.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            },
-             {
-              src:'//img.alicdn.com/imgextra/i4/TB1fOw2LpXXXXc0XFXXY34r9VXX_045741.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            },
-             {
-              src:'//img.alicdn.com/imgextra/i5/TB19qVpGpXXXXbjXVXXi5Ck.pXX_102824.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            },
-             {
-              src:'//img.alicdn.com/imgextra/i5/TB13WoBMpXXXXbIXVXXD9FsFVXX_095711.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            }
-          ]
-         }
-      ],
-      hotSelling: [
-        {
-          title: '热销专区',
-          list: [
-            {
-              src:'//img.alicdn.com/bao/uploaded/TB1EXgPLXXXXXa6XXXXSutbFXXX.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            },
-             {
-              src:'//img.alicdn.com/imgextra/i1/TB128oqNXXXXXcGXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            },
-             {
-              src:'//img.alicdn.com/imgextra/i4/TB1vhv2OXXXXXXCXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            },
-             {
-              src:'//img.alicdn.com/bao/uploaded/TB1qwZsLXXXXXa0XVXXSutbFXXX.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            },
-             {
-              src:'//img.alicdn.com/bao/uploaded/TB1dwgHLXXXXXcQXFXXSutbFXXX.jpg_160x160q90.jpg',
-              validity: '2022-02-15',
-              old: 23,
-              new: 22,
-              text: '领券减+六叶】汇仁牌肾宝片',
-              specifications: '10g*9袋',
-              manufacturer: '华润三九医药股份有限公司',
-              sold: 666
-            }
-          ]
-        }
-      ],
-      rushList: [
-        {
-         time: '12:00场',
-         title: '限时抢购',
-         list: [{
-          total: 120,
-          surplus: 36,
-          text: '999 感冒灵颗粒 可抢2盒',
-          src: '//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
-          old: 10.50,
-          new: 9.5
-        },
-        {
-          total: 120,
-          surplus: 89,
-          text: '领券减+六叶】汇仁牌肾宝片',
-          src: '//img.alicdn.com/imgextra/i4/772458181/O1CN01nczH7S2AIwiKUl1NB_!!0-item_pic.jpg_q90.jpg',
-          old: 100.50,
-          new: 95
-        },
-        {
-          total: 120,
-          surplus: 59,
-          text: '山东东阿阿胶250g铁盒阿胶块',
-          src: '//img.alicdn.com/imgextra/i3/1902685596/O1CN01vvrsd81rD0sDn5A8o_!!0-item_pic.jpg_q90.jpg',
-          old: 300,
-          new: 295
-        },
-        {
-          total: 120,
-          surplus: 10,
-          text: '买1得好礼】盘龙云海排毒养',
-          src: '//img.alicdn.com/imgextra/i2/2255157576/O1CN01dAxJAz25pr62D8NDd_!!0-item_pic.jpg_q90.jpg',
-          old: 52,
-          new: 45
-        }]
-        }
-      ]
+      GUID: "",
+      list: []
     };
   },
-  asyncData (context) {
-
-  },
-  mounted() { 
+  mounted() {
     // this.initData();
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll);
+    this.getMallFloorProd();
   },
   methods: {
-    
-    handleScroll () {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    handleScroll() {
+      var scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
       // var toTop = this.$refs['toTop'].style
       // console.log(toTop)
       if (scrollTop > 0) {
-        this.isShowToTop = true
-        this.isShowBackTop = true
+        this.isShowToTop = true;
+        this.isShowBackTop = true;
       } else {
-        this.isShowToTop = false
-        this.isShowBackTop = false
+        this.isShowToTop = false;
+        this.isShowBackTop = false;
       }
-      if (scrollTop > 100 && scrollTop < 610 ) {
-        this.goodsTypes = true
-         this.chooses = false
-         this.freeShippings = false
-         this.hotSells = false
-         this.limitedTimes = false
-      } else if (scrollTop > 620 && scrollTop < 970){
-        this.limitedTimes = true
-        this.goodsTypes = false
-         this.freeShippings = false
-         this.hotSells = false
-         this.chooses = false
-      } else if (scrollTop > 980 && scrollTop < 1330){
-         this.hotSells = true
-         this.limitedTimes = false
-         this.goodsTypes = false
-          this.freeShippings = false
-          this.chooses = false
-      } else if (scrollTop > 1340 && scrollTop < 1690){
-         this.freeShippings = true
-         this.hotSells = false
-         this.limitedTimes = false
-         this.goodsTypes = false
-         this.chooses = false
-      } else if (scrollTop > 1700){
-        this.chooses = true
-         this.freeShippings = false
-         this.hotSells = false
-         this.limitedTimes = false
-         this.goodsTypes = false
+      if (scrollTop > 100 && scrollTop < 610) {
+        this.goodsTypes = true;
+        this.chooses = false;
+        this.freeShippings = false;
+        this.hotSells = false;
+        this.limitedTimes = false;
+      } else if (scrollTop > 620 && scrollTop < 970) {
+        this.limitedTimes = true;
+        this.goodsTypes = false;
+        this.freeShippings = false;
+        this.hotSells = false;
+        this.chooses = false;
+      } else if (scrollTop > 980 && scrollTop < 1330) {
+        this.hotSells = true;
+        this.limitedTimes = false;
+        this.goodsTypes = false;
+        this.freeShippings = false;
+        this.chooses = false;
+      } else if (scrollTop > 1340 && scrollTop < 1690) {
+        this.freeShippings = true;
+        this.hotSells = false;
+        this.limitedTimes = false;
+        this.goodsTypes = false;
+        this.chooses = false;
+      } else if (scrollTop > 1700) {
+        this.chooses = true;
+        this.freeShippings = false;
+        this.hotSells = false;
+        this.limitedTimes = false;
+        this.goodsTypes = false;
       }
     },
+    getMallFloorProd() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getMallFloorProd";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 20;
+      iRequest.param.param = JSON.stringify({
+        keyword: "",
+        specArray: [],
+        manuArray: []
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.list = result.data;
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     async createFingerprint(components) {
-      let _this = this
+      let _this = this;
       //  setTimeout(function () {
       //   Fingerprint2.get(function (components) {
       //     console.log(components)
@@ -540,57 +321,59 @@ export default {
     },
     goodsType() {
       document.body.scrollTop = document.documentElement.scrollTop = 100;
-      this.goodsTypes = true
-      this.chooses = false
-      this.freeShippings = false
-      this.hotSells = false
-      this.limitedTimes = false
+      this.goodsTypes = true;
+      this.chooses = false;
+      this.freeShippings = false;
+      this.hotSells = false;
+      this.limitedTimes = false;
     },
     limitedTime() {
       document.body.scrollTop = document.documentElement.scrollTop = 620;
-      this.limitedTimes = true
-      this.goodsTypes = false
-      this.freeShippings = false
-      this.hotSells = false
-      this.chooses = false
+      this.limitedTimes = true;
+      this.goodsTypes = false;
+      this.freeShippings = false;
+      this.hotSells = false;
+      this.chooses = false;
     },
     hotSell() {
       document.body.scrollTop = document.documentElement.scrollTop = 980;
-      this.hotSells = true
-      this.limitedTimes = false
-      this.goodsTypes = false
-      this.freeShippings = false
-      this.chooses = false
+      this.hotSells = true;
+      this.limitedTimes = false;
+      this.goodsTypes = false;
+      this.freeShippings = false;
+      this.chooses = false;
     },
     freeShipping() {
       document.body.scrollTop = document.documentElement.scrollTop = 1340;
-      this.freeShippings = true
-      this.hotSells = false
-      this.limitedTimes = false
-      this.goodsTypes = false
-      this.chooses = false
+      this.freeShippings = true;
+      this.hotSells = false;
+      this.limitedTimes = false;
+      this.goodsTypes = false;
+      this.chooses = false;
     },
     choose() {
       document.body.scrollTop = document.documentElement.scrollTop = 1700;
-      this.chooses = true
-      this.freeShippings = false
-      this.hotSells = false
-      this.limitedTimes = false
-      this.goodsTypes = false
+      this.chooses = true;
+      this.freeShippings = false;
+      this.hotSells = false;
+      this.limitedTimes = false;
+      this.goodsTypes = false;
     },
     goBackTop() {
-      debugger
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
-    toDetailsPages() {
+    toDetail(sku) {
       this.$router.push({
-        path:'/product/detail'
-      })
+        path: "/product/detail",
+        query: {
+          sku: sku
+        }
+      });
     },
     toLimited() {
       this.$router.push({
-        path:'/activity/limited'
-      })
+        path: "/activity/limited"
+      });
     }
   }
 };
@@ -649,84 +432,84 @@ li {
   margin: 0;
 }
 .active {
-  background: #FF0036!important;
-  color: #ffffff!important;
+  background: #ff0036 !important;
+  color: #ffffff !important;
 }
-.active a{
-  color: #ffffff!important;
+.active a {
+  color: #ffffff !important;
 }
 /* 限时抢购 */
-.card{
+.card {
   position: relative;
   width: 228px;
-  height:310px;
+  height: 310px;
 }
 .card:hover {
-  box-shadow:0px 0px 30px 10px #e0e0e0;
+  box-shadow: 0px 0px 30px 10px #e0e0e0;
 }
-.surplus{
-  .container-size(inline-block,225px,auto,0,0px);
-  .position(absolute,168px,0px);
+.surplus {
+  .container-size(inline-block, 225px, auto, 0, 0px);
+  .position(absolute, 168px, 0px);
   text-indent: 40px;
-  color:#000000;
+  color: #000000;
 }
-.card-img{
-  .position(absolute,15px,45px);
-  .container-size(inline-block,135px,123px,0,0px);
+.card-img {
+  .position(absolute, 15px, 45px);
+  .container-size(inline-block, 135px, 123px, 0, 0px);
 }
-.card-progress{
-  .position(absolute,0px,0px);
+.card-progress {
+  .position(absolute, 0px, 0px);
 }
-.card-info{
-  .position(absolute,195px,0px);
-  .container-size(inline-block,225px,auto,0,0px);
+.card-info {
+  .position(absolute, 195px, 0px);
+  .container-size(inline-block, 225px, auto, 0, 0px);
   padding-left: 20px;
   padding-right: 20px;
   text-align: center;
 }
-.card-price{
-  .position(absolute,235px,0px);
+.card-price {
+  .position(absolute, 235px, 0px);
   width: 225px;
   text-align: center;
   font-size: 18px;
   font-weight: bold;
   color: rgb(255, 0, 54);
-  del{
-    font-size: 14px!important;
+  del {
+    font-size: 14px !important;
     font-weight: normal;
   }
 }
-.card-price del{
+.card-price del {
   color: #999999;
 }
-.hot-width{
-  width: 1190px!important;
+.hot-width {
+  width: 1190px !important;
 }
-.validity{
-  .position(absolute,145px,0px);
+.validity {
+  .position(absolute, 145px, 0px);
   width: 226px;
   text-align: center;
   background: #e0e0e0;
 }
-.top165{
-  top: 171px!important;
+.top165 {
+  top: 171px !important;
 }
-.top185{
-  top: 198px!important;
+.top185 {
+  top: 198px !important;
 }
-.specifications{
-  .position(absolute,225px,0px);
+.specifications {
+  .position(absolute, 225px, 0px);
   width: 228px;
   text-indent: 24px;
   color: #999;
 }
-.manufacturer{
-  .position(absolute,250px,0px);
+.manufacturer {
+  .position(absolute, 250px, 0px);
   width: 226px;
   text-indent: 24px;
   color: #999;
 }
-.sold{
+.sold {
   position: absolute;
   left: 0px;
   bottom: 0px;
@@ -734,76 +517,76 @@ li {
   height: 30px;
   text-align: center;
   line-height: 30px;
-  border-top: 1px solid rgb(238,238,238);
+  border-top: 1px solid rgb(238, 238, 238);
   color: #999;
 }
 /* 为你精选 */
-.elaborate{
-  .container-size(block,1190px,auto,0 auto,0px);
-  background: rgb(238,238,238);
+.elaborate {
+  .container-size(block, 1190px, auto, 0 auto, 0px);
+  background: rgb(238, 238, 238);
 }
-.elaborate-ui{
+.elaborate-ui {
   display: flex;
   justify-content: space-between;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   width: 1190px;
   height: auto;
 }
-.elaborate-ui li{
+.elaborate-ui li {
   width: 383px;
   height: 220px;
   margin-bottom: 22px;
   background: #ffffff;
 }
-.elaborate-card{
-  .position(relative,0px,0px);
-  .container-size(inline-block,383px,220px,0,0px);
+.elaborate-card {
+  .position(relative, 0px, 0px);
+  .container-size(inline-block, 383px, 220px, 0, 0px);
 }
-.elaborate-card:hover{
-  box-shadow:0px 0px 30px 10px #e0e0e0;
+.elaborate-card:hover {
+  box-shadow: 0px 0px 30px 10px #e0e0e0;
 }
-.elaborate-card img{
-  .position(absolute,25px,10px);
-  .container-size(inline-block,170px,170px,0,0px);
+.elaborate-card img {
+  .position(absolute, 25px, 10px);
+  .container-size(inline-block, 170px, 170px, 0, 0px);
 }
-.elaborate-text{
-  .position(absolute,32px,200px);
+.elaborate-text {
+  .position(absolute, 32px, 200px);
   width: 170px;
   color: #333333;
   font-size: 16px;
 }
-.elaborate-specifications{
-  .position(absolute,54px,200px);
+.elaborate-specifications {
+  .position(absolute, 54px, 200px);
   width: 170px;
   color: #333333;
 }
-.elaborate-manufacturer{
-  .position(absolute,85px,198px);
+.elaborate-manufacturer {
+  .position(absolute, 85px, 198px);
   width: 170px;
 }
-.elaborate-validity{
-  .position(absolute,105px,198px);
+.elaborate-validity {
+  .position(absolute, 105px, 198px);
   width: 170px;
 }
-.elaborate-price{
-  .position(absolute,140px,195px);
+.elaborate-price {
+  .position(absolute, 140px, 195px);
   width: 170px;
-  color: rgb(238,47,38);
+  color: rgb(238, 47, 38);
   font-size: 18px;
   font-weight: bold;
 }
-.elaborate-sold{
-  .position(absolute,165px,198px);
+.elaborate-sold {
+  .position(absolute, 165px, 198px);
   color: #999;
 }
-.elaborate-title{
+.elaborate-title {
   height: 50px;
   line-height: 50px;
   font-size: 22px;
 }
 /* 热销专区，包邮专区 */
 .brand-hall {
-  .container-size(block,1190px,360px,0 auto,0px);
+  .container-size(block, 1190px, 360px, 0 auto, 0px);
   background: #ffffff;
   margin-bottom: 20px;
 }
@@ -815,65 +598,65 @@ li {
   font-weight: bold;
   color: #333333;
 }
-.brand-hall-title a{
+.brand-hall-title a {
   float: right;
   font-size: 16px;
-  font-weight:normal;
+  font-weight: normal;
 }
-.brand-hall-title .all-hot{
+.brand-hall-title .all-hot {
   float: right;
   font-size: 16px;
-  font-weight:normal;
-  color:  #000000;
+  font-weight: normal;
+  color: #000000;
 }
 .brand-div {
-  .container-size(block,1190px,310px,0 auto,0px);
-  background: rgb(238,238,238);
+  .container-size(block, 1190px, 310px, 0 auto, 0px);
+  background: rgb(238, 238, 238);
 }
 .brand-left {
   float: left;
   position: relative;
   width: 228px;
   height: 310px;
-  background: #E6E6E6;
+  background: #e6e6e6;
 }
 .brand-lightning {
-  .position(absolute,60px,90px);
+  .position(absolute, 60px, 90px);
   font-size: 48px;
-  color: rgb(245,47,94);
+  color: rgb(245, 47, 94);
 }
 .count-down {
-  .position(absolute,175px,0px);
+  .position(absolute, 175px, 0px);
   width: 228px;
   text-align: center;
 }
 .count-down button {
-  .button-size(35px,35px,35px,14px,0,3px);
-  .button-color(1px solid transparent,#666666,#ffffff);
-   margin-right: 5px;
+  .button-size(35px, 35px, 35px, 14px, 0, 3px);
+  .button-color(1px solid transparent, #666666, #ffffff);
+  margin-right: 5px;
 }
 .over-distance {
-  .position(absolute,125px,0px);
+  .position(absolute, 125px, 0px);
   width: 228px;
   text-align: center;
   font-size: 16px;
 }
 .see-whole {
-  .position(absolute,240px,40px);
-  .button-size(150px,40px,40px,14px,0,30px);
-  .button-color(1px solid #c40000,#F2F2F2,#c40000);
+  .position(absolute, 240px, 40px);
+  .button-size(150px, 40px, 40px, 14px, 0, 30px);
+  .button-color(1px solid #c40000, #f2f2f2, #c40000);
 }
 .brand-left a {
   width: 100%;
   height: 100%;
 }
-.brand-time{
-  .position(absolute,15px,0px);
+.brand-time {
+  .position(absolute, 15px, 0px);
   width: 228px;
   text-align: center;
   font-weight: bold;
   font-size: 22px;
-  color: rgb(245,47,94);
+  color: rgb(245, 47, 94);
 }
 .brand-right {
   float: right;
@@ -881,11 +664,11 @@ li {
   justify-content: space-between;
   width: 950px;
   height: 310px;
-  background: rgb(238,238,238);
+  background: rgb(238, 238, 238);
 }
-.text-Center{
-  text-align: center!important;
-  text-indent: 0px!important;
+.text-Center {
+  text-align: center !important;
+  text-indent: 0px !important;
 }
 /* 导航及广告轮播左侧菜单栏,广告位，特价区 */
 /* For demo */
@@ -901,7 +684,7 @@ li {
   height: 25px;
   font-size: 25px;
   color: #fff;
-  background-color: rgba(31,45,61,.11);
+  background-color: rgba(31, 45, 61, 0.11);
   opacity: 0.3;
 }
 .ant-carousel > .custom-slick-arrow:before {
@@ -911,11 +694,11 @@ li {
   opacity: 0.5;
 }
 
-.ant-carousel > .slick-slide  h3 {
+.ant-carousel > .slick-slide h3 {
   color: #fff;
 }
 .goods-nav-box {
-  .container-size(block,1190px,435px,0 auto,0px);
+  .container-size(block, 1190px, 435px, 0 auto, 0px);
   position: relative;
   background: #ffffff;
   border-top: 1px solid rgb(238, 238, 238);
@@ -930,13 +713,13 @@ li {
 .ant-carousel > .slick-slide h3 {
   color: #fff;
 }
-.banner-pic{
+.banner-pic {
   width: 995px;
   height: 435px;
 }
 .binnar-box {
-  .container-size(inline-block,995px,435px,0,0px);
-  .position(absolute,0px,197px);
+  .container-size(inline-block, 995px, 435px, 0, 0px);
+  .position(absolute, 0px, 197px);
 }
 .binnar-pic {
   width: 750px;
@@ -946,15 +729,15 @@ li {
   text-align: center;
 }
 /* 右侧菜单栏 */
-.sider-meun{
+.sider-meun {
   position: fixed;
   top: 300px;
   right: 10px;
   width: 85px;
-  height:400px;
-  background: rgb(238,238,238);
+  height: 400px;
+  background: rgb(238, 238, 238);
 }
-.sider-meun .right-meun{
+.sider-meun .right-meun {
   width: 85px;
   height: 80px;
   line-height: 80px;
@@ -971,7 +754,7 @@ li {
 .to-top {
   height: 0px;
 }
-.to-top a{
+.to-top a {
   position: relative;
   top: -10px;
 }
@@ -1003,11 +786,11 @@ li {
 .wrap-right {
   height: 420px;
 }
-.sider-meun .right-meun:hover{
+.sider-meun .right-meun:hover {
   background: rgb(255, 0, 54);
   color: #ffffff;
 }
-.right-meun:hover a{
+.right-meun:hover a {
   color: #ffffff;
 }
 /* ui框架样式 */
@@ -1021,7 +804,7 @@ li {
   border: none;
   color: #ffffff;
 }
-.ant-layout-footer{
+.ant-layout-footer {
   padding: 0px;
 }
 </style>

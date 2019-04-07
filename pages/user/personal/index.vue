@@ -73,7 +73,7 @@
             </div>
           </a-form-item>
         </div>
-        
+    
       </a-form>
       <ul class="user-info">
         <li class="two-line">
@@ -278,7 +278,6 @@ export default {
       iRequest.param.json = JSON.stringify({
         compid: this.$store.state.user.storeId
       })
-
       this.$refcallback(
         "globalServer",
         iRequest,

@@ -12,7 +12,7 @@
                 <a href>限时抢购</a>
               </a-breadcrumb-item>
               <a-breadcrumb-item>
-                <a href>思密达 蒙脱石散</a>
+                <a href>  {{ prodDetail.prodname }} </a>
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
@@ -27,13 +27,13 @@
               </a-carousel> -->
             </div>
             <div class="goods-info">
-              <p class="goods-name">思密达 蒙脱石散</p>
+              <p class="goods-name"> {{ prodDetail.prodname }}</p>
               <p class="rush-time">限时抢购 距离结束还剩 12 小时 15 分钟 52 秒 56</p>
               <div class="price-server">
                 <p class="price">
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥34</span>
-                  <del>￥32</del>
+                  <span class="money-count">￥{{ prodDetail.vatp }}</span>
+                  <!-- <del>￥32</del> -->
                 </p>
                 <p class="price">
                   <span class="integral">积份</span>
@@ -51,35 +51,39 @@
               <div class="manufacturer">
                 <p class="packing">
                   <span>规格/包装：</span>
-                  <span class="margin-right190">5g*15袋</span>
+                  <span class="margin-right190">{{ prodDetail.formName }}</span>
                   <span>剂 型：</span>
                   <span>瓶装</span>
                 </p>
                 <p class="packing">
                   <span>批准文号：</span>
-                  <span class="margin-right190">国药准字H20000690</span>
+                  <span class="margin-right190">{{ prodDetail.standarNo }}</span>
                   <span>整件数量：</span>
-                  <span>200盒</span>
+                  <span>{{ prodDetail.wholenum }}</span>
                 </p>
                 <p class="packing">
                   <span>生产厂家：</span>
-                  <span class="margin-right190">博福-益普生(天津)制药有限公司</span>
+                  <span class="margin-right190">{{ prodDetail.manuName }} </span>
                 </p>
                 <p class="packing">
                   <span>生产日期：</span>
-                  <span class="margin-right190">1863-02-25</span>
-                  <span>有效期至：</span>
-                  <span>2029-09-06</span>
+                  <span class="margin-right190">{{ prodDetail.prodsdate + ' ~ ' + prodDetail.prodedate}}</span>
+                 
                 </p>
-                <div class="packing">
+                <p class="packing">
+                
+                  <span>有效期至：</span>
+                  <span>{{ prodDetail.vaildsdate + ' ~ ' + prodDetail.prodedate }}</span>
+                </p>
+                <!-- <div class="packing">
                   <span>配送至</span>
                   <a-select defaultValue="湖南省长沙市岳麓区" style="width: 200px" @change="handleChange"></a-select>
                   <span>有货</span>
-                </div>
-                <p class="packing">
+                </div> -->
+                <!-- <p class="packing">
                   由
                   <a href>一块物流</a>发货，一块医药提供售后服务. 23:00前下单,预计后天(03月18日)送达
-                </p>
+                </p> -->
 
                 <p class="cart">
                   <input type="text" readonly="readonly" v-model="count" class="goods-count">
@@ -139,47 +143,43 @@
                   <div class="goods-detail">
                     <p class="detail-list">
                       <span class="explain-header">药石名称</span>
-                      <span>思密达 蒙脱石散</span>
+                      <span> {{ prodDetail.prodname }} </span>
                     </p>
                     <p class="detail-list">
                       <span class="explain-header">规格包装</span>
-                      <span>3g * 10 袋</span>
+                      <span> {{ prodDetail.spec }}</span>
                     </p>
                     <p class="detail-list">
                       <span class="explain-header">生产厂家</span>
-                      <span>博福-益普生(天津)制药有限公司</span>
+                      <span>{{ prodDetail.manuName }}</span>
                     </p>
                     <p class="detail-list">
                       <span class="explain-header">批准文号</span>
-                      <span>GB/T3232-2018</span>
-                    </p>
-                    <p class="detail-list">
-                      <span class="explain-header">批次号</span>
-                      <span>CP181102</span>
+                      <span>{{ prodDetail.standarNo }}</span>
                     </p>
                     <div class="explain">
                       <span class="explain-header">功能主治</span>
-                      <span class="explain-text">{{isis}}</span>
+                      <span class="explain-text">{{ details[0].content }}</span>
                     </div>
                     <div class="explain">
                       <span class="explain-header">主要成份</span>
-                      <span class="explain-text">本品系取天然膨润土中提取的蒙脱石加适量矫味剂加工制成的散剂。</span>
+                      <span class="explain-text">{{ details[1].content }}</span>
                     </div>
                     <div class="explain">
                       <span class="explain-header">用法用量</span>
                       <span
                         class="explain-text"
-                      >将蒙脱石散（思密达）（1袋)倒入50毫升温水中，搅匀后服用。儿童：1岁以下，每日1袋：1-2岁，每日1-2袋: 2岁以上，每日2-3袋，均分三次服用。或遵医嘱。 成人：一次1袋，一日3次。急性腹泻服用蒙脱石散（思密达）治疗时，首次剂量加倍。</span>
+                      >{{ details[2].content }}</span>
                     </div>
                     <div class="explain">
                       <span class="explain-header">注意事项</span>
                       <span
                         class="explain-text"
-                      >急性腹泻服用蒙脱石散（思密达）治疗时，首次剂量加倍。偶见便秘，大便干结。1.治疗急性腹泻时，应注意纠正脱水。 2.如出现便秘，可减少剂量继续服用。 3.需同服肠道杀菌药时，请咨询医师。 4.儿童用量请咨询医师或药师。 5.儿童急性腹泻服用本品1天后、慢性腹泻服用2-3天后症状未改善，请咨询医师或药师。 6.如服用过量或出现严重不良反应，应立即就医。 7.对本品过敏者禁用，过敏体质者慎用。 8.本品性状发生改变时禁止使用。 9.请将本品放在儿童不能接触的地方。 10.儿童必须在成人监护下使用。 13.如正在使用其他药品，使用本品前请咨询医师或药师。</span>
+                      >{{ details[4].content }}</span>
                     </div>
                     <div class="explain">
                       <span class="explain-header">禁忌</span>
-                      <span class="explain-text">孕妇、哺乳期妇女忌用。对本品过敏者禁用.</span>
+                      <span class="explain-text">{{ details[5].content }}</span>
                     </div>
                   </div>
                 </a-tab-pane>
@@ -326,6 +326,40 @@ export default {
   },
   data() {
     return {
+      sku: '',
+      prodDetail: {},
+     details: [
+          {
+            name: '功能主治',
+            content: '',
+            id: 1,
+          },
+          {
+            name: '主要成分',
+            content: '',
+            id: 2
+          },
+          {
+            name: '用法用量',
+            content: '',
+            id: 3
+          },
+          {
+            name: '不良反应',
+            content: '',
+            id: 4
+          },
+          {
+            name: '注意事项',
+            content: '',
+            id: 5
+          },
+          {
+            name: '禁忌',
+            content: '',
+            id: 6
+          },
+        ],
       likes: 0,
       dislikes: 0,
       action: null,
@@ -497,6 +531,10 @@ export default {
       ]
     };
   },
+  created() {
+    debugger
+    this.sku = this.$route.query.sku
+  },
   mounted() {
     this.getProd();
   },
@@ -506,15 +544,16 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "BackgroundProdModule";
       iRequest.method = "getProd";
-      iRequest.param.array = [11000000010105]
+      iRequest.param.arrays = [this.sku]
       iRequest.param.token = localStorage.getItem("identification");
-      debugger
       this.$refcallback(
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
+            _this.prodDetail = result.data
+            _this.details = JSON.parse(_this.prodDetail.detail)
+            console.log(_this.details)
           } else {
             _this.$message.error(result.message);
           }
