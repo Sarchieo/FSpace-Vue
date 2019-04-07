@@ -52,12 +52,12 @@
             <div class="medicine-search">
               <div class="search-box">
                 <a-input
-                  v-model="goodsClass"
+                  v-model="keyword"
                   placeholder="药品名称/药品通用名/药品助记码"
                   class="search-input"
                   @keyup.enter="toGoods('category')"
                 />
-                <button class="search-btn" @click="toGoods('category')">搜索</button>
+                <button class="search-btn" @click="toGoods(keyword)">搜索</button>
               </div>
             </div>
             <div
@@ -154,7 +154,7 @@
 // import HeaderNotice from './HeaderNotice'
 export default {
   name: "f-space-header",
-  props: ["type"],
+  props: ["type" , 'searchList'],
   // components: {
   //   HeaderNotice
   // },
@@ -162,9 +162,13 @@ export default {
     storeInfo() {
       return this.$store.state.user;
     }
+    // keyword() {
+    //   return this.$store.state.keyword;
+    // }
   },
   data() {
     return {
+      keyword: '',
       confirmLoading: false,
       ModalText: "您确定要退出登录吗?",
       isLogout: false,
@@ -292,7 +296,7 @@ export default {
       } else {
         home.position = "";
         home.top = "";
-        home.height = "142px";
+        home.height = "171px";
         nameBox.height = "141px";
         this.isShowHeader = true;
       }
@@ -309,14 +313,14 @@ export default {
         name: name
       });
     },
-    toGoods(name) {
-      if (this.goodsClass === "") {
-        this.$message.warning("请输入您需要搜索的药品名称");
-        return;
+    toGoods(keyword) {
+      if(keyword === '') {
+        return 
       }
+      this.$store.commit('KEY_WORD', keyword)
       this.$router.push({
-        name: name
-      });
+        name: 'category'
+      })
     },
     showList() {
       this.isShowCartList = true;

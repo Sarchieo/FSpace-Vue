@@ -53,6 +53,7 @@
           >
             <div @click="setUploadIndex(index)">
               <a-upload
+                :disabled="!isEditor"
                 :fileList="item.fileList"
                 :headers="headers"
                 listType="picture-card"
