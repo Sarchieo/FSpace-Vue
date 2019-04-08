@@ -13,7 +13,7 @@
       <div :ref="'hover' + index" class="hover-show" v-show="item.isActive">
         <p>{{ item.label }}</p>
         <div class="small-type">
-          <span v-for="(items,index) in item.children" :key="index" @click="fullTextsearchProdMall(index)">{{items.label}}</span>
+          <span v-for="(items,index) in item.children" :key="index" @click="toCategory(items.value)">{{items.label}}</span>
         </div>
       </div>
     </li>
@@ -31,53 +31,16 @@ export default {
     this.getProduceClasses()
   },
   methods: {
-       // 搜索结果商品列表
-    fullTextsearchProdMall(index) {
-      debugger
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "fullTextsearchProdMall";
-      iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
-      var value = ''
-      for(var i = 0;i < this.list[i].children.length;i++) {
-        for(var j = 0;j<this.list[i].children.length;j++){
+
+    toCategory(index) {
+      // console.log(index)
+       let routeData = this.$router.resolve({
+        name: 'category',
+        query: {
+          goodsType: index
         }
-        value = this.list[i].children[index].value
-      }
-      iRequest.param.json = JSON.stringify({
-        keyword: this.keyword,
-        specArray: _this.specArray,
-        manuArray: _this.manuArray,
-        brandArray: _this.brandArray,
-        spu: value,
-        sort: 1
-      });
-      this.$refcallback(
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              debugger
-              _this.searchList = result.data;
-              if(_this.searchList.length === 0 || _this.searchList === null){
-                _this.isGoods = true
-              } else {
-                 _this.isGoods = false
-              }
-              console.log(result);
-            } else {
-              console.log(111);
-            }
-          },
-          function error(error) {
-            debugger;
-          }
-        )
-      );
+      })
+      window.open(routeData.href, '_blank');
     },
     showChildren(item, index, e) {
       this.$refs["hover" + index][0].style.top =

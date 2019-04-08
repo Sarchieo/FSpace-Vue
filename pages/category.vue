@@ -2,19 +2,19 @@
   <div>
     <a-layout>
       <f-space-header type="home" :searchList="searchList"></f-space-header>
-      <p class="crumbs">
-        <a-breadcrumb>
+      <!-- <p class="crumbs"> -->
+        <a-breadcrumb class="crumbs">
           <a-breadcrumb-item>首页</a-breadcrumb-item>
           <a-breadcrumb-item>商品分类</a-breadcrumb-item>
         </a-breadcrumb>
-      </p>
+      <!-- </p> -->
       <ul class="condition-box" ref="condition">
         <li class="brand-box brand-li" ref="list">
           <!-- <p class="brand-list" ref="list"> -->
           <div class="brand">品牌：</div>
           <div class="brand-lists" ref="brandLists">
             <a
-              class="hidden-text"
+             
               v-for="(item,index) in brandnameList"
               :key="index"
               ref="checkA"
@@ -33,7 +33,7 @@
           <div class="brand">厂家：</div>
           <div class="brand-lists" ref="manulists">
             <a
-              class="hidden-text"
+             
               v-for="(item,index) in manunameList"
               :key="index"
               ref="checkB"
@@ -51,7 +51,7 @@
           <div class="brand">规格：</div>
           <div class="brand-lists" ref="specLists">
             <a
-              class="hidden-text"
+             
               v-for="(item,index) in specList"
               :key="index"
               ref="checkC"
@@ -67,15 +67,15 @@
         </li>
         <li class="sort-box">
           <!-- 选中的样式为 active-search -->
-          <a href="" @click="selectCompr()">综合 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a> 
-          <a href="" @click="selectVolume()">销量 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a>
+          <a href="javascript:;" @click="selectCompr()" :class="this.sortGoods === 0 ? 'active-search' : ''">综合 <a-icon type="arrow-down"/></a> 
+          <a href="javascript:;" @click="selectVolume()" :class="this.sortGoods === 1 ? 'active-search' : ''">销量 <a-icon type="arrow-down"/></a>
           <!-- <a href="" class="padding-left5"> -->
-             <a-select defaultValue="价格排序" style="width: 150px" @change="handleChange">
+             <a-select defaultValue="价格排序" style="width: 150px" @change="handleChange"  :class="this.sortGoods === 2 || this.sortGoods === 3 ? 'active-search' : ''">
               <a-select-option value="0">价格从高到低</a-select-option>
               <a-select-option value="1">价格从低到高</a-select-option>
              </a-select>
           <!-- </a> -->
-          <a-checkbox v-model="isStock" @click="selectOnlyStock()" class="have-goods">只看有货</a-checkbox>
+          <!-- <a-checkbox v-model="isStock" @click="selectOnlyStock()" class="have-goods">只看有货</a-checkbox> -->
           <span class="goods-num">共{{searchList.length}}件商品</span>
         </li>
       </ul>
@@ -154,7 +154,8 @@ export default {
       count: 1,
       pageNumber: 20,
       brandLists: [],
-      isGoods: false
+      isGoods: false,
+      goodsType: ''
     };
   },
   computed: {
@@ -175,6 +176,7 @@ export default {
     }
   },
   mounted() {
+    this.goodsType = this.$route.query.goodsType
     this.keyword = this.$route.query.keyword
     this.fullTextsearchProdMall();
     this.getConditionByFullTextSearch();
@@ -250,7 +252,7 @@ export default {
         specArray: _this.specArray,
         manuArray: _this.manuArray,
         brandArray: _this.brandArray,
-        spu: 0,
+        spu: _this.goodsType,
         sort: _this.sortGoods
       });
       this.$refcallback(
@@ -386,6 +388,9 @@ li {
   margin: 0;
   padding: 0;
 }
+.ant-breadcrumb{
+  line-height: 23px!important;
+}
 .hidden-text{
  overflow: hidden;
  text-overflow:ellipsis;
@@ -402,6 +407,10 @@ li {
 }
 .have-goods{
   margin-left: 30px;
+}
+.sort-box a:hover{
+  border: 1px solid #ed3025;
+  color: #ed3025;
 }
 .sort-box{
   .container-size(block, 1130px, 50px, 0, 0px);
@@ -449,8 +458,8 @@ li {
   margin-top:15px;
 }
 .active-search{
-  border: 1px solid #ed3025;
-  color: #ed3025;
+  border: 1px solid #ed3025!important;
+  color: #ed3025!important;
 }
 .active-checked {
   // background:#ed3025;
