@@ -152,8 +152,14 @@ export default {
     };
   },
   computed: {
-    keyword() {
-      return this.$store.state.keyword
+    keyword: {
+      get() {
+        return this.$store.state.keyword
+      },
+      set(newValue){ 
+        this.$store.commit('KEY_WORD', newValue)
+        return this.$store.state.keyword
+      }
     }
   },
    watch: {
@@ -163,6 +169,7 @@ export default {
     }
   },
   mounted() {
+    this.keyword = this.$route.query.keyword
     this.fullTextsearchProdMall();
     this.getConditionByFullTextSearch();
   },

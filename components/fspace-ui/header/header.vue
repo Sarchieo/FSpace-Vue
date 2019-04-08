@@ -256,7 +256,7 @@ export default {
             _this.$store
               .dispatch("setLogout", { context: _this })
               .then(res => {
-                _this.visible = false;
+                _this.isLogout = false;
                 _this.confirmLoading = false;
                 // 跳转页面
                 setTimeout(() => {
@@ -273,10 +273,6 @@ export default {
           }
         })
       );
-    },
-    handleCancel(e) {
-      debugger
-      this.isLogout = false;
     },
     handleScroll() {
       var scrollTop =
@@ -308,7 +304,9 @@ export default {
         path: "/user/personal"
       });
     },
-    handleCancel() {},
+    handleCancel() {
+      this.isLogout = false;
+    },
     toPage(name) {
       this.$router.push({
         name: name
@@ -318,10 +316,14 @@ export default {
       if(keyword === '') {
         return 
       }
-      this.$store.commit('KEY_WORD', keyword)
-      this.$router.push({
-        name: 'category'
+      // this.$store.commit('KEY_WORD', keyword)
+      let routeData = this.$router.resolve({
+        name: 'category',
+        query: {
+          keyword: keyword
+        }
       })
+      window.open(routeData.href, '_blank');
     },
     showList() {
       this.isShowCartList = true;

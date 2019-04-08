@@ -83,12 +83,12 @@
           <p>安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码</p>
           <a class="one-updata" @click="isChangePwd = true">修改</a>
         </li>
-        <li class="one-line">
+        <!-- <li class="one-line">
           <a-checkbox checked>已设置</a-checkbox>
           <span>手机绑定</span>
           <p>绑定手机后，您即可享受丰富的手机服务，如手机找回密码等。</p>
           <a @click="isChangePhone = true">修改</a>
-        </li>
+        </li> -->
         <li class="one-line">
           <a-checkbox :checked="!isEditor">已设置</a-checkbox>
           <span>所属药店</span>
