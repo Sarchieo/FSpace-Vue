@@ -14,18 +14,26 @@
           <div class="brand">品牌：</div>
           <div class="brand-lists" ref="brandLists">
             <a
+              class="hidden-text"
               v-for="(item,index) in brandnameList"
               :key="index"
               ref="checkA"
               :class="item.isSelect ? 'active-checked' : '' "
               @click="selectBrand(item)"
             >{{item.name}}</a>
+            
+          </div>
+          <div class="more-box">
+            <!-- <a class="more">多选<a-icon type="plus" /></a>
+            <a class="more-text" ref="moreText" v-if="this.brandnameList.length < 7">更多<a-icon type="down"/></a>
+            <a class="retract" ref="retract">收起<a-icon type="down"/></a> -->
           </div>
         </li>
         <li class="brand-box manu-li" ref="manuList">
           <div class="brand">厂家：</div>
           <div class="brand-lists" ref="manulists">
             <a
+              class="hidden-text"
               v-for="(item,index) in manunameList"
               :key="index"
               ref="checkB"
@@ -33,11 +41,17 @@
               @click="selectManuName(item)"
             >{{item.name}}</a>
           </div>
+            <div class="more-box">
+              <!-- <a class="more">多选<a-icon type="plus" /></a>
+              <a class="more-text" ref="manuMore" v-if="this.manunameList.length < 7">更多<a-icon type="down"/></a>
+              <a class="retract" ref="hideManu">收起<a-icon type="down"/></a> -->
+            </div>            
         </li>
         <li class="brand-box spec-li" ref="specList">
           <div class="brand">规格：</div>
           <div class="brand-lists" ref="specLists">
             <a
+              class="hidden-text"
               v-for="(item,index) in specList"
               :key="index"
               ref="checkC"
@@ -45,6 +59,19 @@
               @click="selectSpec(item)"
             >{{item.name}}</a>
           </div>
+          <div class="more-box">
+            <!-- <a class="more">多选<a-icon type="plus" /></a>
+            <a class="more-text" ref="specMore" v-if="this.specList.length < 7">更多<a-icon type="down"/></a>
+            <a class="retract" ref="hideSpec">收起<a-icon type="down"/></a> -->
+          </div>       
+        </li>
+        <li class="sort-box">
+          <!-- 选中的样式为 active-search -->
+          <a href="">综合 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a> 
+          <a href="">销量 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a> 
+          <a href="" class="padding-left5">价格 <a-icon type="caret-up" class="price-up"/><a-icon type="caret-down" class="price-down"/></a>
+          <a-checkbox v-model="isStock">只看有货</a-checkbox>
+          <span class="goods-num">共{{searchList.length}}件商品</span>
         </li>
       </ul>
       <ul class="goods-list-box" v-show="!isGoods">
@@ -61,7 +88,7 @@
             <!-- 规格 -->
             <p class="specifications">{{item.spec}}</p>
             <!-- 厂家 -->
-            <p class="manufacturer">{{item.manuName}}</p>
+            <p class="manufacturer hidden-text">{{item.manuName}}</p>
             <p class="sold">
               <span class="evaluate">中包装数量{{item.medpacknum}}{{item.unitName}}</span>
               <span class="sold-count">已售{{item.sales}}盒</span>
@@ -79,12 +106,15 @@
             <p class="goods-state">
               库存 {{item.store}}
               <span>收藏</span>
+              <!-- 选中收藏 后i标签class名为active-checked -->
               <a-icon type="star"></a-icon>
+
             </p>
             <a-card-meta class="card-info" :title="item.text"></a-card-meta>
           </a-card>
         </li>
-        <a-pagination v-model="current" :total="this.searchList.length" />
+
+        <a-pagination v-model="current" :total="this.searchList.length" v-show="!isGoods"/>
       </ul>
       <!-- 如果搜索结果为空显示 -->
       <div v-show="isGoods" class="no-goods-box">
@@ -105,6 +135,8 @@ export default {
   },
   data() {
     return {
+      isSort: false, // 控制向上向下箭头显示
+      isStock: false, // 只看有货
       specArray: [],
       manuArray: [],
       brandArray: [],
@@ -292,10 +324,6 @@ export default {
         }
       }
       console.log(";;;;;;--- rrrr" + _arr);
-    },
-    // 分页事件
-    onChange(pageNumber) {
-        console.log('Page: ', pageNumber);
     }
   }
 };
@@ -322,8 +350,37 @@ li {
   margin: 0;
   padding: 0;
 }
+.hidden-text{
+ overflow: hidden;
+ text-overflow:ellipsis;
+ white-space: nowrap;
+}
 .retract {
   display: none;
+}
+.padding-left5{
+  padding-left: 5px;
+}
+.sort-box{
+  .container-size(block, 1130px, 50px, 0, 0px);
+  line-height: 50px;
+  a{
+    .container-size(inline-block, 70px, 30px, 0 20px 0 0, 0px);
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    color:#666666;
+    .price-up {
+      .position(relative,-6px,8px);
+    }
+    .price-down{
+      .position(relative,6px,-6px);
+    }
+  }
+  .goods-num{
+    float: right;
+    margin-right: 3px;
+  }
 }
 .brand-li,
 .manu-li,
@@ -348,6 +405,10 @@ li {
 .ant-pagination{
   margin-left: 5px;
   margin-top:15px;
+}
+.active-search{
+  border: 1px solid #ed3025;
+  color: #ed3025;
 }
 .active-checked {
   // background:#ed3025;
@@ -393,7 +454,7 @@ li {
 }
 .condition-box {
   .container-size(block, 1190px, 190px, 0 auto 15px auto, 0px);
-  padding: 20px 30px;
+  padding: 20px 30px 0 30px;
   background: #ffffff;
 }
 .collapse {
@@ -578,7 +639,8 @@ li {
   text-indent: 20px;
   i {
     float: right;
-    margin-right: 10px;
+    width: 20px;
+    margin-right: 0px;
   }
   span {
     float: right;
