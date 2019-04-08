@@ -1,6 +1,6 @@
 export const iceGridInstanceName = "DemoIceGrid";
-// export const serverIp = "114.116.149.145";
-export const serverIp = "192.168.1.119";
+export const serverIp = "114.116.149.145";
+// export const serverIp = "192.168.1.119";
 // export const serverIp = "192.168.1.110";
 export const serverPort = 4062;
 
