@@ -67,10 +67,15 @@
         </li>
         <li class="sort-box">
           <!-- 选中的样式为 active-search -->
-          <a href="">综合 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a> 
-          <a href="">销量 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a> 
-          <a href="" class="padding-left5">价格 <a-icon type="caret-up" class="price-up"/><a-icon type="caret-down" class="price-down"/></a>
-          <a-checkbox v-model="isStock">只看有货</a-checkbox>
+          <a href="" @click="selectCompr()">综合 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a> 
+          <a href="" @click="selectVolume()">销量 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a>
+          <!-- <a href="" class="padding-left5"> -->
+             <a-select defaultValue="价格排序" style="width: 150px" @change="handleChange">
+              <a-select-option value="0">价格从高到低</a-select-option>
+              <a-select-option value="1">价格从低到高</a-select-option>
+             </a-select>
+          <!-- </a> -->
+          <a-checkbox v-model="isStock" @click="selectOnlyStock()" class="have-goods">只看有货</a-checkbox>
           <span class="goods-num">共{{searchList.length}}件商品</span>
         </li>
       </ul>
@@ -135,6 +140,7 @@ export default {
   },
   data() {
     return {
+      sortGoods: 0,
       isSort: false, // 控制向上向下箭头显示
       isStock: false, // 只看有货
       specArray: [],
@@ -175,7 +181,7 @@ export default {
       iRequest.method = "getConditionByFullTextSearch";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
+      iRequest.param.pageNumber = 10;
       iRequest.param.spu = 0;
       iRequest.param.json = JSON.stringify({
         keyword: this.keyword
@@ -231,14 +237,14 @@ export default {
       iRequest.method = "fullTextsearchProdMall";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
+      iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
         keyword: this.keyword,
         specArray: _this.specArray,
         manuArray: _this.manuArray,
         brandArray: _this.brandArray,
         spu: 0,
-        sort: 1
+        sort: _this.sortGoods
       });
       this.$refcallback(
         "goodsServer",
@@ -262,6 +268,28 @@ export default {
           }
         )
       );
+    },
+    // 综合排序
+    selectCompr() {
+      this.sortGoods = 0
+      this.fullTextsearchProdMall()
+    },
+    // 销量排序
+    selectVolume() {
+      this.sortGoods = 1
+      this.fullTextsearchProdMall()
+    },
+    // 价格排序
+    handleChange(value) {
+      if(value === '0'){
+        this.sortGoods = 2;
+      } else {
+         this.sortGoods = 3;
+      }
+      this.fullTextsearchProdMall()
+    },
+    // 只看有货 
+    selectOnlyStock() {
     },
     toDetail(sku) {
       this.$router.push({
@@ -307,6 +335,7 @@ export default {
       }
       this.fullTextsearchProdMall();
     },
+    // 
     removeArray(_arr, _obj) {
       let length = _arr.length;
       for (let i = 0; i < length; i++) {
@@ -355,11 +384,17 @@ li {
  text-overflow:ellipsis;
  white-space: nowrap;
 }
+.ant-pagination{
+  text-align: center;
+}
 .retract {
   display: none;
 }
 .padding-left5{
   padding-left: 5px;
+}
+.have-goods{
+  margin-left: 30px;
 }
 .sort-box{
   .container-size(block, 1130px, 50px, 0, 0px);
