@@ -283,11 +283,13 @@ export default {
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
-        keyword: this.keyword,
+        // 从侧边栏进入此页面keyword要为空字符串
+        keyword: '',
         specArray: _this.specArray,
         manuArray: _this.manuArray,
         brandArray: _this.brandArray,
-        spu: _this.goodsType,
+        spu: Number(_this.goodsType),
+        // spu: 1000,
         sort: _this.sortGoods
       });
       this.$refcallback(
