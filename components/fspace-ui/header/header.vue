@@ -142,7 +142,7 @@
     <a-modal
       title="提示"
       :visible="isLogout"
-      @ok="handleOk"
+      @ok="handleLogoutOk"
       :confirmLoading="confirmLoading"
       @cancel="handleCancel"
     >
@@ -240,7 +240,7 @@ export default {
         localStorage.setItem("isDisTip", "1");
       }
     },
-    handleOk(e) {
+    handleLogoutOk(e) {
       this.confirmLoading = true;
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -275,7 +275,8 @@ export default {
       );
     },
     handleCancel(e) {
-      this.visible = false;
+      debugger
+      this.isLogout = false;
     },
     handleScroll() {
       var scrollTop =
@@ -359,7 +360,9 @@ export default {
       );
     },
     // 退出登录
-    logout() {}
+    logout() {
+      this.isLogout = true
+    }
   }
 };
 </script>
