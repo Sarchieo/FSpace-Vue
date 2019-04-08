@@ -67,8 +67,8 @@
         </li>
         <li class="sort-box">
           <!-- 选中的样式为 active-search -->
-          <a href="" @click="selectCompr()">综合 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a> 
-          <a href="" @click="selectVolume()">销量 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a>
+          <a href="javascript:;" @click="selectCompr()">综合 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a> 
+          <a href="javascript:;" @click="selectVolume()">销量 <a-icon type="arrow-down" v-if="!isSort"/> <a-icon type="arrow-up" v-if="isSort"/></a>
           <!-- <a href="" class="padding-left5"> -->
              <a-select defaultValue="价格排序" style="width: 150px" @change="handleChange">
               <a-select-option value="0">价格从高到低</a-select-option>
@@ -80,9 +80,9 @@
         </li>
       </ul>
       <ul class="goods-list-box" v-show="!isGoods">
-        <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item.sku)">
+        <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item)">
           <a-card hoverable class="card">
-            <img class="card-img" v-lazy="item.src" slot="cover">
+            <img class="card-img" v-lazy="item.imgURl" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
             <p class="card-price top165">
@@ -180,6 +180,43 @@ export default {
     this.getConditionByFullTextSearch();
   },
   methods: {
+    getImgUrl() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = []
+      _this.searchList.forEach(c => {
+        list.push({
+          sku: c.sku,
+          spu: c.spu
+        })
+      })
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, arr) => {
+                // _this.searchList[index].imgURl = result.data.downPrev + c + '/' + _this.searchList[index].sku + '.jpg' +  "?" + new Date().getSeconds()
+                _this.$set(_this.searchList[index], 'imgURl',  result.data.downPrev + c + '/' + _this.searchList[index].sku + '-200x200.jpg' +  "?" + new Date().getSeconds())
+              })
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            debugger;
+          }
+        )
+      );
+    },
     // 药品厂商规格品牌
     getConditionByFullTextSearch() {
       let _this = this;
@@ -226,8 +263,6 @@ export default {
                   isSelect: false
                 });
               });
-            } else {
-              console.log(111);
             }
           },
           function error(error) {
@@ -260,12 +295,12 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
+              _this.getImgUrl()
               if(_this.searchList.length === 0 || _this.searchList === null){
                 _this.isGoods = true
               } else {
                  _this.isGoods = false
               }
-              console.log(result);
             } else {
               console.log(111);
             }
@@ -298,11 +333,12 @@ export default {
     // 只看有货 
     selectOnlyStock() {
     },
-    toDetail(sku) {
+    toDetail(item) {
       this.$router.push({
         path: "/product/detail",
         query: {
-          sku: sku
+          sku: item.sku,
+          spu: item.spu
         }
       });
     },
