@@ -9,6 +9,9 @@ const mutations = {
   },
   [types.SET_LOGIN_STATE] (state, status) {
     state.userStatus = status
+  },
+  [types.KEY_WORD] (state, keyword) {
+    state.keyword = keyword
   }
 }
 export default mutations

@@ -6,3 +6,5 @@ export const SET_AREAS = 'SET_AREAS';
 export const SET_LOGIN_STATE = 'SET_LOGIN_STATE';
 export const REMOVE_LOGIN_STATE = 'REMOVE_LOGIN_STATE';
 export const SET_LOGOUT = 'SET_LOGOUT';
+
+export const KEY_WORD = 'KEY_WORD'

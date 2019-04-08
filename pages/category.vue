@@ -1,97 +1,103 @@
 <template>
   <div>
-      <a-layout>
-          <f-space-header type='home'></f-space-header>
-          <p class="crumbs">
-               <a-breadcrumb>
-                    <a-breadcrumb-item>首页</a-breadcrumb-item>
-                    <a-breadcrumb-item>商品分类</a-breadcrumb-item>
-                </a-breadcrumb>
-          </p>
-          <ul class="condition-box">
-              <li class="brand-box">
-                  <p class="brand-list" ref="list">
-                      <span>品牌：</span>
-                       <a>全部</a>
-                       <a v-for="(item,index) in brandLists" :key="index">{{item}}</a>
-                       <a class="more">多选<a-icon type="plus" /></a>
-                       <a class="more" @click="showMore()">更多<a-icon type="down" /></a>
-                  </p>
-                  <p class="brand-lists" ref="lists">
-                      <span>品牌：</span>
-                       <a>全部</a>
-                       <a v-for="(item,index) in brandList" :key="index">{{item}}</a>
-                       <a class="more">多选<a-icon type="plus" /></a>
-                       <a class="more" @click="hideMore()">收起<a-icon type="down" /></a>
-                  </p>
-              </li>
-              <li>
+    <a-layout>
+      <f-space-header type="home" :searchList="searchList"></f-space-header>
+      <p class="crumbs">
+        <a-breadcrumb>
+          <a-breadcrumb-item>首页</a-breadcrumb-item>
+          <a-breadcrumb-item>商品分类</a-breadcrumb-item>
+        </a-breadcrumb>
+      </p>
+      <ul class="condition-box" ref="condition">
+        <li class="brand-box brand-li" ref="list">
+          <!-- <p class="brand-list" ref="list"> -->
+          <div class="brand">品牌：</div>
+          <div class="brand-lists" ref="brandLists">
+            <a
+              v-for="(item,index) in brandnameList"
+              :key="index"
+              ref="checkA"
+              :class="item.isSelect ? 'active-checked' : '' "
+              @click="selectBrand(item)"
+            >{{item.name}}</a>
+          </div>
+        </li>
+        <li class="brand-box manu-li" ref="manuList">
+          <div class="brand">厂家：</div>
+          <div class="brand-lists" ref="manulists">
+            <a
+              v-for="(item,index) in manunameList"
+              :key="index"
+              ref="checkB"
+              :class="item.isSelect ? 'active-checked' : '' "
+              @click="selectManuName(item)"
+            >{{item.name}}</a>
+          </div>
+        </li>
+        <li class="brand-box spec-li" ref="specList">
+          <div class="brand">规格：</div>
+          <div class="brand-lists" ref="specLists">
+            <a
+              v-for="(item,index) in specList"
+              :key="index"
+              ref="checkC"
+              :class="item.isSelect ? 'active-checked' : '' "
+              @click="selectSpec(item)"
+            >{{item.name}}</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="goods-list-box" v-show="!isGoods">
+        <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item.sku)">
+          <a-card hoverable class="card">
+            <img class="card-img" v-lazy="item.src" slot="cover">
+            <p class="surplus text-Center top185">{{item.brandName}}</p>
+            <p class="validity">有效期至{{item.vaildedate}}</p>
+            <p class="card-price top165">
+              ￥{{item.vatp}}
+              <del>￥{{item.vatp}}</del>
+            </p>
 
-              </li>
-              <li>
-
-              </li>
-          </ul>
-          <ul class="goods-list-box">
-              <li v-for="(item,index) in list" :key="index">
-                <a-card
-                  hoverable
-                  class="card"
-                >
-                  <img
-                    class="card-img"
-                   v-lazy="item.src"
-                    slot="cover"
-                  />
-                  <p class="surplus text-Center top185">{{item.text}}</p>
-                  <p class="validity">有效期至{{item.validity}}</p>
-                  <p class="card-price top165">￥{{item.new}} <del>￥{{item.old}}</del></p>
-
-                 <!-- 规格 -->
-                  <p class="specifications">{{item.specifications}}</p>
-                  <!-- 厂家 -->
-                  <p class="manufacturer">{{item.manufacturer}}</p>
-                  <p class="sold"><span class="evaluate">评价{{item.evaluate}}条</span><span class="sold-count">已售{{item.sold}}盒</span></p>
-                  <!-- 按钮 -->
-
-
-
-
-
-
-                  <p class="add-card">
-                    <button>-</button>
-                    <button>{{count}}</button>
-                    <button>+</button>
-                    <button>
-                      <a-icon type="shopping-cart"/>
-                      加入采购单
-                    </button>
-                  </p>
-                  <!-- 有无存货 -->
-                  <p class="goods-state">有货 {{item.specifications}} <a-icon type="star"/>收藏</p>
-
-
-
-
-                  <a-card-meta
-                    class="card-info"
-                    :title="item.text">
-                  </a-card-meta>
-                </a-card>
-              </li>
-          </ul>
-          <!-- 如果搜索结果为空显示 -->
-          <!-- <div>
-              <p>没有找到您想找的药品</p>
-          </div> -->
-          <f-space-footer></f-space-footer>
-      </a-layout>
+            <!-- 规格 -->
+            <p class="specifications">{{item.spec}}</p>
+            <!-- 厂家 -->
+            <p class="manufacturer">{{item.manuName}}</p>
+            <p class="sold">
+              <span class="evaluate">中包装数量{{item.medpacknum}}{{item.unitName}}</span>
+              <span class="sold-count">已售{{item.sales}}盒</span>
+            </p>
+            <!-- 按钮 -->
+            <p class="add-card">
+              <button>-</button>
+              <button>{{count}}</button>
+              <button>+</button>
+              <button class="add-card-btn">
+                <a-icon type="shopping-cart"/>加入采购单
+              </button>
+            </p>
+            <!-- 有无存货 -->
+            <p class="goods-state">
+              库存 {{item.store}}
+              <span>收藏</span>
+              <a-icon type="star"></a-icon>
+            </p>
+            <a-card-meta class="card-info" :title="item.text"></a-card-meta>
+          </a-card>
+        </li>
+        <a-pagination v-model="current" :total="this.searchList.length" />
+      </ul>
+      <!-- 如果搜索结果为空显示 -->
+      <div v-show="isGoods" class="no-goods-box">
+        <a-icon type="info-circle" />
+        <p class="no-goods">没有找到您想找的药品！</p>
+      </div>
+      <f-space-footer></f-space-footer>
+    </a-layout>
   </div>
 </template>
 <script>
 import FSpaceHeader from "../components/fspace-ui/header/header";
-import FSpaceFooter from "../components/fspace-ui/footer"; 
+import FSpaceFooter from "../components/fspace-ui/footer";
 export default {
   components: {
     FSpaceHeader,
@@ -99,143 +105,198 @@ export default {
   },
   data() {
     return {
-      current: 0,
+      specArray: [],
+      manuArray: [],
+      brandArray: [],
+      brandnameList: [],
+      manunameList: [],
+      specList: [],
+      searchList: [],
+      current: 1,
       count: 1,
+      pageNumber: 20,
       brandLists: [],
-      brandList: [
-        '美林',
-        '嘉林阿乐',
-       '三九药业',
-       '汉森药业',
-       '千金药业',
-        '美林',
-       '美林',
-       '美林',
-       '美林',
-       '美林',
-       '美林',
-       '美林',
-        '美林',
-         '美林',
-          '美林',
-           '美林'
-      ],
-      list: [
-        {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        }
-      ]
+      isGoods: false
     };
   },
-  mounted () {
-    this.brandLists = this.brandList.slice(0,6);
+  computed: {
+    keyword() {
+      return this.$store.state.keyword
+    }
+  },
+   watch: {
+    keyword(val) {
+      this.fullTextsearchProdMall();
+      this.getConditionByFullTextSearch();
+    }
+  },
+  mounted() {
+    this.fullTextsearchProdMall();
+    this.getConditionByFullTextSearch();
   },
   methods: {
-     hideMore() {
-       var lists = this.$refs['lists'];
-       var list = this.$refs['list'];
-       lists.style.display = 'none'
-       list.style.display = 'inline-block'
-     },
-     showMore() {
-       var lists = this.$refs['lists'];
-       var list = this.$refs['list'];
-       lists.style.display = 'inline-block'
-       list.style.display = 'none'
-     }
+    // 药品厂商规格品牌
+    getConditionByFullTextSearch() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getConditionByFullTextSearch";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 20;
+      iRequest.param.spu = 0;
+      iRequest.param.json = JSON.stringify({
+        keyword: this.keyword
+      });
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.brandnameList = []
+              _this.manunameList = []
+              _this.specList = []
+              _this.conditionList = result.data;
+              result.data.brandnameList.forEach(element => {
+                _this.brandnameList.push({
+                  name: element,
+                  val: element,
+                  isSelect: false
+                });
+              });
+
+              result.data.manunameList.forEach(element => {
+                _this.manunameList.push({
+                  name: element,
+                  val: element,
+                  isSelect: false
+                });
+              });
+
+              result.data.specList.forEach(element => {
+                _this.specList.push({
+                  name: element,
+                  val: element,
+                  isSelect: false
+                });
+              });
+            } else {
+              console.log(111);
+            }
+          },
+          function error(error) {
+            debugger;
+          }
+        )
+      );
+    },
+    // 搜索结果商品列表
+    fullTextsearchProdMall() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "fullTextsearchProdMall";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 20;
+      iRequest.param.json = JSON.stringify({
+        keyword: this.keyword,
+        specArray: _this.specArray,
+        manuArray: _this.manuArray,
+        brandArray: _this.brandArray,
+        spu: 0,
+        sort: 1
+      });
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.searchList = result.data;
+              if(_this.searchList.length === 0 || _this.searchList === null){
+                _this.isGoods = true
+              } else {
+                 _this.isGoods = false
+              }
+              console.log(result);
+            } else {
+              console.log(111);
+            }
+          },
+          function error(error) {
+            debugger;
+          }
+        )
+      );
+    },
+    toDetail(sku) {
+      this.$router.push({
+        path: "/product/detail",
+        query: {
+          sku: sku
+        }
+      });
+    },
+    selectBrand(item) {
+      item.isSelect = !item.isSelect;
+      if (item.isSelect) {
+        this.brandArray.push({
+          val: item.val
+        });
+      } else {
+        this.brandArray =
+          this.removeArray(this.brandArray, { val: item.val }) || [];
+      }
+      this.fullTextsearchProdMall();
+    },
+    selectManuName(item) {
+      item.isSelect = !item.isSelect;
+      if (item.isSelect) {
+        this.manuArray.push({
+          val: item.val
+        });
+      } else {
+        this.manuArray =
+          this.removeArray(this.manuArray, { val: item.val }) || [];
+      }
+      this.fullTextsearchProdMall();
+    },
+    selectSpec(item) {
+      item.isSelect = !item.isSelect;
+      if (item.isSelect) {
+        this.specArray.push({
+          val: item.val
+        });
+      } else {
+        this.specArray =
+          this.removeArray(this.specArray, { val: item.val }) || [];
+      }
+      this.fullTextsearchProdMall();
+    },
+    removeArray(_arr, _obj) {
+      let length = _arr.length;
+      for (let i = 0; i < length; i++) {
+        if (_arr[i] === _obj) {
+          if (i === 0) {
+            _arr.shift(); //删除并返回数组的第一个元素
+            return _arr;
+          } else if (i === length - 1) {
+            _arr.pop(); //删除并返回数组的最后一个元素
+            return _arr;
+          } else {
+            _arr.splice(i, 1); //删除下标为i的元素
+            return _arr;
+          }
+        }
+      }
+      console.log(";;;;;;--- rrrr" + _arr);
+    },
+    // 分页事件
+    onChange(pageNumber) {
+        console.log('Page: ', pageNumber);
+    }
   }
 };
 </script>
@@ -261,163 +322,232 @@ li {
   margin: 0;
   padding: 0;
 }
+.retract {
+  display: none;
+}
+.brand-li,
+.manu-li,
+.spec-li {
+  width: 100px;
+  height: 100px;
+  transition: height 0.5s;
+  -moz-transition: height 0.5s; /* Firefox 4 */
+  -webkit-transition: height 0.5s; /* Safari and Chrome */
+  -o-transition: height 0.5s; /* Opera */
+}
+.no-goods-box i{
+  display: block;
+  margin: 0 auto;
+  font-size: 50px;
+}
+.no-goods{
+  .p-size(40px,40px,20px,center,0px,#333333);
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.ant-pagination{
+  margin-left: 5px;
+  margin-top:15px;
+}
+.active-checked {
+  // background:#ed3025;
+  color: #ed3025;
+}
+.more-text:hover.brand-box {
+  height: 120px;
+}
+.brand-box {
+  .container-size(block, 1130px, 40px, 0, 0px);
+  transition: all height 2s;
+  -moz-transition: all height 2s; /* Firefox 4 */
+  -webkit-transition: all height 2s; /* Safari and Chrome */
+  -o-transition: all height 2s; /* Opera */
+  overflow: hidden;
+  border-bottom: 1px solid #e0e0e0;
+  .brand {
+    float: left;
+    .container-size(inline-block, 60px, 40px, 0, 0px);
+    line-height: 40px;
+  }
+  .more-box {
+    float: right;
+    .container-size(inline-block, 110px, 40px, 0, 0px);
+    a {
+      height: 40px;
+      line-height: 40px;
+      margin-left: 10px;
+    }
+  }
+  .brand-lists {
+    float: left;
+    .container-size(inline-block, 940px, 100%, 0, 0px);
+    overflow: hidden;
+  }
+}
 // 筛选条件
 .crumbs {
   width: 1190px;
   margin: 0 auto;
   padding-top: 12px;
-  .p-size(45px,45px,14px,left,30px,#666666);
+  .p-size(45px, 45px, 14px, left, 30px, #666666);
 }
 .condition-box {
-   .container-size(block,1190px,250px,0 auto 15px auto,0px);
-   padding: 20px 30px;
-   background: #ffffff;
-  
+  .container-size(block, 1190px, 190px, 0 auto 15px auto, 0px);
+  padding: 20px 30px;
+  background: #ffffff;
 }
 .collapse {
-    display: inline-block;
-    width: 40px;
-    height: 20px;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
 }
 // 商品分类展示
 .goods-list-box {
-    .container-size(block,1202px,auto,0 auto,0px);
-    margin-bottom: 20px;
+  .container-size(block, 1202px, auto, 0 auto, 0px);
+  margin-bottom: 20px;
 }
 .brand-list {
   display: inline-block;
-  .p-size(40px,40px,14px,left,0px,#666666);
+  .p-size(40px, 40px, 14px, left, 0px, #666666);
 }
 .brand-lists {
   display: none;
   width: 1150px;
-  .p-size(200px,40px,14px,left,0px,#666666);
+  .p-size(200px, 40px, 14px, left, 0px, #666666);
   overflow: auto;
 }
-.brand-list a,.brand-lists a{
+.brand-list a,
+.brand-lists a {
   float: left;
-  .container-size(inline-block,110px,auto,0,5px);
+  .container-size(inline-block, 110px, auto, 0, 5px);
+  // margin-left: 10px;
   text-align: center;
 }
-.brand-lists a:hover{
-  background:#ed3025;
-  color: #ffffff;
+.brand-lists a:hover {
+  // background:#ed3025;
+  color: #ed3025;
 }
-.brand-list a:hover{
-  background:#ed3025;
-  color: #ffffff;
+.brand-list a:hover {
+  // background:#ed3025;
+  color: #ed3025;
 }
-.brand-list span,.brand-lists span{
+.brand-list span,
+.brand-lists span {
   float: left;
   width: 110px;
   text-align: center;
 }
 .goods-list-box li {
-  .container-size(inline-block,228px,310px,6.5px 6.2px,0px);
-  .container-color(#ffffff,none,#999);
+  .container-size(inline-block, 228px, 310px, 6.5px 6.2px, 0px);
+  .container-color(#ffffff, none, #999);
 }
 .goods-pic {
-  .container-size(inline-block,228px,280px,0px,0px);
+  .container-size(inline-block, 228px, 280px, 0px, 0px);
 }
 .goods-pic img {
-  .container-size(inline-block,135px,123px,20px 0px 5px 46px,0px);
+  .container-size(inline-block, 135px, 123px, 20px 0px 5px 46px, 0px);
 }
 .ant-card-body {
-  padding: 0px!important;
+  padding: 0px !important;
 }
-.card{
-  .position(relative,0px,0px);
-  .container-size(inline-block,226px,310px,0px,0px);
+.card {
+  .position(relative, 0px, 0px);
+  .container-size(inline-block, 226px, 310px, 0px, 0px);
   border: 1px solid #ffffff;
 }
 .card:hover {
-  box-shadow:0px 0px 30px 10px #e0e0e0;
+  box-shadow: 0px 0px 30px 10px #e0e0e0;
 }
-.card:hover .specifications{
+.card:hover .card-price {
+  top: 180px;
+}
+.card:hover .specifications {
   display: none;
 }
 .card:hover .manufacturer {
   display: none;
- }
+}
 .card:hover .sold {
   display: none;
- } 
+}
 .card:hover .add-card {
   display: inline-block;
 }
 .card:hover .goods-state {
   display: inline-block;
 }
-
-.surplus{
-  .position(absolute,197px,0px);
+.card:hover .surplus {
+  top: 210px;
+}
+.surplus {
+  .position(absolute, 197px, 0px);
   width: 225px;
   text-align: left;
   text-indent: 20px;
   color: #333333;
 }
-.card-img{
-  .position(absolute,15px,45px);
+.card-img {
+  .position(absolute, 15px, 45px);
   width: 135px;
   height: 123px;
 }
-.card-progress{
-  .position(absolute,0px,0px);
+.card-progress {
+  .position(absolute, 0px, 0px);
 }
-.card-info{
-  .position(absolute,195px,0px);
-  .container-size(inline-block,0px,0px,0px,0px);
+.card-info {
+  .position(absolute, 195px, 0px);
+  .container-size(inline-block, 0px, 0px, 0px, 0px);
   padding-left: 20px;
   padding-right: 20px;
   text-align: center;
 }
-.card-price{
-  .position(absolute,172px,0px);
+.card-price {
+  .position(absolute, 172px, 0px);
   width: 225px;
   text-align: left;
   text-indent: 17px;
   font-size: 18px;
   font-weight: bold;
   color: rgb(255, 0, 54);
-  del{
-    font-size: 14px!important;
+  del {
+    font-size: 14px !important;
     font-weight: normal;
   }
 }
-.card-price del{
+.card-price del {
   color: #999999;
 }
 .validity {
-  .position(absolute,149px,0px);
-  .p-size(20px,20px,14px,center,0px,#666666);
+  .position(absolute, 149px, 0px);
+  .p-size(20px, 20px, 14px, center, 0px, #666666);
   width: 226px;
-  background:#e0e0e0;
+  background: #e0e0e0;
 }
 .sold {
   display: inline-block;
   width: 225px;
   height: 40px;
   line-height: 40px;
-  .position(absolute,268px,0px);
+  .position(absolute, 268px, 0px);
   border-top: 1px solid #e0e0e0;
   padding: 0px 5px;
 }
 .sold .evaluate {
   float: left;
 }
-.sold .sold-count  {
+.sold .sold-count {
   float: right;
 }
 .manufacturer {
   display: inline-block;
-  .position(absolute,240px,0px);
+  .position(absolute, 240px, 0px);
   width: 225px;
   text-align: left;
   text-indent: 20px;
 }
 .specifications {
   display: inline-block;
-  .position(absolute,218px,0px);
+  .position(absolute, 218px, 0px);
   width: 225px;
   text-align: left;
   text-indent: 20px;
@@ -425,14 +555,37 @@ li {
 
 .add-card {
   display: none;
-  .position(absolute,245px,0px);
+  .position(absolute, 275px, 0px);
   width: 225px;
   text-indent: 10px;
+  .add-card-btn {
+    float: right;
+    height: 28px;
+    border: none;
+    border-radius: 2px;
+    margin-right: 10px;
+    background: rgb(255, 0, 54);
+    color: #ffffff;
+  }
+  .add-card-btn:hover {
+    cursor: pointer;
+  }
 }
 .goods-state {
   display: none;
-  .position(absolute,215px,0px);
-  text-indent: 10px;
+  width: 225px;
+  .position(absolute, 235px, 0px);
+  text-indent: 20px;
+  i {
+    float: right;
+    margin-right: 10px;
+  }
+  span {
+    float: right;
+    height: 20px;
+    margin-right: 11px;
+    line-height: 13px;
+  }
 }
 .more {
   float: right;
