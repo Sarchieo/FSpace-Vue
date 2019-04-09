@@ -16,7 +16,7 @@
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
-              <img :src="imgUrl">
+              <img v-lazy="imgUrl" slot="cover">
               <!-- <a-carousel arrows dotsClass="slick-dots slick-thumb">
                 <a slot="customPaging" slot-scope="props">
                   <img :src="getImgUrl(props.i)">
@@ -313,8 +313,6 @@
 </template>
 <script>
 import moment from "moment";
-const baseUrl =
-  "https://raw.githubusercontent.com/vueComponent/ant-design-vue/master/components/vc-slick/assets/img/react-slick/";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
@@ -373,7 +371,6 @@ export default {
         fontSize: "26px",
         backgroundColor: "#f2f2f2"
       },
-      baseUrl,
       count: 1,
       recommendList: [
         {
@@ -533,18 +530,15 @@ export default {
       ]
     };
   },
-  created() {
-    this.sku = this.$route.query.sku
-    this.spu = this.$route.query.spu
-    this.getImgUrl()
-  },
   mounted() {
+    this.getImgUrl()
     this.getProd();
   },
   methods: {
     getProd() {
       let _this = this;
       let iRequest = new inf.IRequest();
+      
       iRequest.cls = "BackgroundProdModule";
       iRequest.method = "getProd";
       iRequest.param.arrays = [this.sku]
@@ -569,6 +563,8 @@ export default {
       iRequest.cls = "FileInfoModule";
       iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
+      this.sku = this.$route.query.sku
+      this.spu = this.$route.query.spu
       iRequest.param.json = JSON.stringify({
         list: [
           {
@@ -577,16 +573,13 @@ export default {
           }
         ]
       });
-      
       this.$refcallback(
         "globalServer",
         iRequest,
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              console.log(result)
               _this.imgUrl = result.data.downPrev + result.data.goodsFilePathList + '/' + _this.sku + '.jpg' +  "?" + new Date().getSeconds()
-              console.log(_this.imgUrl)
             } else {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }
@@ -607,9 +600,6 @@ export default {
       this.dislikes = 1;
       this.action = "disliked";
     },
-    // getImgUrl(i) {
-    //   return `${baseUrl}abstract0${i + 1}.jpg`;
-    // },
     handleChange(value) {
       console.log(`selected ${value}`);
     },

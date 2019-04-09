@@ -14,7 +14,6 @@
           <div class="brand">品牌：</div>
           <div class="brand-lists" ref="brandLists">
             <a
-
               v-for="(item,index) in brandnameList"
               :key="index"
               ref="checkA"
@@ -51,7 +50,6 @@
           <div class="brand">规格：</div>
           <div class="brand-lists" ref="specLists">
             <a
-
               v-for="(item,index) in specList"
               :key="index"
               ref="checkC"
@@ -67,7 +65,7 @@
         </li>
         <li class="sort-box">
           <!-- 选中的样式为 active-search -->
-          <a href="javascript:;" @click="selectCompr()" :class="this.sortGoods === 0 ? 'active-search' : ''">综合 <a-icon type="arrow-down"/></a>
+          <!-- <a href="javascript:;" @click="selectCompr()" :class="this.sortGoods === 0 ? 'active-search' : ''">综合 <a-icon type="arrow-down"/></a> -->
           <a href="javascript:;" @click="selectVolume()" :class="this.sortGoods === 1 ? 'active-search' : ''">销量 <a-icon type="arrow-down"/></a>
           <!-- <a href="" class="padding-left5"> -->
              <a-select defaultValue="价格排序" style="width: 150px" @change="handleChange"  :class="this.sortGoods === 2 || this.sortGoods === 3 ? 'active-search' : ''">
@@ -89,7 +87,6 @@
               ￥{{item.vatp}}
               <del>￥{{item.vatp}}</del>
             </p>
-
             <!-- 规格 -->
             <p class="specifications">{{item.spec}}</p>
             <!-- 厂家 -->
@@ -169,15 +166,15 @@ export default {
       }
     }
   },
-   watch: {
-    keyword(val) {
-      this.fullTextsearchProdMall();
-      this.getConditionByFullTextSearch();
-    }
-  },
+  //  watch: {
+  //   keyword(val) {
+  //     this.fullTextsearchProdMall();
+  //     this.getConditionByFullTextSearch();
+  //   }
+  // },
   mounted() {
     this.goodsType = this.$route.query.goodsType
-    this.keyword = this.$route.query.keyword
+    this.keyword = this.$route.query.keyword || ''
     this.fullTextsearchProdMall();
     this.getConditionByFullTextSearch();
   },
@@ -206,7 +203,6 @@ export default {
           function result(result) {
             if (result.code === 200) {
               result.data.goodsFilePathList.forEach((c, index, arr) => {
-                // _this.searchList[index].imgURl = result.data.downPrev + c + '/' + _this.searchList[index].sku + '.jpg' +  "?" + new Date().getSeconds()
                 _this.$set(_this.searchList[index], 'imgURl',  result.data.downPrev + c + '/' + _this.searchList[index].sku + '-200x200.jpg' +  "?" + new Date().getSeconds())
               })
             } else {
@@ -303,8 +299,6 @@ export default {
               } else {
                  _this.isGoods = false
               }
-            } else {
-              console.log(111);
             }
           },
           function error(error) {

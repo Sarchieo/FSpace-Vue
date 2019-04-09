@@ -53,7 +53,7 @@
               <div class="search-box">
                 <a-input
                   v-model="keyword"
-                  placeholder="药品名称/药品通用名/药品助记码"
+                  placeholder="药品名称/药品通用名"
                   class="search-input"
                   @keyup.enter="toGoods('category')"
                 />
@@ -161,14 +161,19 @@ export default {
   computed: {
     storeInfo() {
       return this.$store.state.user;
+    },
+    keyword: {
+      get() {
+        return this.$store.state.keyword
+      },
+      set(newValue){
+        this.$store.commit('KEY_WORD', newValue)
+        return this.$store.state.keyword
+      }
     }
-    // keyword() {
-    //   return this.$store.state.keyword;
-    // }
   },
   data() {
     return {
-      keyword: '',
       confirmLoading: false,
       ModalText: "您确定要退出登录吗?",
       isLogout: false,

@@ -108,8 +108,8 @@
           <div class="brand-div">
             <ul class="brand-right hot-width">
               <li v-for="(item,index) in list.hot" :key="index">
-                <a-card hoverable class="card" @click="toDetail(item.sku)">
-                  <img class="card-img" v-lazy="imgSrc" slot="cover">
+                <a-card hoverable class="card" @click="toDetail(item)" v-if="index <= 4">
+                  <img class="card-img" v-lazy="item.imgURl" slot="cover">
                   <p class="surplus text-Center top185">{{item.prodname}}</p>
                   <p class="validity">有效期至{{item.vaildedate}}</p>
                   <p class="card-price top165">
@@ -129,8 +129,8 @@
           <p class="elaborate-title">新品专区</p>
           <ul class="elaborate-ui">
             <li v-for="(item,index) in list.new" :key="index">
-              <a-card hoverable class="elaborate-card" @click="toDetail(item.sku)">
-                <img v-lazy="imgSrc" slot="cover">
+              <a-card hoverable class="elaborate-card" @click="toDetail(item)" v-if="index <= 2">
+                <img v-lazy="item.imgURl" slot="cover">
                 <p class="elaborate-text">{{item.prodname}}</p>
                 <p class="elaborate-specifications">{{item.spec}}</p>
                 <p class="elaborate-manufacturer">{{item.manuName}}</p>
@@ -287,7 +287,7 @@ export default {
       iRequest.method = "getMallFloorProd";
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 20;
-      iRequest.param.param = JSON.stringify({
+      iRequest.param.json = JSON.stringify({
         keyword: "",
         specArray: [],
         manuArray: []
@@ -299,10 +299,52 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.list = result.data;
+            if(_this.list.new) {
+              _this.getImgUrl(_this.list.new)
+            }
+            if(_this.list.hot) {
+              _this.getImgUrl(_this.list.hot)
+            }
           } else {
             _this.$message.error(result.message);
           }
         })
+      );
+    },
+    getImgUrl(list) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let arr = []
+      list.forEach(c => {
+        arr.push({
+          sku: c.sku,
+          spu: c.spu
+        })
+      });
+      iRequest.param.json = JSON.stringify({
+        list: arr
+      });
+
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, arr) => {
+                _this.$set(list[index], 'imgURl',  result.data.downPrev + c + '/' + list[index].sku + '-200x200.jpg' +  "?" + new Date().getSeconds())
+              })
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            _this.$message.error(error);
+          }
+        )
       );
     },
     async createFingerprint(components) {
@@ -362,11 +404,12 @@ export default {
     goBackTop() {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
-    toDetail(sku) {
+    toDetail(item) {
       this.$router.push({
         path: "/product/detail",
         query: {
-          sku: sku
+          sku: item.sku,
+          spu: item.spu
         }
       });
     },
@@ -532,12 +575,12 @@ li {
   width: 1190px;
   height: auto;
 }
-.elaborate-ui li {
-  width: 383px;
-  height: 220px;
-  margin-bottom: 22px;
-  background: #ffffff;
-}
+// .elaborate-ui li {
+//   width: 383px;
+//   height: 220px;
+//   margin-bottom: 22px;
+//   background: #ffffff;
+// }
 .elaborate-card {
   .position(relative, 0px, 0px);
   .container-size(inline-block, 383px, 220px, 0, 0px);
