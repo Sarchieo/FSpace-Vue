@@ -52,140 +52,146 @@
           </div>
           <div class></div>
         </div>
-        <div id="hot" class="brand-hall" v-for="(item,index) in rushList" :key="index">
-          <p class="brand-hall-title">
-            {{item.title}}
-            <a class="all-hot" @click="toLimited()">
-              查看全部抢购
-              <a-icon type="right"/>
-            </a>
-          </p>
-          <div class="brand-divs">
-            <div class="brand-left">
-              <p class="brand-time">{{item.time}}</p>
-              <a-icon type="thunderbolt" class="brand-lightning"/>
-              <p class="over-distance">距离结束还有</p>
-              <p class="count-down">
-                <button>1</button>:
-                <button>05</button>:
-                <button>12</button>
-              </p>
-              <button class="see-whole">
+        <div v-for="(item,index) in list" :key="index">
+          <!-- 限时抢购 -->
+          <div id="hot" class="brand-hall" v-if="item.unqid === 512">
+            <p class="brand-hall-title">
+              {{item.title}}
+              <a class="all-hot" @click="toLimited()">
+                查看全部抢购
+                <a-icon type="right"/>
+              </a>
+            </p>
+            <div class="brand-divs">
+              <div class="brand-left">
+                <p class="brand-time">{{item.time}}</p>
+                <a-icon type="thunderbolt" class="brand-lightning"/>
+                <p class="over-distance">距离结束还有</p>
+                <p class="count-down">
+                  <button>1</button>:
+                  <button>05</button>:
+                  <button>12</button>
+                </p>
+                <button class="see-whole">
+                  查看全部
+                  <a-icon type="right"/>
+                </button>
+              </div>
+              <ul class="brand-right">
+                <li v-for="(items,index) in item.list" :key="index">
+                  <a-card hoverable class="card">
+                    <img class="card-img" v-lazy="items.src" slot="cover">
+                    <a-progress
+                      :percent="items.surplus"
+                      style="position:absolute;top:145px;left:20px;width: 188px;"
+                      :showInfo="false"
+                      status="exception"
+                    />
+                    <p class="surplus">
+                      还剩{{items.surplus}}支
+                      <span>限购{{items.xiangou}}支</span>
+                    </p>
+
+                    <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
+                    <div class="goods-info">
+                      <p class="card-prices">
+                        ￥{{items.new}}
+                        <del>原价￥{{items.old}}</del>
+                      </p>
+                      <p class="name-guige">{{items.name}}{{items.guige}}</p>
+                      <p class="brand-text">{{items.brand}}</p>
+                    </div>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- 热销专区 包邮专区 -->
+          <div class="brand-hall" v-if="item.unqid === 2">
+            <p class="brand-hall-title">
+              热销专区
+              <a>
                 查看全部
                 <a-icon type="right"/>
-              </button>
-            </div>
-            <ul class="brand-right">
-              <li v-for="(items,index) in item.list" :key="index">
-                <a-card hoverable class="card">
-                  <img class="card-img" v-lazy="items.src" slot="cover">
-                  <a-progress
-                    :percent="items.surplus"
-                    style="position:absolute;top:145px;left:20px;width: 188px;"
-                    :showInfo="false"
-                    status="exception"
-                  />
-                  <p class="surplus">
-                    还剩{{items.surplus}}支
-                    <span>限购{{items.xiangou}}支</span>
-                  </p>
-
-                  <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
-                  <div class="goods-info">
-                    <p class="card-prices">
-                      ￥{{items.new}}
-                      <del>原价￥{{items.old}}</del>
+              </a>
+            </p>
+            <div class="brand-div">
+              <ul class="brand-right hot-width">
+                <li v-for="(item,index) in hotGoodsList" :key="index">
+                  <a-card hoverable class="card" @click="toDetail(item)">
+                    <img class="card-img" v-lazy="item.imageUrl" slot="cover">
+                    <p class="surplus top185"></p>
+                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="card-price top165">
+                      ￥{{item.vatp}}
+                      <!-- <del>￥</del> -->
                     </p>
-                    <p class="name-guige">{{items.name}}{{items.guige}}</p>
-                    <p class="brand-text">{{items.brand}}</p>
-                  </div>
-                </a-card>
-              </li>
-            </ul>
+                    <p class="specifications">{{item.spec}}</p>
+                    <p class="manufacturer">{{item.manuName}}</p>
+                    <p class="sold">已售{{item.store}}</p>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <!-- 热销专区 包邮专区 -->
-        <div class="brand-hall" v-if="list.hot">
-          <p class="brand-hall-title">
-            人气推荐
-            <a>
-              查看全部
-              <a-icon type="right"/>
-            </a>
-          </p>
-          <div class="brand-div">
-            <ul class="brand-right hot-width">
-              <li v-for="(item,index) in list.hot" :key="index">
-                <a-card hoverable class="card" @click="toDetail(item)" v-if="index <= 4">
-                  <img class="card-img" v-lazy="item.imgURl" slot="cover">
-                  <p class="surplus top185">{{item.prodname}}</p>
-                  <p class="validity">有效期至{{item.vaildedate}}</p>
-                  <p class="card-price top165">
-                    ￥{{item.vatp}}
-                    <del>￥{{item.mp}}</del>
-                  </p>
-                  <p class="specifications">{{item.spec}}</p>
-                  <p class="manufacturer">{{item.manuName}}</p>
-                  <p class="sold">已售{{item.wholenum}}{{item.unitName}}</p>
-                </a-card>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="brand-hall height780">
-          <p class="brand-hall-title">
-            一块购 ● 越团越优惠
-            <a>
-              查看全部
-              <a-icon type="right"/>
-            </a>
-          </p>
-          <p class="onek-text">一块购活动说明方案</p>
-          <div class="onek-shoping">
-            <ul>
-              <li v-for="(item,index) in onekList" :key="index">
-                <a-card hoverable class="onek-card">
-                  <div class="onek-left">
-                    <img class="onek-img"  slot="cover">
-                    <p><span class="sur-time">还剩</span>  <span> 04 </span> 时 <span> 23 </span> 分 <span> 40 </span> 秒 </p>
-                  </div>
-                  <div class="onek-right">
-                    <p class="goods-name">{{item.name}}</p>
-                    <p class="goods-spec">{{item.spec}}</p>
-                    <p class="goods-manu">{{item.manu}}</p>
-                    <p class="goods-success">{{item.success}}成团</p>
-                    <p class="goods-state">{{item.smaa}}盒起拼/已拼{{item.big}}盒</p>
-                    <p class="goods-btn">
-                      <button class="imme-btn">
-                        立即参团
-                      </button>
+          <!-- 一块购 -->
+          <div class="brand-hall height780" v-if="item.unqid === 8">
+            <p class="brand-hall-title">
+              一块购 ● 越团越优惠
+              <a>
+                查看全部
+                <a-icon type="right"/>
+              </a>
+            </p>
+            <p class="onek-text">一块购活动说明方案</p>
+            <div class="onek-shoping">
+              <ul>
+                <li v-for="(item,index) in onekList" :key="index">
+                  <a-card hoverable class="onek-card">
+                    <div class="onek-left">
+                      <img class="onek-img" slot="cover">
+                      <p>
+                        <span class="sur-time">还剩</span>
+                        <span>04</span> 时
+                        <span>23</span> 分
+                        <span>40</span> 秒
                       </p>
-                  </div>
+                    </div>
+                    <div class="onek-right">
+                      <p class="goods-name">{{item.name}}</p>
+                      <p class="goods-spec">{{item.spec}}</p>
+                      <p class="goods-manu">{{item.manu}}</p>
+                      <p class="goods-success">{{item.success}}成团</p>
+                      <p class="goods-state">{{item.smaa}}盒起拼/已拼{{item.big}}盒</p>
+                      <p class="goods-btn">
+                        <button class="imme-btn">立即参团</button>
+                      </p>
+                    </div>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- 新品专区 -->
+          <div id="choice" class="elaborate" v-if="item.unqid === 1">
+            <p class="elaborate-title">新品专区</p>
+            <ul class="elaborate-ui">
+              <li v-for="(item,index) in newGoodsList" :key="index">
+                <a-card hoverable class="elaborate-card" @click="toDetail(item)">
+                  <img v-lazy="item.imageUrl" slot="cover">
+                  <p class="elaborate-text">{{item.prodname}}</p>
+                  <p class="elaborate-specifications">{{item.spec}}</p>
+                  <p class="elaborate-manufacturer">{{item.manuName}}</p>
+                  <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                  <p class="elaborate-price">￥{{item.vatp}}</p>
+                  <p class="elaborate-sold">{{item.store}}</p>
+                  <a-card-meta></a-card-meta>
+                  <p></p>
                 </a-card>
               </li>
             </ul>
           </div>
-        </div>
-        <!-- 新品专区 -->
-        <div id="choice" class="elaborate">
-          <p class="elaborate-title">新品专区</p>
-          <ul class="elaborate-ui">
-            <li v-for="(item,index) in list.new" :key="index">
-              <a-card hoverable class="elaborate-card" @click="toDetail(item)" v-if="index <= 2">
-                <img v-lazy="item.imgURl" slot="cover">
-                <p class="elaborate-text">{{item.prodname}}</p>
-                <p class="elaborate-specifications">{{item.spec}}</p>
-                <p class="elaborate-manufacturer">{{item.manuName}}</p>
-                <p class="elaborate-validity">有效期至{{item.vaildedate}}</p>
-                <p class="elaborate-price">￥{{item.vatp}}</p>
-                <p class="elaborate-sold">已售{{item.wholenum}}{{item.unitName}}</p>
-                <a-card-meta></a-card-meta>
-                <p></p>
-              </a-card>
-            </li>
-          </ul>
-        </div>
-        <!-- <div
+          <!-- <div
           id="free-delivery"
           class="brand-hall"
           v-for="(item,index) in freeDelivery"
@@ -217,7 +223,8 @@
               </li>
             </ul>
           </div>
-        </div>-->
+          </div>-->
+        </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
@@ -257,62 +264,70 @@ export default {
   },
   data() {
     return {
+      newGoodsList: [], // 新品商品列表
+      hotGoodsList: [], // 热销商品列表
+      isShow: false,
       onekList: [
         {
-          src: '//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          name: '999感冒灵颗粒',
-          spec: '0.5g*12袋/盒',
-          manu: '华润三九药业股份有限公司',
+          src:
+            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "999感冒灵颗粒",
+          spec: "0.5g*12袋/盒",
+          manu: "华润三九药业股份有限公司",
           success: 1000,
           big: 200,
           smaa: 10
         },
-         {
-          src: '//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          name: '999感冒灵颗粒',
-          spec: '0.5g*12袋/盒',
-          manu: '华润三九药业股份有限公司',
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "999感冒灵颗粒",
+          spec: "0.5g*12袋/盒",
+          manu: "华润三九药业股份有限公司",
           success: 1000,
           big: 200,
           smaa: 10
         },
-         {
-          src: '//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          name: '999感冒灵颗粒',
-          spec: '0.5g*12袋/盒',
-          manu: '华润三九药业股份有限公司',
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "999感冒灵颗粒",
+          spec: "0.5g*12袋/盒",
+          manu: "华润三九药业股份有限公司",
           success: 1000,
           big: 200,
           smaa: 10
         },
-         {
-          src: '//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          name: '999感冒灵颗粒',
-          spec: '0.5g*12袋/盒',
-          manu: '华润三九药业股份有限公司',
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "999感冒灵颗粒",
+          spec: "0.5g*12袋/盒",
+          manu: "华润三九药业股份有限公司",
           success: 1000,
           big: 200,
           smaa: 10
         },
-         {
-          src: '//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          name: '999感冒灵颗粒',
-          spec: '0.5g*12袋/盒',
-          manu: '华润三九药业股份有限公司',
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "999感冒灵颗粒",
+          spec: "0.5g*12袋/盒",
+          manu: "华润三九药业股份有限公司",
           success: 1000,
           big: 200,
           smaa: 10
         },
-         {
-          src: '//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          name: '999感冒灵颗粒',
-          spec: '0.5g*12袋/盒',
-          manu: '华润三九药业股份有限公司',
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "999感冒灵颗粒",
+          spec: "0.5g*12袋/盒",
+          manu: "华润三九药业股份有限公司",
           success: 1000,
           big: 200,
           smaa: 10
         }
-
       ],
       rushList: [
         {
@@ -375,6 +390,8 @@ export default {
     // this.initData();
     window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
+    this.getNewGoods();
+    this.getHotGoods();
   },
   methods: {
     handleScroll() {
@@ -423,6 +440,7 @@ export default {
         this.goodsTypes = false;
       }
     },
+    // 请示楼层显示状态
     getMallFloorProd() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -431,9 +449,9 @@ export default {
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 20;
       iRequest.param.json = JSON.stringify({
-        keyword: "",
-        specArray: [],
-        manuArray: []
+        // keyword: "",
+        // specArray: [],
+        // manuArray: []
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -442,12 +460,12 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.list = result.data;
-            if (_this.list.new) {
-              _this.getImgUrl(_this.list.new);
-            }
-            if (_this.list.hot) {
-              _this.getImgUrl(_this.list.hot);
-            }
+            // if (_this.list.new) {
+            //   _this.getImgUrl(_this.list.new);
+            // }
+            // if (_this.list.hot) {
+            //   _this.getImgUrl(_this.list.hot);
+            // }
           } else {
             _this.$message.error(result.message);
           }
@@ -510,6 +528,58 @@ export default {
       //     console.log(_this.GUID)
       //   })
       //  },500)
+    },
+    // 请求新品专区数据列表
+    getNewGoods() {
+      debugger;
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getNewMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 20;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          console.log(result);
+          if (result.code === 200) {
+            debugger
+            _this.newGoodsList = result.data
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 热销商品列表
+    getHotGoods() {
+      debugger;
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getHotMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 20;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          console.log(result);
+          if (result.code === 200) {
+            debugger
+            _this.hotGoodsList = result.data
+            console.log('热销商品列表')
+            console.log(_this.hotGoodsList)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
     },
     goTotop() {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -618,7 +688,8 @@ li {
 }
 #components-layout-demo-basic .ant-layout-content {
   background: rgb(238, 238, 238);
-  /* min-height: 1000px; */
+  height: auto;
+  min-height: 1000px;
   color: #000000;
 }
 #components-layout-demo-basic > .ant-layout {
@@ -647,7 +718,7 @@ li {
   .container-size(inline-block, 225px, auto, 0, 0px);
   .position(absolute, 168px, 0px);
   text-indent: 20px;
-  
+
   span {
     float: right;
     margin-right: 20px;
@@ -698,8 +769,8 @@ li {
     font-weight: normal;
   }
 }
-.height780{
-  height: 890px!important;
+.height780 {
+  height: 890px !important;
 }
 .name-guige {
   width: 225px;
@@ -743,7 +814,7 @@ li {
   width: 226px;
   text-indent: 20px;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
   color: #999;
 }
@@ -774,6 +845,7 @@ li {
   li {
     display: inline-block;
     margin-right: 22px;
+    margin-bottom: 15px;
   }
 }
 // .elaborate-ui li {
@@ -796,6 +868,9 @@ li {
 .elaborate-text {
   .position(absolute, 32px, 200px);
   width: 170px;
+   overflow: hidden;
+ text-overflow:ellipsis;
+ white-space: nowrap;
   color: #333333;
   font-size: 16px;
 }
@@ -807,6 +882,9 @@ li {
 .elaborate-manufacturer {
   .position(absolute, 85px, 198px);
   width: 170px;
+   overflow: hidden;
+ text-overflow:ellipsis;
+ white-space: nowrap;
 }
 .elaborate-validity {
   .position(absolute, 105px, 198px);
@@ -840,64 +918,67 @@ li {
   margin-bottom: 20px;
 }
 // 一块购
-.onek-text{
-  .p-size(30px,30px,16px,left,0px,#333333);
+.onek-text {
+  .p-size(30px, 30px, 16px, left, 0px, #333333);
   background: #eeeeee;
   font-weight: bold;
 }
-.onek-shoping{
+.onek-shoping {
   .container-size(block, 1202px, 890px, 0 auto, 0px);
   background: #eeeeee;
-  ul{
+  ul {
     float: left;
     width: 1210px;
-    li{
+    li {
       display: inline-block;
       margin-left: 0px;
       margin-right: 19px;
       margin-bottom: 13px;
-      .onek-card{
+      .onek-card {
         width: 586px;
         height: 250px;
-        .onek-left{
-          float:left;
+        .onek-left {
+          float: left;
           width: 206px;
           height: 205px;
-          .onek-img{
+          .onek-img {
             width: 206px;
             height: 164px;
           }
-          p{
-            .p-size(40px,40px,16px,center,0px,#ed3025);
+          p {
+            .p-size(40px, 40px, 16px, center, 0px, #ed3025);
             color: #333333;
-            .sur-time{
-              color: #333333!important;
+            .sur-time {
+              color: #333333 !important;
               font-size: 16px;
             }
-            span{
-              color:#ed3025;
+            span {
+              color: #ed3025;
             }
           }
         }
-        .onek-right{
-          float:right;
+        .onek-right {
+          float: right;
           width: 300px;
           height: 205px;
-          .goods-name,.goods-spec{
-            .p-size(30px,30px,18px,left,10px,#333333);
+          .goods-name,
+          .goods-spec {
+            .p-size(30px, 30px, 18px, left, 10px, #333333);
           }
-          .goods-manu,.goods-success,.goods-state{
-            .p-size(25px,25px,14px,left,10px,#999999);
+          .goods-manu,
+          .goods-success,
+          .goods-state {
+            .p-size(25px, 25px, 14px, left, 10px, #999999);
           }
-          .goods-manu{
+          .goods-manu {
             margin-top: 20px;
           }
-          .goods-btn{
-            .p-size(40px,40px,14px,right,0px,#ffffff);
+          .goods-btn {
+            .p-size(40px, 40px, 14px, right, 0px, #ffffff);
             margin-top: 10px;
-            .imme-btn{
-              .button-size(120px,40px,40px,16px,0px,5px);
-              .button-color(1px solid transparent,#ed3025,#ffffff);
+            .imme-btn {
+              .button-size(120px, 40px, 40px, 16px, 0px, 5px);
+              .button-color(1px solid transparent, #ed3025, #ffffff);
             }
           }
         }
