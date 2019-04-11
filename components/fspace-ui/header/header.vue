@@ -12,8 +12,6 @@
             <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
             <nuxt-link to="/user/register" v-show="!isLogin">注册</nuxt-link>
             <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
-            <a @click="logout()">登出</a>
-            <nuxt-link to="/user/personal">我的一块</nuxt-link>
           </div>
           <div class="header-right">
             <a>帮助中心</a>
@@ -36,7 +34,13 @@
                   <a href="javascript:;">常购药品</a>
                 </a-menu-item>
                 <a-menu-item>
+                  <nuxt-link to="/user/personal">我的一块</nuxt-link>
+                </a-menu-item>
+                <a-menu-item>
                   <a href="javascript:;">浏览记录</a>
+                </a-menu-item>
+                 <a-menu-item>
+                  <a @click="logout()">登出</a>
                 </a-menu-item>
               </a-menu>
             </a-dropdown>

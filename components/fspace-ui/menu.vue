@@ -1,20 +1,29 @@
 <template>
   <ul class="sider-menu">
     <li
-      v-for="(item,index) in list"
+      v-for="(i,index) in list"
       :key="index"
       :ref="'li' + index"
       class="sider-menu-li"
-      @mouseover="showChildren(item, index,$event)"
-      @mouseout="hideChildren(item)"
+      @mouseover="showChildren(i, index,$event)"
+      @mouseout="hideChildren(i)"
     >
-      {{item.label}}
+      {{i.label}}
       <a-icon type="right"/>
-      <div :ref="'hover' + index" class="hover-show" v-show="item.isActive">
-        <p>{{ item.label }}</p>
-        <div class="small-type">
-          <span v-for="(items,index) in item.children" :key="index" @click="toCategory(items.value)">{{items.label}}</span>
+      <!-- 弹出层 -->
+      <div :ref="'hover' + index" class="hover-show" v-show="true ">
+        <div
+          class="small-type"
+          v-for="(j,index) in i.children"
+          :key="index"
+          @click="toCategory(j.value)"
+        >
+          <span>2级分类: {{j.label}}</span>
+          <span v-for="(k,index) in j.children" :key="index" @click="toCategory(k.value)">3级分类:{{k.label}}</span>
         </div>
+        <!-- <div class="small-type">
+          <span v-for="(items,index) in item.children" :key="index" @click="toCategory(items.value)">{{items.label}}</span>
+        -->
       </div>
     </li>
   </ul>
@@ -28,19 +37,18 @@ export default {
     };
   },
   mounted() {
-    this.getProduceClasses()
+    this.getProduceClasses();
   },
   methods: {
-
     toCategory(index) {
       // console.log(index)
-       let routeData = this.$router.resolve({
-        name: 'category',
+      let routeData = this.$router.resolve({
+        name: "category",
         query: {
           goodsType: index
         }
-      })
-      window.open(routeData.href, '_blank');
+      });
+      window.open(routeData.href, "_blank");
     },
     showChildren(item, index, e) {
       this.$refs["hover" + index][0].style.top =
@@ -61,30 +69,27 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.list = JSON.parse(result.data)
-              console.log(_this.list)
+              _this.list = JSON.parse(result.data);
+              console.log(_this.list);
               _this.list.forEach(element => {
-              _this.$set(element, 'isActive', false)
+                _this.$set(element, "isActive", false);
               });
-              console.log( _this.list)
             } else {
               _this.$message.error(result.message);
             }
           },
-          function error(e) {
-
-          }
+          function error(e) {}
         )
       );
-    },
+    }
   }
 };
 </script>
 <style>
-.small-type span{
-   cursor:pointer
+.small-type span {
+  cursor: pointer;
 }
-.small-type span:hover{
+.small-type span:hover {
   color: rgb(255, 0, 54);
 }
 .sider-menu {

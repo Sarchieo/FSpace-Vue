@@ -146,7 +146,6 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        debugger
         if (!err) {
           this.register(values, 3)
         }
@@ -207,21 +206,57 @@ export default {
       this.sendAuthCodeText = '请稍后'
       this.sendAuthCodeLoading = true
       // 发送验证码
-      setTimeout(()=> {
-        this.auth_time = 60;
-        this.$message.success('短信发送成功');
-        let auth_timetimer =  setInterval(()=>{
-          this.sendAuthCodeLoading = false
-          this.sendAuthCode = false;
-          this.auth_time--;
-          this.sendAuthCodeText = this.auth_time + 's'
-          if(this.auth_time<=0){
-            this.sendAuthCode = true;
-            this.sendAuthCodeText = '获取验证码'
-            clearInterval(auth_timetimer);
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "obtainVerificationCode";
+      iRequest.param.json = JSON.stringify({
+        type: 2,
+        phone: '17621503668'
+      })
+      debugger
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              _this.auth_time = 60;
+              _this.$message.success('短信发送成功');
+              let auth_timetimer =  setInterval(()=>{
+                _this.sendAuthCodeLoading = false
+                _this.sendAuthCode = false;
+                _this.auth_time--;
+                _this.sendAuthCodeText = _this.auth_time + 's'
+                if(_this.auth_time<=0){
+                  _this.sendAuthCode = true;
+                  _this.sendAuthCodeText = '获取验证码'
+                  clearInterval(auth_timetimer);
+                }
+              }, 1000);
+            }else {
+              _this.$message.error(result.message);
+            }
           }
-        }, 1000);
-      },1500)
+        )
+      );
+
+      // setTimeout(()=> {
+      //   this.auth_time = 60;
+      //   this.$message.success('短信发送成功');
+      //   let auth_timetimer =  setInterval(()=>{
+      //     this.sendAuthCodeLoading = false
+      //     this.sendAuthCode = false;
+      //     this.auth_time--;
+      //     this.sendAuthCodeText = this.auth_time + 's'
+      //     if(this.auth_time<=0){
+      //       this.sendAuthCode = true;
+      //       this.sendAuthCodeText = '获取验证码'
+      //       clearInterval(auth_timetimer);
+      //     }
+      //   }, 1000);
+      // },1500)
     },
     async register(values, type) {
       let _this = this;
