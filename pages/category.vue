@@ -32,7 +32,6 @@
           <div class="brand">厂家：</div>
           <div class="brand-lists" ref="manulists">
             <a
-
               v-for="(item,index) in manunameList"
               :key="index"
               ref="checkB"

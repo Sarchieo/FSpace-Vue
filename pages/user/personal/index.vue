@@ -13,11 +13,24 @@
           />
         </a-form-item>
         <a-form-item label="省市区" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-          <a-cascader
+          <!-- <a-cascader
             :disabled="!isEditor"
             :options="areas"
             @change="onChange"
             placeholder="请选择省市区"
+            class="city"
+            v-decorator="[
+              'addressCode',
+              {rules: [{ required: true, message: '请选择省市区' }]}
+            ]"
+          /> -->
+          <a-cascader 
+            :disabled="!isEditor"
+            :options="areas" 
+            @change="onChange" 
+            :loadData="loadData" 
+            placeholder="请选择省市区" 
+            changeOnSelect
             class="city"
             v-decorator="[
               'addressCode',
@@ -30,9 +43,9 @@
             :disabled="!isEditor"
             placeholder="请填写营业执照上一致的药店地址"
             v-decorator="[
-                'address',
-                {rules: [{ required: true, message: '请填写药店详细地址' }]}
-              ]"
+              'address',
+              {rules: [{ required: true, message: '请填写药店详细地址' }]}
+            ]"
           />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
@@ -206,6 +219,23 @@ export default {
     this.getBasicInfo();
   },
   methods: {
+    loadData(selectedOptions) {
+      // const targetOption = selectedOptions[selectedOptions.length - 1];
+      // targetOption.loading = true;
+
+      // // load options lazily
+      // setTimeout(() => {
+      //   targetOption.loading = false;
+      //   targetOption.children = [{
+      //     label: `${targetOption.label} Dynamic 1`,
+      //     value: 'dynamic1',
+      //   }, {
+      //     label: `${targetOption.label} Dynamic 2`,
+      //     value: 'dynamic2',
+      //   }];
+      //   this.options = [...this.options]
+      // }, 1000);
+    },
     setEditor() {
       this.isEditor = !this.isEditor;
       this.showUpload.showRemoveIcon = this.isEditor;
