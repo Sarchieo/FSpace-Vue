@@ -19,7 +19,7 @@
             <a>帮助中心</a>
             <a class="margin-left0">在线客服</a>
             <!-- 我的消息 -->
-            <!-- <header-notice/> -->
+            <header-notice/>
             <!-- 签到有礼 -->
             <a class="margin-right0">
               签到有礼
@@ -151,13 +151,13 @@
   </div>
 </template>
 <script>
-// import HeaderNotice from './HeaderNotice'
+import HeaderNotice from './HeaderNotice'
 export default {
   name: "f-space-header",
   props: ["type" , 'searchList'],
-  // components: {
-  //   HeaderNotice
-  // },
+  components: {
+    HeaderNotice
+  },
   computed: {
     storeInfo() {
       return this.$store.state.user;
