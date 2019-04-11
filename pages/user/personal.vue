@@ -20,7 +20,7 @@
             </p>
             <p>
               <a-icon type="mobile"/>
-               {{ storeInfo.phone }}
+              {{ storeInfo.phone }}
             </p>
           </div>
           <div class="right">
@@ -73,6 +73,9 @@
               <a-menu-item key="/user/personal/collection" class="left-menu">
                 <a-icon type="calendar"/>我的收藏
               </a-menu-item>
+              <a-menu-item key="/user/personal/footprint" class="left-menu">
+                <a-icon type="calendar"/>我的足迹
+              </a-menu-item>
               <a-menu-item key="/user/personal/coupon" class="left-menu">
                 <a-icon type="calendar"/>我的优惠券
               </a-menu-item>
@@ -107,10 +110,11 @@ export default {
   },
   computed: {
     storeInfo() {
+      debugger
       return this.$store.state.user;
     }
   },
-  middleware: 'authenticated',
+  middleware: "authenticated",
   data() {
     return {};
   },
@@ -124,15 +128,16 @@ export default {
       iRequest.cls = "CommonModule";
       iRequest.method = "getAreas";
       this.$refcallback(
-        "userServer",
+        "globalServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if(result.code === 200) {
-              _this.$store.dispatch('setAreas', { context: _this , areas: result.data })
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$store.dispatch("setAreas", {
+              context: _this,
+              areas: result.data
+            });
           }
-        )
+        })
       );
     },
     getBasicInfo() {

@@ -1,8 +1,12 @@
 <template>
   <div>
     <p class="collection-text">我的收藏</p>
-     <ul class="goods-list-box">
-        <li v-for="(item,index) in list" :key="index" @click="toDetals()">
+     <div class="no-data" v-if="this.collecList.length === 0">
+       <p><a-icon type="exclamation"/></p>
+       <p>您还没有收藏药品！</p>
+     </div>
+     <ul class="goods-list-box" v-if="this.collecList.length !== 0">
+        <li v-for="(item,index) in collecList" :key="index" @click="toDetals()">
            <a-card
           hoverable
           class="card"
@@ -12,14 +16,20 @@
             v-lazy="item.src"
             slot="cover"
           />
-          <p class="surplus text-Center top185">{{item.text}}</p>
-          <p class="validity">有效期至{{item.validity}}</p>
-          <p class="card-price top165">￥{{item.new}} </p>
+          <a-icon type="close" class="close-coll" @click.stop="delCollec(item.sku)"/>
+          <!-- {{item.info.prodname}} -->
+          <p class="surplus text-Center top185">{{item.info.prodname}}</p>
+          <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
+          <p class="validity">有效期至{{item.info.prodsdate}} - {{item.info.prodedate}}</p>
+          <!-- {{item.info.vatp}} -->
+          <p class="card-price top165">￥{{item.info.vatp}} </p>
 
           <!-- 规格 -->
-          <p class="specifications">{{item.specifications}}</p>
+          <!-- {{item.info.spec}} -->
+          <p class="specifications">{{item.info.spec}}</p>
           <!-- 厂家 -->
-          <p class="manufacturer">{{item.manufacturer}}</p>
+          <!-- {{item.info.manuName}} -->
+          <p class="manufacturer">{{item.info.manuName}}</p>
           <p class="add-card">
             <button>-</button>
             <button>{{count}}</button>
@@ -40,59 +50,17 @@
 </template>
 <script>
 export default {
+   computed: {
+    storeInfo() {
+      return this.$store.getters.user(this);
+    }
+  },
   data() {
     return {
       count: 1,
+      collecList: [],
        list: [
         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
           src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
           text: '999感冒灵颗粒',
           validity: '2019-09-03',
@@ -143,12 +111,71 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.queryCollec();
+    console.log(this.storeInfo.storeId)
+  },
   methods:{
     toDetals() {
       this.$router.push({
         path:'/product/detail'
       })
-    }
+    },
+    // 查询收藏列表
+    queryCollec() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyCollectModule";
+      iRequest.method = "query";
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          
+          console.log(result)
+          if (result.code === 200) {
+            // _this.prodDetail = result.data
+            // _this.details = JSON.parse(_this.prodDetail.detail)
+            _this.collecList = result.data;
+            console.log(_this.collecList)
+            console.log('查询收藏成功')
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 取消收藏 
+     delCollec(sku) {
+       console.log(sku)
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyCollectModule";
+      iRequest.method = "del";
+      iRequest.param.json = JSON.stringify({
+        sku:sku
+        // prize: this.prodDetail.vatp,
+        // promtype: 0
+      })
+      // 促销类型未传，暂定0，促销完善补上
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          console.log(result)
+          if (result.code === 200) {
+            // _this.isCollec();
+            _this.queryCollec();
+            _this.$message.success(result.message);
+            console.log('取消收藏成功')
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
   }
 }
 </script>
@@ -156,7 +183,7 @@ export default {
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
 .collection-text {
-  .p-size(55px,55px,20px,left,30px,#ed3025);
+  .p-size(55px,55px,20px,left,15px,#ed3025);
   background: #F6F6F6;
   font-weight: bold;
 }
@@ -164,12 +191,14 @@ export default {
   .container-size(block,985px,800px,0px,0px);
 }
 .goods-list-box {
-    .container-size(block,985px,800px,0 auto,0px);
+    .container-size(block,985px,960px,0 auto,0px);
     overflow: auto;
     padding-left: 10px;
+    padding-bottom: 20px;
+    z-index: 100;
 }
 .goods-list-box li {
-  .container-size(inline-block,228px,350px,24px 6.5px,0px);
+  .container-size(inline-block,228px,350px,5.5px 5.5px,0px);
   .container-color(#ffffff,none,#999);
 }
 .card{
@@ -180,8 +209,14 @@ export default {
 .surplus{
   .position(absolute,245px,0px);
   width: 225px;
-  text-align: center;
+  text-indent: 20px;
   color: #333333;
+}
+.close-coll{
+  display: none;
+  .position(absolute,5px,200px);
+  font-size: 20px;
+  color: rgb(255, 0, 54);
 }
 .card-img{
   .position(absolute,0px,0px);
@@ -201,7 +236,7 @@ export default {
 .card-price{
   .position(absolute,225px,0px);
   width: 225px;
-  text-align: center;
+  text-indent: 17px;
   font-weight: bold;
   color: rgb(255, 0, 54);
 }
@@ -231,15 +266,23 @@ export default {
   display: inline-block;
   .position(absolute,290px,0px);
   width: 225px;
-  text-align: center;
+  text-indent: 20px;
+  overflow: hidden;
+ text-overflow:ellipsis;
+ white-space: nowrap;
 }
 .specifications {
   display: inline-block;
   .position(absolute,268px,0px);
   width: 225px;
-  text-align: center;
+  text-indent: 20px;
 }
-
+.card:hover{
+   box-shadow: 0px 0px 30px 10px #e0e0e0;
+}
+.card:hover .close-coll{
+  display: inline-block;
+}
 .add-card {
   display: block;
   .position(absolute,315px,0px);
@@ -250,6 +293,17 @@ export default {
   border: none;
   background: #ed3025;
   color: #ffffff;
+}
+.no-data{
+  width: 985px;
+  height: 400px;
+  margin-top: 200px;
+  p{
+    .p-size(60px,60px,20px,center,0px,#666666);
+    i{
+      font-size: 40px!important;
+    }
+  }
 }
 </style>
 

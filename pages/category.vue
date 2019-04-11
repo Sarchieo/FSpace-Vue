@@ -3,10 +3,10 @@
     <a-layout>
       <f-space-header type="home" :searchList="searchList"></f-space-header>
       <!-- <p class="crumbs"> -->
-        <a-breadcrumb class="crumbs">
-          <a-breadcrumb-item>首页</a-breadcrumb-item>
-          <a-breadcrumb-item>商品分类</a-breadcrumb-item>
-        </a-breadcrumb>
+      <a-breadcrumb class="crumbs">
+        <a-breadcrumb-item>首页</a-breadcrumb-item>
+        <a-breadcrumb-item>商品分类</a-breadcrumb-item>
+      </a-breadcrumb>
       <!-- </p> -->
       <ul class="condition-box" ref="condition">
         <li class="brand-box brand-li" ref="list">
@@ -20,12 +20,11 @@
               :class="item.isSelect ? 'active-checked' : '' "
               @click="selectBrand(item)"
             >{{item.name}}</a>
-
           </div>
           <div class="more-box">
             <!-- <a class="more">多选<a-icon type="plus" /></a>
             <a class="more-text" ref="moreText" v-if="this.brandnameList.length < 7">更多<a-icon type="down"/></a>
-            <a class="retract" ref="retract">收起<a-icon type="down"/></a> -->
+            <a class="retract" ref="retract">收起<a-icon type="down"/></a>-->
           </div>
         </li>
         <li class="brand-box manu-li" ref="manuList">
@@ -39,11 +38,11 @@
               @click="selectManuName(item)"
             >{{item.name}}</a>
           </div>
-            <div class="more-box">
-              <!-- <a class="more">多选<a-icon type="plus" /></a>
+          <div class="more-box">
+            <!-- <a class="more">多选<a-icon type="plus" /></a>
               <a class="more-text" ref="manuMore" v-if="this.manunameList.length < 7">更多<a-icon type="down"/></a>
-              <a class="retract" ref="hideManu">收起<a-icon type="down"/></a> -->
-            </div>
+            <a class="retract" ref="hideManu">收起<a-icon type="down"/></a>-->
+          </div>
         </li>
         <li class="brand-box spec-li" ref="specList">
           <div class="brand">规格：</div>
@@ -59,18 +58,30 @@
           <div class="more-box">
             <!-- <a class="more">多选<a-icon type="plus" /></a>
             <a class="more-text" ref="specMore" v-if="this.specList.length < 7">更多<a-icon type="down"/></a>
-            <a class="retract" ref="hideSpec">收起<a-icon type="down"/></a> -->
+            <a class="retract" ref="hideSpec">收起<a-icon type="down"/></a>-->
           </div>
         </li>
         <li class="sort-box">
           <!-- 选中的样式为 active-search -->
           <!-- <a href="javascript:;" @click="selectCompr()" :class="this.sortGoods === 0 ? 'active-search' : ''">综合 <a-icon type="arrow-down"/></a> -->
-          <a href="javascript:;" @click="selectVolume()" :class="this.sortGoods === 1 ? 'active-search' : ''">销量 <a-icon type="arrow-down"/></a>
+          <a
+            href="javascript:;"
+            @click="selectVolume()"
+            :class="this.sortGoods === 1 ? 'active-search' : ''"
+          >
+            销量
+            <a-icon type="arrow-down"/>
+          </a>
           <!-- <a href="" class="padding-left5"> -->
-             <a-select defaultValue="价格排序" style="width: 150px" @change="handleChange"  :class="this.sortGoods === 2 || this.sortGoods === 3 ? 'active-search' : ''">
-              <a-select-option value="0">价格从高到低</a-select-option>
-              <a-select-option value="1">价格从低到高</a-select-option>
-             </a-select>
+          <a-select
+            defaultValue="价格排序"
+            style="width: 150px"
+            @change="handleChange"
+            :class="this.sortGoods === 2 || this.sortGoods === 3 ? 'active-search' : ''"
+          >
+            <a-select-option value="0">价格从高到低</a-select-option>
+            <a-select-option value="1">价格从低到高</a-select-option>
+          </a-select>
           <!-- </a> -->
           <!-- <a-checkbox v-model="isStock" @click="selectOnlyStock()" class="have-goods">只看有货</a-checkbox> -->
           <span class="goods-num">共{{searchList.length}}件商品</span>
@@ -106,10 +117,11 @@
             <!-- 有无存货 -->
             <p class="goods-state">
               库存 {{item.store}}
-              <span>收藏</span>
-              <!-- 选中收藏 后i标签class名为active-checked -->
-              <a-icon type="star"></a-icon>
-
+              <span class="collect-box" @click.stop="addCollec(item)">
+                <span>收藏</span>
+                <!-- 选中收藏 后i标签class名为active-checked -->
+                <a-icon type="star"></a-icon>
+              </span>
             </p>
             <a-card-meta class="card-info" :title="item.text"></a-card-meta>
           </a-card>
@@ -119,7 +131,7 @@
       </ul>
       <!-- 如果搜索结果为空显示 -->
       <div v-show="isGoods" class="no-goods-box">
-        <a-icon type="info-circle" />
+        <a-icon type="info-circle"/>
         <p class="no-goods">没有找到您想找的药品！</p>
       </div>
       <f-space-footer></f-space-footer>
@@ -151,17 +163,20 @@ export default {
       pageNumber: 20,
       brandLists: [],
       isGoods: false,
-      goodsType: ''
+      goodsType: ""
     };
   },
   computed: {
+    storeInfo() {
+      return this.$store.getters.user(this);
+    },
     keyword: {
       get() {
-        return this.$store.state.keyword
+        return this.$store.state.keyword;
       },
-      set(newValue){
-        this.$store.commit('KEY_WORD', newValue)
-        return this.$store.state.keyword
+      set(newValue) {
+        this.$store.commit("KEY_WORD", newValue);
+        return this.$store.state.keyword;
       }
     }
   },
@@ -172,25 +187,52 @@ export default {
   //   }
   // },
   mounted() {
-    this.goodsType = this.$route.query.goodsType
-    this.keyword = this.$route.query.keyword || ''
+    this.goodsType = this.$route.query.goodsType;
+    this.keyword = this.$route.query.keyword || "";
     this.fullTextsearchProdMall();
     this.getConditionByFullTextSearch();
   },
   methods: {
+    // 收藏
+    addCollec(item) {
+      console.log(item)
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyCollectModule";
+      iRequest.method = "add";
+      iRequest.param.json = JSON.stringify({
+        sku: item.sku,
+        prize: item.vatp,
+        promtype: 0
+      })
+      // 促销类型未传，暂定0，促销完善补上
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          console.log(result)
+          if (result.code === 200) {
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     getImgUrl() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "FileInfoModule";
       iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
-      let list = []
+      let list = [];
       _this.searchList.forEach(c => {
         list.push({
           sku: c.sku,
           spu: c.spu
-        })
-      })
+        });
+      });
       iRequest.param.json = JSON.stringify({
         list: list
       });
@@ -202,8 +244,18 @@ export default {
           function result(result) {
             if (result.code === 200) {
               result.data.goodsFilePathList.forEach((c, index, arr) => {
-                _this.$set(_this.searchList[index], 'imgURl',  result.data.downPrev + c + '/' + _this.searchList[index].sku + '-200x200.jpg' +  "?" + new Date().getSeconds())
-              })
+                _this.$set(
+                  _this.searchList[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    _this.searchList[index].sku +
+                    "-200x200.jpg" +
+                    "?" +
+                    new Date().getSeconds()
+                );
+              });
             } else {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }
@@ -233,9 +285,9 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.brandnameList = []
-              _this.manunameList = []
-              _this.specList = []
+              _this.brandnameList = [];
+              _this.manunameList = [];
+              _this.specList = [];
               _this.conditionList = result.data;
               result.data.brandnameList.forEach(element => {
                 _this.brandnameList.push({
@@ -279,7 +331,7 @@ export default {
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
         // 从侧边栏进入此页面keyword要为空字符串
-        keyword: '',
+        keyword: "",
         specArray: _this.specArray,
         manuArray: _this.manuArray,
         brandArray: _this.brandArray,
@@ -294,11 +346,11 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
-              _this.getImgUrl()
-              if(_this.searchList.length === 0 || _this.searchList === null){
-                _this.isGoods = true
+              _this.getImgUrl();
+              if (_this.searchList.length === 0 || _this.searchList === null) {
+                _this.isGoods = true;
               } else {
-                 _this.isGoods = false
+                _this.isGoods = false;
               }
             }
           },
@@ -310,26 +362,25 @@ export default {
     },
     // 综合排序
     selectCompr() {
-      this.sortGoods = 0
-      this.fullTextsearchProdMall()
+      this.sortGoods = 0;
+      this.fullTextsearchProdMall();
     },
     // 销量排序
     selectVolume() {
-      this.sortGoods = 1
-      this.fullTextsearchProdMall()
+      this.sortGoods = 1;
+      this.fullTextsearchProdMall();
     },
     // 价格排序
     handleChange(value) {
-      if(value === '0'){
+      if (value === "0") {
         this.sortGoods = 2;
       } else {
-         this.sortGoods = 3;
+        this.sortGoods = 3;
       }
-      this.fullTextsearchProdMall()
+      this.fullTextsearchProdMall();
     },
     // 只看有货
-    selectOnlyStock() {
-    },
+    selectOnlyStock() {},
     toDetail(item) {
       this.$router.push({
         path: "/product/detail",
@@ -419,47 +470,47 @@ li {
   margin: 0;
   padding: 0;
 }
-.ant-breadcrumb{
-  line-height: 23px!important;
+.ant-breadcrumb {
+  line-height: 23px !important;
 }
-.hidden-text{
- overflow: hidden;
- text-overflow:ellipsis;
- white-space: nowrap;
+.hidden-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.ant-pagination{
+.ant-pagination {
   text-align: center;
 }
 .retract {
   display: none;
 }
-.padding-left5{
+.padding-left5 {
   padding-left: 5px;
 }
-.have-goods{
+.have-goods {
   margin-left: 30px;
 }
-.sort-box a:hover{
+.sort-box a:hover {
   border: 1px solid #ed3025;
   color: #ed3025;
 }
-.sort-box{
+.sort-box {
   .container-size(block, 1130px, 50px, 0, 0px);
   line-height: 50px;
-  a{
+  a {
     .container-size(inline-block, 70px, 30px, 0 20px 0 0, 0px);
     line-height: 30px;
     text-align: center;
     border: 1px solid #e0e0e0;
-    color:#666666;
+    color: #666666;
     .price-up {
-      .position(relative,-6px,8px);
+      .position(relative, -6px, 8px);
     }
-    .price-down{
-      .position(relative,6px,-6px);
+    .price-down {
+      .position(relative, 6px, -6px);
     }
   }
-  .goods-num{
+  .goods-num {
     float: right;
     margin-right: 3px;
   }
@@ -474,23 +525,23 @@ li {
   -webkit-transition: height 0.5s; /* Safari and Chrome */
   -o-transition: height 0.5s; /* Opera */
 }
-.no-goods-box i{
+.no-goods-box i {
   display: block;
   margin: 0 auto;
   font-size: 50px;
 }
-.no-goods{
-  .p-size(40px,40px,20px,center,0px,#333333);
+.no-goods {
+  .p-size(40px, 40px, 20px, center, 0px, #333333);
   margin-bottom: 15px;
   margin-top: 15px;
 }
-.ant-pagination{
+.ant-pagination {
   margin-left: 5px;
-  margin-top:15px;
+  margin-top: 15px;
 }
-.active-search{
-  border: 1px solid #ed3025!important;
-  color: #ed3025!important;
+.active-search {
+  border: 1px solid #ed3025 !important;
+  color: #ed3025 !important;
 }
 .active-checked {
   // background:#ed3025;
@@ -733,5 +784,8 @@ li {
 }
 .more {
   float: right;
+}
+.collect-box:hover{
+  color: rgb(255, 0, 54);
 }
 </style>
