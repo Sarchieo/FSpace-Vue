@@ -12,26 +12,14 @@
               ]"
           />
         </a-form-item>
-        <a-form-item label="省市区" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-          <!-- <a-cascader
-            :disabled="!isEditor"
-            :options="areas"
-            @change="onChange"
-            placeholder="请选择省市区"
+        <a-form-item label="地址" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+          <a-cascader
             class="city"
-            v-decorator="[
-              'addressCode',
-              {rules: [{ required: true, message: '请选择省市区' }]}
-            ]"
-          /> -->
-          <a-cascader 
             :disabled="!isEditor"
-            :options="areas" 
+            :options="cascaderData" 
             @change="onChange" 
             :loadData="loadData" 
             placeholder="请选择省市区" 
-            changeOnSelect
-            class="city"
             v-decorator="[
               'addressCode',
               {rules: [{ required: true, message: '请选择省市区' }]}
@@ -146,6 +134,12 @@ export default {
   },
   data() {
     return {
+      cascaderData: [],
+      fieldNames: {
+        label: 'arean', 
+        value: 'areac', 
+        children: 'cities' 
+      },
       changePwdForm: {
         oldPwd: "",
         newPwd: "",
@@ -171,6 +165,7 @@ export default {
         "specify-path": "",
         "specify-filename": ""
       },
+      code: [],
       uploadList: [
         {
           fileList: [],
@@ -206,7 +201,6 @@ export default {
       form: this.$form.createForm(this),
       loading: false,
       imageUrl: "",
-      options: this.options,
       uploadIndex: 0
     };
   },
@@ -217,24 +211,76 @@ export default {
       addressCode: ""
     });
     this.getBasicInfo();
+    this.getNodes();
   },
   methods: {
-    loadData(selectedOptions) {
-      // const targetOption = selectedOptions[selectedOptions.length - 1];
-      // targetOption.loading = true;
-
-      // // load options lazily
-      // setTimeout(() => {
-      //   targetOption.loading = false;
-      //   targetOption.children = [{
-      //     label: `${targetOption.label} Dynamic 1`,
-      //     value: 'dynamic1',
-      //   }, {
-      //     label: `${targetOption.label} Dynamic 2`,
-      //     value: 'dynamic2',
-      //   }];
-      //   this.options = [...this.options]
-      // }, 1000);
+    getAncestors(code) {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CommonModule";
+      iRequest.method = "getAncestors";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.arrays = [code];
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.setArea(_this.cascaderData, result.data, 0)
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
+    },
+    setArea(area, data, index) {
+      this.code.push(data[index].areac)
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CommonModule";
+      iRequest.method = "getChildren";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.arrays = [data[index].areac];
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              let Items = result.data;
+              area.map((value, i) => {
+                if(value.value === data[index].areac) {
+                  let arr = Items.map((value, i) => {
+                    return {
+                      value: value.areac,
+                      label: value.arean,
+                      isLeaf: false
+                    };
+                  });
+                  _this.$set(value, 'children', arr)
+                  index++
+                  if(index < 4) {
+                    _this.setArea(value.children, data, index)
+                  }else {
+                    _this.code.push(data[data.length -1].areac)
+                    _this.form.setFieldsValue({
+                      addressCode: _this.code
+                    })
+                  }
+                }
+              });
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
     },
     setEditor() {
       this.isEditor = !this.isEditor;
@@ -295,6 +341,8 @@ export default {
             _this.authenticationMessage = result.data.authenticationMessage;
             _this.isRelated = result.data.isRelated;
             _this.isEditor = !_this.isRelated
+            // 获取地区数据
+            _this.getAncestors(result.data.addressCode)
           } else {
           }
         })
@@ -385,6 +433,68 @@ export default {
           );
         }
       });
+    },
+    loadData(selectedOptions) {
+      const targetOption = selectedOptions[selectedOptions.length - 1];
+      targetOption.loading = true;
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CommonModule";
+      iRequest.method = "getChildren";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.arrays = [targetOption.value];
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              let Items = result.data;
+              targetOption.loading = false;
+              let arr = Items.map((value, i) => {
+                return {
+                  value: value.areac,
+                  label: value.arean,
+                  isLeaf: selectedOptions.length >= 4 ? true : false
+                };
+              });
+              _this.$set(targetOption, 'children', arr)
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
+    },
+    getNodes() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CommonModule";
+      iRequest.method = "getChildren";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.arrays = [0];
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              let Items = result.data;
+              _this.cascaderData = Items.map((value, i) => {
+                return {
+                  value: value.areac,
+                  label: value.arean,
+                  isLeaf: false
+                };
+              });
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
     }
   }
 };
@@ -497,7 +607,7 @@ export default {
   border-radius: 0px !important;
 }
 .city {
-  width: 305px;
+  width: 450px;
   border: 1px solid #e0e0e0;
 }
 .ant-upload.ant-upload-drag p.ant-upload-drag-icon .anticon {

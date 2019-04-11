@@ -212,9 +212,8 @@ export default {
       iRequest.method = "obtainVerificationCode";
       iRequest.param.json = JSON.stringify({
         type: 2,
-        phone: '17621503668'
+        phone: this.form.getFieldValue('phone')
       })
-      debugger
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "userServer",

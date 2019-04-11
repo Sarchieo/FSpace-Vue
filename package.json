@@ -14,6 +14,7 @@
     "cookie-universal-nuxt": "^2.0.14",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
+    "element-ui": "^2.7.2",
     "fingerprintjs2": "^2.0.6",
     "good-storage": "^1.1.0",
     "ice": "^3.6.3",
@@ -27,6 +28,7 @@
     "sass-resources-loader": "^2.0.0"
   },
   "devDependencies": {
+    "babel-plugin-component": "^1.1.1",
     "nodemon": "^1.18.9",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "vue-lazyload": "^1.2.6"
