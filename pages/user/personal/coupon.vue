@@ -100,7 +100,7 @@ export default {
       .position(relative, 0px, 0px);
       border: 1px solid #e0e0e0;
       .state-pic {
-        .position(relative, -90px, 140px);
+        .position(relative, -46px, 176px);
       }
       .discount-count {
         .container-size(inline-block, 100px, 100px, 0, 0px);
@@ -156,7 +156,7 @@ export default {
         .position(relative, 0px, 0px);
         border: 1px solid #e0e0e0;
         .state-pic{
-          .position(relative, -90px, 140px);
+          .position(relative, -46px, 176px);
         }
         .discount-count {
           .container-size(inline-block, 100px, 100px, 0, 0px);

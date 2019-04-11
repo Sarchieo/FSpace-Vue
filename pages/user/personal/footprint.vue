@@ -2,11 +2,6 @@
   <div class="collection-box">
     <p class="collection-text">我的足迹</p>
     <div v-for="(item,index) in list" :key="index" class="my-collection">
-      <p class="collection-time">
-        今天
-        <span>{{item.time}}</span>
-        <span class="line"></span>
-      </p>
       <ul class="goods-list-box">
         <li v-for="(items,index1) in item.lists" :key="index1" @click="toDetals()">
           <a-card hoverable class="card">
@@ -29,6 +24,7 @@
         </li>
       </ul>
     </div>
+    <a-pagination showQuickJumper :defaultCurrent="1" :total="20" @change="onChange" />
   </div>
 </template>
 <script>
@@ -167,11 +163,13 @@ export default {
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
 .collection-text {
-  .p-size(55px, 55px, 20px, left, 20px, #000000);
+  .p-size(55px, 55px, 20px, left, 15px, #000000);
   background: #f6f6f6;
+  font-weight: bold;
+  color:#ed3025;
 }
 .collection-box {
-  .container-size(block, 983px, auto, 0px, 0px);
+  .container-size(block, 983px, 920px, 0px, 0px);
 }
 .collection-time {
   .p-size(55px, 55px, 30px, left, 20px, #333333);
@@ -278,6 +276,9 @@ export default {
   border: none;
   background: #ed3025;
   color: #ffffff;
+}
+.ant-pagination{
+  text-align: center;
 }
 </style>
 

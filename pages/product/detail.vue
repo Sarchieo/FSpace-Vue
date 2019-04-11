@@ -17,14 +17,10 @@
             </a-breadcrumb>
             <div class="goods-big-pic">
               <img v-lazy="imgUrl" slot="cover">
-              <!-- <a-carousel arrows dotsClass="slick-dots slick-thumb">
-                <a slot="customPaging" slot-scope="props">
-                  <img :src="getImgUrl(props.i)">
-                </a>
-                <div v-for="(item,index) in 4" :key="index">
-                  <img :src="baseUrl+'abstract0'+item+'.jpg'">
-                </div>
-              </a-carousel> -->
+              <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
+              <p v-if="this.isShowCollec === false"><span @click="addCollec()"><a-icon type="star" class="collection"/> 收藏</span></p>
+              <!-- 已收藏的class为collection -->
+              <p v-if="this.isShowCollec === true"><span @click="delCollec()"><a-icon type="star"/> 取消收藏</span></p>
             </div>
             <div class="goods-info">
               <p class="goods-name"> {{ prodDetail.prodname }}</p>
@@ -99,9 +95,10 @@
           </div>
           <!-- 优惠套餐 -->
           <div class="discount">
-            <p class="discount-title">优惠套餐</p>
+            <p class="discount-title">商品优惠券 <a>更多优惠券<a-icon type="right" /></a></p>
             <div class="carousel">
               <a-carousel arrows>
+                <!-- 当优惠券大于三张显示 -->
                 <div
                   slot="prevArrow"
                   slot-scope="props"
@@ -110,6 +107,7 @@
                 >
                   <a-icon type="left-circle"/>
                 </div>
+                <!-- 当优惠券大于三张显示 -->
                 <div
                   slot="nextArrow"
                   slot-scope="props"
@@ -119,17 +117,19 @@
                   <a-icon type="right-circle"/>
                 </div>
                 <div v-for="(item,index) in mealList" :key="index">
-                  <a-card
-                    hoverable
-                    class="meal-card"
-                    v-for="(items,index) in item.list"
-                    :key="index"
-                  >
-                    <img v-lazy="items.url" slot="cover">
-                    <p class="meal-price">${{items.price}}</p>
-                    <p class="meal-name">{{items.name}}</p>
-                    <p class="meal-packing">{{items.packing}}</p>
-                  </a-card>
+                  <div class="condition-price">
+                    <div class="discount-coll">
+                      <span class="discount-count">9.5</span>
+                      <span class="discount-text">折</span>
+                      <span class="satisfy">满600元可用</span>
+                      <p>全场折扣券</p>
+                      <p>2019-03-27至2019-04-20可用</p>
+                      <!-- <img class="state-pic" src="../../../assets/img/Invalid.png" alt=""> -->
+                      <!-- <img class="state-pic" src="../../../assets/img/invalied.png" alt=""> -->
+                      <!-- <img class="state-pic" src="../../../assets/img/already.png" alt=""> -->
+                    </div>
+                    <!-- <img class="right-img" src="../../../assets/img/receives.png" alt=""> -->
+                  </div>
                 </div>
               </a-carousel>
             </div>
@@ -322,8 +322,14 @@ export default {
     FSpaceButton,
     FSpaceFooter
   },
-  data() {
+  computed: {
+    storeInfo() {
+      return this.$store.getters.user(this);
+    }
+  },
+  data() {    
     return {
+      isShowCollec: false,
       imgUrl: '',
       sku: '',
       spu: '',
@@ -361,6 +367,7 @@ export default {
           },
         ],
       likes: 0,
+      brandNum: '',
       dislikes: 0,
       action: null,
       moment,
@@ -531,14 +538,16 @@ export default {
     };
   },
   mounted() {
-    this.getImgUrl()
     this.getProd();
+    this.getImgUrl();
+    this.isCollec();
+    
   },
   methods: {
+    // 获取详情
     getProd() {
       let _this = this;
       let iRequest = new inf.IRequest();
-      
       iRequest.cls = "BackgroundProdModule";
       iRequest.method = "getProd";
       iRequest.param.arrays = [this.sku]
@@ -549,8 +558,84 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.prodDetail = result.data
-            _this.details = JSON.parse(_this.prodDetail.detail)
-            console.log(_this.details)
+            _this.details = JSON.parse(_this.prodDetail.detail)   
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 添加收藏
+    addCollec() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyCollectModule";
+      iRequest.method = "add";
+      iRequest.param.json = JSON.stringify({
+        sku: this.prodDetail.sku,
+        prize: this.prodDetail.vatp,
+        promtype: 0
+      })
+      // 促销类型未传，暂定0，促销完善补上
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.isCollec();
+            
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 取消收藏
+    delCollec() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyCollectModule";
+      iRequest.method = "del";
+      iRequest.param.json = JSON.stringify({
+        sku: this.prodDetail.sku,
+        prize: this.prodDetail.vatp,
+        promtype: 0
+      })
+      // 促销类型未传，暂定0，促销完善补上
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.isCollec();
+      
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 查询是否被收藏 
+    isCollec() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyCollectModule";
+      iRequest.method = "check";
+      iRequest.param.json = JSON.stringify({
+        sku: this.prodDetail.sku,
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          console.log(result)
+          if (result.code === 200) {
+            _this.isShowCollec = result.data
+            console.log(9)
+            console.log(_this.prodDetail)
           } else {
             _this.$message.error(result.message);
           }
@@ -585,7 +670,6 @@ export default {
             }
           },
           function error(error) {
-            debugger;
           }
         )
       );
@@ -601,10 +685,10 @@ export default {
       this.action = "disliked";
     },
     handleChange(value) {
-      console.log(`selected ${value}`);
+      
     },
     callback(key) {
-      console.log(key);
+      
     }
   }
 };
@@ -674,9 +758,26 @@ li {
   width: 490px;
   height: 485px;
 }
+.collection{
+  color: rgb(247, 37, 38);
+}
 .goods-big-pic img {
   width: 490px;
   height: 430px;
+}
+.goods-big-pic p{
+  text-align: left;
+  font-size: 16px;
+  color: #666666;
+}
+.
+.goods-big-pic p span:hover{
+  cursor: pointer;
+  color: rgb(247, 37, 38);
+}
+/* 已收藏后的样式 */
+.collection {
+  color: rgb(247, 37, 38);
 }
 .small-pic {
   display: inline-block;
@@ -802,11 +903,15 @@ li {
   background: rgb(255, 244, 246);
   color: rgb(247, 37, 38);
 }
-/* 优惠套餐 */
+/* 优惠券列表 */
+.condition-price{
+  width: 1190px;
+  height: 296px;
+}
 .discount {
   display: block;
   width: 1190px;
-  height: 360px;
+  height: 296px;
   margin: 0 auto;
   border: 1px solid rgb(238, 238, 238);
   margin-bottom: 20px;
@@ -820,10 +925,14 @@ li {
   font-size: 18px;
   color: #666666;
 }
+.discount-title a{
+  float: right;
+  margin-right: 20px;
+  cursor: pointer;
+}
 .discount .carousel {
   width: 1190px;
-  height: 310px;
-  padding-top: 15px;
+  height: 246px;
 }
 .meal-card {
   display: inline-block;
@@ -850,8 +959,8 @@ li {
 }
 .ant-carousel >>> .slick-slide {
   text-align: center;
-  height: 310px;
-  line-height: 310px;
+  height: 246px;
+  line-height: 246px;
   overflow: hidden;
 }
 .ant-carousel[data-v-0e9671aa] .custom-slick-arrow {

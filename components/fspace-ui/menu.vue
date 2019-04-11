@@ -56,7 +56,7 @@ export default {
       iRequest.cls = "CommonModule";
       iRequest.method = "getProduceClasses";
       this.$refcallback(
-        "userServer",
+        "globalServer",
         iRequest,
         new this.$iceCallback(
           function result(result) {
