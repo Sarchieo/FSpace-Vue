@@ -41,7 +41,8 @@ module.exports = {
   plugins: [
     '@/plugins/antd-ui',
     { src: '~/plugins/vue-lazyload.js', ssr: true },
-    { src: '~/plugins/fs-plugin.js', ssr: false }
+    { src: '~/plugins/fs-plugin.js', ssr: false },
+    { src: '~/plugins/element-ui', ssr: true }
   ],
   /*
   ** Nuxt.js modules
@@ -54,6 +55,20 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    analyze: true,
+        vendor: [],
+        maxChunkSize: 300000,
+        babel: {
+          plugins: [
+            [
+              'component',
+              {
+                'libraryName': 'element-ui',
+                'styleLibraryName': 'theme-chalk'
+              }
+            ]
+          ]
+    },
     vendor: ['vue-lazyload'],
     /*
     ** You can extend webpack config here
