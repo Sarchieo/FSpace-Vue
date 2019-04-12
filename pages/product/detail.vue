@@ -12,18 +12,26 @@
                 <a href>限时抢购</a>
               </a-breadcrumb-item>
               <a-breadcrumb-item>
-                <a href>  {{ prodDetail.prodname }} </a>
+                <a href>{{ prodDetail.prodname }}</a>
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
               <img v-lazy="imgUrl" slot="cover">
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
-              <p v-if="this.isShowCollec === false"><span @click="addCollec()"><a-icon type="star" class="collection"/> 收藏</span></p>
+              <p v-if="this.isShowCollec === false">
+                <span @click="addCollec()">
+                  <a-icon type="star" class="collection"/>收藏
+                </span>
+              </p>
               <!-- 已收藏的class为collection -->
-              <p v-if="this.isShowCollec === true"><span @click="delCollec()"><a-icon type="star"/> 取消收藏</span></p>
+              <p v-if="this.isShowCollec === true">
+                <span @click="delCollec()">
+                  <a-icon type="star"/>取消收藏
+                </span>
+              </p>
             </div>
             <div class="goods-info">
-              <p class="goods-name"> {{ prodDetail.prodname }}</p>
+              <p class="goods-name">{{ prodDetail.prodname }}</p>
               <p class="rush-time">限时抢购 距离结束还剩 12 小时 15 分钟 52 秒 56</p>
               <div class="price-server">
                 <p class="price">
@@ -59,15 +67,15 @@
                 </p>
                 <p class="packing">
                   <span>生产厂家：</span>
-                  <span class="margin-right190">{{ prodDetail.manuName }} </span>
+                  <span class="margin-right190">{{ prodDetail.manuName }}</span>
                 </p>
                 <p class="packing">
                   <span>生产日期：</span>
-                  <span class="margin-right190">{{ prodDetail.prodsdate + ' ~ ' + prodDetail.prodedate}}</span>
-                 
+                  <span
+                    class="margin-right190"
+                  >{{ prodDetail.prodsdate + ' ~ ' + prodDetail.prodedate}}</span>
                 </p>
                 <p class="packing">
-                
                   <span>有效期至：</span>
                   <span>{{ prodDetail.vaildsdate + ' ~ ' + prodDetail.prodedate }}</span>
                 </p>
@@ -75,11 +83,11 @@
                   <span>配送至</span>
                   <a-select defaultValue="湖南省长沙市岳麓区" style="width: 200px" @change="handleChange"></a-select>
                   <span>有货</span>
-                </div> -->
+                </div>-->
                 <!-- <p class="packing">
                   由
                   <a href>一块物流</a>发货，一块医药提供售后服务. 23:00前下单,预计后天(03月18日)送达
-                </p> -->
+                </p>-->
 
                 <p class="cart">
                   <input type="text" readonly="readonly" v-model="count" class="goods-count">
@@ -93,12 +101,51 @@
               </div>
             </div>
           </div>
-          <!-- 优惠套餐 -->
-          <div class="discount">
+          <!-- 商品优惠券 -->
+          <div class="coupon-box">
+            <p class="coupon-title">商品优惠券</p>
+            <div class="coupon-content">
+              <div class="coupon-card">
+                <div class="coupon-left">
+                  <p class="coupon-type">折扣券</p>
+                  <span>满800打9.5折</span>
+                  <span>满1600打9折</span>
+                  <span>最多满3200打8.5折</span>
+                  <span>2019-03-27至2019-04-20可用</span>
+                </div>
+                <div class="coupon-right">
+                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                </div>
+              </div>
+              <div class="coupon-card">
+                <div class="coupon-left">
+                  <p class="coupon-type">减现券</p>
+                  <span>满800减50</span>
+                  <span>满1600减100</span>
+                  <span>最多满3200减200</span>
+                  <span>2019-03-27至2019-04-20可用</span>
+                </div>
+                <div class="coupon-right">
+                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                </div>
+              </div>
+               <div class="coupon-card">
+                <div class="coupon-left">
+                  <p class="coupon-type">包邮券</p>
+                  <span class="post-span">满800送包邮券</span>
+                  <span>2019-03-27至2019-04-20可用</span>
+                </div>
+                <div class="coupon-right">
+                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="discount">
             <p class="discount-title">商品优惠券 <a>更多优惠券<a-icon type="right" /></a></p>
             <div class="carousel">
               <a-carousel arrows>
-                <!-- 当优惠券大于三张显示 -->
+                
                 <div
                   slot="prevArrow"
                   slot-scope="props"
@@ -107,7 +154,7 @@
                 >
                   <a-icon type="left-circle"/>
                 </div>
-                <!-- 当优惠券大于三张显示 -->
+                
                 <div
                   slot="nextArrow"
                   slot-scope="props"
@@ -124,16 +171,16 @@
                       <span class="satisfy">满600元可用</span>
                       <p>全场折扣券</p>
                       <p>2019-03-27至2019-04-20可用</p>
-                      <!-- <img class="state-pic" src="../../../assets/img/Invalid.png" alt=""> -->
-                      <!-- <img class="state-pic" src="../../../assets/img/invalied.png" alt=""> -->
-                      <!-- <img class="state-pic" src="../../../assets/img/already.png" alt=""> -->
+                      <img class="state-pic" src="../../../assets/img/Invalid.png" alt="">
+                      <img class="state-pic" src="../../../assets/img/invalied.png" alt="">
+                      <img class="state-pic" src="../../../assets/img/already.png" alt="">
                     </div>
-                    <!-- <img class="right-img" src="../../../assets/img/receives.png" alt=""> -->
+                    <img class="right-img" src="../../../assets/img/receives.png" alt="">
                   </div>
                 </div>
               </a-carousel>
             </div>
-          </div>
+          </div>-->
           <!-- 详情和评价 -->
           <div class="tabs-page">
             <div class="tabs-detail">
@@ -143,11 +190,11 @@
                   <div class="goods-detail">
                     <p class="detail-list">
                       <span class="explain-header">药石名称</span>
-                      <span> {{ prodDetail.prodname }} </span>
+                      <span>{{ prodDetail.prodname }}</span>
                     </p>
                     <p class="detail-list">
                       <span class="explain-header">规格包装</span>
-                      <span> {{ prodDetail.spec }}</span>
+                      <span>{{ prodDetail.spec }}</span>
                     </p>
                     <p class="detail-list">
                       <span class="explain-header">生产厂家</span>
@@ -167,15 +214,11 @@
                     </div>
                     <div class="explain">
                       <span class="explain-header">用法用量</span>
-                      <span
-                        class="explain-text"
-                      >{{ details[2].content }}</span>
+                      <span class="explain-text">{{ details[2].content }}</span>
                     </div>
                     <div class="explain">
                       <span class="explain-header">注意事项</span>
-                      <span
-                        class="explain-text"
-                      >{{ details[4].content }}</span>
+                      <span class="explain-text">{{ details[4].content }}</span>
                     </div>
                     <div class="explain">
                       <span class="explain-header">禁忌</span>
@@ -283,7 +326,7 @@
                       </a-comment>
                     </div>
                   </div>
-                  <a-pagination :defaultCurrent="6" :total="500" />
+                  <a-pagination :defaultCurrent="6" :total="500"/>
                 </a-tab-pane>
               </a-tabs>
             </div>
@@ -318,7 +361,7 @@ import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
 export default {
   components: {
-    FSpaceHeader, 
+    FSpaceHeader,
     FSpaceButton,
     FSpaceFooter
   },
@@ -327,47 +370,47 @@ export default {
       return this.$store.getters.user(this);
     }
   },
-  data() {    
+  data() {
     return {
       isShowCollec: false,
-      imgUrl: '',
-      sku: '',
-      spu: '',
+      imgUrl: "",
+      sku: "",
+      spu: "",
       prodDetail: {},
-     details: [
-          {
-            name: '功能主治',
-            content: '',
-            id: 1,
-          },
-          {
-            name: '主要成分',
-            content: '',
-            id: 2
-          },
-          {
-            name: '用法用量',
-            content: '',
-            id: 3
-          },
-          {
-            name: '不良反应',
-            content: '',
-            id: 4
-          },
-          {
-            name: '注意事项',
-            content: '',
-            id: 5
-          },
-          {
-            name: '禁忌',
-            content: '',
-            id: 6
-          },
-        ],
+      details: [
+        {
+          name: "功能主治",
+          content: "",
+          id: 1
+        },
+        {
+          name: "主要成分",
+          content: "",
+          id: 2
+        },
+        {
+          name: "用法用量",
+          content: "",
+          id: 3
+        },
+        {
+          name: "不良反应",
+          content: "",
+          id: 4
+        },
+        {
+          name: "注意事项",
+          content: "",
+          id: 5
+        },
+        {
+          name: "禁忌",
+          content: "",
+          id: 6
+        }
+      ],
       likes: 0,
-      brandNum: '',
+      brandNum: "",
       dislikes: 0,
       action: null,
       moment,
@@ -541,7 +584,6 @@ export default {
     this.getProd();
     this.getImgUrl();
     this.isCollec();
-    
   },
   methods: {
     // 获取详情
@@ -550,15 +592,15 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "BackgroundProdModule";
       iRequest.method = "getProd";
-      iRequest.param.arrays = [this.sku]
+      iRequest.param.arrays = [this.sku];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.prodDetail = result.data
-            _this.details = JSON.parse(_this.prodDetail.detail)   
+            _this.prodDetail = result.data;
+            _this.details = JSON.parse(_this.prodDetail.detail);
           } else {
             _this.$message.error(result.message);
           }
@@ -575,16 +617,15 @@ export default {
         sku: this.prodDetail.sku,
         prize: this.prodDetail.vatp,
         promtype: 0
-      })
+      });
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.isCollec();
-            
           } else {
             _this.$message.error(result.message);
           }
@@ -601,41 +642,40 @@ export default {
         sku: this.prodDetail.sku,
         prize: this.prodDetail.vatp,
         promtype: 0
-      })
+      });
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.isCollec();
-      
           } else {
             _this.$message.error(result.message);
           }
         })
       );
     },
-    // 查询是否被收藏 
+    // 查询是否被收藏
     isCollec() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyCollectModule";
       iRequest.method = "check";
       iRequest.param.json = JSON.stringify({
-        sku: this.prodDetail.sku,
-      })
+        sku: this.prodDetail.sku
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result)
+          console.log(result);
           if (result.code === 200) {
-            _this.isShowCollec = result.data
-            console.log(9)
-            console.log(_this.prodDetail)
+            _this.isShowCollec = result.data;
+            console.log(9);
+            console.log(_this.prodDetail);
           } else {
             _this.$message.error(result.message);
           }
@@ -648,8 +688,8 @@ export default {
       iRequest.cls = "FileInfoModule";
       iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
-      this.sku = this.$route.query.sku
-      this.spu = this.$route.query.spu
+      this.sku = this.$route.query.sku;
+      this.spu = this.$route.query.spu;
       iRequest.param.json = JSON.stringify({
         list: [
           {
@@ -664,13 +704,19 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.imgUrl = result.data.downPrev + result.data.goodsFilePathList + '/' + _this.sku + '.jpg' +  "?" + new Date().getSeconds()
+              _this.imgUrl =
+                result.data.downPrev +
+                result.data.goodsFilePathList +
+                "/" +
+                _this.sku +
+                ".jpg" +
+                "?" +
+                new Date().getSeconds();
             } else {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }
           },
-          function error(error) {
-          }
+          function error(error) {}
         )
       );
     },
@@ -684,12 +730,8 @@ export default {
       this.dislikes = 1;
       this.action = "disliked";
     },
-    handleChange(value) {
-      
-    },
-    callback(key) {
-      
-    }
+    handleChange(value) {},
+    callback(key) {}
   }
 };
 </script>
@@ -743,6 +785,69 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+/* 优惠券 */
+.coupon-box {
+  display: block;
+  width: 1190px;
+  height: 296px;
+  margin: 0 auto 40px auto;
+  border: 1px solid #f2f2f2;
+}
+.coupon-title {
+  height: 50px;
+  line-height: 50px;
+  font-size: 20px;
+  background: #f2f2f2;
+  text-indent: 20px;
+  color: #999999;
+}
+.coupon-content {
+  display: inline-block;
+  width: 1190px;
+  height: 246px;
+}
+.coupon-card {
+  display: inline-block;
+  width: 340px;
+  height: 160px;
+  margin: 42px 20px 0px 30px;
+}
+.coupon-card:hover {
+  cursor: pointer;
+}
+.coupon-left {
+  float: left;
+  width: 280px;
+  height: 160px;
+  border: 1px solid #e0e0e0;
+}
+.coupon-type {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 20px;
+  color: #ed3025;
+}
+.coupon-left span {
+  display: inline-block;
+  width: 100%;
+  height: 30px;
+  text-align: left;
+  text-indent: 20px;
+  color: #999999;
+}
+.coupon-right {
+  float: right;
+  width: 60px;
+  height: 160px;
+}
+.coupon-right img {
+  width: 100%;
+  height: 100%;
+}
+.post-span{
+  margin-bottom: 30px;
+}
 /* 商品展示 */
 .goods-exhibition {
   width: 1190px;
@@ -758,20 +863,19 @@ li {
   width: 490px;
   height: 485px;
 }
-.collection{
+.collection {
   color: rgb(247, 37, 38);
 }
 .goods-big-pic img {
   width: 490px;
   height: 430px;
 }
-.goods-big-pic p{
+.goods-big-pic p {
   text-align: left;
   font-size: 16px;
   color: #666666;
 }
-.
-.goods-big-pic p span:hover{
+.goods-big-pic p span:hover {
   cursor: pointer;
   color: rgb(247, 37, 38);
 }
@@ -904,7 +1008,7 @@ li {
   color: rgb(247, 37, 38);
 }
 /* 优惠券列表 */
-.condition-price{
+.condition-price {
   width: 1190px;
   height: 296px;
 }
@@ -925,7 +1029,7 @@ li {
   font-size: 18px;
   color: #666666;
 }
-.discount-title a{
+.discount-title a {
   float: right;
   margin-right: 20px;
   cursor: pointer;
@@ -994,7 +1098,7 @@ li {
   float: left;
   width: 905px;
   height: 1900px;
-  border: 1px solid rgb(238,238,238);
+  border: 1px solid rgb(238, 238, 238);
 }
 .goods-detail {
   width: 900px;
