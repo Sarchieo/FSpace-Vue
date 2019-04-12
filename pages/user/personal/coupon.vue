@@ -15,36 +15,38 @@
               <img class="state-pic" src="../../../assets/img/already.png" alt="">
             </div>
             <img class="right-img" src="../../../assets/img/receives.png" alt="">
-          </div>
-          <div class="condition-price">
-            <div class="discount">
-              <span class="discount-count">30</span>
-              <span class="discount-str">￥</span>
-              <span class="satisfy">满600元可用</span>
-              <p>全场折扣券</p>
-              <p>2019-03-27至2019-04-20可用</p>
-               <img class="state-pic" src="../../../assets/img/already.png" alt="">
-            </div>
-            <img class="right-img" src="../../../assets/img/receives.png" alt="">
-          </div>
-          <div class="condition-price">
-            <div class="discount">
-              <span class="discount-count">30</span>
-              <span class="discount-str">￥</span>
-              <span class="satisfy">满600元可用</span>
-              <p>全场折扣券</p>
-              <p>2019-03-27至2019-04-20可用</p>
-              <img class="state-pic" src="../../../assets/img/already.png" alt="">
-            </div>
-             <img class="right-img" src="../../../assets/img/receives.png" alt="">
-          </div>
+          </div> 
         </div>
       </a-tab-pane>
       <a-tab-pane tab="已使用" key="2" forceRender>
-        <div class="haved-coupon">可使用</div>
+        <div class="haved-coupon">
+          <div class="condition-price">
+            <div class="discount">
+              <span class="discount-count">30</span>
+              <span class="discount-str">￥</span>
+              <span class="satisfy">满600元可用</span>
+              <p>全场折扣券</p>
+              <p>2019-03-27至2019-04-20可用</p>
+              <img class="state-pic" src="../../../assets/img/invalied.png" alt="">
+            </div>
+             <img class="right-img" src="../../../assets/img/received.png" alt="">
+          </div>
+        </div>
       </a-tab-pane>
       <a-tab-pane tab="已失效" key="3">
-        <div class="haved-coupon">已失效</div>
+        <div class="haved-coupon">
+          <div class="condition-price">
+            <div class="discount">
+              <span class="discount-count">30</span>
+              <span class="discount-str">￥</span>
+              <span class="satisfy">满600元可用</span>
+              <p>全场折扣券</p>
+              <p>2019-03-27至2019-04-20可用</p>
+               <img class="state-pic" src="../../../assets/img/Invalid.png" alt="">
+            </div>
+            <img class="right-img" src="../../../assets/img/received.png" alt="">
+          </div>
+        </div>
       </a-tab-pane>
     </a-tabs>
     <div class="more-coupon">
@@ -57,9 +59,9 @@
             <span class="satisfy">满600元可用</span>
             <p>全场折扣券</p>
             <p>2019-03-27至2019-04-20可用</p>
-            <img class="state-pic" src="../../../assets/img/already.png" alt="">
+            
           </div>
-          <img class="right-img" src="../../../assets/img/receives.png" alt="">
+          <img class="right-img" src="../../../assets/img/receive.png" alt="">
         </div>
       </div>
     </div>

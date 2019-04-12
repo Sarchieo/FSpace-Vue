@@ -195,7 +195,6 @@ export default {
   methods: {
     // 收藏
     addCollec(item) {
-      console.log(item)
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyCollectModule";
@@ -211,7 +210,6 @@ export default {
         "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result)
           if (result.code === 200) {
             _this.$message.success(result.message);
           } else {
