@@ -424,7 +424,6 @@ export default {
       }
       this.fullTextsearchProdMall();
     },
-    //
     removeArray(_arr, _obj) {
       let length = _arr.length;
       for (let i = 0; i < length; i++) {

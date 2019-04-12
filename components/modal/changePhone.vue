@@ -115,7 +115,6 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          debugger
           let _this = this;
           let iRequest = new inf.IRequest();
           iRequest.cls = "LoginRegistrationModule";

@@ -78,28 +78,28 @@
                 </button>
               </div>
               <ul class="brand-right">
-                <li v-for="(items,index) in item.list" :key="index">
+                <li v-for="(items,index) in limitedList.list" :key="index">
                   <a-card hoverable class="card">
-                    <img class="card-img" v-lazy="items.src" slot="cover">
-                    <a-progress
-                      :percent="items.surplus"
+                    <img class="card-img" v-lazy="items.imgURl" slot="cover">
+                    <!-- <a-progress
+                      :percent="items.activitystore"
                       style="position:absolute;top:145px;left:20px;width: 188px;"
                       :showInfo="false"
                       status="exception"
-                    />
+                    /> -->
                     <p class="surplus">
-                      还剩{{items.surplus}}支
-                      <span>限购{{items.xiangou}}支</span>
+                      还剩{{items.activitystore}}支
+                      <span>限购{{items.actlimit}}支</span>
                     </p>
 
                     <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
                     <div class="goods-info">
                       <p class="card-prices">
-                        ￥{{items.new}}
-                        <del>原价￥{{items.old}}</del>
+                        ￥{{items.actprize}}
+                        <del>原价￥{{items.mp}}</del>
                       </p>
-                      <p class="name-guige">{{items.name}}{{items.guige}}</p>
-                      <p class="brand-text">{{items.brand}}</p>
+                      <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
+                      <p class="brand-text">{{items.brandName}}</p>
                     </div>
                   </a-card>
                 </li>
@@ -119,7 +119,7 @@
               <ul class="brand-right hot-width">
                 <li v-for="(item,index) in hotGoodsList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
-                    <img class="card-img" v-lazy="item.imageUrl" slot="cover">
+                    <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185"></p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                     <p class="card-price top165">
@@ -146,10 +146,10 @@
             <p class="onek-text">一块购活动说明方案</p>
             <div class="onek-shoping">
               <ul>
-                <li v-for="(item,index) in onekList" :key="index">
+                <li v-for="(item,index) in teamBuyList.list" :key="index">
                   <a-card hoverable class="onek-card">
                     <div class="onek-left">
-                      <img class="onek-img" slot="cover">
+                      <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                       <p>
                         <span class="sur-time">还剩</span>
                         <span>04</span> 时
@@ -158,11 +158,11 @@
                       </p>
                     </div>
                     <div class="onek-right">
-                      <p class="goods-name">{{item.name}}</p>
+                      <p class="goods-name">{{item.prodname}}</p>
                       <p class="goods-spec">{{item.spec}}</p>
                       <p class="goods-manu">{{item.manu}}</p>
                       <p class="goods-success">{{item.success}}成团</p>
-                      <p class="goods-state">{{item.smaa}}盒起拼/已拼{{item.big}}盒</p>
+                      <p class="goods-state">{{item.startnum}}盒起拼</p>
                       <p class="goods-btn">
                         <button class="imme-btn">立即参团</button>
                       </p>
@@ -178,7 +178,7 @@
             <ul class="elaborate-ui">
               <li v-for="(item,index) in newGoodsList" :key="index">
                 <a-card hoverable class="elaborate-card" @click="toDetail(item)">
-                  <img v-lazy="item.imageUrl" slot="cover">
+                  <img v-lazy="item.imgURl" slot="cover">
                   <p class="elaborate-text">{{item.prodname}}</p>
                   <p class="elaborate-specifications">{{item.spec}}</p>
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
@@ -228,7 +228,7 @@
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
-    <ul class="sider-meun">
+    <!-- <ul class="sider-meun">
       <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
         <a>商品分类</a>
       </li>
@@ -248,7 +248,7 @@
         <a-icon type="to-top"/>
         <a>回到顶部</a>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 <script>
@@ -264,115 +264,11 @@ export default {
   },
   data() {
     return {
+      teamBuyList: [],
+      limitedList: [], // 限时抢购
       newGoodsList: [], // 新品商品列表
       hotGoodsList: [], // 热销商品列表
       isShow: false,
-      onekList: [
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "999感冒灵颗粒",
-          spec: "0.5g*12袋/盒",
-          manu: "华润三九药业股份有限公司",
-          success: 1000,
-          big: 200,
-          smaa: 10
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "999感冒灵颗粒",
-          spec: "0.5g*12袋/盒",
-          manu: "华润三九药业股份有限公司",
-          success: 1000,
-          big: 200,
-          smaa: 10
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "999感冒灵颗粒",
-          spec: "0.5g*12袋/盒",
-          manu: "华润三九药业股份有限公司",
-          success: 1000,
-          big: 200,
-          smaa: 10
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "999感冒灵颗粒",
-          spec: "0.5g*12袋/盒",
-          manu: "华润三九药业股份有限公司",
-          success: 1000,
-          big: 200,
-          smaa: 10
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "999感冒灵颗粒",
-          spec: "0.5g*12袋/盒",
-          manu: "华润三九药业股份有限公司",
-          success: 1000,
-          big: 200,
-          smaa: 10
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "999感冒灵颗粒",
-          spec: "0.5g*12袋/盒",
-          manu: "华润三九药业股份有限公司",
-          success: 1000,
-          big: 200,
-          smaa: 10
-        }
-      ],
-      rushList: [
-        {
-          title: "限时抢购",
-          time: "12点场",
-          list: [
-            {
-              surplus: 20,
-              new: 20,
-              old: 21,
-              xiangou: 20,
-              name: "999皮炎平湖南分公司授权生产asfafafaffasf",
-              guige: "20克/支",
-              brand: "华润三九医药股份有限公司"
-            },
-            {
-              surplus: 20,
-              new: 20,
-              old: 21,
-              xiangou: 20,
-              name: "999皮炎平湖南分公司授权生产asfafafaffasf",
-              guige: "20克/支",
-              brand: "华润三九医药股份有限公司"
-            },
-            {
-              surplus: 20,
-              new: 20,
-              old: 21,
-              xiangou: 20,
-              name: "999皮炎平湖南分公司授权生产asfafafaffasf",
-              guige: "20克/支",
-              brand: "华润三九医药股份有限公司"
-            },
-            {
-              surplus: 20,
-              new: 20,
-              old: 21,
-              xiangou: 20,
-              name: "999皮炎平湖南分公司授权生产asfafafaffasf",
-              guige: "20克/支",
-              brand: "华润三九医药股份有限公司"
-            }
-          ]
-        }
-      ],
       imgSrc:
         "//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg",
       isShowToTop: false,
@@ -388,10 +284,8 @@ export default {
   },
   mounted() {
     // this.initData();
-    window.addEventListener("scroll", this.handleScroll);
+    // window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
-    this.getNewGoods();
-    this.getHotGoods();
   },
   methods: {
     handleScroll() {
@@ -439,19 +333,39 @@ export default {
         this.goodsTypes = false;
       }
     },
-    // 请示楼层显示状态
-    getMallFloorProd() {
+    // 获取一块购数据
+    async getTeamBuyMallFloor() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getTeamBuyMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            result.data.list = result.data.list.slice(0, 6)
+            _this.teamBuyList = result.data
+            _this.getImgUrl(this.teamBuyList)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 获取楼层显示状态
+    async getMallFloorProd() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getMallFloorProd";
       iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
-      iRequest.param.json = JSON.stringify({
-        // keyword: "",
-        // specArray: [],
-        // manuArray: []
-      });
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "goodsServer",
@@ -459,77 +373,54 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.list = result.data;
-            // if (_this.list.new) {
-            //   _this.getImgUrl(_this.list.new);
-            // }
-            // if (_this.list.hot) {
-            //   _this.getImgUrl(_this.list.hot);
-            // }
+            _this.list.map((value, index) => {
+              switch(value.unqid) {
+                case 1: // 新品专区
+                _this.getNewGoods();
+                break
+                case 2:// 热销专区
+                _this.getHotGoods();
+                break
+                case 512:// 限时抢购
+                _this.getDiscountMallFloor();
+                break
+              }
+            })
+            _this.getTeamBuyMallFloor()
+         
           } else {
             _this.$message.error(result.message);
           }
         })
       );
     },
-    getImgUrl(list) {
+    // 获取限时抢购列表
+    async getDiscountMallFloor() {
       let _this = this;
       let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getDiscountMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
-      let arr = [];
-      list.forEach(c => {
-        arr.push({
-          sku: c.sku,
-          spu: c.spu
-        });
-      });
-      iRequest.param.json = JSON.stringify({
-        list: arr
-      });
-
       this.$refcallback(
-        "globalServer",
+        "goodsServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, arr) => {
-                _this.$set(
-                  list[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    list[index].sku +
-                    "-200x200.jpg" +
-                    "?" +
-                    new Date().getSeconds()
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          },
-          function error(error) {
-            _this.$message.error(error);
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            result.data.list = result.data.list.slice(0, 4)
+            _this.limitedList = result.data
+            _this.getImgUrl(_this.limitedList.list)
+            _this.getTimeDiff(_this.limitedList.edate)
+          } else {
+            _this.$message.error(result.message);
           }
-        )
+        })
       );
     },
-    async createFingerprint(components) {
-      let _this = this;
-      //  setTimeout(function () {
-      //   Fingerprint2.get(function (components) {
-      //     console.log(components)
-      //     let id = components[5].value + components[15].value + components[19].value + components[26].value.length + components[27].value
-      //     _this.GUID = id
-      //     console.log(_this.GUID)
-      //   })
-      //  },500)
-    },
     // 请求新品专区数据列表
-    getNewGoods() {
+    async getNewGoods() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
@@ -543,7 +434,8 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.newGoodsList = result.data
+            _this.newGoodsList = result.data.slice(0,6)
+            _this.getImgUrl(_this.newGoodsList)
           } else {
             _this.$message.error(result.message);
           }
@@ -551,13 +443,13 @@ export default {
       );
     },
     // 热销商品列表
-    getHotGoods() {
+    async getHotGoods() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getHotMallFloor";
       iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
+      iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -565,12 +457,88 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.hotGoodsList = result.data
+            _this.hotGoodsList = result.data.slice(0,5)
+            _this.getImgUrl(_this.hotGoodsList)
           } else {
             _this.$message.error(result.message);
           }
         })
       );
+    },
+    async getImgUrl(arr) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = [];
+      arr.forEach(c => {
+        list.push({
+          sku: c.sku,
+          spu: c.spu
+        });
+      });
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, list) => {
+                _this.$set(
+                  arr[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    arr[index].sku +
+                    "-200x200.jpg" +
+                    "?" +
+                    new Date().getSeconds()
+                );
+              });
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            debugger;
+          }
+        )
+      );
+    },
+    // 计算时间差
+    getTimeDiff(edate) {
+      debugger
+      // let date = new Date(edate.replace(/:/g, "/"))
+      // let date2 = new Date("hh:mm:ss");
+      // let date3 = date.getTime() - date2.getTime()
+      // let leave1 = date3%(24*3600*1000) 
+      // var hours=Math.floor(leave1/(3600*1000))
+      // var leave2=leave1%(3600*1000) 
+      // var minutes=Math.floor(leave2/(60*1000))
+      // var leave3=leave2%(60*1000)  
+      // var seconds=Math.round(leave3/1000)
+      // alert(" 相差 " + hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
+      //如果时间格式是正确的，那下面这一步转化时间格式就可以不用了
+      var dateBegin = new Date(edate.replace(/:/g, "/"));//将-转化为/，使用new Date
+      var dateEnd = new Date().getDateTimeInstance();//获取当前时间
+      var dateDiff = dateEnd.getTime() - dateBegin.getTime();//时间差的毫秒数
+      var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
+      var leave1=dateDiff%(24*3600*1000)    //计算天数后剩余的毫秒数
+      var hours=Math.floor(leave1/(3600*1000))//计算出小时数
+      //计算相差分钟数
+      var leave2=leave1%(3600*1000)    //计算小时数后剩余的毫秒数
+      var minutes=Math.floor(leave2/(60*1000))//计算相差分钟数
+      //计算相差秒数
+      var leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
+      var seconds=Math.round(leave3/1000)
+      console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
+      console.log(dateDiff+"时间差的毫秒数",dayDiff+"计算出相差天数",leave1+"计算天数后剩余的毫秒数"
+          ,hours+"计算出小时数",minutes+"计算相差分钟数",seconds+"计算相差秒数");
     },
     goTotop() {
       document.body.scrollTop = document.documentElement.scrollTop = 0;

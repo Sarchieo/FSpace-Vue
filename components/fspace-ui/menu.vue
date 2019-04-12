@@ -57,7 +57,6 @@ export default {
       item.isActive = false;
     },
     getProduceClasses() {
-      debugger
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CommonModule";
@@ -69,7 +68,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              debugger
               _this.list = JSON.parse(result.data);
               _this.list.forEach(element => {
                 _this.$set(element, "isActive", false);
