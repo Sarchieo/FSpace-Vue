@@ -531,7 +531,6 @@ export default {
     },
     // 请求新品专区数据列表
     getNewGoods() {
-      debugger;
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
@@ -546,7 +545,6 @@ export default {
         new this.$iceCallback(function result(result) {
           console.log(result);
           if (result.code === 200) {
-            debugger
             _this.newGoodsList = result.data
           } else {
             _this.$message.error(result.message);
@@ -556,7 +554,6 @@ export default {
     },
     // 热销商品列表
     getHotGoods() {
-      debugger;
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
@@ -571,7 +568,6 @@ export default {
         new this.$iceCallback(function result(result) {
           console.log(result);
           if (result.code === 200) {
-            debugger
             _this.hotGoodsList = result.data
             console.log('热销商品列表')
             console.log(_this.hotGoodsList)

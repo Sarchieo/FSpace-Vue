@@ -8,22 +8,20 @@
       @mouseover="showChildren(i, index,$event)"
       @mouseout="hideChildren(i)"
     >
-      {{i.label}}
-      <a-icon type="right"/>
-      <!-- 弹出层 -->
-      <div :ref="'hover' + index" class="hover-show" v-show="true ">
+    {{i.label}}
+    
+      <!-- 弹出层  v-show="i.isActive"-->
+      <div :ref="'hover' + index" class="hover-show" v-show="i.isActive">
         <div
           class="small-type"
           v-for="(j,index) in i.children"
           :key="index"
           @click="toCategory(j.value)"
         >
-          <span>2级分类: {{j.label}}</span>
-          <span v-for="(k,index) in j.children" :key="index" @click="toCategory(k.value)">3级分类:{{k.label}}</span>
+          <p class="two-type">{{j.label}}</p>
+          <span v-for="(k,index) in j.children" :key="index" @click="toCategory(k.value)">{{k.label}}</span>
+          <div style="clear:both;"></div>
         </div>
-        <!-- <div class="small-type">
-          <span v-for="(items,index) in item.children" :key="index" @click="toCategory(items.value)">{{items.label}}</span>
-        -->
       </div>
     </li>
   </ul>
@@ -59,16 +57,19 @@ export default {
       item.isActive = false;
     },
     getProduceClasses() {
+      debugger
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CommonModule";
       iRequest.method = "getProduceClasses";
+      // iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "globalServer",
         iRequest,
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+              debugger
               _this.list = JSON.parse(result.data);
               console.log(_this.list);
               _this.list.forEach(element => {
@@ -86,6 +87,25 @@ export default {
 };
 </script>
 <style>
+.two-type {
+  display: block;
+  height: 30px !important;
+  line-height: 30px !important;
+  text-indent: 20px !important;
+  font-size: 16px!important;
+  font-weight: bold;
+  color: rgb(255, 0, 54) !important;
+}
+.two-type:hover {
+  cursor: pointer;
+}
+.small-type{
+  width: 100%;
+  min-height: 80px;
+  height: auto;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
 .small-type span {
   cursor: pointer;
 }
@@ -122,7 +142,9 @@ export default {
   left: 197px;
   width: 970px !important;
   height: 435px !important;
+  padding-top:20px;
   background: #ffffff;
+  overflow: auto;
   color: #666 !important;
   z-index: 101;
 }
@@ -133,18 +155,20 @@ export default {
   font-size: 18px;
   color: #333;
 }
-.hover-show div {
-  height: 356px;
+/* .hover-show div {
+  min-height: 80px;
+  height: auto;
   padding-left: 30px;
   padding-top: 10px;
-}
+} */
 .hover-show div span {
   float: left;
-  width: 200px;
+  width: 140px;
   height: 40px;
   text-align: left;
   line-height: 40px;
-  font-size: 16px;
+  font-weight: bold;
+  font-size: 14px;
   color: black;
 }
 </style>
