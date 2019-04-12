@@ -131,7 +131,7 @@ export default {
       iRequest.param.json = JSON.stringify({
         type: 1
       })
-      iRequest.param.token = '1234'
+      iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         "userServer",
         iRequest,

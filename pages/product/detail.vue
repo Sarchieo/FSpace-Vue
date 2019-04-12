@@ -292,12 +292,12 @@
               <p class="hot-recommend-title">热销推荐</p>
               <div class="recommend-box">
                 <ul class="recommend-ul">
-                  <li v-for="(item,index) in recommendList" :key="index">
+                  <li v-for="(item,index) in hotList" :key="index">
                     <a-card class="card-recommend" hoverable>
                       <img v-lazy="item.url" slot="cover">
-                      <p class="meal-price">￥{{item.price}}元</p>
-                      <p class="meal-name">{{item.name}}</p>
-                      <p class="meal-packing">{{item.packing}}</p>
+                      <p class="meal-price">￥{{item.mp}}元</p>
+                      <p class="meal-name">{{item.prodname}}</p>
+                      <p class="meal-packing">{{item.spec}}</p>
                     </a-card>
                   </li>
                 </ul>
@@ -329,6 +329,7 @@ export default {
   },
   data() {    
     return {
+      hotList: [],
       isShowCollec: false,
       imgUrl: '',
       sku: '',
@@ -379,43 +380,6 @@ export default {
         backgroundColor: "#f2f2f2"
       },
       count: 1,
-      recommendList: [
-        {
-          price: 32,
-          name: "汇仁片肾宝片",
-          packing: "0.5g/片 * 100片",
-          url:
-            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-        },
-        {
-          price: 32,
-          name: "汇仁片肾宝片",
-          packing: "0.5g/片 * 100片",
-          url:
-            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-        },
-        {
-          price: 32,
-          name: "汇仁片肾宝片",
-          packing: "0.5g/片 * 100片",
-          url:
-            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-        },
-        {
-          price: 32,
-          name: "汇仁片肾宝片",
-          packing: "0.5g/片 * 100片",
-          url:
-            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-        },
-        {
-          price: 32,
-          name: "汇仁片肾宝片",
-          packing: "0.5g/片 * 100片",
-          url:
-            "//img.alicdn.com/imgextra/i1/TB1A6cwPVXXXXbJaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-        }
-      ],
       mealList: [
         {
           list: [
@@ -537,13 +501,45 @@ export default {
       ]
     };
   },
+  created() {
+    this.sku = this.$route.query.sku
+    this.spu = this.$route.query.spu
+  },
   mounted() {
     this.getProd();
     this.getImgUrl();
     this.isCollec();
-    
+    // 获取热销数据
+    this.getProdDetailHotArea();
   },
   methods: {
+    getProdDetailHotArea() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getProdDetailHotArea";
+      let spu = this.spu + ''
+      iRequest.param.json = JSON.stringify({
+        spu: spu.slice(1,7)
+      })
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            console.log(result.data)
+            _this.hotList = result.data.slice(0,5)
+            // _this.prodDetail = result.data
+            // _this.details = JSON.parse(_this.prodDetail.detail)   
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     // 获取详情
     getProd() {
       let _this = this;
@@ -633,9 +629,7 @@ export default {
         new this.$iceCallback(function result(result) {
           console.log(result)
           if (result.code === 200) {
-            _this.isShowCollec = result.data
-            console.log(9)
-            console.log(_this.prodDetail)
+            _this.isShowCollec = result.el-date-range-picker__header
           } else {
             _this.$message.error(result.message);
           }

@@ -70,7 +70,6 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.list = JSON.parse(result.data);
-              console.log(_this.list);
               _this.list.forEach(element => {
                 _this.$set(element, "isActive", false);
               });
