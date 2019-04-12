@@ -71,7 +71,6 @@ export default {
             if (result.code === 200) {
               debugger
               _this.list = JSON.parse(result.data);
-              console.log(_this.list);
               _this.list.forEach(element => {
                 _this.$set(element, "isActive", false);
               });

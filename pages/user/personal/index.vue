@@ -161,6 +161,7 @@ export default {
       GSPImg: "",
       DrugImg: "",
       authenticationMessage: "",
+      areaMax: 2, // 2+1 级
       headers: {
         "specify-path": "",
         "specify-filename": ""
@@ -262,15 +263,16 @@ export default {
                       isLeaf: false
                     };
                   });
-                  _this.$set(value, 'children', arr)
-                  index++
-                  if(index < 4) {
+                  if(index < _this.areaMax) {
+                    index++
+                    _this.$set(value, 'children', arr)
                     _this.setArea(value.children, data, index)
                   }else {
                     _this.code.push(data[data.length -1].areac)
                     _this.form.setFieldsValue({
                       addressCode: _this.code
                     })
+                    console.log(_this.cascaderData)
                   }
                 }
               });
@@ -337,6 +339,7 @@ export default {
               context: _this,
               user: result.data
             });
+            _this.code = []
             _this.getFilePathPrev();
             _this.authenticationMessage = result.data.authenticationMessage;
             _this.isRelated = result.data.isRelated;
@@ -455,7 +458,7 @@ export default {
                 return {
                   value: value.areac,
                   label: value.arean,
-                  isLeaf: selectedOptions.length >= 4 ? true : false
+                  isLeaf: selectedOptions.length >= _this.areaMax ? true : false
                 };
               });
               _this.$set(targetOption, 'children', arr)

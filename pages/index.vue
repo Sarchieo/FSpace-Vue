@@ -400,7 +400,6 @@ export default {
         document.documentElement.scrollTop ||
         document.body.scrollTop;
       // var toTop = this.$refs['toTop'].style
-      // console.log(toTop)
       if (scrollTop > 0) {
         this.isShowToTop = true;
         this.isShowBackTop = true;
@@ -543,7 +542,6 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result);
           if (result.code === 200) {
             _this.newGoodsList = result.data
           } else {
@@ -566,11 +564,8 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result);
           if (result.code === 200) {
             _this.hotGoodsList = result.data
-            console.log('热销商品列表')
-            console.log(_this.hotGoodsList)
           } else {
             _this.$message.error(result.message);
           }
