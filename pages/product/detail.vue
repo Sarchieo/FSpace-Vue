@@ -103,7 +103,7 @@
           </div>
           <!-- 商品优惠券 -->
           <div class="coupon-box">
-            <p class="coupon-title">商品优惠券</p>
+            <p class="coupon-title">商品优惠券<span>更多优惠券<a-icon type="right"/></span></p>
             <div class="coupon-content">
               <div class="coupon-card">
                 <div class="coupon-left">
@@ -141,46 +141,13 @@
               </div>
             </div>
           </div>
-          <!-- <div class="discount">
-            <p class="discount-title">商品优惠券 <a>更多优惠券<a-icon type="right" /></a></p>
-            <div class="carousel">
-              <a-carousel arrows>
+          <!-- 一块购 -->
+          <div class="coupon-box">
+            <p class="coupon-title">一块购规则说明</p>
+            <div class="coupon-content">
 
-                <div
-                  slot="prevArrow"
-                  slot-scope="props"
-                  class="custom-slick-arrow"
-                  style="left: 10px;zIndex: 1;margin-right: 5px;"
-                >
-                  <a-icon type="left-circle"/>
-                </div>
-
-                <div
-                  slot="nextArrow"
-                  slot-scope="props"
-                  class="custom-slick-arrow"
-                  style="right: 10px"
-                >
-                  <a-icon type="right-circle"/>
-                </div>
-                <div v-for="(item,index) in mealList" :key="index">
-                  <div class="condition-price">
-                    <div class="discount-coll">
-                      <span class="discount-count">9.5</span>
-                      <span class="discount-text">折</span>
-                      <span class="satisfy">满600元可用</span>
-                      <p>全场折扣券</p>
-                      <p>2019-03-27至2019-04-20可用</p>
-                      <img class="state-pic" src="../../../assets/img/Invalid.png" alt="">
-                      <img class="state-pic" src="../../../assets/img/invalied.png" alt="">
-                      <img class="state-pic" src="../../../assets/img/already.png" alt="">
-                    </div>
-                    <img class="right-img" src="../../../assets/img/receives.png" alt="">
-                  </div>
-                </div>
-              </a-carousel>
             </div>
-          </div>-->
+          </div>
           <!-- 详情和评价 -->
           <div class="tabs-page">
             <div class="tabs-detail">
@@ -797,6 +764,13 @@ li {
   background: #f2f2f2;
   text-indent: 20px;
   color: #999999;
+}
+.coupon-title span{
+  float: right;
+  margin-right: 20px;
+}
+.coupon-title span:hover{
+  cursor: pointer;
 }
 .coupon-content {
   display: inline-block;
