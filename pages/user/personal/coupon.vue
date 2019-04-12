@@ -5,10 +5,13 @@
         <div class="haved-coupon">
           <div class="condition-price">
             <div class="discount">
-              <span class="discount-count">9.5</span>
-              <span class="discount-text">折</span>
-              <span class="satisfy">满600元可用</span>
-              <p>全场折扣券</p>
+              <p class="discount-count">折扣券</p>
+              <p>满800打9.5折</p>
+              <p>满1600打9折</p>
+              <p>最多满3200打8.5折</p>
+              <!-- <span class="discount-text">折</span> -->
+              <!-- <span class="satisfy">满600元可用</span> -->
+              <!-- <p>全场折扣券</p> -->
               <p>2019-03-27至2019-04-20可用</p>
               <!-- <img class="state-pic" src="../../../assets/img/Invalid.png" alt=""> -->
               <!-- <img class="state-pic" src="../../../assets/img/invalied.png" alt=""> -->
@@ -22,10 +25,14 @@
         <div class="haved-coupon">
           <div class="condition-price">
             <div class="discount">
-              <span class="discount-count">30</span>
+              <p class="discount-count">减现券</p>
+               <p>满800减50</p>
+              <p>满1600减100</p>
+              <p>最多减200</p>
+              <!-- <span class="discount-count">30</span>
               <span class="discount-str">￥</span>
-              <span class="satisfy">满600元可用</span>
-              <p>全场折扣券</p>
+              <span class="satisfy">满600元可用</span> -->
+              <!-- <p>全场折扣券</p> -->
               <p>2019-03-27至2019-04-20可用</p>
               <img class="state-pic" src="../../../assets/img/invalied.png" alt="">
             </div>
@@ -37,10 +44,11 @@
         <div class="haved-coupon">
           <div class="condition-price">
             <div class="discount">
-              <span class="discount-count">30</span>
-              <span class="discount-str">￥</span>
-              <span class="satisfy">满600元可用</span>
-              <p>全场折扣券</p>
+              <p class="discount-count margin-bottom35">包邮券</p>
+              <p class="margin-bottom35">满600元即送包邮券</p>
+              <!-- <span class="discount-str">￥</span> -->
+              <!-- <span class="satisfy">满600元即送包邮券</span> -->
+              <!-- <p>全场折扣券</p> -->
               <p>2019-03-27至2019-04-20可用</p>
                <img class="state-pic" src="../../../assets/img/Invalid.png" alt="">
             </div>
@@ -54,15 +62,36 @@
       <div class="condition-price-box">
         <div class="condition-price">
           <div class="discount">
-            <span class="discount-count">9.5</span>
-            <span class="discount-text">折</span>
-            <span class="satisfy">满600元可用</span>
-            <p>全场折扣券</p>
+            <p class="discount-count">折扣券</p>
+            <p>满800打9.5折</p>
+              <p>满1600打9折</p>
+              <p>最多满3200打8.5折</p>
+            <!-- <span class="satisfy">满600元可用</span> -->
+            <!-- <p>全场折扣券</p> -->
             <p>2019-03-27至2019-04-20可用</p>
-            
           </div>
           <img class="right-img" src="../../../assets/img/receive.png" alt="">
         </div>
+         <div class="condition-price">
+          <div class="discount">
+           <p class="discount-count">减现券</p>
+               <p>满800减50</p>
+              <p>满1600减100</p>
+              <p>最多减200</p>
+            <p>2019-03-27至2019-04-20可用</p>
+          </div>
+          <img class="right-img" src="../../../assets/img/receive.png" alt="">
+        </div>
+          <div class="condition-price">
+            <div class="discount">
+              <p class="discount-count margin-bottom35">包邮券</p>
+              <p class="margin-bottom35">满600元即送包邮券</p>
+             
+              <p>2019-03-27至2019-04-20可用</p>
+               
+            </div>
+            <img class="right-img" src="../../../assets/img/receive.png" alt="">
+          </div>
       </div>
     </div>
   </div>
@@ -82,6 +111,9 @@ export default {
 <style lang="less" scoped>
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
+.margin-bottom35{
+  margin-bottom: 35px!important;
+}
 .haved-coupon {
   .container-size(inline-block, 968px, 400px, 10px 0px 20px 6px, 0px);
   padding: 15px 0 0 15px;
@@ -102,12 +134,12 @@ export default {
       .position(relative, 0px, 0px);
       border: 1px solid #e0e0e0;
       .state-pic {
-        .position(relative, -46px, 176px);
+        .position(relative, -58px, 176px);
       }
       .discount-count {
-        .container-size(inline-block, 100px, 100px, 0, 0px);
-        .p-size(80px, 80px, 60px, center, 0px, #ed3025);
-        margin-bottom: 20px;
+        .container-size(inline-block, 245px, 50px, 0, 0px);
+        .p-size(40px, 40px, 20px, center, 0px, #ed3025);
+        margin-bottom: 10px;
       }
       .discount-str {
         .position(absolute, 12px, 3px);
@@ -161,10 +193,10 @@ export default {
           .position(relative, -46px, 176px);
         }
         .discount-count {
-          .container-size(inline-block, 100px, 100px, 0, 0px);
-          .p-size(80px, 80px, 60px, center, 0px, #ed3025);
-          margin-bottom: 20px;
-        }
+        .container-size(inline-block, 245px, 50px, 0, 0px);
+        .p-size(40px, 40px, 20px, center, 0px, #ed3025);
+        margin-bottom: 10px;
+      }
         .discount-str {
           .position(absolute, 12px, 3px);
           font-size: 20px;
