@@ -50,8 +50,8 @@
               </div>
             </a-carousel>
           </div>
-          <div class></div>
         </div>
+       
         <div v-for="(item,index) in list" :key="index">
           <!-- 限时抢购 -->
           <div id="hot" class="brand-hall" v-if="item.unqid === 512">
@@ -86,7 +86,7 @@
                       style="position:absolute;top:145px;left:20px;width: 188px;"
                       :showInfo="false"
                       status="exception"
-                    /> -->
+                    />-->
                     <p class="surplus">
                       还剩{{items.activitystore}}支
                       <span>限购{{items.actlimit}}支</span>
@@ -110,7 +110,9 @@
           <div class="brand-hall" v-if="item.unqid === 2">
             <p class="brand-hall-title">
               热销专区
-              <a href="javascript:;" @click="to">查看全部<a-icon type="right"/>
+              <a href="javascript:;" @click="to">
+                查看全部
+                <a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
@@ -132,37 +134,100 @@
               </ul>
             </div>
           </div>
+
+
+
+
+
           <!-- 一块购 -->
-          <div class="brand-hall height780" v-if="item.unqid === 8">
+           <div class="brand-hall">
+          <p class="brand-hall-title">
+            一块购 ● 越团越优惠
+            <a href="javascript:;" @click="toBuying()">
+              查看全部
+              <a-icon type="right"/>
+            </a>
+          </p>
+          <p class="onek-text">一块购活动说明方案</p>
+          <div class="onek-shoping">
+            <ul>
+              <li>
+                <a-card class="onek-card" @click="toDetail(item)">
+                  <img
+                    src="//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+                    class="onek-img"
+                    slot="cover"
+                  >
+                  <div class="onek-box" slot="cover">
+                    <p class="onek-price">
+                      ￥39
+                      <del>￥28</del>
+                    </p>
+                    <p class="goods-name">999感冒灵颗粒 0.5g/10袋</p>
+
+                    <p class="goods-manu">华润三九制药有限公司</p>
+
+                    <p class="goods-state">10盒起拼/ 100盒成团</p>
+                    <p class="goods-btn">
+                      <span class="sur-time">还剩</span>
+                      <span>{{ }}</span> 时
+                      <span>{{ }}</span> 分
+                      <span>{{ }}</span> 秒
+                      <button class="imme-btn">立即参团</button>
+                    </p>
+                  </div>
+                </a-card>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+          <div class="brand-hall" v-if="item.unqid === 8">
             <p class="brand-hall-title">
               一块购 ● 越团越优惠
-              <a href="javascript:;" @click='toBuying()'>查看全部 <a-icon  type="right"/>
+              <a href="javascript:;" @click="toBuying()">
+                查看全部
+                <a-icon type="right"/>
               </a>
             </p>
-            <p class="onek-text">一块购活动说明方案</p>
             <div class="onek-shoping">
               <ul>
                 <li v-for="(item,index) in teamBuyList.list" :key="index">
-                  <a-card hoverable class="onek-card" @click='toDetail(item)'>
-                    <div class="onek-left">
-                      <img v-lazy="item.imgURl" class="onek-img" slot="cover">
-                      <p>
-                        <span class="sur-time">还剩</span>
-                        <span>{{  }}</span> 时
-                        <span>{{  }}</span> 分
-                        <span>{{  }}</span> 秒
-                      </p>
-                    </div>
-                    <div class="onek-right">
-                      <p class="goods-name">{{item.prodname}}</p>
-                      <p class="goods-spec">{{item.spec}}</p>
-                      <p class="goods-manu">{{item.manuName}}</p>
-                      <p class="goods-success">{{item.success}}成团</p>
-                      <p class="goods-state">{{item.startnum}}盒起拼</p>
-                      <p class="goods-btn">
-                        <button class="imme-btn">立即参团</button>
-                      </p>
-                    </div>
+                  <a-card hoverable class="onek-card" @click="toDetail(item)">
+                   <img v-lazy="item.imgURl" class="onek-img" slot="cover">
+
+
+                   <div class="onek-box" slot="cover">
+                    <p class="onek-price">
+                      ￥39
+                      <del>￥28</del>
+                    </p>
+                    <p class="goods-name">999感冒灵颗粒 0.5g/10袋</p>
+
+                    <p class="goods-manu">华润三九制药有限公司</p>
+
+                    <p class="goods-state">10盒起拼/ 100盒成团</p>
+                    <p class="goods-btn">
+                      <span class="sur-time">还剩</span>
+                      <span>{{ }}</span> 时
+                      <span>{{ }}</span> 分
+                      <span>{{ }}</span> 秒
+                      <button class="imme-btn">立即参团</button>
+                    </p>
+                  </div>
+
+                    <p class="goods-name">{{item.prodname}}</p>
+                    <p class="goods-spec">{{item.spec}}</p>
+                    <p class="goods-manu">{{item.manuName}}</p>
+                    <p class="goods-success">{{item.success}}成团</p>
+                    <p class="goods-state">{{item.startnum}}盒起拼</p>
+                    <p class="goods-btn">
+                      <span class="sur-time">还剩</span>
+                      <span>{{ }}</span> 时
+                      <span>{{ }}</span> 分
+                      <span>{{ }}</span> 秒
+                      <button class="imme-btn">立即参团</button>
+                    </p>
                   </a-card>
                 </li>
               </ul>
@@ -244,7 +309,7 @@
         <a-icon type="to-top"/>
         <a>回到顶部</a>
       </li>
-    </ul> -->
+    </ul>-->
   </div>
 </template>
 <script>
@@ -263,7 +328,7 @@ export default {
       flashSale: {
         h: 0,
         m: 0,
-        s: 0,
+        s: 0
       },
       teamByID: 0,
       teamBuyList: [],
@@ -350,10 +415,10 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            result.data.list = result.data.list.slice(0, 6)
-            _this.teamBuyList = result.data
-            _this.teamByID = result.data.actcode
-            _this.getImgUrl(_this.teamBuyList)
+            result.data.list = result.data.list.slice(0, 6);
+            _this.teamBuyList = result.data;
+            _this.teamByID = result.data.actcode;
+            _this.getImgUrl(_this.teamBuyList);
           } else {
             _this.$message.error(result.message);
           }
@@ -377,21 +442,21 @@ export default {
           if (result.code === 200) {
             _this.list = result.data;
             _this.list.map((value, index) => {
-              switch(value.unqid) {
+              switch (value.unqid) {
                 case 1: // 新品专区
-                _this.getNewGoods();
-                break
-                case 2:// 热销专区
-                _this.getHotGoods();
-                break
+                  _this.getNewGoods();
+                  break;
+                case 2: // 热销专区
+                  _this.getHotGoods();
+                  break;
                 case 8:
-                _this.getTeamBuyMallFloor()
-                break
-                case 512:// 限时抢购
-                _this.getDiscountMallFloor();
-                break
+                  _this.getTeamBuyMallFloor();
+                  break;
+                case 512: // 限时抢购
+                  _this.getDiscountMallFloor();
+                  break;
               }
-            })
+            });
           } else {
             _this.$message.error(result.message);
           }
@@ -413,11 +478,14 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            result.data.list = result.data.list.slice(0, 4)
-            _this.limitedList = result.data
-            _this.secondKill(_this.stringToDate(_this.limitedList.now), _this.limitedList.edate)
-            _this.getImgUrl(_this.limitedList.list)
-            _this.getTimeDiff(_this.limitedList.edate)
+            result.data.list = result.data.list.slice(0, 4);
+            _this.limitedList = result.data;
+            _this.secondKill(
+              _this.stringToDate(_this.limitedList.now),
+              _this.limitedList.edate
+            );
+            _this.getImgUrl(_this.limitedList.list);
+            _this.getTimeDiff(_this.limitedList.edate);
           } else {
             _this.$message.error(result.message);
           }
@@ -439,8 +507,8 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.newGoodsList = result.data.slice(0,6)
-            _this.getImgUrl(_this.newGoodsList)
+            _this.newGoodsList = result.data.slice(0, 6);
+            _this.getImgUrl(_this.newGoodsList);
           } else {
             _this.$message.error(result.message);
           }
@@ -462,8 +530,8 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.hotGoodsList = result.data.slice(0,5)
-            _this.getImgUrl(_this.hotGoodsList)
+            _this.hotGoodsList = result.data.slice(0, 5);
+            _this.getImgUrl(_this.hotGoodsList);
           } else {
             _this.$message.error(result.message);
           }
@@ -522,34 +590,42 @@ export default {
       var month = parseInt(dateStrs[1], 10) - 1;
       var day = parseInt(dateStrs[2], 10);
       var timeStrs = tempStrs[1].split(":");
-      var hour = parseInt(timeStrs [0], 10);
+      var hour = parseInt(timeStrs[0], 10);
       var minute = parseInt(timeStrs[1], 10);
       var second = parseInt(timeStrs[2], 10);
       var date = new Date(year, month, day, hour, minute, second);
       return date;
     },
     // 设置倒计时
-    secondKill(date,eDate) {
-      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
-      let times = endDate - new Date()
-      let _this = this
-      if(times>=0) {
+    secondKill(date, eDate) {
+      let endDate = this.stringToDate(
+        date.getFullYear() +
+          "-" +
+          (Number(date.getMonth()) + 1) +
+          "-" +
+          date.getDate() +
+          " " +
+          eDate
+      );
+      let times = endDate - new Date();
+      let _this = this;
+      if (times >= 0) {
         let timer;
-        timer = setInterval(function () {
-        times--;
-        let modulo = times % (60 * 60 * 24);
-        _this.flashSale.h = Math.floor(modulo / (60 * 60));
-        modulo = modulo % (60 * 60);
-        _this.flashSale.m = Math.floor(modulo / 60);
-        _this.flashSale.s = modulo % 60;
-        if (times <= 0) {
-          clearInterval(timer);
-        }
+        timer = setInterval(function() {
+          times--;
+          let modulo = times % (60 * 60 * 24);
+          _this.flashSale.h = Math.floor(modulo / (60 * 60));
+          modulo = modulo % (60 * 60);
+          _this.flashSale.m = Math.floor(modulo / 60);
+          _this.flashSale.s = modulo % 60;
+          if (times <= 0) {
+            clearInterval(timer);
+          }
         }, 1000);
         if (deltaTime >= 0) {
-          console.log(deltaTime)
+          console.log(deltaTime);
         } else {
-          console.log('活动结束')
+          console.log("活动结束");
         }
       }
     },
@@ -613,18 +689,18 @@ export default {
         path: "/activity/limited"
       });
     },
-    toNewGoods(){
+    toNewGoods() {
       this.$router.push({
         path: "/activity/new-goods"
       });
     },
-    toHotGoods(){
+    toHotGoods() {
       this.$router.push({
         path: "/activity/hot-goods"
       });
     },
-    toBuying(){
-      debugger
+    toBuying() {
+      debugger;
       this.$router.push({
         path: "/activity/buying",
         query: {
@@ -859,9 +935,9 @@ li {
 .elaborate-text {
   .position(absolute, 32px, 200px);
   width: 170px;
-   overflow: hidden;
- text-overflow:ellipsis;
- white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #333333;
   font-size: 16px;
 }
@@ -873,9 +949,9 @@ li {
 .elaborate-manufacturer {
   .position(absolute, 85px, 198px);
   width: 170px;
-   overflow: hidden;
- text-overflow:ellipsis;
- white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .elaborate-validity {
   .position(absolute, 105px, 198px);
@@ -926,52 +1002,48 @@ li {
       margin-right: 19px;
       margin-bottom: 13px;
       .onek-card {
-        width: 586px;
-        height: 250px;
-        .onek-left {
-          float: left;
-          width: 206px;
-          height: 205px;
-          .onek-img {
-            width: 206px;
-            height: 164px;
-          }
-          p {
-            .p-size(40px, 40px, 16px, center, 0px, #ed3025);
-            color: #333333;
-            .sur-time {
-              color: #333333 !important;
-              font-size: 16px;
+        width: 225px;
+        height: 310px;
+        padding: 0px;
+        .onek-box{
+          .container-size(block,223px,158px,0px,0px);
+          .onek-price{
+            .p-size(30px,30px,20px,left,5px,#ed3025);
+            font-weight: bold;
+            del{
+              float: right;
+              margin-right: 15px;
+              color: #999999!important;
+              font-weight: normal;
             }
-            span {
-              color: #ed3025;
+          }
+          .goods-name{
+            .p-size(25px,25px,16px,left,10px,#333333);
+          }
+          .goods-manu{
+             .p-size(25px,25px,14px,left,10px,#999999);
+          }
+          .goods-state{
+            .p-size(25px,25px,14px,left,10px,#999999);
+          }
+          .goods-btn{
+            .p-size(50px,50px,14px,left,10px,#999999);
+            border: 1px solid #ed3025;
+            button{
+              float: right;
+              width: 80px;
+              height: 48px;
+              line-height: 48px;
+              border:1px solid #ed3025;
+              background: #ed3025;
+              color: #ffffff;
             }
           }
         }
-        .onek-right {
-          float: right;
-          width: 300px;
-          height: 205px;
-          .goods-name,
-          .goods-spec {
-            .p-size(30px, 30px, 18px, left, 10px, #333333);
-          }
-          .goods-manu,
-          .goods-success,
-          .goods-state {
-            .p-size(25px, 25px, 14px, left, 10px, #999999);
-          }
-          .goods-manu {
-            margin-top: 20px;
-          }
-          .goods-btn {
-            .p-size(40px, 40px, 14px, right, 0px, #ffffff);
-            margin-top: 10px;
-            .imme-btn {
-              .button-size(120px, 40px, 40px, 16px, 0px, 5px);
-              .button-color(1px solid transparent, #ed3025, #ffffff);
-            }
-          }
+        .onek-pic {
+          width: 206px;
+          height: 132px;
+          margin: 8.5px;
         }
       }
     }
@@ -1197,5 +1269,11 @@ li {
 }
 .ant-layout-footer {
   padding: 0px;
+}
+
+.onek-img {
+  width: 206px;
+  height: 132px;
+  margin: 8.5px;
 }
 </style>
