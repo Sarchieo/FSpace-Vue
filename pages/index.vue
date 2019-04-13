@@ -4,9 +4,6 @@
       <f-space-header type="home"></f-space-header>
       <!-- 左侧菜单，轮播，广告位及物价区 -->
       <a-layout-content>
-        <p @click="toNewGoods()">新品</p>
-        <p @click="toHotGoods()">热销</p>
-        <p @click="toBuying()">团购</p>
         <div class="goods-nav-box">
           <f-space-menu></f-space-menu>
           <div class="binnar-box">
@@ -113,9 +110,7 @@
           <div class="brand-hall" v-if="item.unqid === 2">
             <p class="brand-hall-title">
               热销专区
-              <a>
-                查看全部
-                <a-icon type="right"/>
+              <a href="javascript:;" @click="to">查看全部<a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
@@ -141,16 +136,14 @@
           <div class="brand-hall height780" v-if="item.unqid === 8">
             <p class="brand-hall-title">
               一块购 ● 越团越优惠
-              <a>
-                查看全部
-                <a-icon type="right"/>
+              <a href="javascript:;" @click='toBuying()'>查看全部 <a-icon  type="right"/>
               </a>
             </p>
             <p class="onek-text">一块购活动说明方案</p>
             <div class="onek-shoping">
               <ul>
                 <li v-for="(item,index) in teamBuyList.list" :key="index">
-                  <a-card hoverable class="onek-card">
+                  <a-card hoverable class="onek-card" @click='toDetail(item)'>
                     <div class="onek-left">
                       <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                       <p>
@@ -163,7 +156,7 @@
                     <div class="onek-right">
                       <p class="goods-name">{{item.prodname}}</p>
                       <p class="goods-spec">{{item.spec}}</p>
-                      <p class="goods-manu">{{item.manu}}</p>
+                      <p class="goods-manu">{{item.manuName}}</p>
                       <p class="goods-success">{{item.success}}成团</p>
                       <p class="goods-state">{{item.startnum}}盒起拼</p>
                       <p class="goods-btn">
@@ -272,6 +265,7 @@ export default {
         m: 0,
         s: 0,
       },
+      teamByID: 0,
       teamBuyList: [],
       limitedList: [], // 限时抢购
       newGoodsList: [], // 新品商品列表
@@ -358,7 +352,8 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 6)
             _this.teamBuyList = result.data
-            _this.getImgUrl(this.teamBuyList)
+            _this.teamByID = result.data.actcode
+            _this.getImgUrl(_this.teamBuyList)
           } else {
             _this.$message.error(result.message);
           }
@@ -389,13 +384,14 @@ export default {
                 case 2:// 热销专区
                 _this.getHotGoods();
                 break
+                case 8:
+                _this.getTeamBuyMallFloor()
+                break
                 case 512:// 限时抢购
                 _this.getDiscountMallFloor();
                 break
               }
             })
-            _this.getTeamBuyMallFloor()
-         
           } else {
             _this.$message.error(result.message);
           }
@@ -419,7 +415,7 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 4)
             _this.limitedList = result.data
-            _this.secondKill(new Date(_this.limitedList.now.replace(/-/g, "/")), _this.limitedList.edate)
+            _this.secondKill(_this.stringToDate(_this.limitedList.now), _this.limitedList.edate)
             _this.getImgUrl(_this.limitedList.list)
             _this.getTimeDiff(_this.limitedList.edate)
           } else {
@@ -519,23 +515,33 @@ export default {
         )
       );
     },
+    stringToDate(str) {
+      var tempStrs = str.split(" ");
+      var dateStrs = tempStrs[0].split("-");
+      var year = parseInt(dateStrs[0], 10);
+      var month = parseInt(dateStrs[1], 10) - 1;
+      var day = parseInt(dateStrs[2], 10);
+      var timeStrs = tempStrs[1].split(":");
+      var hour = parseInt(timeStrs [0], 10);
+      var minute = parseInt(timeStrs[1], 10);
+      var second = parseInt(timeStrs[2], 10);
+      var date = new Date(year, month, day, hour, minute, second);
+      return date;
+    },
     // 设置倒计时
     secondKill(date,eDate) {
-      debugger
-      let endDate =  new Date(date.getFullYear() + '/' + (Number(date.getMonth()) + 1) + '/' + date.getDate() + ' ' +eDate+':00')
-      console.log('开始' + date.getFullYear() + '/' + (Number(date.getMonth()) + 1) + '/' + date.getDate() + ' ' + date.getHours() + date.getMinutes() + date.getSeconds())
-      console.log('结束' + endDate.getFullYear() + '/' + (Number(endDate.getMonth()) + 1) + '/' + endDate.getDate() + ' ' + endDate.getHours() + endDate.getMinutes() + endDate.getSeconds())
-
-      let times = endDate - date
+      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
+      let times = endDate - new Date()
       let _this = this
       if(times>=0) {
         let timer;
         timer = setInterval(function () {
         times--;
-        _this.flashSale.h = Math.floor(times / (60 * 60) % 60)
-        _this.flashSale.m = Math.floor(times / 60 % 60)
-        _this.flashSale.s = times % 60
-        console.log(_this.flashSale.s)
+        let modulo = times % (60 * 60 * 24);
+        _this.flashSale.h = Math.floor(modulo / (60 * 60));
+        modulo = modulo % (60 * 60);
+        _this.flashSale.m = Math.floor(modulo / 60);
+        _this.flashSale.s = modulo % 60;
         if (times <= 0) {
           clearInterval(timer);
         }
@@ -608,18 +614,22 @@ export default {
       });
     },
     toNewGoods(){
-        this.$router.push({
+      this.$router.push({
         path: "/activity/new-goods"
       });
     },
     toHotGoods(){
-        this.$router.push({
+      this.$router.push({
         path: "/activity/hot-goods"
       });
     },
     toBuying(){
- this.$router.push({
-        path: "/activity/buying"
+      debugger
+      this.$router.push({
+        path: "/activity/buying",
+        query: {
+          actcode: this.teamByID
+        }
       });
     }
   }

@@ -275,7 +275,7 @@ export default {
       iRequest.param.pageNumber = 10;
       iRequest.param.spu = 0;
       iRequest.param.json = JSON.stringify({
-        keyword: this.keyword
+        keyword: this.keyword || ''
       });
       this.$refcallback(
         "goodsServer",
@@ -329,14 +329,15 @@ export default {
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
         // 从侧边栏进入此页面keyword要为空字符串
-        keyword: "",
+        keyword: _this.keyword,
         specArray: _this.specArray,
         manuArray: _this.manuArray,
         brandArray: _this.brandArray,
-        spu: Number(_this.goodsType),
+        spu: Number(_this.goodsType || 0),
         // spu: 1000,
         sort: _this.sortGoods
       });
+      debugger
       this.$refcallback(
         "goodsServer",
         iRequest,

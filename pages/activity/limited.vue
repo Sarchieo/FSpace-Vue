@@ -116,73 +116,7 @@ export default {
         tabStyle: {
             color: '#c40000',
             background: 'black'
-        },
-        goodsList: [
-            {
-                src: '//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '冬虫夏草',
-                advantage: '培元固本，活血化淤',
-                surplus: 56,
-                new: 344,
-                old: 309
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '长白山人参',
-                advantage: '培元固本，活血化淤',
-                surplus: 12,
-                new: 888,
-                old: 1099
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i1/TB1EpYsKpXXXXbDXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '宁夏枸杞',
-                advantage: '提高免疫力',
-                surplus: 34,
-                new: 23,
-                old: 24
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i4/TB1L37TMpXXXXbnXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '胶原蛋白口服液',
-                advantage: '美容养颜',
-                surplus: 99,
-                new: 199,
-                old: 209
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '叶酸片',
-                advantage: '补充人体所需能量',
-                surplus: 56,
-                new: 344,
-                old: 309
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '山东阿胶',
-                advantage: '培元固本，提高免疫力',
-                surplus: 45,
-                new: 222,
-                old: 233
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i1/TB103TQOXXXXXaLaXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
-                name: '盘龙云海排毒胶囊',
-                advantage: '排毒养颜',
-                surplus: 88,
-                new: 56,
-                old: 59
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '多维素片',
-                advantage: '补充人体所需的维生素',
-                surplus: 19,
-                new: 88,
-                old: 99
-            }
-        ]
+        }
     }
   },
   methods: {
