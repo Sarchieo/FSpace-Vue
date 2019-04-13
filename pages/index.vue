@@ -79,7 +79,7 @@
               </div>
               <ul class="brand-right">
                 <li v-for="(items,index) in limitedList.list" :key="index">
-                  <a-card hoverable class="card">
+                  <a-card hoverable class="card" @click="toDetail(items)">
                     <img class="card-img" v-lazy="items.imgURl" slot="cover">
                     <!-- <a-progress
                       :percent="items.activitystore"
@@ -110,7 +110,7 @@
           <div class="brand-hall" v-if="item.unqid === 2">
             <p class="brand-hall-title">
               热销专区
-              <a href="javascript:;" @click="to">查看全部<a-icon type="right"/>
+              <a href="javascript:;">查看全部<a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
@@ -265,6 +265,7 @@ export default {
         m: 0,
         s: 0,
       },
+      limitedID: 0,
       teamByID: 0,
       teamBuyList: [],
       limitedList: [], // 限时抢购
@@ -335,31 +336,6 @@ export default {
         this.goodsTypes = false;
       }
     },
-    // 获取一块购数据
-    async getTeamBuyMallFloor() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getTeamBuyMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            result.data.list = result.data.list.slice(0, 6)
-            _this.teamBuyList = result.data
-            _this.teamByID = result.data.actcode
-            _this.getImgUrl(_this.teamBuyList)
-          } else {
-            _this.$message.error(result.message);
-          }
-        })
-      );
-    },
     // 获取楼层显示状态
     async getMallFloorProd() {
       let _this = this;
@@ -398,6 +374,31 @@ export default {
         })
       );
     },
+     // 获取一块购数据
+    async getTeamBuyMallFloor() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getTeamBuyMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            result.data.list = result.data.list.slice(0, 6)
+            _this.teamBuyList = result.data
+            _this.teamByID = result.data.actcode
+            _this.getImgUrl(_this.teamBuyList)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     // 获取限时抢购列表
     async getDiscountMallFloor() {
       let _this = this;
@@ -415,6 +416,8 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 4)
             _this.limitedList = result.data
+            debugger
+            _this.limitedID = result.data.actcode
             _this.secondKill(_this.stringToDate(_this.limitedList.now), _this.limitedList.edate)
             _this.getImgUrl(_this.limitedList.list)
             _this.getTimeDiff(_this.limitedList.edate)
@@ -546,8 +549,8 @@ export default {
           clearInterval(timer);
         }
         }, 1000);
-        if (deltaTime >= 0) {
-          console.log(deltaTime)
+        if (times >= 0) {
+          console.log(times)
         } else {
           console.log('活动结束')
         }
@@ -610,7 +613,10 @@ export default {
     },
     toLimited() {
       this.$router.push({
-        path: "/activity/limited"
+        path: "/activity/limited",
+        query: {
+          actcode: this.limitedID
+        }
       });
     },
     toNewGoods(){
@@ -624,7 +630,6 @@ export default {
       });
     },
     toBuying(){
-      debugger
       this.$router.push({
         path: "/activity/buying",
         query: {

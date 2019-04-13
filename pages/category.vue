@@ -273,9 +273,9 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 10;
-      iRequest.param.spu = 0;
       iRequest.param.json = JSON.stringify({
-        keyword: this.keyword || ''
+        keyword: this.keyword || '',
+        spu: Number(_this.goodsType || 0)
       });
       this.$refcallback(
         "goodsServer",
@@ -337,13 +337,14 @@ export default {
         // spu: 1000,
         sort: _this.sortGoods
       });
-      debugger
+      
       this.$refcallback(
         "goodsServer",
         iRequest,
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+              console.log(result)
               _this.searchList = result.data;
               _this.getImgUrl();
               if (_this.searchList.length === 0 || _this.searchList === null) {
