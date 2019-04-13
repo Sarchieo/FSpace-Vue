@@ -68,9 +68,9 @@
                 <a-icon type="thunderbolt" class="brand-lightning"/>
                 <p class="over-distance">距离结束还有</p>
                 <p class="count-down">
-                  <button>1</button>:
-                  <button>05</button>:
-                  <button>12</button>
+                  <button>{{ flashSale.h }}</button>:
+                  <button>{{ flashSale.m }}</button>:
+                  <button>{{ flashSale.s }}</button>
                 </p>
                 <button class="see-whole">
                   查看全部
@@ -152,9 +152,9 @@
                       <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                       <p>
                         <span class="sur-time">还剩</span>
-                        <span>04</span> 时
-                        <span>23</span> 分
-                        <span>40</span> 秒
+                        <span>{{  }}</span> 时
+                        <span>{{  }}</span> 分
+                        <span>{{  }}</span> 秒
                       </p>
                     </div>
                     <div class="onek-right">
@@ -264,6 +264,11 @@ export default {
   },
   data() {
     return {
+      flashSale: {
+        h: 0,
+        m: 0,
+        s: 0,
+      },
       teamBuyList: [],
       limitedList: [], // 限时抢购
       newGoodsList: [], // 新品商品列表
@@ -411,6 +416,7 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 4)
             _this.limitedList = result.data
+            _this.secondKill(new Date(_this.limitedList.now.replace(/-/g, "/")), _this.limitedList.edate)
             _this.getImgUrl(_this.limitedList.list)
             _this.getTimeDiff(_this.limitedList.edate)
           } else {
@@ -510,35 +516,33 @@ export default {
         )
       );
     },
-    // 计算时间差
-    getTimeDiff(edate) {
+    // 设置倒计时
+    secondKill(date,eDate) {
       debugger
-      // let date = new Date(edate.replace(/:/g, "/"))
-      // let date2 = new Date("hh:mm:ss");
-      // let date3 = date.getTime() - date2.getTime()
-      // let leave1 = date3%(24*3600*1000) 
-      // var hours=Math.floor(leave1/(3600*1000))
-      // var leave2=leave1%(3600*1000) 
-      // var minutes=Math.floor(leave2/(60*1000))
-      // var leave3=leave2%(60*1000)  
-      // var seconds=Math.round(leave3/1000)
-      // alert(" 相差 " + hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
-      //如果时间格式是正确的，那下面这一步转化时间格式就可以不用了
-      var dateBegin = new Date(edate.replace(/:/g, "/"));//将-转化为/，使用new Date
-      var dateEnd = new Date().getDateTimeInstance();//获取当前时间
-      var dateDiff = dateEnd.getTime() - dateBegin.getTime();//时间差的毫秒数
-      var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
-      var leave1=dateDiff%(24*3600*1000)    //计算天数后剩余的毫秒数
-      var hours=Math.floor(leave1/(3600*1000))//计算出小时数
-      //计算相差分钟数
-      var leave2=leave1%(3600*1000)    //计算小时数后剩余的毫秒数
-      var minutes=Math.floor(leave2/(60*1000))//计算相差分钟数
-      //计算相差秒数
-      var leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
-      var seconds=Math.round(leave3/1000)
-      console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
-      console.log(dateDiff+"时间差的毫秒数",dayDiff+"计算出相差天数",leave1+"计算天数后剩余的毫秒数"
-          ,hours+"计算出小时数",minutes+"计算相差分钟数",seconds+"计算相差秒数");
+      let endDate =  new Date(date.getFullYear() + '/' + (Number(date.getMonth()) + 1) + '/' + date.getDate() + ' ' +eDate+':00')
+      console.log('开始' + date.getFullYear() + '/' + (Number(date.getMonth()) + 1) + '/' + date.getDate() + ' ' + date.getHours() + date.getMinutes() + date.getSeconds())
+      console.log('结束' + endDate.getFullYear() + '/' + (Number(endDate.getMonth()) + 1) + '/' + endDate.getDate() + ' ' + endDate.getHours() + endDate.getMinutes() + endDate.getSeconds())
+
+      let times = endDate - date
+      let _this = this
+      if(times>=0) {
+        let timer;
+        timer = setInterval(function () {
+        times--;
+        _this.flashSale.h = Math.floor(times / (60 * 60) % 60)
+        _this.flashSale.m = Math.floor(times / 60 % 60)
+        _this.flashSale.s = times % 60
+        console.log(_this.flashSale.s)
+        if (times <= 0) {
+          clearInterval(timer);
+        }
+        }, 1000);
+        if (deltaTime >= 0) {
+          console.log(deltaTime)
+        } else {
+          console.log('活动结束')
+        }
+      }
     },
     goTotop() {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
