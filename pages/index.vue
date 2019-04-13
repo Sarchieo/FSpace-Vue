@@ -4,6 +4,9 @@
       <f-space-header type="home"></f-space-header>
       <!-- 左侧菜单，轮播，广告位及物价区 -->
       <a-layout-content>
+        <p @click="toNewGoods()">新品</p>
+        <p @click="toHotGoods()">热销</p>
+        <p @click="toBuying()">团购</p>
         <div class="goods-nav-box">
           <f-space-menu></f-space-menu>
           <div class="binnar-box">
@@ -602,6 +605,21 @@ export default {
     toLimited() {
       this.$router.push({
         path: "/activity/limited"
+      });
+    },
+    toNewGoods(){
+        this.$router.push({
+        path: "/activity/new-goods"
+      });
+    },
+    toHotGoods(){
+        this.$router.push({
+        path: "/activity/hot-goods"
+      });
+    },
+    toBuying(){
+ this.$router.push({
+        path: "/activity/buying"
       });
     }
   }

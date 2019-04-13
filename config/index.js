@@ -1,7 +1,9 @@
 export const iceGridInstanceName = "DemoIceGrid";
-// export const serverIp = "114.116.149.145";
+// export const serverIp = "114.116.149.152" // 华为云
+export const serverIp = "192.168.1.152";// 蒋老师
 // export const serverIp = "192.168.1.110";
-export const serverIp = "192.168.1.152";
+// export const serverIp = "192.168.1.145";// 李世平
+// export const serverIp = "192.168.1.39"; // 惠哥
 export const serverPort = 4062;
 
 const CALLBACK_ACTION = {
