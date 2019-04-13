@@ -50,52 +50,27 @@
             </a-carousel>
           </div>
           <div class="limited-goods">
-              <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle" size="large">
-                <a-tab-pane tab="08点档" key="1" forceRender class="tab-pane">
-                    <div class="goods-box" v-for="(item,index) in goodsList" :key="index">
-                        <img v-lazy="item.src" alt="" class="goods-pic">
-                        <p class="goods-name">{{item.name}}</p>
-                        <p class="goods-adv">{{item.advantage}}</p>
-                        <a-progress :percent="item.surplus" style="position:absolute;top:100px;left:250px;width: 215px;" :showInfo="false" status="exception"/>
-                        <p class="goods-surplus">还剩{{item.surplus}}件</p>
-                        <p class="goods-price">限时价￥{{item.new}}元 <del>原价￥{{item.old}}元</del></p>
-                        <button @click="toDetails()">立即抢购</button>
-                    </div>
-                </a-tab-pane>
-                <a-tab-pane tab="12点档" key="2" class="tab-pane">
-                    <div class="goods-box" v-for="(item,index) in goodsList" :key="index">
-                        <img v-lazy="item.src" alt="" class="goods-pic">
-                        <p class="goods-name">{{item.name}}</p>
-                        <p class="goods-adv">{{item.advantage}}</p>
-                        <a-progress :percent="item.surplus" style="position:absolute;top:100px;left:250px;width: 215px;" :showInfo="false" status="exception"/>
-                        <p class="goods-surplus">还剩{{item.surplus}}件</p>
-                        <p class="goods-price">限时价￥{{item.new}}元 <del>原价￥{{item.old}}元</del></p>
-                        <button @click="toDetails()">立即抢购</button>
-                    </div>
-                </a-tab-pane>
-                <a-tab-pane tab="16点档" key="3" class="tab-pane">
-                    <div class="goods-box" v-for="(item,index) in goodsList" :key="index">
-                        <img v-lazy="item.src" alt="" class="goods-pic">
-                        <p class="goods-name">{{item.name}}</p>
-                        <p class="goods-adv">{{item.advantage}}</p>
-                        <a-progress :percent="item.surplus" style="position:absolute;top:100px;left:250px;width: 215px;" :showInfo="false" status="exception"/>
-                        <p class="goods-surplus">还剩{{item.surplus}}件</p>
-                        <p class="goods-price">限时价￥{{item.new}}元 <del>原价￥{{item.old}}元</del></p>
-                        <button @click="toDetails()">立即抢购</button>
-                    </div>
-                </a-tab-pane>
-                <a-tab-pane tab="20点档" key="4" class="tab-pane">
-                    <div class="goods-box" v-for="(item,index) in goodsList" :key="index">
-                        <img v-lazy="item.src" alt="" class="goods-pic">
-                        <p class="goods-name">{{item.name}}</p>
-                        <p class="goods-adv">{{item.advantage}}</p>
-                        <a-progress :percent="item.surplus" style="position:absolute;top:80px;left:250px;width: 215px;" :showInfo="false" status="exception"/>
-                        <p class="goods-surplus">还剩{{item.surplus}}件</p>
-                        <p class="goods-price">限时价￥{{item.new}}元 <del>原价￥{{item.old}}元</del></p>
-                        <button @click="toDetails()">立即抢购</button>
-                    </div>
-                </a-tab-pane>
-              </a-tabs>
+            <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle" size="large">
+              <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.sdate">
+                <div class="goods-box" v-for="(item,index) in goodsList.list" :key="index">
+                  <img v-lazy="item.src" alt class="goods-pic">
+                  <p class="goods-name">{{item.prodname}}</p>
+                  <p class="goods-adv">{{item.spec}}</p>
+                  <a-progress
+                    :percent="item.activitystore"
+                    style="position:absolute;top:100px;left:250px;width: 215px;"
+                    :showInfo="false"
+                    status="exception"
+                  />
+                  <p class="goods-surplus">还剩{{item.activitystore}}</p>
+                  <p class="goods-price">
+                    限时价￥{{item.actprize}}元
+                    <del>原价￥{{item.mp}}元</del>
+                  </p>
+                  <button @click="toDetails()">立即抢购</button>
+                </div>
+              </a-tab-pane>
+            </a-tabs>
           </div>
         </div>
       </a-layout-content>
@@ -113,21 +88,127 @@ export default {
   },
   data() {
     return {
-        tabStyle: {
-            color: '#c40000',
-            background: 'black'
-        }
-    }
+      tabStyle: {
+        color: "#c40000",
+        background: "black"
+      },
+      actcode: 0,
+      goodsList: []
+    };
+  },
+  mounted() {
+    this.actcode = this.$route.query.actcode
+    this.getAllDiscount()
   },
   methods: {
-      callback(key) {
-          console.log(key)
-      },
-      toDetails() {
-          this.$router.push({
-               path:'/product/detail'
-          })
+    // 获取限时抢购数据
+    async getAllDiscount() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getAllDiscount";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({
+        keyword: '',
+        actcode: this.actcode
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            result.data.list = result.data.list;
+            _this.goodsList = result.data;
+            _this.getImgUrl(_this.goodsList.list);
+            _this.secondKill(_this.stringToDate(_this.goodsList.now || '2019-4-13 16:10:20') ,_this.goodsList.edate)
+          } else {
+            _this.$message.error(result.message);
+          }
+        },function(error) {
+          debugger
+        })
+      );
+    },
+    async getImgUrl(arr) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = [];
+      arr.forEach(c => {
+        list.push({
+          sku: c.sku,
+          spu: c.spu
+        });
+      });
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, list) => {
+                _this.$set(
+                  arr[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    arr[index].sku +
+                    "-200x200.jpg" +
+                    "?" +
+                    new Date().getSeconds()
+                );
+              });
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            debugger;
+          }
+        )
+      );
+    },
+    // 设置倒计时
+    secondKill(date,eDate) {
+      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
+      let times = endDate - new Date()
+      let _this = this
+      if(times>=0) {
+        let timer;
+        timer = setInterval(function () {
+        times--;
+        let modulo = times % (60 * 60 * 24);
+        _this.flashSale.h = Math.floor(modulo / (60 * 60));
+        modulo = modulo % (60 * 60);
+        _this.flashSale.m = Math.floor(modulo / 60);
+        _this.flashSale.s = modulo % 60;
+        if (times <= 0) {
+          clearInterval(timer);
+        }
+        }, 1000);
+        if (deltaTime >= 0) {
+          console.log(deltaTime)
+        } else {
+          console.log('活动结束')
+        }
       }
+    },
+    callback(key) {
+      console.log(key);
+    },
+    toDetails() {
+      this.$router.push({
+        path: "/product/detail"
+      });
+    }
   }
 };
 </script>
@@ -157,7 +238,7 @@ export default {
   width: 25px;
   height: 25px;
   font-size: 25px;
-  color: #ED2F26;
+  color: #ed2f26;
   background-color: rgba(31, 45, 61, 0.11);
   opacity: 0.3;
 }
@@ -173,44 +254,44 @@ export default {
 .limited-goods {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
-  background: #F6F6F6;
+  background: #f6f6f6;
 }
 .tab-pane {
-    width: 270px;
-    height: auto;
+  width: 270px;
+  height: auto;
 }
 .goods-box {
-    .container-size(inline-block, 575px, 225px, 10px 10px, 0px);
-    .position(relative,0px,0px);
-    background: #ffffff;
-    button {
-        .position(absolute,160px,250px);
-        .button-size(120px,40px,40px,14px,0px,5px);
-        .button-color(1px solid transparent,#ED2F26,#ffffff);
-    }
+  .container-size(inline-block, 575px, 225px, 10px 10px, 0px);
+  .position(relative, 0px, 0px);
+  background: #ffffff;
+  button {
+    .position(absolute, 160px, 250px);
+    .button-size(120px, 40px, 40px, 14px, 0px, 5px);
+    .button-color(1px solid transparent, #ed2f26, #ffffff);
+  }
 }
 .goods-pic {
-   .position(absolute,0px,0px);
-   width: 225px;
-   height: 225px;
+  .position(absolute, 0px, 0px);
+  width: 225px;
+  height: 225px;
 }
 .goods-name {
-  .position(absolute,20px,250px);
+  .position(absolute, 20px, 250px);
   font-size: 20px;
 }
 .goods-adv {
-  .position(absolute,50px,250px);
+  .position(absolute, 50px, 250px);
 }
 .goods-surplus {
-  .position(absolute,80px,500px);
+  .position(absolute, 80px, 500px);
   font-size: 16px;
 }
 .goods-price {
-  .position(absolute,120px,250px);
+  .position(absolute, 120px, 250px);
   font-size: 16px;
-  color: #ED2F26;
+  color: #ed2f26;
   del {
-      color: #666666;
+    color: #666666;
   }
 }
 </style>

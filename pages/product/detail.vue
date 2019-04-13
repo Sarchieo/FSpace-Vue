@@ -32,9 +32,7 @@
             </div>
             <div class="goods-info">
               <p class="goods-name">{{ prodDetail.prodname }}</p>
-              <!-- 限时抢购详情页面展示 -->
-              <p class="rush-time">限时抢购 距离结束还剩 12 小时 15 分钟 52 秒 56 <span @click="backOnek()">更多抢购<a-icon type="right" /></span></p>
-
+              <p class="rush-time">限时抢购 距离结束还剩 12 小时 15 分钟 52 秒 56</p>
               <div class="price-server">
                 <p class="price">
                   <span class="price-title">价格</span>
@@ -103,7 +101,7 @@
               </div>
             </div>
           </div>
-          <!-- 商品优惠券 满减，显示 -->
+          <!-- 商品优惠券 -->
           <div class="coupon-box">
             <p class="coupon-title">商品优惠券<span>更多优惠券<a-icon type="right"/></span></p>
             <div class="coupon-content">
@@ -143,11 +141,11 @@
               </div>
             </div>
           </div>
-          <!-- 一块购显示  -->
+          <!-- 一块购 -->
           <div class="coupon-box">
             <p class="coupon-title">一块购规则说明</p>
             <div class="coupon-content">
-              <img class="onek-pic" src="../../assets/img/arrow.png" alt="">
+
             </div>
           </div>
           <!-- 详情和评价 -->
@@ -384,7 +382,6 @@ export default {
       dislikes: 0,
       action: null,
       moment,
-      onekShow: true,
       isis:
         "成人及儿童急、慢性腹泻。蒙脱石散（思密达）用于食道、胃、十二指肠疾病引起的相关疼痛症",
       tabStyle: {
@@ -543,7 +540,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            console.log(result.data)
             _this.hotList = result.data.slice(0,5)
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
@@ -568,8 +564,6 @@ export default {
           if (result.code === 200) {
             _this.prodDetail = result.data;
             _this.details = JSON.parse(_this.prodDetail.detail);
-            console.log(6)
-            console.log(_this.details);
           } else {
             _this.$message.error(result.message);
           }
@@ -899,13 +893,6 @@ li {
   background: rgb(247, 37, 38);
   font-size: 20px;
   color: #ffffff;
-}
-.rush-time span{
-  float: right;
-  font-size: 16px;
-}
-.rush-time span:hover{
-  cursor: pointer;
 }
 .price-server {
   height: 129px;
@@ -1354,9 +1341,5 @@ li {
 }
 .ant-layout-footer {
   padding: 0px;
-}
-.onek-pic{
-  width: 1188px;
-  height: 240px;
 }
 </style>
