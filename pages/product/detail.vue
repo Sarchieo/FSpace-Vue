@@ -521,8 +521,35 @@ export default {
     this.isCollec();
     // 获取热销数据
     this.getProdDetailHotArea();
+    this.queryActiveType();
   },
   methods: {
+     // 查询商品活动类型
+    queryActiveType() {
+      let _this = this;
+      debugger
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "DiscountModule";
+      iRequest.method = "getGoodsActInfo";
+
+      iRequest.param.arrays = [this.sku,  5310523314799616]
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "discountServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          debugger
+          console.log(result);
+          if (result.code === 200) {
+            _this.isShowCollec = result.data;
+            console.log(9);
+            console.log(_this.prodDetail);
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     getProdDetailHotArea() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -564,6 +591,7 @@ export default {
           if (result.code === 200) {
             _this.prodDetail = result.data;
             _this.details = JSON.parse(_this.prodDetail.detail);
+            console.log(_this.details)
           } else {
             _this.$message.error(result.message);
           }

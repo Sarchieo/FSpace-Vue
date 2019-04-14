@@ -50,13 +50,13 @@
               </div>
             </a-carousel>
           </div>
-          <div class></div>
         </div>
+
         <div v-for="(item,index) in list" :key="index">
           <!-- 限时抢购 -->
           <div id="hot" class="brand-hall" v-if="item.unqid === 512">
             <p class="brand-hall-title">
-              {{item.title}}
+             限时抢购
               <a class="all-hot" @click="toLimited()">
                 查看全部抢购
                 <a-icon type="right"/>
@@ -106,6 +106,38 @@
               </ul>
             </div>
           </div>
+           <div class="brand-hall" v-if="item.unqid === 8">
+            <p class="brand-hall-title">
+              一块购 ● 越团越优惠
+              <a href="javascript:;" @click="toBuying()">
+                查看全部
+                <a-icon type="right"/>
+              </a>
+            </p>
+            <div class="onek-shoping">
+              <ul>
+                <li v-for="(item,index) in teamBuyList.list" :key="index">
+                  <a-card hoverable class="onek-card" @click="toDetail(item)">
+                   <img v-lazy="item.imgURl" class="onek-img" slot="cover">
+                  <div class="onek-box" slot="cover">
+                    <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                    <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
+                    <p class="goods-manu">{{item.manuName}}</p>
+                    <p class="goods-success">{{item.actlimit}}盒起拼/{{item.surplusstock}}成团</p>
+                    <!-- <p class="goods-state"></p> -->
+                    <p class="goods-btn">
+                      <span class="sur-time">还剩</span>
+                      <span>{{ }}</span> 时
+                      <span>{{ }}</span> 分
+                      <span>{{ }}</span> 秒
+                      <button class="imme-btn">立即参团</button>
+                    </p>
+                  </div>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
+          </div>
           <!-- 热销专区 包邮专区 -->
           <div class="brand-hall" v-if="item.unqid === 2">
             <p class="brand-hall-title">
@@ -117,7 +149,7 @@
               <ul class="brand-right hot-width">
                 <li v-for="(item,index) in hotGoodsList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
-                    <img class="card-img" v-lazy="item.imgURl" slot="cover">  
+                    <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185"></p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                     <p class="card-price top165">
@@ -170,11 +202,11 @@
           </div>
           <!-- 新品专区 -->
           <div id="choice" class="elaborate" v-if="item.unqid === 1">
-            <p class="brand-hall-title">
-              新品专区
-              <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
-              </a>
-            </p>
+            <p class="elaborate-title">新品专区
+               <a href="javascript:;" @click="toNewGoods()">
+                查看全部
+                <a-icon type="right"/>
+              </a> </p>
             <ul class="elaborate-ui">
               <li v-for="(item,index) in newGoodsList" :key="index">
                 <a-card hoverable class="elaborate-card" @click="toDetail(item)">
@@ -191,39 +223,6 @@
               </li>
             </ul>
           </div>
-          <!-- <div
-          id="free-delivery"
-          class="brand-hall"
-          v-for="(item,index) in freeDelivery"
-          :key="index"
-        >
-          <p class="brand-hall-title">
-            {{item.title}}
-            <a>
-              查看全部
-              <a-icon type="right"/>
-            </a>
-          </p>
-          <div class="brand-div">
-            <ul class="brand-right hot-width">
-              <li v-for="(items,index) in item.list" :key="index">
-                <a-card hoverable class="card" @click="toDetailsPages">
-                  <img class="card-img" v-lazy="items.src" slot="cover">
-                  <p class="surplus text-Center top185">{{items.text}}</p>
-                  <p class="validity">有效期至{{items.validity}}</p>
-                  <p class="card-price top165">
-                    ￥{{items.new}}
-                    <del>￥{{items.old}}</del>
-                  </p>
-                  <p class="specifications">{{items.specifications}}</p>
-                  <p class="manufacturer">{{items.manufacturer}}</p>
-                  <p class="sold">已售{{items.sold}}盒</p>
-                  <a-card-meta class="card-info" :title="item.text"></a-card-meta>
-                </a-card>
-              </li>
-            </ul>
-          </div>
-          </div>-->
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -248,7 +247,7 @@
         <a-icon type="to-top"/>
         <a>回到顶部</a>
       </li>
-    </ul> -->
+    </ul>-->
   </div>
 </template>
 <script>
@@ -272,7 +271,7 @@ export default {
       flashSale: {
         h: 0,
         m: 0,
-        s: 0,
+        s: 0
       },
       limitedID: 0,
       teamByID: 0,
@@ -398,7 +397,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            result.data.list = result.data.list.slice(0, 6)
+            result.data.list = result.data.list.slice(0, 5)
             _this.teamBuyList = result.data
             console.log(_this.teamBuyList.list[0])
             _this.teamByID = result.data.actcode
@@ -452,8 +451,8 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.newGoodsList = result.data.slice(0,6)
-            _this.getImgUrl(_this.newGoodsList)
+            _this.newGoodsList = result.data.slice(0, 6);
+            _this.getImgUrl(_this.newGoodsList);
           } else {
             _this.$message.error(result.message);
           }
@@ -475,8 +474,8 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.hotGoodsList = result.data.slice(0,5)
-            _this.getImgUrl(_this.hotGoodsList)
+            _this.hotGoodsList = result.data.slice(0, 5);
+            _this.getImgUrl(_this.hotGoodsList);
           } else {
             _this.$message.error(result.message);
           }
@@ -535,7 +534,7 @@ export default {
       var month = parseInt(dateStrs[1], 10) - 1;
       var day = parseInt(dateStrs[2], 10);
       var timeStrs = tempStrs[1].split(":");
-      var hour = parseInt(timeStrs [0], 10);
+      var hour = parseInt(timeStrs[0], 10);
       var minute = parseInt(timeStrs[1], 10);
       var second = parseInt(timeStrs[2], 10);
       var date = new Date(year, month, day, hour, minute, second);
@@ -899,9 +898,9 @@ li {
 .elaborate-text {
   .position(absolute, 32px, 200px);
   width: 170px;
-   overflow: hidden;
- text-overflow:ellipsis;
- white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #333333;
   font-size: 16px;
 }
@@ -913,9 +912,9 @@ li {
 .elaborate-manufacturer {
   .position(absolute, 85px, 198px);
   width: 170px;
-   overflow: hidden;
- text-overflow:ellipsis;
- white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .elaborate-validity {
   .position(absolute, 105px, 198px);
@@ -937,6 +936,11 @@ li {
   line-height: 50px;
   font-size: 22px;
   font-weight: bold;
+  a{
+    float: right;
+    font-size: 16px;
+    font-weight: normal;
+  }
 }
 /* 热销专区，包邮专区 */
 .brand-divs {
@@ -949,6 +953,12 @@ li {
   margin-bottom: 20px;
 }
 // 一块购
+.onek-card:hover{
+   box-shadow: 0px 0px 30px 10px #e0e0e0;
+}
+.imme-btn:hover{
+  cursor: pointer;
+}
 .onek-text {
   .p-size(30px, 30px, 16px, left, 0px, #333333);
   background: #eeeeee;
@@ -963,55 +973,63 @@ li {
     li {
       display: inline-block;
       margin-left: 0px;
-      margin-right: 19px;
+      margin-right: 17px;
       margin-bottom: 13px;
       .onek-card {
-        width: 586px;
-        height: 250px;
-        .onek-left {
-          float: left;
-          width: 206px;
-          height: 205px;
-          .onek-img {
-            width: 206px;
-            height: 164px;
+        width: 225px;
+        height: 310px;
+        padding: 0px;
+        .onek-box{
+          .container-size(block,223px,158px,0px,0px);
+          .onek-price{
+            .p-size(30px,30px,16px,left,7px,#ed3025);
+            font-weight: bold;
+            del{
+              float: right;
+              font-size: 14px;
+              margin-right: 15px;
+              color: #999999!important;
+              font-weight: normal;
+            }
           }
-          p {
-            .p-size(40px, 40px, 16px, center, 0px, #ed3025);
-            color: #333333;
-            .sur-time {
-              color: #333333 !important;
-              font-size: 16px;
+          .goods-name{
+            .p-size(25px,25px,16px,left,10px,#333333);
+            width: 100%;
+             overflow: hidden;
+              text-overflow:ellipsis;
+              white-space: nowrap;
+          }
+          .goods-manu{
+             .p-size(25px,25px,14px,left,10px,#999999);
+             width: 100%;
+              overflow: hidden;
+              text-overflow:ellipsis;
+              white-space: nowrap;
+          }
+          .goods-state{
+            .p-size(25px,25px,14px,left,10px,#999999);
+          }
+          .goods-btn{
+            .p-size(50px,50px,14px,left,10px,#999999);
+            border: 1px solid #ed3025;
+            button{
+              float: right;
+              width: 80px;
+              height: 48px;
+              line-height: 48px;
+              border:1px solid #ed3025;
+              background: #ed3025;
+              color: #ffffff;
             }
-            span {
-              color: #ed3025;
-            }
+          }
+          .goods-success{
+            .p-size(27px,27px,14px,left,10px,#999999);
           }
         }
-        .onek-right {
-          float: right;
-          width: 300px;
-          height: 205px;
-          .goods-name,
-          .goods-spec {
-            .p-size(30px, 30px, 18px, left, 10px, #333333);
-          }
-          .goods-manu,
-          .goods-success,
-          .goods-state {
-            .p-size(25px, 25px, 14px, left, 10px, #999999);
-          }
-          .goods-manu {
-            margin-top: 20px;
-          }
-          .goods-btn {
-            .p-size(40px, 40px, 14px, right, 0px, #ffffff);
-            margin-top: 10px;
-            .imme-btn {
-              .button-size(120px, 40px, 40px, 16px, 0px, 5px);
-              .button-color(1px solid transparent, #ed3025, #ffffff);
-            }
-          }
+        .onek-pic {
+          width: 206px;
+          height: 132px;
+          margin: 8.5px;
         }
       }
     }
@@ -1237,5 +1255,11 @@ li {
 }
 .ant-layout-footer {
   padding: 0px;
+}
+
+.onek-img {
+  width: 206px;
+  height: 132px;
+  margin: 8.5px;
 }
 </style>
