@@ -32,12 +32,51 @@
             </div>
             <div class="goods-info">
               <p class="goods-name">{{ prodDetail.prodname }}</p>
-              <p class="rush-time">限时抢购 距离结束还剩 12 小时 15 分钟 52 秒 56</p>
+              <p class="rush-time" v-if="status == 1">限时抢购 距离结束还剩 {{ flashSale.h  }} 小时 {{ flashSale.m  }} 分钟 {{ flashSale.s  }} 秒</p>
+              <p class="rush-time" v-if="status == 2">一块购 距离结束还剩 {{ flashSale.h  }} 小时 {{ flashSale.m  }} 分钟 {{ flashSale.s  }} 秒</p>
               <div class="price-server">
-                <p class="price">
+                <p class="onek-person" v-if="status == 2">
+                  <span>10.0</span>
+                  <span>9.8</span>
+                  <span>9.5</span>
+                  <span>9.0</span>
+                  <span>8.8</span>  
+                  <span>8.5</span>
+                  <span>折</span>
+                </p>
+                <a-progress
+                 v-if="status == 1 || 2"
+                  :percent="20"
+                  style="width: 295px;height: 8px;margin-left: 20px;"
+                  :showInfo="false"
+                  status="exception"
+                />
+                <p class="onek-person" v-if="status == 2">
+                  <span>1</span>
+                  <span>5</span>
+                  <span>10</span>
+                  <span>15</span>
+                  <span>20</span>  
+                  <span>25</span>
+                  <span>人</span>
+                </p>
+                <p class="surplus" v-if="status == 1">
+                  还剩{{ discount.limits }}支
+                  <span>限购{{ discount.limits }}支</span>
+                </p>
+                <p class="price" v-if="status == 0" >
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count">￥{{ prodDetail.mp }}</span>
                   <!-- <del>￥32</del> -->
+                </p>
+                <p class="price" v-if="status == 1" >
+                  <span class="price-title">价格</span>
+                  <span class="money-count">￥{{ discount.killPrice }}</span>
+                  <del>{{ prodDetail.mp }}</del>
+                </p>
+                <p class="price" v-if="status == 2" >
+                  <span class="price-title">价格</span>
+                  <span class="money-count">￥{{ prodDetail.mp }}</span>
                 </p>
                 <p class="price">
                   <span class="integral">积份</span>
@@ -102,7 +141,7 @@
             </div>
           </div>
           <!-- 商品优惠券 -->
-          <div class="coupon-box">
+          <div class="coupon-box" v-if="status == 1 || status == 3">
             <p class="coupon-title">商品优惠券<span>更多优惠券<a-icon type="right"/></span></p>
             <div class="coupon-content">
               <div class="coupon-card">
@@ -142,10 +181,10 @@
             </div>
           </div>
           <!-- 一块购 -->
-          <div class="coupon-box">
+          <div class="coupon-box" v-if="status == 2">
             <p class="coupon-title">一块购规则说明</p>
             <div class="coupon-content">
-
+              
             </div>
           </div>
           <!-- 详情和评价 -->
@@ -339,11 +378,18 @@ export default {
   },
   data() {
     return {
+      flashSale: {
+        h: 0,
+        m: 0,
+        s: 0
+      },
       hotList: [],
       isShowCollec: false,
       imgUrl: "",
       sku: "",
-      spu: "",
+      spu: "", 
+      status: 0, // 0 无活动 1 限时抢购 2 一块购
+      rulestatus: 0,
       prodDetail: {},
       details: [
         {
@@ -377,6 +423,7 @@ export default {
           id: 6
         }
       ],
+      discount: {},
       likes: 0,
       brandNum: "",
       dislikes: 0,
@@ -514,6 +561,9 @@ export default {
   created() {
     this.sku = this.$route.query.sku
     this.spu = this.$route.query.spu
+    this.actcode = this.$route.query.actcode
+    this.rulestatus = this.$route.query.rulestatus
+    this.status = this.$route.query.status
   },
   mounted() {
     this.getProd();
@@ -521,29 +571,27 @@ export default {
     this.isCollec();
     // 获取热销数据
     this.getProdDetailHotArea();
-    this.queryActiveType();
+    if(this.actcode != 0) {
+      this.queryActiveType();
+    }
   },
   methods: {
      // 查询商品活动类型
     queryActiveType() {
       let _this = this;
-      debugger
       let iRequest = new inf.IRequest();
       iRequest.cls = "DiscountModule";
       iRequest.method = "getGoodsActInfo";
-
-      iRequest.param.arrays = [this.sku,  5310523314799616]
+      iRequest.param.arrays = [this.sku,  this.actcode]
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "discountServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
-          console.log(result);
           if (result.code === 200) {
-            _this.isShowCollec = result.data;
-            console.log(9);
-            console.log(_this.prodDetail);
+            debugger
+            _this.discount = result.data
+            _this.secondKill(_this.stringToDate(_this.discount.currentDate), _this.discount.endTime)
           } else {
             _this.$message.error(result.message);
           }
@@ -710,6 +758,44 @@ export default {
           function error(error) {}
         )
       );
+    },
+    stringToDate(str) {
+      var tempStrs = str.split(" ");
+      var dateStrs = tempStrs[0].split("-");
+      var year = parseInt(dateStrs[0], 10);
+      var month = parseInt(dateStrs[1], 10) - 1;
+      var day = parseInt(dateStrs[2], 10);
+      var timeStrs = tempStrs[1].split(":");
+      var hour = parseInt(timeStrs[0], 10);
+      var minute = parseInt(timeStrs[1], 10);
+      var second = parseInt(timeStrs[2], 10);
+      var date = new Date(year, month, day, hour, minute, second);
+      return date;
+    },
+     // 设置倒计时
+    secondKill(date,eDate) {
+      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
+      let times = endDate - new Date()
+      let _this = this
+      if(times>=0) {
+        let timer;
+        timer = setInterval(function () {
+        times--;
+        let modulo = times % (60 * 60 * 24);
+        _this.flashSale.h = Math.floor(modulo / (60 * 60));
+        modulo = modulo % (60 * 60);
+        _this.flashSale.m = Math.floor(modulo / 60);
+        _this.flashSale.s = modulo % 60;
+        if (times <= 0) {
+          clearInterval(timer);
+        }
+        }, 1000);
+        if (times >= 0) {
+          console.log(times)
+        } else {
+          console.log('活动结束')
+        }
+      }
     },
     like() {
       this.likes = 1;
@@ -905,8 +991,14 @@ li {
 }
 .goods-info {
   float: right;
+  position: relative;
+  top: 0px;
+  left: 0px;
   width: 657px;
   height: 485px;
+}
+.surplus{
+  text-indent: 20px;
 }
 .goods-name {
   height: 40px;
@@ -923,8 +1015,16 @@ li {
   color: #ffffff;
 }
 .price-server {
-  height: 129px;
-  background: rgb(246, 246, 246);
+  min-height: 129px;
+  height: auto;
+  /* background: rgb(246, 246, 246); */
+}
+.onek-person{
+  text-indent: 10px;
+}
+.onek-person span{
+  display: inline-block;
+  width: 50px;
 }
 .price-server .price {
   height: 42px;
@@ -956,9 +1056,9 @@ li {
   color: #666666;
 }
 .manufacturer .packing {
-  height: 36px;
+  height: 30px;
   text-indent: 20px;
-  line-height: 36px;
+  line-height: 30px;
 }
 .margin-right190 {
   margin-right: 190px;
@@ -1369,5 +1469,9 @@ li {
 }
 .ant-layout-footer {
   padding: 0px;
+}
+.ant-progress-inner{
+  border: 1px solid blue;
+  background-color: #3189f5!important;
 }
 </style>

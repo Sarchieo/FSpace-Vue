@@ -482,9 +482,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
             if (result.code === 200) {
-              
               let Items = result.data;
               _this.cascaderData = Items.map((value, i) => {
                 return {

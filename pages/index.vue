@@ -79,7 +79,7 @@
               </div>
               <ul class="brand-right">
                 <li v-for="(items,index) in limitedList.list" :key="index">
-                  <a-card hoverable class="card" @click="toDetail(items)">
+                  <a-card hoverable class="card" @click="toDetail(items, limitedList.actcode, 1)">
                     <img class="card-img" v-lazy="items.imgURl" slot="cover">
                     <a-progress
                       :percent="items.activitystore"
@@ -117,22 +117,22 @@
             <div class="onek-shoping">
               <ul>
                 <li v-for="(item,index) in teamBuyList.list" :key="index">
-                  <a-card hoverable class="onek-card" @click="toDetail(item)">
-                   <img v-lazy="item.imgURl" class="onek-img" slot="cover">
-                  <div class="onek-box" slot="cover">
-                    <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
-                    <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
-                    <p class="goods-manu">{{item.manuName}}</p>
-                    <p class="goods-success">{{item.actlimit}}盒起拼/{{item.surplusstock}}成团</p>
-                    <!-- <p class="goods-state"></p> -->
-                    <p class="goods-btn">
-                      <span class="sur-time">还剩</span>
-                      <span>{{ }}</span> 时
-                      <span>{{ }}</span> 分
-                      <span>{{ }}</span> 秒
-                      <button class="imme-btn">立即参团</button>
-                    </p>
-                  </div>
+                  <a-card hoverable class="onek-card" @click="toDetail(item, teamBuyList.actcode, 2)">
+                    <img v-lazy="item.imgURl" class="onek-img" slot="cover">
+                    <div class="onek-box" slot="cover">
+                      <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
+                      <p class="goods-manu">{{item.manuName}}</p>
+                      <p class="goods-success">{{item.actlimit}}盒起拼/{{item.surplusstock}}成团</p>
+                      <!-- <p class="goods-state"></p> -->
+                      <p class="goods-btn">
+                        <span class="sur-time">还剩</span>
+                        <span>{{teamBuy.h}}</span>时
+                        <span>{{teamBuy.m}}</span>分
+                        <span>{{teamBuy.s}}</span>秒
+                        <button class="imme-btn">立即参团</button>
+                      </p>
+                    </div>
                   </a-card>
                 </li>
               </ul>
@@ -159,42 +159,6 @@
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.store}}</p>
-                  </a-card>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- 一块购 -->
-          <div class="brand-hall height780" v-if="item.unqid === 8">
-            <p class="brand-hall-title">
-              一块购 ● 越团越优惠
-              <a href="javascript:;" @click='toBuying()'>查看全部 <a-icon  type="right"/>
-              </a>
-            </p>
-            <p class="onek-text">一块购活动说明方案</p>
-            <div class="onek-shoping">
-              <ul>
-                <li v-for="(item,index) in teamBuyList.list" :key="index">
-                  <a-card hoverable class="onek-card" @click='toDetail(item)'>
-                    <div class="onek-left">
-                      <img v-lazy="item.imgURl" class="onek-img" slot="cover">
-                      <p>
-                        <span class="sur-time">还剩</span>
-                        <span>{{ teamBuy.h }}</span> 时
-                        <span>{{ teamBuy.m }}</span> 分
-                        <span>{{ teamBuy.s }}</span> 秒
-                      </p>
-                    </div>
-                    <div class="onek-right">
-                      <p class="goods-name">{{item.prodname}}</p>
-                      <p class="goods-spec">{{item.spec}}</p>
-                      <p class="goods-manu">{{item.manuName}}</p>
-                      <p class="goods-success">{{item.success}}成团</p>
-                      <p class="goods-state">{{item.startnum}}盒起拼</p>
-                      <p class="goods-btn">
-                        <button class="imme-btn">立即参团</button>
-                      </p>
-                    </div>
                   </a-card>
                 </li>
               </ul>
@@ -399,7 +363,6 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 5)
             _this.teamBuyList = result.data
-            console.log(_this.teamBuyList.list[0])
             _this.teamByID = result.data.actcode
             _this.getImgUrl(_this.teamBuyList.list)
             _this.secondKills(_this.stringToDate(_this.teamBuyList.now), _this.teamBuyList.edate)
@@ -636,12 +599,15 @@ export default {
     goBackTop() {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
-    toDetail(item) {
+    toDetail(item, actcode, status) {
       this.$router.push({
         path: "/product/detail",
         query: {
           sku: item.sku,
-          spu: item.spu
+          spu: item.spu,
+          rulestatus: item.rulestatus,
+          actcode: actcode || 0,
+          status: status || 0
         }
       });
     },
@@ -1014,7 +980,7 @@ li {
             border: 1px solid #ed3025;
             button{
               float: right;
-              width: 80px;
+              width: 72px;
               height: 48px;
               line-height: 48px;
               border:1px solid #ed3025;
