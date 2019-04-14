@@ -91,6 +91,7 @@
         <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item)">
           <a-card hoverable class="card">
             <img class="card-img" v-lazy="item.imgURl" slot="cover">
+            <img class="reduce-img" src="../assets/img/reduction.png" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
             <p class="card-price top165">
@@ -683,6 +684,11 @@ li {
   .position(absolute, 15px, 45px);
   width: 135px;
   height: 123px;
+}
+.reduce-img{
+  .position(absolute, 0px, 10px);
+  width: 45px;
+  height: 55px;
 }
 .card-progress {
   .position(absolute, 0px, 0px);

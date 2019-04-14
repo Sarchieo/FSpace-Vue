@@ -96,7 +96,7 @@
                     <div class="goods-info">
                       <p class="card-prices">
                         ￥{{items.actprize}}
-                        <del>原价￥{{items.mp}}</del>
+                        <del>￥{{items.mp}}</del>
                       </p>
                       <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
                       <p class="brand-text">{{items.brandName}}</p>
@@ -120,7 +120,7 @@
                   <a-card hoverable class="onek-card" @click="toDetail(item)">
                    <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                   <div class="onek-box" slot="cover">
-                    <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                    <p class="onek-price">￥{{item.vatp}}元 <del> ￥{{item.rrp}}元</del></p>
                     <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                     <p class="goods-manu">{{item.manuName}}</p>
                     <p class="goods-success">{{item.actlimit}}盒起拼/{{item.surplusstock}}成团</p>
@@ -708,7 +708,8 @@ li {
 }
 .card-prices {
   text-indent: 17px;
-  font-size: 18px;
+  margin-bottom: 5px;
+  font-size: 16px;
   font-weight: bold;
   color: rgb(255, 0, 54);
   del {
@@ -730,7 +731,7 @@ li {
   width: 225px;
   text-align: left;
   text-indent: 17px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   color: rgb(255, 0, 54);
   del {
@@ -748,6 +749,10 @@ li {
   height: auto;
   text-align: left;
   padding: 0 10px 0 20px;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
   font-size: 16px;
   color: #333333;
 }
