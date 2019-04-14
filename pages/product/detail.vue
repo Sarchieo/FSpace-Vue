@@ -40,7 +40,7 @@
                   <span>9.8</span>
                   <span>9.5</span>
                   <span>9.0</span>
-                  <span>8.8</span>  
+                  <span>8.8</span>
                   <span>8.5</span>
                   <span>折</span>
                 </p>
@@ -56,7 +56,7 @@
                   <span>5</span>
                   <span>10</span>
                   <span>15</span>
-                  <span>20</span>  
+                  <span>20</span>
                   <span>25</span>
                   <span>人</span>
                 </p>
@@ -141,41 +141,26 @@
             </div>
           </div>
           <!-- 商品优惠券 -->
-          <div class="coupon-box" v-if="status == 1 || status == 3">
+          <div class="coupon-box" v-if="couponPub.length > 0">
             <p class="coupon-title">商品优惠券<span>更多优惠券<a-icon type="right"/></span></p>
             <div class="coupon-content">
-              <div class="coupon-card">
-                <div class="coupon-left">
-                  <p class="coupon-type">折扣券</p>
-                  <span>满800打9.5折</span>
-                  <span>满1600打9折</span>
-                  <span>最多满3200打8.5折</span>
-                  <span>2019-03-27至2019-04-20可用</span>
-                </div>
+              <div class="coupon-card" v-for="(item, index) in couponPub" :key="index" @click="revCoupon(item)">
+                  <div class="coupon-left" v-if="item.brulecode === 2120">
+                    <p class="coupon-type">{{ item.rulename }}</p>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮 </span>
+                  </div>
+                  <div class="coupon-left" v-if="item.brulecode === 2130">
+                    <p class="coupon-type">{{ item.rulename }}</p>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </span>
+                    <span>有效期 {{ item.validday }} 天</span>
+                  </div>
+                  <div class="coupon-left" v-if="item.brulecode === 2110">
+                    <p class="coupon-type">{{ item.rulename }}</p>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </span>
+                    <span>有效期 {{ item.validday }} 天</span>
+                  </div>
                 <div class="coupon-right">
-                  <img class="state-pic" src="../../assets/img/receive.png" alt>
-                </div>
-              </div>
-              <div class="coupon-card">
-                <div class="coupon-left">
-                  <p class="coupon-type">减现券</p>
-                  <span>满800减50</span>
-                  <span>满1600减100</span>
-                  <span>最多满3200减200</span>
-                  <span>2019-03-27至2019-04-20可用</span>
-                </div>
-                <div class="coupon-right">
-                  <img class="state-pic" src="../../assets/img/receive.png" alt>
-                </div>
-              </div>
-               <div class="coupon-card">
-                <div class="coupon-left">
-                  <p class="coupon-type">包邮券</p>
-                  <span class="post-span">满800送包邮券</span>
-                  <span>2019-03-27至2019-04-20可用</span>
-                </div>
-                <div class="coupon-right">
-                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                    <img class="state-pic" src="../../assets/img/receive.png" alt>
                 </div>
               </div>
             </div>
@@ -184,7 +169,7 @@
           <div class="coupon-box" v-if="status == 2">
             <p class="coupon-title">一块购规则说明</p>
             <div class="coupon-content">
-              
+
             </div>
           </div>
           <!-- 详情和评价 -->
@@ -387,7 +372,7 @@ export default {
       isShowCollec: false,
       imgUrl: "",
       sku: "",
-      spu: "", 
+      spu: "",
       status: 0, // 0 无活动 1 限时抢购 2 一块购
       rulestatus: 0,
       prodDetail: {},
@@ -429,6 +414,7 @@ export default {
       dislikes: 0,
       action: null,
       moment,
+      couponPub: [],
       isis:
         "成人及儿童急、慢性腹泻。蒙脱石散（思密达）用于食道、胃、十二指肠疾病引起的相关疼痛症",
       tabStyle: {
@@ -571,11 +557,68 @@ export default {
     this.isCollec();
     // 获取热销数据
     this.getProdDetailHotArea();
+    this.queryCouponPub()
     if(this.actcode != 0) {
       this.queryActiveType();
     }
   },
   methods: {
+    // 领取优惠券
+    revCoupon(item) {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CouponManageModule";
+      iRequest.method = "revCoupon";
+      iRequest.param.json = JSON.stringify(item)
+      this.$refcallback(
+        "discountServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.$message.success(result.message);
+              _this.queryCouponPub()
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
+    },
+    // 获取待领取优惠券
+     queryCouponPub() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CouponManageModule";
+      iRequest.method = "queryCouponPub";
+      iRequest.param.json = JSON.stringify({
+        gcode: '11000000140101', // sku
+        compid: '536862720', // 企业id
+        pageSize: 5,
+        pageNo: 1
+      })
+      this.$refcallback(
+        "discountServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.couponPub = result.data
+              debugger
+              console.log(_this.couponPub)
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
+    },
      // 查询商品活动类型
     queryActiveType() {
       let _this = this;

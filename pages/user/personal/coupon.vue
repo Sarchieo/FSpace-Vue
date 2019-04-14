@@ -2,20 +2,12 @@
   <div>
     <a-tabs defaultActiveKey="1" @change="callback">
       <a-tab-pane tab="可使用" key="1">
-        <div class="haved-coupon">
-          <div class="condition-price">
-            <div class="discount">
-              <p class="discount-count">折扣券</p>
-              <p>满800打9.5折</p>
-              <p>满1600打9折</p>
-              <p>最多满3200打8.5折</p>
-              <!-- <span class="discount-text">折</span> -->
-              <!-- <span class="satisfy">满600元可用</span> -->
-              <!-- <p>全场折扣券</p> -->
-              <p>2019-03-27至2019-04-20可用</p>
-              <!-- <img class="state-pic" src="../../../assets/img/Invalid.png" alt=""> -->
-              <!-- <img class="state-pic" src="../../../assets/img/invalied.png" alt=""> -->
-              <img class="state-pic" src="../../../assets/img/already.png" alt="">
+        <div class="haved-coupon" >
+          <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
+            <div class="discount"  v-if="item.brulecode === 2110">
+              <p class="discount-count">{{ item.rulename }}</p>
+              <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </span>
+              <span>有效期 {{ item.validday }} 天</span>
             </div>
             <img class="right-img" src="../../../assets/img/receives.png" alt="">
           </div> 
@@ -57,41 +49,26 @@
         </div>
       </a-tab-pane>
     </a-tabs>
-    <div class="more-coupon">
+    <div class="more-coupon" v-if="couponPub.length > 0">
       <p class="more-text">更多优惠券</p>
       <div class="condition-price-box">
-        <div class="condition-price">
-          <div class="discount">
-            <p class="discount-count">折扣券</p>
-            <p>满800打9.5折</p>
-              <p>满1600打9折</p>
-              <p>最多满3200打8.5折</p>
-            <!-- <span class="satisfy">满600元可用</span> -->
-            <!-- <p>全场折扣券</p> -->
-            <p>2019-03-27至2019-04-20可用</p>
+        <div class="condition-price"  v-for="(item, index) in couponPub" :key="index" @click="revCoupon(item)">
+          <div class="discount" v-if="item.brulecode === 2130">
+            <p class="discount-count">{{ item.rulename }}</p>
+            <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </span>
+            <span>有效期 {{ item.validday }} 天</span>
+          </div>
+          <div class="discount"  v-if="item.brulecode === 2110">
+            <p class="discount-count">{{ item.rulename }}</p>
+            <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </span>
+            <span>有效期 {{ item.validday }} 天</span>
+          </div>
+          <div class="discount" v-if="item.brulecode === 2120">
+            <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
+            <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮 </span>
           </div>
           <img class="right-img" src="../../../assets/img/receive.png" alt="">
         </div>
-         <div class="condition-price">
-          <div class="discount">
-           <p class="discount-count">减现券</p>
-               <p>满800减50</p>
-              <p>满1600减100</p>
-              <p>最多减200</p>
-            <p>2019-03-27至2019-04-20可用</p>
-          </div>
-          <img class="right-img" src="../../../assets/img/receive.png" alt="">
-        </div>
-          <div class="condition-price">
-            <div class="discount">
-              <p class="discount-count margin-bottom35">包邮券</p>
-              <p class="margin-bottom35">满600元即送包邮券</p>
-             
-              <p>2019-03-27至2019-04-20可用</p>
-               
-            </div>
-            <img class="right-img" src="../../../assets/img/receive.png" alt="">
-          </div>
       </div>
     </div>
   </div>
@@ -99,9 +76,98 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      couponPub: [],
+      revCouponList: []
+    };
+  },
+  mounted() {
+    this.queryRevCouponList(0)
+    this.queryCouponPub()
   },
   methods: {
+    // 获取我的优惠券
+    queryRevCouponList(ctype) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "CouponRevModule";
+      iRequest.method = "queryRevCouponList";
+      iRequest.param.json = JSON.stringify({
+        compid: 536862720,
+        type: ctype,
+        pageSize: 5,
+        pageNo: 1
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(536862720/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          console.log(result)
+          if (result.code === 200) {
+            _this.revCouponList = result.data
+
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+     // 获取待领取优惠券
+    queryCouponPub() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CouponManageModule";
+      iRequest.method = "queryCouponPub";
+      iRequest.param.json = JSON.stringify({
+        gcode: 0, // sku
+        compid: '536862720', // 企业id
+        pageSize: 5,
+        pageNo: 1
+      })
+      this.$refcallback(
+        "discountServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.couponPub = result.data
+              console.log(_this.couponPub)
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
+    },
+    // 领取优惠券
+    revCoupon(item) {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CouponManageModule";
+      iRequest.method = "revCoupon";
+      iRequest.param.json = JSON.stringify(item)
+      this.$refcallback(
+        "discountServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.$message.success(result.message);
+              _this.queryRevCouponList(0)
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
+    },
     callback(key) {
       console.log(key);
     }
