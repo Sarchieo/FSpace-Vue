@@ -169,7 +169,7 @@
           <div class="coupon-box" v-if="status == 2">
             <p class="coupon-title">一块购规则说明</p>
             <div class="coupon-content">
-
+              <img src="../../assets/img/arrow.png" alt="">
             </div>
           </div>
           <!-- 详情和评价 -->
@@ -930,6 +930,10 @@ li {
 }
 .coupon-content {
   display: inline-block;
+  width: 1190px;
+  height: 246px;
+}
+.coupon-content img{
   width: 1190px;
   height: 246px;
 }

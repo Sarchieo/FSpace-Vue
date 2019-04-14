@@ -22,14 +22,20 @@
                 <p class="goods-name">{{item.prodname}} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <p class="goods-limit">
-                  {{item.startnum}}盒起拼, 还剩
-                  <span>{{}}</span>盒
+                  {{item.startnum}}{{item.unitName}}起拼/
+                  <span>{{item.surplusstock}}</span>{{item.unitName}}成团
                 </p>
                 <p class="goods-price">
                   限时价￥{{item.actprize}}元
-                  <del>原价￥{{item.mp}}元</del>
+                  <del>￥{{item.mp}}元</del>
                 </p>
-                <button @click="toDetail(item)">去参团</button>
+                <p class="go-imme">
+                   <span class="sur-time">还剩</span>
+                        <span>{{teamBuy.h}}</span>时
+                        <span>{{teamBuy.m}}</span>分
+                        <span>{{teamBuy.s}}</span>秒
+                        <button class="imme-btn">立即参团</button>
+                </p>
               </a-card>
             </div>
           </div>
@@ -49,6 +55,11 @@ export default {
   },
   data() {
     return {
+         teamBuy: {
+        h: 0,
+        m: 0,
+        s: 0,
+      },
       actcode: 0,
       flashSale: {
         h: 0,
@@ -185,6 +196,7 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list;
             _this.teamBuyList = result.data;
+            console.log(_this.teamBuyList)
             _this.getImgUrl(_this.teamBuyList.list);
             _this.secondKill(_this.stringToDate(_this.teamBuyList.now || '2019-4-13 16:10:20') ,_this.teamBuyList.edate)
           } else {
@@ -309,6 +321,21 @@ export default {
 }
 .card {
   .container-size(inline-block, 225px, 310px, 0px 0px, 0px);
+  .go-imme{
+    .position(absolute,258px,0px);
+    .p-size(50px,50px,14px,left,10px,#999999);
+    width: 100%;
+    border: 1px solid #ed3025;
+     button{
+       float: right;
+      width: 72px;
+      height: 48px;
+      line-height: 48px;
+      border:1px solid #ed3025;
+      background: #ed3025;
+      color: #ffffff;
+    }
+  }
 }
 .buying-text {
   .container-size(block, 1190px, 200px, 0 auto, 0px);
@@ -335,11 +362,6 @@ export default {
   .container-size(inline-block, 225px, 310px, 10px 6px, 0px);
   .position(relative, 0px, 0px);
   background: #ffffff;
-  button {
-    .position(absolute, 265px, 5px);
-    .button-size(215px, 40px, 40px, 14px, 0px, 5px);
-    .button-color(1px solid transparent, #ed2f26, #ffffff);
-  }
 }
 .goods-pic {
   .position(absolute, 0px, 10px);
@@ -350,6 +372,9 @@ export default {
   .position(absolute, 187px, 0px);
   width: 100%;
   text-indent: 10px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
   font-size: 16px;
 }
 .goods-adv {
@@ -359,6 +384,10 @@ export default {
   .position(absolute, 215px, 0px);
   width: 100%;
   text-indent: 10px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
   font-size: 14px;
   color: #999999;
 }
@@ -377,8 +406,10 @@ export default {
   width: 100%;
   text-indent: 10px;
   font-size: 16px;
+  font-weight: bold;
   color: #ed2f26;
   del {
+    font-weight: normal;
     color: #666666;
   }
 }
