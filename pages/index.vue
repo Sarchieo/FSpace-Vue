@@ -96,7 +96,7 @@
                     <div class="goods-info">
                       <p class="card-prices">
                         ￥{{items.actprize}}
-                        <del>原价￥{{items.mp}}</del>
+                        <del>￥{{items.mp}}</del>
                       </p>
                       <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
                       <p class="brand-text">{{items.brandName}}</p>
