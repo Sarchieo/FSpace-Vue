@@ -56,7 +56,7 @@
           <!-- 限时抢购 -->
           <div id="hot" class="brand-hall" v-if="item.unqid === 512">
             <p class="brand-hall-title">
-              {{item.title}}
+             限时抢购
               <a class="all-hot" @click="toLimited()">
                 查看全部抢购
                 <a-icon type="right"/>
@@ -106,6 +106,38 @@
               </ul>
             </div>
           </div>
+           <div class="brand-hall" v-if="item.unqid === 8">
+            <p class="brand-hall-title">
+              一块购 ● 越团越优惠
+              <a href="javascript:;" @click="toBuying()">
+                查看全部
+                <a-icon type="right"/>
+              </a>
+            </p>
+            <div class="onek-shoping">
+              <ul>
+                <li v-for="(item,index) in teamBuyList.list" :key="index">
+                  <a-card hoverable class="onek-card" @click="toDetail(item)">
+                   <img v-lazy="item.imgURl" class="onek-img" slot="cover">
+                  <div class="onek-box" slot="cover">
+                    <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                    <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
+                    <p class="goods-manu">{{item.manuName}}</p>
+                    <p class="goods-success">{{item.actlimit}}盒起拼/{{item.surplusstock}}成团</p>
+                    <!-- <p class="goods-state"></p> -->
+                    <p class="goods-btn">
+                      <span class="sur-time">还剩</span>
+                      <span>{{ }}</span> 时
+                      <span>{{ }}</span> 分
+                      <span>{{ }}</span> 秒
+                      <button class="imme-btn">立即参团</button>
+                    </p>
+                  </div>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
+          </div>
           <!-- 热销专区 包邮专区 -->
           <div class="brand-hall" v-if="item.unqid === 2">
             <p class="brand-hall-title">
@@ -132,108 +164,13 @@
               </ul>
             </div>
           </div>
-
-
-
-
-
-          <!-- 一块购 -->
-           <div class="brand-hall">
-          <p class="brand-hall-title">
-            一块购 ● 越团越优惠
-            <a href="javascript:;" @click="toBuying()">
-              查看全部
-              <a-icon type="right"/>
-            </a>
-          </p>
-          <p class="onek-text">一块购活动说明方案</p>
-          <div class="onek-shoping">
-            <ul>
-              <li>
-                <a-card class="onek-card" @click="toDetail(item)">
-                  <img
-                    src="//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-                    class="onek-img"
-                    slot="cover"
-                  >
-                  <div class="onek-box" slot="cover">
-                    <p class="onek-price">
-                      ￥39
-                      <del>￥28</del>
-                    </p>
-                    <p class="goods-name">999感冒灵颗粒 0.5g/10袋</p>
-
-                    <p class="goods-manu">华润三九制药有限公司</p>
-
-                    <p class="goods-state">10盒起拼/ 100盒成团</p>
-                    <p class="goods-btn">
-                      <span class="sur-time">还剩</span>
-                      <span>{{ }}</span> 时
-                      <span>{{ }}</span> 分
-                      <span>{{ }}</span> 秒
-                      <button class="imme-btn">立即参团</button>
-                    </p>
-                  </div>
-                </a-card>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-          <div class="brand-hall" v-if="item.unqid === 8">
-            <p class="brand-hall-title">
-              一块购 ● 越团越优惠
-              <a href="javascript:;" @click="toBuying()">
-                查看全部
-                <a-icon type="right"/>
-              </a>
-            </p>
-            <div class="onek-shoping">
-              <ul>
-                <li v-for="(item,index) in teamBuyList.list" :key="index">
-                  <a-card hoverable class="onek-card" @click="toDetail(item)">
-                   <img v-lazy="item.imgURl" class="onek-img" slot="cover">
-
-
-                   <div class="onek-box" slot="cover">
-                    <p class="onek-price">
-                      ￥39
-                      <del>￥28</del>
-                    </p>
-                    <p class="goods-name">999感冒灵颗粒 0.5g/10袋</p>
-
-                    <p class="goods-manu">华润三九制药有限公司</p>
-
-                    <p class="goods-state">10盒起拼/ 100盒成团</p>
-                    <p class="goods-btn">
-                      <span class="sur-time">还剩</span>
-                      <span>{{ }}</span> 时
-                      <span>{{ }}</span> 分
-                      <span>{{ }}</span> 秒
-                      <button class="imme-btn">立即参团</button>
-                    </p>
-                  </div>
-
-                    <p class="goods-name">{{item.prodname}}</p>
-                    <p class="goods-spec">{{item.spec}}</p>
-                    <p class="goods-manu">{{item.manuName}}</p>
-                    <p class="goods-success">{{item.success}}成团</p>
-                    <p class="goods-state">{{item.startnum}}盒起拼</p>
-                    <p class="goods-btn">
-                      <span class="sur-time">还剩</span>
-                      <span>{{ }}</span> 时
-                      <span>{{ }}</span> 分
-                      <span>{{ }}</span> 秒
-                      <button class="imme-btn">立即参团</button>
-                    </p>
-                  </a-card>
-                </li>
-              </ul>
-            </div>
-          </div>
           <!-- 新品专区 -->
           <div id="choice" class="elaborate" v-if="item.unqid === 1">
-            <p class="elaborate-title">新品专区</p>
+            <p class="elaborate-title">新品专区
+               <a href="javascript:;" @click="toNewGoods()">
+                查看全部
+                <a-icon type="right"/>
+              </a> </p>
             <ul class="elaborate-ui">
               <li v-for="(item,index) in newGoodsList" :key="index">
                 <a-card hoverable class="elaborate-card" @click="toDetail(item)">
@@ -250,39 +187,6 @@
               </li>
             </ul>
           </div>
-          <!-- <div
-          id="free-delivery"
-          class="brand-hall"
-          v-for="(item,index) in freeDelivery"
-          :key="index"
-        >
-          <p class="brand-hall-title">
-            {{item.title}}
-            <a>
-              查看全部
-              <a-icon type="right"/>
-            </a>
-          </p>
-          <div class="brand-div">
-            <ul class="brand-right hot-width">
-              <li v-for="(items,index) in item.list" :key="index">
-                <a-card hoverable class="card" @click="toDetailsPages">
-                  <img class="card-img" v-lazy="items.src" slot="cover">
-                  <p class="surplus text-Center top185">{{items.text}}</p>
-                  <p class="validity">有效期至{{items.validity}}</p>
-                  <p class="card-price top165">
-                    ￥{{items.new}}
-                    <del>￥{{items.old}}</del>
-                  </p>
-                  <p class="specifications">{{items.specifications}}</p>
-                  <p class="manufacturer">{{items.manufacturer}}</p>
-                  <p class="sold">已售{{items.sold}}盒</p>
-                  <a-card-meta class="card-info" :title="item.text"></a-card-meta>
-                </a-card>
-              </li>
-            </ul>
-          </div>
-          </div>-->
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -452,10 +356,11 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            result.data.list = result.data.list.slice(0, 6)
+            result.data.list = result.data.list.slice(0, 5)
             _this.teamBuyList = result.data
             _this.teamByID = result.data.actcode
             _this.getImgUrl(_this.teamBuyList)
+            console.log( _this.teamBuyList)
           } else {
             _this.$message.error(result.message);
           }
@@ -478,8 +383,9 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 4)
-            _this.limitedList = result.data
             debugger
+            _this.limitedList = result.data
+            
             _this.limitedID = result.data.actcode
             _this.secondKill(_this.stringToDate(_this.limitedList.now), _this.limitedList.edate)
             _this.getImgUrl(_this.limitedList.list)
@@ -970,6 +876,11 @@ li {
   line-height: 50px;
   font-size: 22px;
   font-weight: bold;
+  a{
+    float: right;
+    font-size: 16px;
+    font-weight: normal;
+  }
 }
 /* 热销专区，包邮专区 */
 .brand-divs {
@@ -982,6 +893,12 @@ li {
   margin-bottom: 20px;
 }
 // 一块购
+.onek-card:hover{
+   box-shadow: 0px 0px 30px 10px #e0e0e0;
+}
+.imme-btn:hover{
+  cursor: pointer;
+}
 .onek-text {
   .p-size(30px, 30px, 16px, left, 0px, #333333);
   background: #eeeeee;
@@ -996,7 +913,7 @@ li {
     li {
       display: inline-block;
       margin-left: 0px;
-      margin-right: 19px;
+      margin-right: 17px;
       margin-bottom: 13px;
       .onek-card {
         width: 225px;
@@ -1005,10 +922,11 @@ li {
         .onek-box{
           .container-size(block,223px,158px,0px,0px);
           .onek-price{
-            .p-size(30px,30px,20px,left,5px,#ed3025);
+            .p-size(30px,30px,16px,left,7px,#ed3025);
             font-weight: bold;
             del{
               float: right;
+              font-size: 14px;
               margin-right: 15px;
               color: #999999!important;
               font-weight: normal;
@@ -1016,9 +934,17 @@ li {
           }
           .goods-name{
             .p-size(25px,25px,16px,left,10px,#333333);
+            width: 100%;
+             overflow: hidden;
+              text-overflow:ellipsis;
+              white-space: nowrap;
           }
           .goods-manu{
              .p-size(25px,25px,14px,left,10px,#999999);
+             width: 100%;
+              overflow: hidden;
+              text-overflow:ellipsis;
+              white-space: nowrap;
           }
           .goods-state{
             .p-size(25px,25px,14px,left,10px,#999999);
@@ -1035,6 +961,9 @@ li {
               background: #ed3025;
               color: #ffffff;
             }
+          }
+          .goods-success{
+            .p-size(27px,27px,14px,left,10px,#999999);
           }
         }
         .onek-pic {
