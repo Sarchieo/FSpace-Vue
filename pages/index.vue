@@ -81,12 +81,12 @@
                 <li v-for="(items,index) in limitedList.list" :key="index">
                   <a-card hoverable class="card" @click="toDetail(items)">
                     <img class="card-img" v-lazy="items.imgURl" slot="cover">
-                    <!-- <a-progress
+                    <a-progress
                       :percent="items.activitystore"
                       style="position:absolute;top:145px;left:20px;width: 188px;"
                       :showInfo="false"
                       status="exception"
-                    /> -->
+                    />
                     <p class="surplus">
                       还剩{{items.activitystore}}支
                       <span>限购{{items.actlimit}}支</span>
@@ -110,14 +110,14 @@
           <div class="brand-hall" v-if="item.unqid === 2">
             <p class="brand-hall-title">
               热销专区
-              <a href="javascript:;">查看全部<a-icon type="right"/>
+              <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
               <ul class="brand-right hot-width">
                 <li v-for="(item,index) in hotGoodsList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
-                    <img class="card-img" v-lazy="item.imgURl" slot="cover">
+                    <img class="card-img" v-lazy="item.imgURl" slot="cover">  
                     <p class="surplus top185"></p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                     <p class="card-price top165">
@@ -148,9 +148,9 @@
                       <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                       <p>
                         <span class="sur-time">还剩</span>
-                        <span>{{  }}</span> 时
-                        <span>{{  }}</span> 分
-                        <span>{{  }}</span> 秒
+                        <span>{{ teamBuy.h }}</span> 时
+                        <span>{{ teamBuy.m }}</span> 分
+                        <span>{{ teamBuy.s }}</span> 秒
                       </p>
                     </div>
                     <div class="onek-right">
@@ -170,7 +170,11 @@
           </div>
           <!-- 新品专区 -->
           <div id="choice" class="elaborate" v-if="item.unqid === 1">
-            <p class="elaborate-title">新品专区</p>
+            <p class="brand-hall-title">
+              新品专区
+              <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
+              </a>
+            </p>
             <ul class="elaborate-ui">
               <li v-for="(item,index) in newGoodsList" :key="index">
                 <a-card hoverable class="elaborate-card" @click="toDetail(item)">
@@ -260,6 +264,11 @@ export default {
   },
   data() {
     return {
+      teamBuy: {
+        h: 0,
+        m: 0,
+        s: 0,
+      },
       flashSale: {
         h: 0,
         m: 0,
@@ -391,8 +400,10 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 6)
             _this.teamBuyList = result.data
+            console.log(_this.teamBuyList.list[0])
             _this.teamByID = result.data.actcode
-            _this.getImgUrl(_this.teamBuyList)
+            _this.getImgUrl(_this.teamBuyList.list)
+            _this.secondKills(_this.stringToDate(_this.teamBuyList.now), _this.teamBuyList.edate)
           } else {
             _this.$message.error(result.message);
           }
@@ -416,7 +427,6 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 4)
             _this.limitedList = result.data
-            debugger
             _this.limitedID = result.data.actcode
             _this.secondKill(_this.stringToDate(_this.limitedList.now), _this.limitedList.edate)
             _this.getImgUrl(_this.limitedList.list)
@@ -531,6 +541,31 @@ export default {
       var date = new Date(year, month, day, hour, minute, second);
       return date;
     },
+    // 批量设置倒计时
+    secondKills(date,eDate) {
+      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
+      let times = endDate - new Date()
+      let _this = this
+      if(times>=0) {
+        let timer;
+        timer = setInterval(function () {
+        times--;
+        let modulo = times % (60 * 60 * 24);
+        _this.teamBuy.h = Math.floor(modulo / (60 * 60));
+        modulo = modulo % (60 * 60);
+        _this.teamBuy.m = Math.floor(modulo / 60);
+        _this.teamBuy.s = modulo % 60;
+        if (times <= 0) {
+          clearInterval(timer);
+        }
+        }, 1000);
+        if (times >= 0) {
+          console.log(times)
+        } else {
+          console.log('活动结束')
+        }
+      }
+    },
     // 设置倒计时
     secondKill(date,eDate) {
       let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
@@ -619,17 +654,17 @@ export default {
         }
       });
     },
-    toNewGoods(){
+    toNewGoods() {
       this.$router.push({
         path: "/activity/new-goods"
       });
     },
-    toHotGoods(){
+    toHotGoods() {
       this.$router.push({
         path: "/activity/hot-goods"
       });
     },
-    toBuying(){
+    toBuying() {
       this.$router.push({
         path: "/activity/buying",
         query: {

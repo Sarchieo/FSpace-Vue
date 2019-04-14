@@ -11,42 +11,42 @@
          </div>
           <div class="limited-goods">
            
-              <div class="goods-box" v-for="(item,index) in goodsList" :key="index">
+              <div class="goods-box" v-for="(item,index) in hotGoodsList" :key="index">
                 <a-card hoverable class="card" @click="toDetail(item)">
-                  <img v-lazy="item.src" alt="" class="goods-pic">
-                  <p class="goods-name">{{item.name}} {{item.advantage}}</p>
-                  <p class="goods-surplus">{{item.menu}}</p>
+                  <img v-lazy="item.imgURl" alt="" class="goods-pic">
+                  <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
+                  <p class="goods-surplus">{{item.manuName}}</p>
                   <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                  <p class="goods-price">单价￥{{item.new}}元 </p>
-                  <button @click="toDetails()">查看详情</button>
+                  <p class="goods-price">单价￥{{item.mp}}元 </p>
+                  <button @click="toDetail(item)">查看详情</button>
                 </a-card>  
               </div>
             
           </div>
           <div class="limited-goods">
               <p class="one-day">24小时热销</p>
-              <div class="goods-box" v-for="(item,index) in goodsList" :key="index">
+              <div class="goods-box" v-for="(item,index) in hotGoodsList" :key="index">
                 <a-card hoverable class="card" @click="toDetail(item)">
-                  <img v-lazy="item.src" alt="" class="goods-pic">
-                  <p class="goods-name">{{item.name}} {{item.advantage}}</p>
-                  <p class="goods-surplus">{{item.menu}}</p>
+                  <img v-lazy="item.imgURl" alt="" class="goods-pic">
+                  <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
+                  <p class="goods-surplus">{{item.manuName}}</p>
                   <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                  <p class="goods-price">单价￥{{item.new}}元 </p>
-                  <button @click="toDetails()">查看详情</button>
+                  <p class="goods-price">单价￥{{item.mp}}元 </p>
+                  <button @click="toDetail(item)">查看详情</button>
                 </a-card>  
               </div>
             
           </div>
           <div class="limited-goods margin-bottom30">
               <p class="one-day">一周热销</p>
-              <div class="goods-box" v-for="(item,index) in goodsList" :key="index">
+              <div class="goods-box" v-for="(item,index) in hotGoodsList" :key="index">
                 <a-card hoverable class="card" @click="toDetail(item)">
-                  <img v-lazy="item.src" alt="" class="goods-pic">
-                  <p class="goods-name">{{item.name}} {{item.advantage}}</p>
-                  <p class="goods-surplus">{{item.menu}}</p>
+                  <img v-lazy="item.imgURl" alt="" class="goods-pic">
+                  <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
+                  <p class="goods-surplus">{{item.manuName}}</p>
                   <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                  <p class="goods-price">单价￥{{item.new}}元 </p>
-                  <button @click="toDetails()">查看详情</button>
+                  <p class="goods-price">单价￥{{item.mp}}元 </p>
+                  <button @click="toDetail(item)">查看详情</button>
                 </a-card>  
               </div>
             
@@ -67,112 +67,98 @@ export default {
   },
   data() {
     return {
-        tabStyle: {
-            color: '#c40000',
-            background: 'black'
-        },
-        goodsList: [
-            {
-                src: '//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '冬虫夏草',
-                advantage: '5g/盒',
-                surplus: 56,
-                new: 344,
-                old: 309,
-                menu: '三九制药有限公司',
-                least: 10,
-                most: 100
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '长白山人参',
-                advantage: '5g/盒',
-                surplus: 12,
-                new: 888,
-                old: 1099,
-                menu: '三九制药有限公司',
-                 least: 10,
-                most: 100
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i1/TB1EpYsKpXXXXbDXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '宁夏枸杞',
-                advantage: '5g/盒',
-                surplus: 34,
-                new: 23,
-                old: 24,
-                menu: '三九制药有限公司',
-                 least: 10,
-                most: 100
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i4/TB1L37TMpXXXXbnXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '胶原蛋白口服液',
-                advantage: '5g/盒',
-                surplus: 99,
-                new: 199,
-                old: 209,
-                menu: '三九制药有限公司',
-                 least: 10,
-                most: 100
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '叶酸片',
-                advantage: '5g/盒',
-                surplus: 56,
-                new: 344,
-                old: 309,
-                menu: '三九制药有限公司',
-                 least: 10,
-                most: 100
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '山东阿胶',
-                advantage: '5g/盒',
-                surplus: 45,
-                new: 222,
-                old: 233,
-                menu: '三九制药有限公司',
-                 least: 10,
-                most: 100
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i1/TB103TQOXXXXXaLaXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg',
-                name: '盘龙云海排毒胶囊',
-                advantage: '5g/盒',
-                surplus: 88,
-                new: 56,
-                old: 59,
-                menu: '三九制药有限公司',
-                 least: 10,
-                most: 100
-            },
-             {
-                src: '//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-                name: '多维素片',
-                advantage: '5g/盒',
-                surplus: 19,
-                new: 88,
-                old: 99,
-                menu: '三九制药有限公司',
-                least: 10,
-                most: 100
-            }
-        ]
+      hotGoodsList: [],
+      tabStyle: {
+          color: '#c40000',
+          background: 'black'
+      }
     }
   },
+  mounted() {
+    this.getHotGoods()
+  },
   methods: {
-      callback(key) {
-          console.log(key)
-      },
-      toDetails() {
-          this.$router.push({
-               path:'/product/detail'
-          })
-      },
-      
+     // 热销商品列表
+    async getHotGoods() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getHotMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.hotGoodsList = result.data.slice(0,5)
+            debugger
+            _this.getImgUrl(_this.hotGoodsList)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    async getImgUrl(arr) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = [];
+      arr.forEach(c => {
+        list.push({
+          sku: c.sku,
+          spu: c.spu
+        });
+      });
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, list) => {
+                _this.$set(
+                  arr[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    arr[index].sku +
+                    "-200x200.jpg" +
+                    "?" +
+                    new Date().getSeconds()
+                );
+              });
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            debugger;
+          }
+        )
+      );
+    },
+    callback(key) {
+        console.log(key)
+    },
+    toDetail(item) {
+      this.$router.push({
+        path: "/product/detail",
+        query: {
+          sku: item.sku,
+          spu: item.spu
+        }
+      });
+    },
   }
 };
 </script>

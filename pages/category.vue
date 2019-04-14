@@ -93,9 +93,12 @@
             <img class="card-img" v-lazy="item.imgURl" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
-            <p class="card-price top165">
-              ￥{{item.vatp}}
-              <del>￥{{item.vatp}}</del>
+            <p class="card-price top165" v-if="item.actprod">
+              ￥{{item.maxprize}}
+              <del>￥{{item.mp}}</del>
+            </p>
+            <p class="card-price top165" v-if="!item.actprod">
+              ￥{{item.mp}}
             </p>
             <!-- 规格 -->
             <p class="specifications">{{item.spec}}</p>
