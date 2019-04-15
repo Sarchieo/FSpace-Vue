@@ -12,7 +12,7 @@
           <div class="person-num">
             <div class="person-left">商品累计拼团人数/折扣 描述方式待定</div>
             <div class="person-right">
-              距团购活动时间还剩 {{ flashSale.h }} 时 {{ flashSale.m }} 分 {{ flashSale.s }} 秒
+              <!-- 距团购活动时间还剩 {{ flashSale.h }} 时 {{ flashSale.m }} 分 {{ flashSale.s }} 秒 -->
             </div>
           </div>
           <div class="limited-goods">
