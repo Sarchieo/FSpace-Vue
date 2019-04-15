@@ -54,7 +54,7 @@
                 </p>
                 <a-progress
                   v-if="status == 1 || 2"
-                  :percent="20"
+                  :percent="percentAge"
                   style="width: 295px;height: 8px;margin-left: 20px;"
                   :showInfo="false"
                   status="exception"
@@ -411,10 +411,11 @@
                 <ul class="recommend-ul">
                   <li v-for="(item,index) in hotList" :key="index">
                     <a-card class="card-recommend" hoverable>
-                      <img v-lazy="item.url" slot="cover">
-                      <p class="meal-price">￥{{item.mp}}元</p>
+                      <img v-lazy="item.imageUrl" slot="cover">
                       <p class="meal-name">{{item.prodname}}</p>
-                      <p class="meal-packing">{{item.spec}}</p>
+                      <p class="meal-price">￥{{item.mp}}元</p>
+
+                      <p class="meal-packing">已售{{item.buynum}}{{item.unitName}}</p>
                     </a-card>
                   </li>
                 </ul>
@@ -446,6 +447,7 @@ export default {
   },
   data() {
     return {
+      percentAge: 50,
       flashSale: {
         h: 0,
         m: 0,
@@ -506,125 +508,6 @@ export default {
         backgroundColor: "#f2f2f2"
       },
       count: 1,
-      mealList: [
-        {
-          list: [
-            {
-              url:
-                "//img.alicdn.com/imgextra/i2/TB1RMTfIFXXXXX.XVXXLJcJ8VXX_033554.jpg_160x160q90.jpg",
-              price: 42,
-              name: "斯强牌服输酸营养颗粒",
-              packing: "3g / 袋"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 49,
-              name: "太极五子衍宗",
-              packing: "0.5g / 80片"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 99,
-              name: "盘龙去海排毒胶囊",
-              packing: "0.5g * 18颗"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 468,
-              name: "善存多维元素片",
-              packing: "20g / 1瓶"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 32,
-              name: "九芝堂六味地黄丸",
-              packing: "0.5g / 100粒"
-            }
-          ]
-        },
-        {
-          list: [
-            {
-              url:
-                "//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg",
-              price: 322,
-              name: "汇仁牌肾宝片",
-              packing: "5g / 100片"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i1/TB1srwPPVXXXXaIaXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg",
-              price: 711,
-              name: "白去山陈李济",
-              packing: "5g / 80片"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 1350,
-              name: "山东东阿阿胶",
-              packing: "5g * 18袋"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i2/TB11.ucPpXXXXaVaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 468,
-              name: "东阿阿胶复方阿胶浆",
-              packing: "20g / 1瓶"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 32,
-              name: "九芝堂六味地黄丸",
-              packing: "0.5g / 100粒"
-            }
-          ]
-        },
-        {
-          list: [
-            {
-              url:
-                "//img.alicdn.com/imgextra/i3/TB1q0YVKpXXXXXdXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 4050,
-              name: "破壁灵芝孢子粉",
-              packing: "5g / 15袋"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i2/TB1zFmZLXXXXXcVXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 79.2,
-              name: "金河藏红",
-              packing: "5g / 10袋"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 1350,
-              name: "贯康 冬虫夏草 4条/克",
-              packing: "5g * 18袋"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i1/TB1sej.KFXXXXXpXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 269,
-              name: "桃花姬",
-              packing: "20g / 1袋"
-            },
-            {
-              url:
-                "//img.alicdn.com/imgextra/i2/TB1gpgYKpXXXXb8XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              price: 69,
-              name: "敖东城 西洋参",
-              packing: "80g / 1瓶"
-            }
-          ]
-        }
-      ]
     };
   },
   created() {
@@ -632,7 +515,7 @@ export default {
     this.spu = this.$route.query.spu;
     this.actcode = this.$route.query.actcode;
     this.rulestatus = this.$route.query.rulestatus;
-    this.status = this.$route.query.status || 0;
+    this.status = this.$route.query.status;
   },
   mounted() {
     this.getProd();
@@ -690,8 +573,6 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.couponPub = result.data;
-              debugger;
-              console.log(_this.couponPub);
             } else {
               _this.$message.error(result.message);
             }
@@ -770,7 +651,6 @@ export default {
           if (result.code === 200) {
             _this.prodDetail = result.data;
             _this.details = JSON.parse(_this.prodDetail.detail);
-            console.log(_this.details);
           } else {
             _this.$message.error(result.message);
           }
@@ -1502,12 +1382,16 @@ li {
   height: 1510px;
 }
 .recommend-box {
-  padding: 0 40px;
+  padding: 10px 30px;
 }
 .card-recommend {
-  width: 200px;
+  width: 220px;
   height: 300px;
   margin-bottom: 15px;
+}
+.card-recommend img{
+  width: 220px;
+  height: 190px;
 }
 /* 页脚 */
 .page-footer {

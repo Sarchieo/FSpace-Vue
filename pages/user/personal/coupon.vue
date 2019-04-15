@@ -4,13 +4,16 @@
       <a-tab-pane tab="可使用" key="1">
         <div class="haved-coupon" >
           <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
-            <div class="discount"  v-if="item.brulecode === 2110">
+            <div class="discount" v-if="item.brulecode === 2110">
               <p class="discount-count">{{ item.rulename }}</p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
+              <p>有效期:{{item.startdate}}至{{item.enddate}}</p>
               <p>有效期 {{ item.validday }} 天</p>
             </div>
-            <img class="right-img" src="../../../assets/img/receives.png" alt="">
+             <!-- <img class="state-pic" src="../../../assets/img/already.png" alt=""> -->
+             <img class="right-img" src="../../../assets/img/receives.png" v-if="item.brulecode === 2110" alt="">
           </div> 
+          <!-- <img class="right-img" src="../../../assets/img/receives.png" alt=""> -->
         </div>
       </a-tab-pane>
       <a-tab-pane tab="已使用" key="2" forceRender>
@@ -26,9 +29,8 @@
               <span class="satisfy">满600元可用</span> -->
               <!-- <p>全场折扣券</p> -->
               <p>2019-03-27至2019-04-20可用</p>
-              <img class="state-pic" src="../../../assets/img/invalied.png" alt="">
+              <img class="state-pic" src="../../../assets/img/already.png" alt="">
             </div>
-             <img class="right-img" src="../../../assets/img/received.png" alt="">
           </div>
         </div>
       </a-tab-pane>
@@ -44,7 +46,6 @@
               <p>2019-03-27至2019-04-20可用</p>
                <img class="state-pic" src="../../../assets/img/Invalid.png" alt="">
             </div>
-            <img class="right-img" src="../../../assets/img/received.png" alt="">
           </div>
         </div>
       </a-tab-pane>
@@ -104,7 +105,9 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            debugger
             _this.revCouponList = result.data
+            console.log('我的优惠券')
             console.log(result.data)
           } else {
             _this.$message.error(result.message);
@@ -119,7 +122,7 @@ export default {
       iRequest.cls = "CouponManageModule";
       iRequest.method = "queryCouponPub";
       iRequest.param.json = JSON.stringify({
-        gcode: 0, // sku
+        gcode: -1, // sku
         compid: '536862720', // 企业id
         pageSize: 5,
         pageNo: 1
@@ -131,6 +134,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.couponPub = result.data
+              console.log('更多优惠券')
               console.log(_this.couponPub)
             } else {
               _this.$message.error(result.message);
@@ -144,6 +148,7 @@ export default {
     },
     // 领取优惠券
     revCoupon(item) {
+      debugger
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
@@ -155,6 +160,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+              debugger
               _this.$message.success(result.message);
               _this.queryRevCouponList(0)
             } else {
