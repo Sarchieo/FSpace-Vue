@@ -334,8 +334,8 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
+          debugger
           if (result.code === 200) {
-            debugger
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
@@ -350,6 +350,7 @@ export default {
               _this.getAncestors(result.data.addressCode)
             }
           } else {
+            _this.$message.error(result.message)
           }
         })
       );
@@ -396,7 +397,6 @@ export default {
                   ]
                   var data = xhr.responseText;
                   data = JSON.parse(data).data.sort();
-                  debugger
                   for (var i in data) {
                     if (i !== 7) {
                        _this.uploadList[i].fileList.push({

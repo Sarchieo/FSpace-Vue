@@ -9,7 +9,9 @@
             <a-breadcrumb class="crumbs">
               <a-breadcrumb-item>首页</a-breadcrumb-item>
               <a-breadcrumb-item>
-                <a href>限时抢购</a>
+                <a href="javascript:;" v-if="status == 0">商品列表</a>
+                <a href="javascript:;" v-if="status == 1">限时抢购</a>
+                <a href="javascript:;" v-if="status == 2">一块购</a>
               </a-breadcrumb-item>
               <a-breadcrumb-item>
                 <a href>{{ prodDetail.prodname }}</a>
@@ -630,7 +632,7 @@ export default {
     this.spu = this.$route.query.spu;
     this.actcode = this.$route.query.actcode;
     this.rulestatus = this.$route.query.rulestatus;
-    this.status = this.$route.query.status;
+    this.status = this.$route.query.status || 0;
   },
   mounted() {
     this.getProd();
@@ -713,8 +715,9 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger;
-            _this.discount = result.data;
+            if(result.data) {
+              _this.discount = result.data;
+            }
             _this.secondKill(
               _this.stringToDate(_this.discount.currentDate),
               _this.discount.endTime
@@ -743,6 +746,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotList = result.data.slice(0, 5);
+            _this.getImgUrls(_this.hotList)
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
           } else {
@@ -887,6 +891,52 @@ export default {
             }
           },
           function error(error) {}
+        )
+      );
+    },
+        // 获取商品图片
+    async getImgUrls(arr) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = [];
+      arr.forEach(c => {
+        list.push({
+          sku: c.sku,
+          spu: c.spu
+        });
+      });
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, list) => {
+                _this.$set(
+                  arr[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    arr[index].sku +
+                    "-200x200.jpg" +
+                    "?" +
+                    new Date().getSeconds()
+                );
+              });
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            debugger;
+          }
         )
       );
     },
