@@ -32,8 +32,14 @@
             </div>
             <div class="goods-info">
               <p class="goods-name">{{ prodDetail.prodname }}</p>
-              <p class="rush-time" v-if="status == 1">限时抢购 距离结束还剩 {{ flashSale.h  }} 小时 {{ flashSale.m  }} 分钟 {{ flashSale.s  }} 秒</p>
-              <p class="rush-time" v-if="status == 2">一块购 距离结束还剩 {{ flashSale.h  }} 小时 {{ flashSale.m  }} 分钟 {{ flashSale.s  }} 秒</p>
+              <p
+                class="rush-time"
+                v-if="status == 1"
+              >限时抢购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒</p>
+              <p
+                class="rush-time"
+                v-if="status == 2"
+              >一块购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒</p>
               <div class="price-server">
                 <p class="onek-person" v-if="status == 2">
                   <span>10.0</span>
@@ -45,7 +51,7 @@
                   <span>折</span>
                 </p>
                 <a-progress
-                 v-if="status == 1 || 2"
+                  v-if="status == 1 || 2"
                   :percent="20"
                   style="width: 295px;height: 8px;margin-left: 20px;"
                   :showInfo="false"
@@ -64,17 +70,17 @@
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
                 </p>
-                <p class="price" v-if="status == 0" >
+                <p class="price" v-if="status == 0">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ prodDetail.mp }}</span>
                   <!-- <del>￥32</del> -->
                 </p>
-                <p class="price" v-if="status == 1" >
+                <p class="price" v-if="status == 1">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ discount.killPrice }}</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
-                <p class="price" v-if="status == 2" >
+                <p class="price" v-if="status == 2">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ prodDetail.mp }}</span>
                 </p>
@@ -140,36 +146,111 @@
               </div>
             </div>
           </div>
-          <!-- 商品优惠券 -->
+          <!-- 商品优惠券  v-if="couponPub.length > 0"-->
           <div class="coupon-box" v-if="couponPub.length > 0">
-            <p class="coupon-title">商品优惠券<span>更多优惠券<a-icon type="right"/></span></p>
+            <p class="coupon-title">
+              商品优惠券
+              <span>
+                更多优惠券
+                <a-icon type="right"/>
+              </span>
+            </p>
             <div class="coupon-content">
-              <div class="coupon-card" v-for="(item, index) in couponPub" :key="index" @click="revCoupon(item)">
-                  <div class="coupon-left" v-if="item.brulecode === 2120">
-                    <p class="coupon-type">{{ item.rulename }}</p>
-                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮 </span>
-                  </div>
-                  <div class="coupon-left" v-if="item.brulecode === 2130">
-                    <p class="coupon-type">{{ item.rulename }}</p>
-                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </span>
-                    <span>有效期 {{ item.validday }} 天</span>
-                  </div>
-                  <div class="coupon-left" v-if="item.brulecode === 2110">
-                    <p class="coupon-type">{{ item.rulename }}</p>
-                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </span>
-                    <span>有效期 {{ item.validday }} 天</span>
-                  </div>
+              <div
+                class="coupon-card"
+                v-for="(item, index) in couponPub"
+                :key="index"
+                @click="revCoupon(item)"
+              >
+                <div class="coupon-left" v-if="item.brulecode === 2120">
+                  <p class="coupon-type">{{ item.rulename }}</p>
+                  <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮</span>
+                </div>
+
+                <div class="coupon-right">
+                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                </div>
+              </div>
+              <div
+                class="coupon-card"
+                v-for="(item, index) in couponPub"
+                :key="index"
+                @click="revCoupon(item)"
+              >
+                <div class="coupon-left" v-if="item.brulecode === 2130">
+                  <p class="coupon-type">{{ item.rulename }}</p>
+                  <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折</span>
+                  <span>有效期 {{ item.validday }} 天</span>
+                </div>
+
+                <div class="coupon-right">
+                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                </div>
+              </div>
+              <div
+                class="coupon-card"
+                v-for="(item, index) in couponPub"
+                :key="index"
+                @click="revCoupon(item)"
+              >
+                <div class="coupon-left" v-if="item.brulecode === 2110">
+                  <p class="coupon-type">{{ item.rulename }}</p>
+                  <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}}</span>
+                  <span>有效期 {{ item.validday }} 天</span>
+                </div>
+
+                <div class="coupon-right">
+                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="coupon-box">
+            <p class="coupon-title">
+              商品优惠券
+              <span>
+                更多优惠券
+                <a-icon type="right"/>
+              </span>
+            </p>
+            <div class="coupon-content">
+              <div class="coupon-card" @click="revCoupon()">
+                <div class="coupon-left">
+                  <p class="coupon-type">满500包邮</p>
+                  <span>满500包邮</span>
+                </div>
+                <div class="coupon-right">
+                    <img src="../../assets/img/receive.png" class="state-pic" alt>
+                </div>
+              </div>
+              <div class="coupon-card" @click="revCoupon()">
+                <div class="coupon-left">
+                  <p class="coupon-type">包邮券</p>
+                  <span>满500打9折</span>
+                  <span>有效期 10 天</span>
+                </div>
+                <div class="coupon-right">
+                    <img class="state-pic" src="../../assets/img/receive.png" alt>
+                </div>
+              </div>
+              <div class="coupon-card" @click="revCoupon()">
+                <div class="coupon-left">
+                  <p class="coupon-type">减现券</p>
+                  <span>满500 减 5</span>
+                  <span>有效期 10 天</span>
+                </div>
                 <div class="coupon-right">
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                 </div>
               </div>
             </div>
-          </div>
+          </div>-->
           <!-- 一块购 -->
           <div class="coupon-box" v-if="status == 2">
             <p class="coupon-title">一块购规则说明</p>
             <div class="coupon-content">
-              <img src="../../assets/img/arrow.png" alt="">
+              <img src="../../assets/img/arrow.png" alt>
             </div>
           </div>
           <!-- 详情和评价 -->
@@ -545,11 +626,11 @@ export default {
     };
   },
   created() {
-    this.sku = this.$route.query.sku
-    this.spu = this.$route.query.spu
-    this.actcode = this.$route.query.actcode
-    this.rulestatus = this.$route.query.rulestatus
-    this.status = this.$route.query.status
+    this.sku = this.$route.query.sku;
+    this.spu = this.$route.query.spu;
+    this.actcode = this.$route.query.actcode;
+    this.rulestatus = this.$route.query.rulestatus;
+    this.status = this.$route.query.status;
   },
   mounted() {
     this.getProd();
@@ -557,8 +638,8 @@ export default {
     this.isCollec();
     // 获取热销数据
     this.getProdDetailHotArea();
-    this.queryCouponPub()
-    if(this.actcode != 0) {
+    this.queryCouponPub();
+    if (this.actcode != 0) {
       this.queryActiveType();
     }
   },
@@ -569,7 +650,7 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
       iRequest.method = "revCoupon";
-      iRequest.param.json = JSON.stringify(item)
+      iRequest.param.json = JSON.stringify(item);
       this.$refcallback(
         "discountServer",
         iRequest,
@@ -577,7 +658,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.$message.success(result.message);
-              _this.queryCouponPub()
+              _this.queryCouponPub();
             } else {
               _this.$message.error(result.message);
             }
@@ -589,26 +670,26 @@ export default {
       );
     },
     // 获取待领取优惠券
-     queryCouponPub() {
+    queryCouponPub() {
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
       iRequest.method = "queryCouponPub";
       iRequest.param.json = JSON.stringify({
-        gcode: '11000000140101', // sku
-        compid: '536862720', // 企业id
+        gcode: "11000000140101", // sku
+        compid: "536862720", // 企业id
         pageSize: 5,
         pageNo: 1
-      })
+      });
       this.$refcallback(
         "discountServer",
         iRequest,
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.couponPub = result.data
-              debugger
-              console.log(_this.couponPub)
+              _this.couponPub = result.data;
+              debugger;
+              console.log(_this.couponPub);
             } else {
               _this.$message.error(result.message);
             }
@@ -619,22 +700,25 @@ export default {
         )
       );
     },
-     // 查询商品活动类型
+    // 查询商品活动类型
     queryActiveType() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "DiscountModule";
       iRequest.method = "getGoodsActInfo";
-      iRequest.param.arrays = [this.sku,  this.actcode]
+      iRequest.param.arrays = [this.sku, this.actcode];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "discountServer",
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
-            _this.discount = result.data
-            _this.secondKill(_this.stringToDate(_this.discount.currentDate), _this.discount.endTime)
+            debugger;
+            _this.discount = result.data;
+            _this.secondKill(
+              _this.stringToDate(_this.discount.currentDate),
+              _this.discount.endTime
+            );
           } else {
             _this.$message.error(result.message);
           }
@@ -646,10 +730,10 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getProdDetailHotArea";
-      let spu = this.spu + ''
+      let spu = this.spu + "";
       iRequest.param.json = JSON.stringify({
-        spu: spu.slice(1,7)
-      })
+        spu: spu.slice(1, 7)
+      });
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 10;
       iRequest.param.token = localStorage.getItem("identification");
@@ -658,7 +742,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.hotList = result.data.slice(0,5)
+            _this.hotList = result.data.slice(0, 5);
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
           } else {
@@ -682,7 +766,7 @@ export default {
           if (result.code === 200) {
             _this.prodDetail = result.data;
             _this.details = JSON.parse(_this.prodDetail.detail);
-            console.log(_this.details)
+            console.log(_this.details);
           } else {
             _this.$message.error(result.message);
           }
@@ -741,10 +825,14 @@ export default {
     },
     // 查询是否被收藏
     isCollec() {
+      debugger;
+      console.log(this.storeInfo.storeId);
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyCollectModule";
+
       iRequest.method = "check";
+
       iRequest.param.json = JSON.stringify({
         sku: this.prodDetail.sku
       });
@@ -815,28 +903,36 @@ export default {
       var date = new Date(year, month, day, hour, minute, second);
       return date;
     },
-     // 设置倒计时
-    secondKill(date,eDate) {
-      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
-      let times = endDate - new Date()
-      let _this = this
-      if(times>=0) {
+    // 设置倒计时
+    secondKill(date, eDate) {
+      let endDate = this.stringToDate(
+        date.getFullYear() +
+          "-" +
+          (Number(date.getMonth()) + 1) +
+          "-" +
+          date.getDate() +
+          " " +
+          eDate
+      );
+      let times = endDate - new Date();
+      let _this = this;
+      if (times >= 0) {
         let timer;
-        timer = setInterval(function () {
-        times--;
-        let modulo = times % (60 * 60 * 24);
-        _this.flashSale.h = Math.floor(modulo / (60 * 60));
-        modulo = modulo % (60 * 60);
-        _this.flashSale.m = Math.floor(modulo / 60);
-        _this.flashSale.s = modulo % 60;
-        if (times <= 0) {
-          clearInterval(timer);
-        }
+        timer = setInterval(function() {
+          times--;
+          let modulo = times % (60 * 60 * 24);
+          _this.flashSale.h = Math.floor(modulo / (60 * 60));
+          modulo = modulo % (60 * 60);
+          _this.flashSale.m = Math.floor(modulo / 60);
+          _this.flashSale.s = modulo % 60;
+          if (times <= 0) {
+            clearInterval(timer);
+          }
         }, 1000);
         if (times >= 0) {
-          console.log(times)
+          console.log(times);
         } else {
-          console.log('活动结束')
+          console.log("活动结束");
         }
       }
     },
@@ -921,11 +1017,11 @@ li {
   text-indent: 20px;
   color: #999999;
 }
-.coupon-title span{
+.coupon-title span {
   float: right;
   margin-right: 20px;
 }
-.coupon-title span:hover{
+.coupon-title span:hover {
   cursor: pointer;
 }
 .coupon-content {
@@ -933,7 +1029,7 @@ li {
   width: 1190px;
   height: 246px;
 }
-.coupon-content img{
+.coupon-content img {
   width: 1190px;
   height: 246px;
 }
@@ -976,7 +1072,7 @@ li {
   width: 100%;
   height: 100%;
 }
-.post-span{
+.post-span {
   margin-bottom: 30px;
 }
 /* 商品展示 */
@@ -1044,7 +1140,7 @@ li {
   width: 657px;
   height: 485px;
 }
-.surplus{
+.surplus {
   text-indent: 20px;
 }
 .goods-name {
@@ -1066,10 +1162,10 @@ li {
   height: auto;
   /* background: rgb(246, 246, 246); */
 }
-.onek-person{
+.onek-person {
   text-indent: 10px;
 }
-.onek-person span{
+.onek-person span {
   display: inline-block;
   width: 50px;
 }
@@ -1517,8 +1613,8 @@ li {
 .ant-layout-footer {
   padding: 0px;
 }
-.ant-progress-inner{
+.ant-progress-inner {
   border: 1px solid blue;
-  background-color: #3189f5!important;
+  background-color: #3189f5 !important;
 }
 </style>
