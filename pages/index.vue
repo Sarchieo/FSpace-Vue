@@ -81,8 +81,9 @@
                 <li v-for="(items,index) in limitedList.list" :key="index">
                   <a-card hoverable class="card" @click="toDetail(items, limitedList.actcode, 1)">
                     <img class="card-img" v-lazy="items.imgURl" slot="cover">
+                    <!-- percent 百分比  活动销量/活动库存 活动销量(写死) -->
                     <a-progress
-                      :percent="items.activitystore"
+                      :percent="items.activitystore" 
                       style="position:absolute;top:145px;left:20px;width: 188px;"
                       :showInfo="false"
                       status="exception"
@@ -258,11 +259,24 @@ export default {
     };
   },
   mounted() {
-    // this.initData();
     // window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
+    // this.iceTest()
   },
   methods: {
+    iceTest() {
+      let _this = this
+      // 初始化ice
+      let ice_callback = new Ice.Class(inf.PushMessageClient, {
+        receive: function(message, current) {
+          console.log("received callback #" + message);
+          // 这里根据消息模版 设置页面
+          // _this.$longConnection.offline('536862721')
+          // _this.$longConnection.sendMessageToClient('536862721', 'hello, Zeroc ICE')
+        }
+      })
+      this.$initIceLong('orderServer', 536862721, new ice_callback());
+    },
     handleScroll() {
       var scrollTop =
         window.pageYOffset ||
@@ -445,6 +459,7 @@ export default {
         })
       );
     },
+    // 获取商品图片
     async getImgUrl(arr) {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -504,7 +519,7 @@ export default {
       return date;
     },
     // 批量设置倒计时
-    secondKills(date,eDate) {
+    async secondKills(date,eDate) {
       let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
       let times = endDate - new Date()
       let _this = this
@@ -529,7 +544,7 @@ export default {
       }
     },
     // 设置倒计时
-    secondKill(date,eDate) {
+    async secondKill(date,eDate) {
       let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
       let times = endDate - new Date()
       let _this = this

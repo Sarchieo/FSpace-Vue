@@ -1,16 +1,18 @@
 
 import { iceGridInstanceName, serverIp, serverPort, CALLBACK_ACTION } from '../config/index'
-// import Ice from '../static/Ice'
+import Vue from 'vue'
 
 let communication;
 
-// 初始化ice连接
+// 初始化ice连接, 注册中心
 function initIce() {
   let args = ['--Ice.Default.Locator=' + iceGridInstanceName + '/Locator:ws -h ' + serverIp + ' -p ' + serverPort,
     'idleTimeOutSeconds=300',
     '--Ice.MessageSizeMax=4096'];
+  //   let args = ['--Ice.Default.Locator=' + 'DemoIceGrid' + '/Locator:ws -h ' + '192.168.1.145' + ' -p ' + '4062',
+  // 'idleTimeOutSeconds=300',
+  // '--Ice.MessageSizeMax=4096'];
     communication = Ice.initialize(args)
-    console.log(communication)
 }
 /**
  * 接口查询
@@ -36,7 +38,6 @@ function refcallback(moduleName,_IRequest, callback) {
     )
     .then(
       function (result) {
-        
         callback.onCallback(CALLBACK_ACTION.COMPLETE, JSON.parse(result));
       }
     )
@@ -47,6 +48,48 @@ function refcallback(moduleName,_IRequest, callback) {
         process.exit(1);
       }
     )
+}
+
+/**
+ * 初始化ice 长连接
+ * @param {*} serverName 服务名
+ * @param {*} compid 企业ID
+ * @param {*} callback
+ */
+function initIceLong(serverName, compid, callback) {
+  debugger
+  Ice.Promise.try(
+    function () {
+      let server_addr = serverName + Math.floor(compid % 8192 / 65535)  // 公司码 % 8192/65535 
+      var proxy = communication.stringToProxy(server_addr);
+      return inf.InterfacesPrx.checkedCast(proxy).then(
+        function (server) {
+          Vue.prototype.$longConnection = server
+          // longConnection = server
+          return communication.createObjectAdapter("").then(
+            function (adapter) {
+              var r = new Ice.Identity();
+              r.name = compid + ''
+              adapter.add(callback, r)
+              proxy.ice_getCachedConnection().setAdapter(adapter);
+              return server.online(r);
+            });
+        });
+    }
+  ).exception(
+    function (ex) {
+      console.log(ex.toString());
+      Ice.Promise.try(
+        function () {
+          if (communication) {
+            return communication.destroy();
+          }
+        }
+      ).finally(
+        function () {
+          process.exit(1);
+        });
+    });
 }
 
 function IceCallback() {
@@ -64,6 +107,7 @@ function IceCallback() {
     this.errorCallback = arguments[2];
   }
 }
+
 
 IceCallback.prototype = {
   constructor: IceCallback,
@@ -97,96 +141,4 @@ IceCallback.prototype = {
   },
 };
 
-export { initIce, refcallback, CALLBACK_ACTION, IceCallback }
-
-
-
-// var Demo = require("./sendRecvDemo").communication;
-
-// //
-// // Define a servant class that implements Demo.CallbackReceiver
-// // interface.
-// //
-// var CallbackReceiverI = Ice.Class(Demo.Receiver, {
-//     callback: function(num, current)
-//     {
-//         console.log("received callback #" + num);
-//     }
-// });
-
-// var id = new Ice.InitializationData();
-// id.properties = Ice.createProperties();
-
-// var communicator = Ice.initialize();
-
-// //
-// // Exit on SIGINT or SIGBREAK
-// //
-// process.on(process.platform == "win32" ? "SIGBREAK" : "SIGINT", function()
-//     {
-//         if(communicator)
-//         {
-//             communicator.destroy().finally(
-//                 function()
-//                 {
-//                     process.exit(0);
-//                 });
-//         }
-//     });
-
-// Ice.Promise.try(
-//     function()
-//     {
-//         //
-//         // Initialize the communicator and create a proxy to the sender object.
-//         //
-//         var proxy = communicator.stringToProxy("Sender:ws -h 192.168.1.145 -p 10000");
-
-//         //
-//         // Down-cast the proxy to the Demo.CallbackSender interface.
-//         //
-//         return Demo.CallbackSenderPrx.checkedCast(proxy).then(
-//             function(server)
-//             {
-//                 //
-//                 // Create the client object adapter.
-//                 //
-//                 return communicator.createObjectAdapter("").then(
-//                     function(adapter)
-//                     {
-//                         //
-//                         // Create a callback receiver servant and add it to
-//                         // the object adapter.
-//                         //
-//                         var r = adapter.addWithUUID(new CallbackReceiverI());
-
-//                         //
-//                         // Set the connection adapter.
-//                         //
-//                         proxy.ice_getCachedConnection().setAdapter(adapter);
-
-//                         //
-//                         // Register the client with the bidir server.
-//                         //
-//                         return server.addClient(r.ice_getIdentity());
-//                     });
-//             });
-//     }
-// ).exception(
-//     function(ex)
-//     {
-//         console.log(ex.toString());
-//         Ice.Promise.try(
-//             function()
-//             {
-//                 if(communicator)
-//                 {
-//                     return communicator.destroy();
-//                 }
-//             }
-//         ).finally(
-//             function()
-//             {
-//                 process.exit(1);
-//             });
-//     });
+export { initIce, refcallback, initIceLong, CALLBACK_ACTION, IceCallback }

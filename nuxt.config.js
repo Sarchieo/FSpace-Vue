@@ -18,7 +18,7 @@ module.exports = {
     ],
     script: [
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Ice.js' },
-      { src: 'http://39.108.85.159:8080/wlq/iceInterfaces.js' }
+      { src: 'http://114.116.149.145:9999/iceInterfaces.js' }
     ]
   },
 
