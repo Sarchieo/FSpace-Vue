@@ -259,11 +259,24 @@ export default {
     };
   },
   mounted() {
-    // this.initData();
     // window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
+    // this.iceTest()
   },
   methods: {
+    iceTest() {
+      let _this = this
+      // 初始化ice
+      let ice_callback = new Ice.Class(inf.PushMessageClient, {
+        receive: function(message, current) {
+          console.log("received callback #" + message);
+          // 这里根据消息模版 设置页面
+          // _this.$longConnection.offline('536862721')
+          // _this.$longConnection.sendMessageToClient('536862721', 'hello, Zeroc ICE')
+        }
+      })
+      this.$initIceLong('orderServer', 536862721, new ice_callback());
+    },
     handleScroll() {
       var scrollTop =
         window.pageYOffset ||
@@ -444,14 +457,13 @@ export default {
           if (result.code === 200) {
             _this.hotGoodsList = result.data.slice(0, 5);
             _this.getImgUrl(_this.hotGoodsList);
-            console.log(8080)
-            console.log(_this.hotGoodsList);
           } else {
             _this.$message.error(result.message);
           }
         })
       );
     },
+    // 获取商品图片
     async getImgUrl(arr) {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -511,7 +523,7 @@ export default {
       return date;
     },
     // 批量设置倒计时
-    secondKills(date,eDate) {
+    async secondKills(date,eDate) {
       let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
       let times = endDate - new Date()
       let _this = this
@@ -536,7 +548,7 @@ export default {
       }
     },
     // 设置倒计时
-    secondKill(date,eDate) {
+    async secondKill(date,eDate) {
       let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
       let times = endDate - new Date()
       let _this = this

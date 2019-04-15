@@ -335,6 +335,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            debugger
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
@@ -345,7 +346,9 @@ export default {
             _this.isRelated = result.data.isRelated;
             _this.isEditor = !_this.isRelated
             // 获取地区数据
-            _this.getAncestors(result.data.addressCode)
+            if(result.data.addressCode) {
+              _this.getAncestors(result.data.addressCode)
+            }
           } else {
           }
         })
@@ -371,8 +374,29 @@ export default {
               var xhr = new XMLHttpRequest();
               xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
+                  _this.uploadList = [
+                    {
+                      fileList: [],
+                      url: "",
+                      name: "营业执照",
+                      message: "请上传营业执照"
+                    },
+                    {
+                      fileList: [],
+                      url: "",
+                      name: "药店经营许可证",
+                      message: "请上传药店经营许可证"
+                    },
+                    {
+                      fileList: [],
+                      url: "",
+                      name: "GSP认证",
+                      message: "请上传GSP认证"
+                    }
+                  ]
                   var data = xhr.responseText;
                   data = JSON.parse(data).data.sort();
+                  debugger
                   for (var i in data) {
                     if (i !== 7) {
                        _this.uploadList[i].fileList.push({

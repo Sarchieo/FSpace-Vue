@@ -126,6 +126,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "CommonModule";
       iRequest.method = "getAreas";
+      iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "globalServer",
         iRequest,

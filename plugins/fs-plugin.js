@@ -1,4 +1,4 @@
-import { initIce, IceCallback, refcallback } from './ice-client'
+import { initIce, IceCallback, refcallback, initIceLong } from './ice-client'
 import { generateIdentification } from './fingerprint2'
 import utils from './commom'
 
@@ -11,5 +11,6 @@ import utils from './commom'
 export default ({ app }, inject) => {
   inject('iceCallback', IceCallback)
   inject('refcallback', refcallback)
+  inject('initIceLong', initIceLong)
   inject('commom', utils)
 }
