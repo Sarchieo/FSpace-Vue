@@ -82,14 +82,14 @@
                   <a-card hoverable class="card" @click="toDetail(items, limitedList.actcode, 1)">
                     <img class="card-img" v-lazy="items.imgURl" slot="cover">
                     <a-progress
-                      :percent="items.activitystore"
+                      :percent="items.percentage"
                       style="position:absolute;top:145px;left:20px;width: 188px;"
                       :showInfo="false"
                       status="exception"
                     />
                     <p class="surplus">
-                      还剩{{items.activitystore}}支
-                      <span>限购{{items.actlimit}}支</span>
+                      还剩{{items.surplusstock}}{{items.unitName}}
+                      <span>限购{{items.actlimit}}{{items.unitName}}</span>
                     </p>
 
                     <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
@@ -123,7 +123,7 @@
                       <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
                       <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
-                      <p class="goods-success">{{item.actlimit}}盒起拼/{{item.surplusstock}}成团</p>
+                      <p class="goods-success">{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p>
                       <!-- <p class="goods-state"></p> -->
                       <p class="goods-btn">
                         <span class="sur-time">还剩</span>
@@ -150,7 +150,7 @@
                 <li v-for="(item,index) in hotGoodsList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
-                    <p class="surplus top185"></p>
+                    <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                     <p class="card-price top165">
                       ￥{{item.vatp}}
@@ -158,7 +158,7 @@
                     </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
-                    <p class="sold">已售{{item.store}}</p>
+                    <p class="sold">已售{{item.store}}{{item.unitName}}</p>
                   </a-card>
                 </li>
               </ul>
@@ -227,6 +227,7 @@ export default {
   },
   data() {
     return {
+      percentage: 0,
       teamBuy: {
         h: 0,
         m: 0,
@@ -363,6 +364,7 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 5)
             _this.teamBuyList = result.data
+            console.log(result.data)
             _this.teamByID = result.data.actcode
             _this.getImgUrl(_this.teamBuyList.list)
             _this.secondKills(_this.stringToDate(_this.teamBuyList.now), _this.teamBuyList.edate)
@@ -389,6 +391,9 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 4)
             _this.limitedList = result.data
+            _this.limitedList.list.forEach((item) => {
+              item.percentage = 100 - item.buynum/item.surplusstock*100
+            })
             _this.limitedID = result.data.actcode
             _this.secondKill(_this.stringToDate(_this.limitedList.now), _this.limitedList.edate)
             _this.getImgUrl(_this.limitedList.list)
@@ -439,6 +444,8 @@ export default {
           if (result.code === 200) {
             _this.hotGoodsList = result.data.slice(0, 5);
             _this.getImgUrl(_this.hotGoodsList);
+            console.log(8080)
+            console.log(_this.hotGoodsList);
           } else {
             _this.$message.error(result.message);
           }
@@ -714,7 +721,7 @@ li {
   .container-size(inline-block, 225px, auto, 0, 0px);
   .position(absolute, 168px, 0px);
   text-indent: 20px;
-
+  color: #333333;
   span {
     float: right;
     margin-right: 20px;

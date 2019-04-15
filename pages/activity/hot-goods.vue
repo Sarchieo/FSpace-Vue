@@ -6,50 +6,20 @@
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
          <div class="buying-text">
-             <p>人气推荐好药，它们最受欢迎</p>
-             <p>实时数据计算得出，榜单所覆盖均为在售商品。每1小时更新1次</p>
+            <p>人气推荐好药，它们最受欢迎</p>
          </div>
           <div class="limited-goods">
-           
+              <p class="one-day">热销药品</p>
               <div class="goods-box" v-for="(item,index) in hotGoodsList" :key="index">
                 <a-card hoverable class="card" @click="toDetail(item)">
                   <img v-lazy="item.imgURl" alt="" class="goods-pic">
                   <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
                   <p class="goods-surplus">{{item.manuName}}</p>
-                  <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
+                  <p class="goods-limit">还剩<span>{{item.surplusstock}}</span>盒</p>
                   <p class="goods-price">单价￥{{item.mp}}元 </p>
                   <button @click="toDetail(item)">查看详情</button>
                 </a-card>  
               </div>
-            
-          </div>
-          <div class="limited-goods">
-              <p class="one-day">24小时热销</p>
-              <div class="goods-box" v-for="(item,index) in hotGoodsList" :key="index">
-                <a-card hoverable class="card" @click="toDetail(item)">
-                  <img v-lazy="item.imgURl" alt="" class="goods-pic">
-                  <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
-                  <p class="goods-surplus">{{item.manuName}}</p>
-                  <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                  <p class="goods-price">单价￥{{item.mp}}元 </p>
-                  <button @click="toDetail(item)">查看详情</button>
-                </a-card>  
-              </div>
-            
-          </div>
-          <div class="limited-goods margin-bottom30">
-              <p class="one-day">一周热销</p>
-              <div class="goods-box" v-for="(item,index) in hotGoodsList" :key="index">
-                <a-card hoverable class="card" @click="toDetail(item)">
-                  <img v-lazy="item.imgURl" alt="" class="goods-pic">
-                  <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
-                  <p class="goods-surplus">{{item.manuName}}</p>
-                  <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                  <p class="goods-price">单价￥{{item.mp}}元 </p>
-                  <button @click="toDetail(item)">查看详情</button>
-                </a-card>  
-              </div>
-            
           </div>
         </div>
       </a-layout-content>
@@ -94,6 +64,8 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotGoodsList = result.data.slice(0,5)
+            console.log(2020)
+            console.log(result.data)
             debugger
             _this.getImgUrl(_this.hotGoodsList)
           } else {
@@ -206,7 +178,7 @@ export default {
     height: auto;
 }
 .goods-box {
-    .container-size(inline-block, 225px, 310px, 10px 6px, 0px);
+    .container-size(inline-block, 225px, 310px, 10px 6.5px, 0px);
     .position(relative,0px,0px);
     background: #ffffff;
     button {
