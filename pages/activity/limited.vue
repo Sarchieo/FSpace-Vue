@@ -51,21 +51,21 @@
           </div>
           <div class="limited-goods">
             <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle" size="large">
-              <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.sdate">
+              <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.edate">
                 <div class="goods-box" v-for="(item,index) in goodsList.list" :key="index">
-                  <img v-lazy="item.src" alt class="goods-pic">
+                  <img v-lazy="item.imgURl" alt class="goods-pic">
                   <p class="goods-name">{{item.prodname}}</p>
                   <p class="goods-adv">{{item.spec}}</p>
                   <a-progress
-                    :percent="item.activitystore"
+                    :percent="item.percentage"
                     style="position:absolute;top:100px;left:250px;width: 215px;"
                     :showInfo="false"
                     status="exception"
                   />
-                  <p class="goods-surplus">还剩{{item.activitystore}}</p>
+                  <p class="goods-surplus">还剩{{item.surplusstock}}{{item.unitName}}</p>
                   <p class="goods-price">
                     限时价￥{{item.actprize}}元
-                    <del>原价￥{{item.mp}}元</del>
+                    <del>  原价￥{{item.mp}}元</del>
                   </p>
                   <button @click="toDetails()">立即抢购</button>
                 </div>
@@ -121,6 +121,10 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list;
             _this.goodsList = result.data;
+            _this.goodsList.list.forEach((item) => {
+              item.percentage = 100 - item.buynum/item.surplusstock*100
+            })
+            console.log(_this.goodsList)
             _this.getImgUrl(_this.goodsList.list);
             _this.secondKill(_this.stringToDate(_this.goodsList.now || '2019-4-13 16:10:20') ,_this.goodsList.edate)
           } else {
@@ -283,7 +287,8 @@ export default {
   .position(absolute, 50px, 250px);
 }
 .goods-surplus {
-  .position(absolute, 80px, 500px);
+  .position(absolute, 80px,249px);
+  width: 200px;
   font-size: 16px;
 }
 .goods-price {

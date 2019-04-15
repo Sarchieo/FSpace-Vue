@@ -91,11 +91,11 @@
         <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item)">
           <a-card hoverable class="card">
             <img class="card-img" v-lazy="item.imgURl" slot="cover">
-            <img class="reduce-img" src="../assets/img/reduction.png" alt="" slot="cover">
+            <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus === 1 || item.rulestatus === 2 || item.rulestatus === 4　||　item.rulestatus === 2048　||　item.rulestatus === 4096" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
             <p class="card-price top165" v-if="item.actprod">
-              ￥{{item.maxprize}}
+              ￥{{item.vatp}}
               <del>￥{{item.mp}}</del>
             </p>
             <p class="card-price top165" v-if="!item.actprod">
@@ -107,7 +107,7 @@
             <p class="manufacturer hidden-text">{{item.manuName}}</p>
             <p class="sold">
               <span class="evaluate">中包装数量{{item.medpacknum}}{{item.unitName}}</span>
-              <span class="sold-count">已售{{item.sales}}盒</span>
+              <span class="sold-count">已售{{item.sales}}{{item.unitName}}</span>
             </p>
             <!-- 按钮 -->
             <p class="add-card">

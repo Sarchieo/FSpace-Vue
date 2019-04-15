@@ -6,8 +6,8 @@
           <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
             <div class="discount"  v-if="item.brulecode === 2110">
               <p class="discount-count">{{ item.rulename }}</p>
-              <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </span>
-              <span>有效期 {{ item.validday }} 天</span>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
+              <p>有效期 {{ item.validday }} 天</p>
             </div>
             <img class="right-img" src="../../../assets/img/receives.png" alt="">
           </div> 
@@ -55,13 +55,13 @@
         <div class="condition-price"  v-for="(item, index) in couponPub" :key="index" @click="revCoupon(item)">
           <div class="discount" v-if="item.brulecode === 2130">
             <p class="discount-count">{{ item.rulename }}</p>
-            <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </span>
-            <span>有效期 {{ item.validday }} 天</span>
+            <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </p>
+            <p>有效期 {{ item.validday }} 天</p>
           </div>
           <div class="discount"  v-if="item.brulecode === 2110">
             <p class="discount-count">{{ item.rulename }}</p>
-            <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </span>
-            <span>有效期 {{ item.validday }} 天</span>
+            <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
+            <p>有效期 {{ item.validday }} 天</p>
           </div>
           <div class="discount" v-if="item.brulecode === 2120">
             <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
@@ -103,10 +103,9 @@ export default {
         "orderServer" + Math.floor(536862720/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result)
           if (result.code === 200) {
             _this.revCouponList = result.data
-
+            console.log(result.data)
           } else {
             _this.$message.error(result.message);
           }
@@ -177,6 +176,9 @@ export default {
 <style lang="less" scoped>
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
+.discount-coupon{
+  .p-size(30px,30px,14px,left,10px,#999999);
+}
 .margin-bottom35{
   margin-bottom: 35px!important;
 }

@@ -18,7 +18,7 @@
           <div class="limited-goods">
             <div class="goods-box" v-for="(item,index) in teamBuyList.list" :key="index">
               <a-card hoverable class="card" @click="toDetail(item)">
-                <img v-lazy="item.src" alt class="goods-pic">
+                <img v-lazy="item.imgURl" alt class="goods-pic">
                 <p class="goods-name">{{item.prodname}} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <p class="goods-limit">
@@ -196,9 +196,8 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list;
             _this.teamBuyList = result.data;
-            console.log(_this.teamBuyList)
             _this.getImgUrl(_this.teamBuyList.list);
-            _this.secondKill(_this.stringToDate(_this.teamBuyList.now || '2019-4-13 16:10:20') ,_this.teamBuyList.edate)
+            _this.secondKills(_this.stringToDate(_this.teamBuyList.now) ,_this.teamBuyList.edate)
           } else {
             _this.$message.error(result.message);
           }
@@ -264,8 +263,8 @@ export default {
       var date = new Date(year, month, day, hour, minute, second);
       return date;
     },
-    // 设置倒计时
-    secondKill(date,eDate) {
+    // 批量设置倒计时
+    secondKills(date,eDate) {
       let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
       let times = endDate - new Date()
       let _this = this
@@ -274,16 +273,16 @@ export default {
         timer = setInterval(function () {
         times--;
         let modulo = times % (60 * 60 * 24);
-        _this.flashSale.h = Math.floor(modulo / (60 * 60));
+        _this.teamBuy.h = Math.floor(modulo / (60 * 60));
         modulo = modulo % (60 * 60);
-        _this.flashSale.m = Math.floor(modulo / 60);
-        _this.flashSale.s = modulo % 60;
+        _this.teamBuy.m = Math.floor(modulo / 60);
+        _this.teamBuy.s = modulo % 60;
         if (times <= 0) {
           clearInterval(timer);
         }
         }, 1000);
-        if (deltaTime >= 0) {
-          console.log(deltaTime)
+        if (times >= 0) {
+          console.log(times)
         } else {
           console.log('活动结束')
         }
@@ -303,6 +302,9 @@ export default {
 <style scoped lang="less">
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
+.imme-btn:hover{
+  cursor: pointer;
+}
 .person-num {
   .container-size(block, 1190px, 86px, 0 auto, 0px);
   line-height: 86px;
