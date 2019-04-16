@@ -152,57 +152,60 @@
           <div class="coupon-box" v-if="couponPub.length > 0">
             <p class="coupon-title">
               商品优惠券
-              <span>
+              <span @click="toPersonCoupon()">
                 更多优惠券
                 <a-icon type="right"/>
               </span>
             </p>
             <div class="coupon-content">
               <div
-                class="coupon-card"
+                class="coupon-boxs"
                 v-for="(item, index) in couponPub"
                 :key="index"
-                @click="revCoupon(item)"
               >
-                <div class="coupon-left" v-if="item.brulecode === 2120">
-                  <p class="coupon-type">{{ item.rulename }}</p>
-                  <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮</span>
-                </div>
-
-                <div class="coupon-right">
-                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                <div class="coupon-card" v-if="item.brulecode === 2120" @click="revCoupon(item)">
+                  <div class="coupon-left">
+                    <p class="coupon-type">{{ item.rulename }}</p>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮</span>
+                  </div>
+                  <div class="coupon-right">
+                    <img class="state-pic" src="../../assets/img/receive.png" alt>
+                  </div>
                 </div>
               </div>
               <div
-                class="coupon-card"
                 v-for="(item, index) in couponPub"
                 :key="index"
-                @click="revCoupon(item)"
+                class="coupon-boxs"
               >
-                <div class="coupon-left" v-if="item.brulecode === 2130">
-                  <p class="coupon-type">{{ item.rulename }}</p>
-                  <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折</span>
-                  <span>有效期 {{ item.validday }} 天</span>
-                </div>
-
-                <div class="coupon-right">
-                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                <div class="coupon-card" v-if="item.brulecode === 2130"  @click="revCoupon(item)">
+                  <div class="coupon-left">
+                    <p class="coupon-type">{{ item.rulename }}</p>
+                    <span
+                      v-for="(j, i) in item.ladderVOS"
+                      :key="i"
+                    >满{{ j.ladamt }} 打 {{ j.offer/10}}折</span>
+                    <span>有效期 {{ item.validday }} 天</span>
+                  </div>
+                  <div class="coupon-right">
+                    <img class="state-pic" src="../../assets/img/receive.png" alt>
+                  </div>
                 </div>
               </div>
               <div
-                class="coupon-card"
+                class="coupon-boxs"
                 v-for="(item, index) in couponPub"
                 :key="index"
-                @click="revCoupon(item)"
               >
-                <div class="coupon-left" v-if="item.brulecode === 2110">
-                  <p class="coupon-type">{{ item.rulename }}</p>
-                  <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}}</span>
-                  <span>有效期 {{ item.validday }} 天</span>
-                </div>
-
-                <div class="coupon-right">
-                  <img class="state-pic" src="../../assets/img/receive.png" alt>
+                <div class="coupon-card" v-if="item.brulecode === 2110" @click="revCoupon(item)">
+                  <div class="coupon-left">
+                    <p class="coupon-type">{{ item.rulename }}</p>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}}</span>
+                    <span>有效期 {{ item.validday }} 天</span>
+                  </div>
+                  <div class="coupon-right">
+                    <img class="state-pic" src="../../assets/img/receive.png" alt>
+                  </div>
                 </div>
               </div>
             </div>
@@ -400,7 +403,7 @@
                       </a-comment>
                     </div>
                   </div>
-                  <a-pagination :defaultCurrent="6" :total="500"/>
+                  <a-pagination :defaultCurrent="1" :total="10"/>
                 </a-tab-pane>
               </a-tabs>
             </div>
@@ -507,7 +510,7 @@ export default {
         fontSize: "26px",
         backgroundColor: "#f2f2f2"
       },
-      count: 1,
+      count: 1
     };
   },
   created() {
@@ -573,6 +576,8 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.couponPub = result.data;
+              console.log(8989);
+              console.log(_this.couponPub);
             } else {
               _this.$message.error(result.message);
             }
@@ -596,7 +601,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            if(result.data) {
+            if (result.data) {
               _this.discount = result.data;
             }
             _this.secondKill(
@@ -627,7 +632,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotList = result.data.slice(0, 5);
-            _this.getImgUrls(_this.hotList)
+            _this.getImgUrls(_this.hotList);
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
           } else {
@@ -709,7 +714,6 @@ export default {
     },
     // 查询是否被收藏
     isCollec() {
-      debugger;
       console.log(this.storeInfo.storeId);
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -774,7 +778,7 @@ export default {
         )
       );
     },
-        // 获取商品图片
+    // 获取商品图片
     async getImgUrls(arr) {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -870,6 +874,11 @@ export default {
       this.likes = 1;
       this.dislikes = 0;
       this.action = "liked";
+    },
+    toPersonCoupon() {
+      // this.$router.push({
+      //   path: '/user/personal/coupon'
+      // })
     },
     dislike() {
       this.likes = 0;
@@ -1389,7 +1398,7 @@ li {
   height: 300px;
   margin-bottom: 15px;
 }
-.card-recommend img{
+.card-recommend img {
   width: 220px;
   height: 190px;
 }
@@ -1550,5 +1559,8 @@ li {
 .ant-progress-inner {
   border: 1px solid blue;
   background-color: #3189f5 !important;
+}
+.coupon-boxs {
+  display: inline-block;
 }
 </style>

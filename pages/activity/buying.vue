@@ -38,6 +38,8 @@
                 </p>
               </a-card>
             </div>
+            <a-pagination v-model="current" :total="this.pagination.length" v-if="this.pagination.length !== 0"/>
+            <!-- <a-pagination v-model="current" :total="this.searchList.length"/> -->
           </div>
         </div>
       </a-layout-content>
@@ -55,6 +57,7 @@ export default {
   },
   data() {
     return {
+      current: 1,
          teamBuy: {
         h: 0,
         m: 0,
@@ -71,6 +74,7 @@ export default {
         background: "black"
       },
       teamBuyList: [],
+      pagination: [],
       goodsList: [
         {
           src:
@@ -196,6 +200,7 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list;
             _this.teamBuyList = result.data;
+            _this.pagination =  _this.teamBuyList.list
             _this.getImgUrl(_this.teamBuyList.list);
             _this.secondKills(_this.stringToDate(_this.teamBuyList.now) ,_this.teamBuyList.edate)
           } else {
@@ -302,6 +307,9 @@ export default {
 <style scoped lang="less">
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
+.ant-layout{
+   background: #f2f2f2;
+}
 .imme-btn:hover{
   cursor: pointer;
 }
@@ -354,7 +362,8 @@ export default {
 .limited-goods {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
-  background: #f6f6f6;
+  background: #f2f2f2;
+  margin-bottom: 20px;
 }
 .tab-pane {
   width: 270px;
@@ -407,6 +416,9 @@ export default {
   .position(absolute, 160px, 0px);
   width: 100%;
   text-indent: 10px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
   font-size: 16px;
   font-weight: bold;
   color: #ed2f26;
@@ -417,5 +429,8 @@ export default {
 }
 .card:hover {
   box-shadow: 0px 0px 30px 10px #e0e0e0;
+}
+.ant-pagination{
+  text-align: center;
 }
 </style>

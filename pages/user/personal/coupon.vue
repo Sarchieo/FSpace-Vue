@@ -66,7 +66,7 @@
           </div>
           <div class="discount" v-if="item.brulecode === 2120">
             <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
-            <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮 </span>
+            <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮 </p>
           </div>
           <img class="right-img" src="../../../assets/img/receive.png" alt="">
         </div>

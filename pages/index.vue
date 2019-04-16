@@ -702,7 +702,7 @@ li {
   background: #000000;
 }
 #components-layout-demo-basic .ant-layout-content {
-  background: rgb(238, 238, 238);
+  background: #f2f2f2;
   height: auto;
   min-height: 1000px;
   color: #000000;
@@ -841,14 +841,14 @@ li {
   height: 30px;
   text-align: center;
   line-height: 30px;
-  border-top: 1px solid rgb(238, 238, 238);
+  border-top: 1px solid #f2f2f2;
   color: #999;
 }
 /* 为你精选 */
 .elaborate {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 300px;
-  background: rgb(238, 238, 238);
+  background: #f2f2f2;
 }
 .elaborate-ui {
   // display: flex;
@@ -930,7 +930,7 @@ li {
 /* 热销专区，包邮专区 */
 .brand-divs {
   .container-size(block, 1210px, 310px, 0 auto, 0px);
-  background: rgb(238, 238, 238);
+  background: #f2f2f2;
 }
 .brand-hall {
   .container-size(block, 1190px, 360px, 0 auto, 0px);
@@ -946,12 +946,12 @@ li {
 }
 .onek-text {
   .p-size(30px, 30px, 16px, left, 0px, #333333);
-  background: #eeeeee;
+  background: #f2f2f2;
   font-weight: bold;
 }
 .onek-shoping {
   .container-size(block, 1202px, 890px, 0 auto, 0px);
-  background: #eeeeee;
+  background: #f2f2f2;
   ul {
     float: left;
     width: 1210px;
@@ -1023,7 +1023,7 @@ li {
 .brand-hall .brand-hall-title {
   height: 50px;
   line-height: 50px;
-  background: rgb(238, 238, 238);
+  background: #f2f2f2;
   font-size: 22px;
   font-weight: bold;
   color: #333333;
@@ -1041,7 +1041,7 @@ li {
 }
 .brand-div {
   .container-size(block, 1202px, 310px, 0 auto, 0px);
-  background: rgb(238, 238, 238);
+  background: #f2f2f2;
 }
 .brand-left {
   float: left;
@@ -1093,7 +1093,7 @@ li {
   float: left;
   width: 970px;
   height: 310px;
-  background: rgb(238, 238, 238);
+  background: #f2f2f2;
   li {
     display: inline-block;
     margin-left: 0px;
@@ -1135,7 +1135,7 @@ li {
   .container-size(block, 1190px, 435px, 0 auto, 0px);
   position: relative;
   background: #ffffff;
-  border-top: 1px solid rgb(238, 238, 238);
+  border-top: 1px solid #f2f2f2;
   margin-bottom: 25px;
 }
 .ant-carousel > .slick-slide {
@@ -1169,7 +1169,7 @@ li {
   right: 10px;
   width: 85px;
   height: 400px;
-  background: rgb(238, 238, 238);
+  background: #f2f2f2;
 }
 .sider-meun .right-meun {
   width: 85px;

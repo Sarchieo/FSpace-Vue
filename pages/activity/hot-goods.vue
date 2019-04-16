@@ -20,6 +20,7 @@
                   <button @click="toDetail(item)">查看详情</button>
                 </a-card>  
               </div>
+              <a-pagination v-model="current" :total="this.hotGoodsList.length" v-if="this.hotGoodsList.length !== 0 "/>
           </div>
         </div>
       </a-layout-content>
@@ -37,6 +38,7 @@ export default {
   },
   data() {
     return {
+      current: 1,
       hotGoodsList: [],
       tabStyle: {
           color: '#c40000',
@@ -63,10 +65,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.hotGoodsList = result.data.slice(0,5)
-            console.log(2020)
-            console.log(result.data)
-            debugger
+            _this.hotGoodsList = result.data
             _this.getImgUrl(_this.hotGoodsList)
           } else {
             _this.$message.error(result.message);
@@ -171,7 +170,8 @@ export default {
 .limited-goods {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
-  background: #F6F6F6;
+  margin-bottom: 20px;
+  background: #f2f2f2;
 }
 .tab-pane {
     width: 270px;
@@ -240,5 +240,8 @@ export default {
 }
 .margin-bottom30{
   margin-bottom: 30px;
+}
+.ant-pagination{
+  text-align: center;
 }
 </style>

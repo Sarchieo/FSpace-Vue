@@ -28,6 +28,7 @@
                   <button @click="toDetails()">查看详情</button>
                 </a-card>  
               </div>
+              <a-pagination v-model="current" :total="this.goodsList.length" v-if="this.goodsList.length !== 0 "/>
           </div>
         </div>
       </a-layout-content>
@@ -45,6 +46,7 @@ export default {
   },
   data() {
     return {
+        current: 1,
         tabStyle: {
             color: '#c40000',
             background: 'black'
@@ -156,6 +158,9 @@ export default {
 <style scoped lang="less">
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
+.ant-layout-content {
+  background: #f2f2f2;
+}
 .person-num{
     .container-size(block,1190px,86px,0 auto,0px) ;
     line-height: 86px;
@@ -185,12 +190,13 @@ export default {
 }
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
-  background: #ffffff;
+  background: #f2f2f2;
 }
 .limited-goods {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
-  background: #F6F6F6;
+  margin-bottom: 20px;
+  background: #f2f2f2;
 }
 .tab-pane {
     width: 270px;
@@ -249,5 +255,8 @@ export default {
 }
 .card:hover {
   box-shadow: 0px 0px 30px 10px #e0e0e0;
+}
+.ant-pagination{
+  text-align: center;
 }
 </style>
