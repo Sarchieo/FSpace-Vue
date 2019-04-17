@@ -71,7 +71,30 @@
             </div>
             <div class="discount-pay">
                 <div class="discount">
-                    优惠券
+                    <p class="use-coupon">使用优惠券(张)</p>
+                    <p class="pick-coupon"><button @click="pickCoupon()">选择优惠券</button></p>
+                    <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
+                     <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag>
+                    <a-modal
+                      title="选择优惠券"
+                      width="750px"
+                      v-model="isCoupon"
+                      @ok="handleOk"
+                      okText="确定"
+                      cancelText="取消"
+                    >
+                      <div class="coupon-box">
+                        <!-- 选中背景色 -->
+                        <div class="coupon" :class="isChecked? 'coupon-back' : ''">
+                          <p class="coupon-type">现金券</p>
+                          <p class="ladder">满balala送balala</p>
+                        </div>
+                         <div class="coupon">
+                          <p class="coupon-type">包邮券</p>
+                          <p class="ladder">满balala送包邮服务</p>
+                        </div>
+                      </div>
+                    </a-modal>
                 </div>
                 <div class="pay">
                     <p>商品合计：￥369</p>
@@ -97,6 +120,7 @@ export default {
   },
   data() {
     return {
+      isCoupon: false,
       cartLists: [
         {
           src:
@@ -153,6 +177,9 @@ export default {
     },
     hideModal() {
       this.visible = false
+    },
+    pickCoupon() {
+      this.isCoupon = true
     }
   }
 };
@@ -250,7 +277,7 @@ li {
   .container-size(block, 1190px, auto, 0 auto 20px auto, 0);
 }
 .goods-table-name {
-  .p-size (50px, 50px, 16px, left, 10px, #666666);
+  .p-size(50px, 50px, 16px, left, 10px, #666666);
 }
 .goods-table li {
   .container-size(block, 1190px, 120px, 0, 0);
@@ -286,7 +313,7 @@ li {
   margin-left: 5px;
 }
 .price-total {
-  .p-size (50px,70px,22px,center,0px,#ed2f26);
+  .p-size(50px,70px,22px,center,0px,#ed2f26);
   font-weight: bold;
 }
 .go-pay {
@@ -298,24 +325,43 @@ li {
      border-bottom: 1px solid #DDDDDD;
 }
 .invoice-info {
-    .p-size (40px,40px,16px,left,20px,#666666);
+    .p-size(40px,40px,16px,left,20px,#666666);
 }
 .is-invoice {
-    .p-size (50px,50px,16px,left,20px,#666666);
+    .p-size(50px,50px,16px,left,20px,#666666);
 }
 .discount-pay {
     .container-size(block, 1190px, 310px, 0, 0);
 }
 .discount {
-    float:left;
+  float:left;
  .container-size(block, 595px, 310px, 0, 0);
+ .use-coupon{
+   .p-size(40px,40px,16px,left,20px,#999999);
+ }
+ .pick-coupon{
+   .p-size(50px,50px,16px,left,20px,#999999);
+   button{
+     .button-size(120px,40px,40px,16px,0px,5px);
+     .button-color(1px solid transparent,#ed2f26,#ffffff);
+   }
+ }
+ .picked-coupon{
+   .p-size(30px,30px,16px,center,0px,#999999);
+   margin-left: 20px;
+   button{
+     .button-size(auto,40px,40px,16px,0px,5px);
+     .button-color(1px solid transparent,#ed2f26,#ffffff);
+     padding: 10px 15px;
+   }
+ }
 }
 .pay {
     float:right;
  .container-size(block, 595px, 310px, 0, 0);
 }
 .pay p{
-    .p-size (50px,50px,16px,center,20px,#666666);
+    .p-size(50px,50px,16px,center,20px,#666666);
 }
 .pay .price {
     font-size: 20px!important;
@@ -341,5 +387,27 @@ li {
     height: 30px;
     border: 1px solid #e0e0e0;
     text-indent: 10px;
+}
+.coupon-box{
+  .container-size(block, 700px, auto, 0, 0);
+  overflow: auto;
+  .coupon{
+    .container-size(inline-block, 300px, 120px, 0, 0);
+    margin: 0 24px;
+    float: left;
+    border: 1px solid #e0e0e0;
+    .coupon-type{
+      .p-size(40px,40px,16px,center,0px,#ed2f26);
+    }
+    .ladder{
+      .p-size(40px,40px,14px,left,20px,#999999);
+    }
+  }
+}
+.ant-modal{
+  width: 700px!important;
+}
+.coupon-back{
+  color: #fdf4e9;
 }
 </style>

@@ -32,18 +32,16 @@
                 <p class="goods-guige">{{item.guige}}</p>
                 <p class="manufactor">{{item.changshang}}</p>
                 <p class="icon">
-                  <a-icon type="chrome"/>
-                  <a-icon type="apple"/>
-                  <a-icon type="wechat"/>
+                  <a-tag color="pink">阿发发发发发发顺丰</a-tag>
                 </p>
                 <p class="old-price">￥ {{item.price}}</p>
                 <p class="original">原价：￥{{item.original}}</p>
                 <p class="validity">有效期：{{item.time}}</p>
                 <p class="btn-p">
-                  <button @click="addCount(index,item)">+</button>
-                  <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :min="1" :max="item.limit" v-model="item.count" />
                   <button @click="reduceCount(index,item)">-</button>
+                  <!-- <button class="goods-count">{{item.count}}</button> -->
+                  <a-input-number :min="1" :max="item.limit" v-model="item.count" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <button @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit">( 限购{{item.limit}}盒 )</p>
                 <p class="new-price">￥{{item.price*item.count}}</p>
@@ -419,14 +417,14 @@ li {
   color: #999999;
 }
 .btn-p button {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
+  width: 30px;
+  height: 30px;
+  line-height: 20px;
   border: 1px solid #e0e0e0;
   background: #ffffff;
 }
 .btn-p input{
-  height: 40px;
+  height: 30px;
 }
 .new-price {
   .position(absolute, 55px, 840px);
