@@ -69,8 +69,11 @@
                   </p>
                   <button @click="toDetails()">立即抢购</button>
                 </div>
+                 
               </a-tab-pane>
+             
             </a-tabs>
+             <a-pagination v-model="current" :total="this.pagination.length" v-if="this.pagination.length !== 0 "/>
           </div>
         </div>
       </a-layout-content>
@@ -88,6 +91,8 @@ export default {
   },
   data() {
     return {
+      current: 1,
+      pagination: [],
       tabStyle: {
         color: "#c40000",
         background: "black"
@@ -121,6 +126,7 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list;
             _this.goodsList = result.data;
+            _this.pagination = _this.goodsList.list
             _this.goodsList.list.forEach((item) => {
               item.percentage = 100 - item.buynum/item.surplusstock*100
             })
@@ -219,6 +225,9 @@ export default {
 <style scoped lang="less">
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
+#components-layout-demo-basic .ant-layout-content{
+   background: #f2f2f2;
+}
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   background: #ffffff;
@@ -258,7 +267,8 @@ export default {
 .limited-goods {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
-  background: #f6f6f6;
+  margin-bottom: 20px;
+  background: #f2f2f2;
 }
 .tab-pane {
   width: 270px;
@@ -298,5 +308,8 @@ export default {
   del {
     color: #666666;
   }
+}
+.ant-pagination{
+  text-align: center;
 }
 </style>

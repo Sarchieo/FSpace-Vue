@@ -109,6 +109,7 @@
               <a href>新人专享</a>
               <a href>新品上线</a>
               <a href>热销商品</a>
+              <a href="javascript:;" @click="toBrand()">品牌专区</a>
               <a href>全部商品</a>
             </div>
           </div>
@@ -311,6 +312,11 @@ export default {
       // 跳转企业中心页面
       this.$router.push({
         path: "/user/personal"
+      });
+    },
+    toBrand() {
+        this.$router.push({
+        path: "/activity/brand"
       });
     },
     handleCancel() {
