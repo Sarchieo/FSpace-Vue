@@ -272,7 +272,7 @@
                 <a-tab-pane tab="药品详情" key="1">
                   <div class="goods-detail">
                     <p class="detail-list">
-                      <span class="explain-header">药石名称</span>
+                      <span class="explain-header">药品名称</span>
                       <span>{{ prodDetail.prodname }}</span>
                     </p>
                     <p class="detail-list">
@@ -1436,7 +1436,7 @@ li {
   margin-bottom: 15px;
 }
 .card-recommend img {
-  width: 220px;
+  width: 218px;
   height: 190px;
 }
 /* 页脚 */
