@@ -275,7 +275,6 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
             if(result.code === 200) {
               _this.$message.success(result.data);
               // 跳转页面
