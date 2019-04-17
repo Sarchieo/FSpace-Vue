@@ -57,7 +57,6 @@ function refcallback(moduleName,_IRequest, callback) {
  * @param {*} callback
  */
 function initIceLong(serverName, compid, callback) {
-  debugger
   Ice.Promise.try(
     function () {
       let server_addr = serverName + Math.floor(compid % 8192 / 65535)  // 公司码 % 8192/65535 

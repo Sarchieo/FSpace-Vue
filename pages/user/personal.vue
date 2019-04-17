@@ -113,7 +113,7 @@ export default {
       return this.$store.state.user;
     }
   },
-  middleware: "authenticated",
+  // middleware: "authenticated",
   data() {
     return {};
   },

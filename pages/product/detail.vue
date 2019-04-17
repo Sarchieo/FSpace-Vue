@@ -102,7 +102,7 @@
               <div class="manufacturer">
                 <p class="packing">
                   <span>规格/包装：</span>
-                  <span class="margin-right190">{{ prodDetail.formName }}</span>
+                  <span class="margin-right190">{{ prodDetail.spec }}</span>
                   <span>剂 型：</span>
                   <span>瓶装</span>
                 </p>
@@ -135,11 +135,17 @@
                   由
                   <a href>一块物流</a>发货，一块医药提供售后服务. 23:00前下单,预计后天(03月18日)送达
                 </p>-->
-
+                <p class="btn-p">
+                  <button @click="addCount()">+</button>
+                  <!-- <button class="goods-count">{{item.count}}</button> -->
+                  <a-input-number :min="1" :max="maximum" v-model="inventory" />
+                  <button @click="reduceCount()">-</button>
+                </p>
                 <p class="cart">
-                  <input type="text" readonly="readonly" v-model="count" class="goods-count">
-                  <button class="addition width22">+</button>
-                  <button class="reduce width22">-</button>
+                  <!-- <input type="text" readonly="readonly" v-model="count" class="goods-count"> -->
+                  <!-- <button class="addition width22" @click="addCount()">+</button> -->
+                  <!-- <button class="reduce width22">-</button> -->
+                  <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->
                   <button type="danger" class="purchase">立即购买</button>
                   <a-button class="add-cart">
                     <a-icon type="shopping-cart"/>加入采购单
@@ -410,11 +416,10 @@
               <div class="recommend-box">
                 <ul class="recommend-ul">
                   <li v-for="(item,index) in hotList" :key="index">
-                    <a-card class="card-recommend" hoverable>
-                      <img v-lazy="item.imageUrl" slot="cover">
+                    <a-card class="card-recommend" hoverable @click="toDetail(item)">
+                      <img v-lazy="item.imgURl" slot="cover">
                       <p class="meal-name">{{item.prodname}}</p>
                       <p class="meal-price">￥{{item.mp}}元</p>
-
                       <p class="meal-packing">已售{{item.buynum}}{{item.unitName}}</p>
                     </a-card>
                   </li>
@@ -447,6 +452,8 @@ export default {
   },
   data() {
     return {
+      maximum: 1, // 最大库存
+      inventory: 1, // 当前库存
       percentAge: 50,
       flashSale: {
         h: 0,
@@ -523,12 +530,30 @@ export default {
     this.isCollec();
     // 获取热销数据
     this.getProdDetailHotArea();
-    this.queryCouponPub();
     if (this.actcode != 0) {
       this.queryActiveType();
     }
   },
   methods: {
+    // 新增采购数量
+    addCount() {
+      if(this.inventory >= this.maximum) {
+        this.$message.warning('库存不足或超出限购数量')
+        return 
+      }
+      this.inventory ++ 
+    },
+    reduceCount() {
+      if(this.inventory <= 1) {
+        return
+      }
+      this.inventory --
+    },
+    // 加入采购单
+    addCart() {
+
+    },
+    // 猜你喜欢列表
     // 领取优惠券
     revCoupon(item) {
       const _this = this;
@@ -561,8 +586,8 @@ export default {
       iRequest.cls = "CouponManageModule";
       iRequest.method = "queryCouponPub";
       iRequest.param.json = JSON.stringify({
-        gcode: "11000000140101", // sku
-        compid: "536862720", // 企业id
+        gcode: _this.prodDetail.sku, // sku
+        compid: _this.storeInfo.storeId, // 企业id
         pageSize: 5,
         pageNo: 1
       });
@@ -650,7 +675,13 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.prodDetail = result.data;
+            _this.queryCouponPub();
             _this.details = JSON.parse(_this.prodDetail.detail);
+            if(_this.status == '0') {
+              _this.maximum = _this.prodDetail.store
+            }else {
+              _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
+            }
           } else {
             _this.$message.error(result.message);
           }
@@ -709,7 +740,6 @@ export default {
     },
     // 查询是否被收藏
     isCollec() {
-      debugger;
       console.log(this.storeInfo.storeId);
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -725,11 +755,8 @@ export default {
         "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result);
           if (result.code === 200) {
             _this.isShowCollec = result.data;
-            console.log(9);
-            console.log(_this.prodDetail);
           } else {
             _this.$message.error(result.message);
           }
@@ -774,7 +801,7 @@ export default {
         )
       );
     },
-        // 获取商品图片
+    // 获取商品图片
     async getImgUrls(arr) {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -877,7 +904,18 @@ export default {
       this.action = "disliked";
     },
     handleChange(value) {},
-    callback(key) {}
+    callback(key) {},
+    toDetail(item) {
+      let routeData = this.$router.resolve({
+        path: '/product/detail',
+        query: {
+          sku: item.sku,
+          spu: item.spu,
+          rulestatus: item.rulestatus
+        }
+      })
+      window.open(routeData.href, '_blank');
+    }
   }
 };
 </script>
@@ -1551,4 +1589,5 @@ li {
   border: 1px solid blue;
   background-color: #3189f5 !important;
 }
+
 </style>

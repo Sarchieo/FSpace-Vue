@@ -119,6 +119,7 @@ export default {
       return this.$store.getters.areas;
     }
   },
+  middleware: 'authenticated',
   watch: {
     storeInfo(val) {
       if (val.addressCode) {
@@ -206,11 +207,11 @@ export default {
     };
   },
   mounted() {
-    this.form.setFieldsValue({
-      storeName: "",
-      address: "",
-      addressCode: ""
-    });
+    // this.form.setFieldsValue({
+    //   storeName: "",
+    //   address: "",
+    //   addressCode: ""
+    // });
     this.getBasicInfo();
     this.getNodes();
   },
@@ -334,7 +335,6 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
           if (result.code === 200) {
             _this.$store.dispatch("setUser", {
               context: _this,

@@ -121,6 +121,7 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
       iRequest.method = "queryCouponPub";
+       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
         gcode: -1, // sku
         compid: '536862720', // 企业id
@@ -148,11 +149,11 @@ export default {
     },
     // 领取优惠券
     revCoupon(item) {
-      debugger
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
       iRequest.method = "revCoupon";
+      iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify(item)
       this.$refcallback(
         "discountServer",

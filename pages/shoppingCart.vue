@@ -6,7 +6,7 @@
         <div class="cart-box">
           <ul class="table-header">
             <li class="whole">
-              <a-checkbox @change="onChange" v-model="checked">全选</a-checkbox>
+              <a-checkbox @change="checkAll">全选</a-checkbox>
             </li>
             <li>商品信息</li>
             <li>单价</li>
@@ -20,8 +20,8 @@
               <span>一块医药自营</span>
             </div>
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
-              <div class="first-div">
-                <a-checkbox @change="onChanges(index)" v-model="item.checked" class="pick-input"></a-checkbox>
+              <div class="first-div" :class="item.checked ? 'back-pink' : ''">
+                <a-checkbox v-model="item.checked" class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
                 <img v-lazy="item.src" alt>
                 <p class="goods-name">{{item.name}}</p>
@@ -36,21 +36,25 @@
                 <p class="original">原价：￥{{item.original}}</p>
                 <p class="validity">有效期：{{item.time}}</p>
                 <p class="btn-p">
-                  <button @click="addCount(index)">+</button>
-                  <button class="goods-count">{{item.count}}</button>
-                  <button @click="reduceCount(index)">-</button>
+                  <button @click="addCount(index,item)">+</button>
+                  <!-- <button class="goods-count">{{item.count}}</button> -->
+                  <a-input-number :min="1" :max="item.limit" v-model="item.count" />
+                  <button @click="reduceCount(index,item)">-</button>
                 </p>
                 <p class="limit">( 限购{{item.limit}}盒 )</p>
                 <p class="new-price">￥{{item.price*item.count}}</p>
                 <p class="omit">为您节省￥{{item.original - item.price}}</p>
                 <p class="move">移入收藏夹</p>
-                <p class="del-goods" @click="removeList(index)">删除</p>
+                <!-- <p class="del-goods" @click="removeList(index)">删除</p> -->
+                <a-popconfirm title="您确认要移除当前商品吗?" @confirm="remove(index)" okText="确定" cancelText="取消">
+                  <p class="del-goods">删除</p>
+                </a-popconfirm>
               </div>
             </li>
           </ul>
           <div class="whole-pick">
-            <a-checkbox @change="onChange">全选</a-checkbox>
-            <span>删除选中商品</span>
+            <!-- <a-checkbox @change="onChange">全选</a-checkbox>
+            <span>删除选中商品</span> -->
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
               <span>活动优惠：-￥{{discount}}</span>
@@ -107,171 +111,55 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
-  // middleware: 'authenticated',
+  middleware: 'authenticated',
   data() {
     return {
+      maximum: 1,// 最大库存
+      timeoutflag: null,
       checked: false,
       discount: 100,
-      mealList: [
-      {
-        list: [
-          {
-            url:
-              "//img.alicdn.com/imgextra/i2/TB1RMTfIFXXXXX.XVXXLJcJ8VXX_033554.jpg_160x160q90.jpg",
-            price: 42,
-            name: "斯强牌服输酸营养颗粒",
-            packing: "3g / 袋"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 49,
-            name: "太极五子衍宗",
-            packing: "0.5g / 80片"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 99,
-            name: "盘龙去海排毒胶囊",
-            packing: "0.5g * 18颗"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 468,
-            name: "善存多维元素片",
-            packing: "20g / 1瓶"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 32,
-            name: "九芝堂六味地黄丸",
-            packing: "0.5g / 100粒"
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            url:
-              "//img.alicdn.com/imgextra/i4/TB1CMQtOFXXXXXzXXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg",
-            price: 322,
-            name: "汇仁牌肾宝片",
-            packing: "5g / 100片"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i1/TB1srwPPVXXXXaIaXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg",
-            price: 711,
-            name: "白去山陈李济",
-            packing: "5g / 80片"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 1350,
-            name: "山东东阿阿胶",
-            packing: "5g * 18袋"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i2/TB11.ucPpXXXXaVaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 468,
-            name: "东阿阿胶复方阿胶浆",
-            packing: "20g / 1瓶"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 32,
-            name: "九芝堂六味地黄丸",
-            packing: "0.5g / 100粒"
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            url:
-              "//img.alicdn.com/imgextra/i3/TB1q0YVKpXXXXXdXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 4050,
-            name: "破壁灵芝孢子粉",
-            packing: "5g / 15袋"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i2/TB1zFmZLXXXXXcVXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 79.2,
-            name: "金河藏红",
-            packing: "5g / 10袋"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 1350,
-            name: "贯康 冬虫夏草 4条/克",
-            packing: "5g * 18袋"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i1/TB1sej.KFXXXXXpXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 269,
-            name: "桃花姬",
-            packing: "20g / 1袋"
-          },
-          {
-            url:
-              "//img.alicdn.com/imgextra/i2/TB1gpgYKpXXXXb8XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-            price: 69,
-            name: "敖东城 西洋参",
-            packing: "80g / 1瓶"
-          }
-        ]
-      }
-    ],
-    cartList: [
-      {
-        src:
-          "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-        name: "东阿阿胶",
-        guige: "0.4g*12粒",
-        changshang: "吉林市吴太感康药业有限公司",
-        price: 88,
-        original: 100,
-        limit: 10,
-        count: 1,
-        time: "2022-02-30",
-        checked: false
-      },
-      {
-        src:
-          "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-        name: "东阿阿胶",
-        guige: "0.4g*12粒",
-        changshang: "吉林市吴太感康药业有限公司",
-        price: 199,
-        original: 210,
-        limit: 9,
-        count: 1,
-        time: "2022-02-30",
-        checked: false
-      },
-      {
-        src:
-          "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-        name: "东阿阿胶",
-        guige: "0.4g*12粒",
-        changshang: "吉林市吴太感康药业有限公司",
-        price: 99,
-        original: 100,
-        limit: 11,
-        count: 1,
-        time: "2022-02-30",
-        checked: false
-      }
-    ]
+      mealList: [],
+      cartList: [
+        {
+          src:
+            "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "东阿阿胶",
+          guige: "0.4g*12粒",
+          changshang: "吉林市吴太感康药业有限公司",
+          price: 88,
+          original: 100,
+          limit: 10,
+          count: 1,
+          time: "2022-02-30",
+          checked: false
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "东阿阿胶",
+          guige: "0.4g*12粒",
+          changshang: "吉林市吴太感康药业有限公司",
+          price: 199,
+          original: 210,
+          limit: 9,
+          count: 1,
+          time: "2022-02-30",
+          checked: false
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "东阿阿胶",
+          guige: "0.4g*12粒",
+          changshang: "吉林市吴太感康药业有限公司",
+          price: 99,
+          original: 100,
+          limit: 11,
+          count: 1,
+          time: "2022-02-30",
+          checked: false
+        }
+      ]
     };
   },
   computed: {
@@ -289,30 +177,68 @@ export default {
         path:'/product/detail'
       })
     },
-    onChange(e) {
-      var _this = this;
-      this.cartList.forEach(item => {
-        item.checked = _this.checked;
-      });
+    // 全选
+    checkAll(e) {
+      this.checked = e.target.checked
+      this.cartList.forEach((item) => {
+        item.checked = this.checked
+      })
+      if(this.checked) {
+        // 调用后台接口
+
+      }
     },
-    onChanges(index) {
-      var _this = this;
+    onChange(item) {
+      debugger
+      item.checked  = !item.checked
+      let flag = true
+      this.cartList.forEach((item) => {
+        if(!item.checked) {
+          flag = false
+        }
+      })
+      debugger
+      if(flag) {
+        _this.checked
+      }
     },
     toPlaceOrder() {
       this.$router.push({
         path: "order/placeOrder"
       });
     },
-    addCount(index) {
-      this.cartList[index].count += 1;
+    addCount(index, item) {
+      let _this = this 
+      // 限购数量
+      if(item.count >= item.limit) {
+        _this.$message.warning(item.name + '限购' + item.limit + '件')
+        return
+      }
+      item.checked = true
+      item.count += 1;
+     
+      if(this.timeoutflag != null){
+        clearTimeout(this.timeoutflag);
+      }
+      this.timeoutflag = setTimeout(function(){
+        console.log('调用接口:' + _this.cartList[index].count)
+      },1000);
     },
-    reduceCount(index) {
-      if (this.cartList[index].count === 1) {
+    reduceCount(index, item) {
+      if (item.count === 1) {
         return false;
       }
-      this.cartList[index].count -= 1;
+      let _this = this
+      item.count--
+      item.checked = true
+      if(this.timeoutflag != null){
+        clearTimeout(this.timeoutflag);
+      }
+      this.timeoutflag = setTimeout(function(){
+        console.log('调用接口:' + item.count)
+      },1000);
     },
-    removeList(index) {
+    remove(index) {
       this.cartList.splice(index, 1);
     }
   }
@@ -473,10 +399,13 @@ li {
 }
 .btn-p button {
   width: 40px;
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   border: 1px solid #e0e0e0;
   background: #ffffff;
+}
+.btn-p input{
+  height: 40px;
 }
 .new-price {
   .position(absolute, 55px, 840px);
@@ -503,7 +432,7 @@ li {
   padding-left: 20px;
 }
 .summary {
-  .container-size(inline-block, 1000px, 70px, 0, 0px);
+  .container-size(inline-block, 100%, 70px, 0, 0px);
   text-align: right;
 }
 .summary span {
@@ -578,6 +507,9 @@ li {
 
 .ant-carousel .slick-slide h3 {
   color: #fff;
+}
+.back-pink{
+  background: #fdf4e9;
 }
 </style>
 
