@@ -48,10 +48,12 @@
                 <p class="limit">( 限购{{item.limit}}盒 )</p>
                 <p class="new-price">￥{{item.price*item.count}}</p>
                 <p class="omit">为您节省￥{{item.original - item.price}}</p>
-                <p class="move">移入收藏夹</p>
+                <!-- <p class="move">移入收藏夹</p> -->
+                <a-tag color="red" class="move">收藏</a-tag>
                 <!-- <p class="del-goods" @click="removeList(index)">删除</p> -->
                 <a-popconfirm title="您确认要移除当前商品吗?" @confirm="remove(index)" okText="确定" cancelText="取消">
-                  <p class="del-goods">删除</p>
+                  <!-- <p class="del-goods">删除</p> -->
+                  <a-tag color="gray" class="del-goods">删除</a-tag>
                 </a-popconfirm>
               </div>
             </li>
