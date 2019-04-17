@@ -69,7 +69,7 @@
                 :label-col="formTailLayout.labelCol"
                 :wrapper-col="formTailLayout.wrapperCol"
               >
-                <button class="login-btn" html-type="submit">登录</button>
+                <a-button :loading="loading" class="login-btn" html-type="submit">登录</a-button>
               </a-form-item>
             </a-form>
             <p class="to-register">还没有账号？立即去
@@ -102,6 +102,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       captchaURL: '',
       isCaptcha: false,
       isSavePwd: false,
@@ -147,6 +148,7 @@ export default {
     },
     login(values) {
       let _this = this;
+      _this.loading = true
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
       iRequest.method = "loginStore";
@@ -176,6 +178,7 @@ export default {
                   console.log(err);
               });
             }else {
+              _this.loading = false
               if(result && result.map && result.map.index >= 3) {
                 _this.isCaptcha = true
                 _this.getCaptcha()
@@ -185,7 +188,8 @@ export default {
               }
             }
           },function error(error) {
-            debugger
+            _this.loading = false
+            _this.$message.error(error)
           }
         )
       );

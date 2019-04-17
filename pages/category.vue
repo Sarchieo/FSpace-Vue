@@ -348,7 +348,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              console.log(result)
               _this.searchList = result.data;
               _this.getImgUrl();
               if (_this.searchList.length === 0 || _this.searchList === null) {

@@ -19,7 +19,7 @@
               <a-icon type="shop"/>
               <span>一块医药自营</span>
             </div>
-            <div class="no-data" v-if="this.cartList !== 0">
+            <div class="no-data" v-if="cartList === 0">
               <p class="no-icon"><a-icon type="exclamation"/></p>
               <p class="no-text">你的采购单空空如也！</p>
             </div>
@@ -57,13 +57,13 @@
             </li>
           </ul>
           <div class="whole-pick" v-if="this.cartList.length !== 0">
-            <a-checkbox @change="onChange">全选</a-checkbox>
-            <span>删除选中商品</span>
+            <!-- <a-checkbox @change="onChange">全选</a-checkbox> -->
+            <!-- <span>删除选中商品</span> -->
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
               <span>活动优惠：-￥{{discount}}</span>
               <span class="total-price">应付总金额：￥{{total - discount}}</span>
-              <button class="order-btn" @click="toPlaceOrder()">下单</button>
+              <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
           </div>
           <div class="guess">
@@ -118,12 +118,53 @@ export default {
   middleware: 'authenticated',
   data() {
     return {
+      loading: false,
       maximum: 1,// 最大库存
       timeoutflag: null,
       checked: false,
       discount: 100,
       mealList: [], // 猜你喜欢列表
-      cartList: [] // 购物车列表
+      cartList: [
+        {
+          src:
+              "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "东阿阿胶",
+          guige: "0.4g*12粒",
+          changshang: "吉林市吴太感康药业有限公司",
+          price: 88,
+          original: 100,
+          limit: 10,
+          count: 1,
+          time: "2022-02-30",
+          checked: false
+        },
+        {
+          src:
+              "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "东阿阿胶",
+          guige: "0.4g*12粒",
+          changshang: "吉林市吴太感康药业有限公司",
+          price: 199,
+          original: 210,
+          limit: 9,
+          count: 1,
+          time: "2022-02-30",
+          checked: false
+        },
+        {
+          src:
+              "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "东阿阿胶",
+          guige: "0.4g*12粒",
+          changshang: "吉林市吴太感康药业有限公司",
+          price: 99,
+          original: 100,
+          limit: 11,
+          count: 1,
+          time: "2022-02-30",
+          checked: false
+        }
+      ]
     };
   },
   computed: {
@@ -153,7 +194,6 @@ export default {
       }
     },
     onChange(item) {
-      debugger
       item.checked  = !item.checked
       let flag = true
       this.cartList.forEach((item) => {
@@ -161,15 +201,19 @@ export default {
           flag = false
         }
       })
-      debugger
-      if(flag) {
-        _this.checked
-      }
+    },
+    inputChange(index, item) {
+      console.log(item)
     },
     toPlaceOrder() {
-      this.$router.push({
-        path: "order/placeOrder"
-      });
+      this.loading = true
+      setTimeout(() => {
+        this.loading = false
+        // this.$router.push({
+        //   path: "order/placeOrder"
+        // });
+      },3000)
+    
     },
     addCount(index, item) {
       let _this = this
