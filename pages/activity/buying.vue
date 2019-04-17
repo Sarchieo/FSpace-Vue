@@ -10,7 +10,17 @@
             <p>一块团购 团购越多越实惠</p>
           </div>
           <div class="person-num">
-            <div class="person-left">商品累计拼团人数/折扣 描述方式待定</div>
+            <div class="person-left">
+              <span class="buying-content">商品累计拼团人数/折扣</span>
+              <p class="discount-num"><span>10.0</span> <span>9.8</span> <span>9.5</span> <span>9.0</span> <span>8.8</span> <span>8.5</span> <span>折</span></p>
+              <a-progress
+                  :percent="99"
+                  style="position: absolute;top: 32px;left: 203px;width: 295px;height: 8px;margin-left: 20px;"
+                  :showInfo="false"
+                  status="exception"
+                />
+              <p class="discount-person"><span>15</span> <span>20</span> <span>25</span> <span>30</span> <span>35</span> <span>40</span> <span>人</span></p>
+            </div>
             <div class="person-right">
               <!-- 距团购活动时间还剩 {{ flashSale.h }} 时 {{ flashSale.m }} 分 {{ flashSale.s }} 秒 -->
             </div>
@@ -293,6 +303,31 @@ export default {
         }
       }
     },
+      // 设置倒计时
+    async secondKill(date,eDate) {
+      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
+      let times = endDate - new Date()
+      let _this = this
+      if(times>=0) {
+        let timer;
+        timer = setInterval(function () {
+        times--;
+        let modulo = times % (60 * 60 * 24);
+        _this.flashSale.h = Math.floor(modulo / (60 * 60));
+        modulo = modulo % (60 * 60);
+        _this.flashSale.m = Math.floor(modulo / 60);
+        _this.flashSale.s = modulo % 60;
+        if (times <= 0) {
+          clearInterval(timer);
+        }
+        }, 1000);
+        if (times >= 0) {
+          console.log(times)
+        } else {
+          console.log('活动结束')
+        }
+      }
+    },
     callback(key) {
       console.log(key);
     },
@@ -321,12 +356,35 @@ export default {
   color: #ffffff;
   .person-left {
     float: left;
-    .container-size(inline-block, 500px, 86px, 0 auto, 0px);
-    text-indent: 60px;
+    .position(relative,0px,0px);
+    .container-size(inline-block, 675px, 86px, 0 auto, 0px);
+    text-indent: 40px;
+    .buying-content{
+      .position(absolute,0px,0px);
+      height:30px;
+    }
+    .discount-num{
+     .position(absolute,-25px,220px);
+      height:30px;
+     span{
+       display:inline-block;
+       width: 50px;
+       height: 20px;
+     }
+   }
+   .discount-person{
+     .position(absolute,28px,220px);
+     span{
+       display:inline-block;
+       width: 50px;
+       height: 20px;
+     }
+   }
   }
   .person-right {
     float: right;
     .container-size(inline-block, 500px, 86px, 0 auto, 0px);
+    text-indent: 160px;
   }
 }
 .card {
@@ -360,7 +418,7 @@ export default {
   background: #ffffff;
 }
 .limited-goods {
-  .container-size(block, 1190px, auto, 0 auto, 0px);
+  .container-size(block, 1210px, auto, 0 auto, 0px);
   min-height: 400px;
   background: #f2f2f2;
   margin-bottom: 20px;
@@ -370,7 +428,7 @@ export default {
   height: auto;
 }
 .goods-box {
-  .container-size(inline-block, 225px, 310px, 10px 6px, 0px);
+  .container-size(inline-block, 225px, 310px, 10px 16.2px 10px 0px, 0px);
   .position(relative, 0px, 0px);
   background: #ffffff;
 }

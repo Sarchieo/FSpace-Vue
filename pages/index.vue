@@ -106,9 +106,10 @@
               </ul>
             </div>
           </div>
-           <div class="brand-hall" v-if="item.unqid === 8">
+           <div class="brand-hall height-auto" v-if="item.unqid === 8">
             <p class="brand-hall-title">
               一块购 ● 越团越优惠
+              
               <a href="javascript:;" @click="toBuying()">
                 查看全部
                 <a-icon type="right"/>
@@ -141,7 +142,7 @@
           <!-- 热销专区 包邮专区 -->
           <div class="brand-hall" v-if="item.unqid === 2">
             <p class="brand-hall-title">
-              热销专区
+              人气专区
               <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
               </a>
             </p>
@@ -164,6 +165,29 @@
               </ul>
             </div>
           </div>
+           <!-- 为你精选 -->
+          <div id="choice" class="elaborate" v-if="item.unqid === 128">
+            <p class="elaborate-title">为你精选
+               <a href="javascript:;" @click="toSelected()">
+                查看全部
+                <a-icon type="right"/>
+              </a> </p>
+            <ul class="elaborate-ui">
+              <li v-for="(item,index) in selectedList" :key="index">
+                <a-card hoverable class="elaborate-card" @click="toDetail(item)">
+                  <img v-lazy="item.imgURl" slot="cover">
+                  <p class="elaborate-text">{{item.prodname}}</p>
+                  <p class="elaborate-specifications">{{item.spec}}</p>
+                  <p class="elaborate-manufacturer">{{item.manuName}}</p>
+                  <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                  <p class="elaborate-price">￥{{item.vatp}}</p>
+                  <p class="elaborate-sold">已售{{item.store}}{{item.unitName}}</p>
+                  <a-card-meta></a-card-meta>
+                  <p></p>
+                </a-card>
+              </li>
+            </ul>
+          </div>
           <!-- 新品专区 -->
           <div id="choice" class="elaborate" v-if="item.unqid === 1">
             <p class="elaborate-title">新品专区
@@ -180,7 +204,7 @@
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                   <p class="elaborate-price">￥{{item.vatp}}</p>
-                  <p class="elaborate-sold">{{item.store}}</p>
+                  <p class="elaborate-sold">已售{{item.store}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
                   <p></p>
                 </a-card>
@@ -244,6 +268,7 @@ export default {
       limitedList: [], // 限时抢购
       newGoodsList: [], // 新品商品列表
       hotGoodsList: [], // 热销商品列表
+      selectedList: [], // 为你精选
       isShow: false,
       imgSrc:
         "//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg",
@@ -349,6 +374,9 @@ export default {
                 case 8:
                 _this.getTeamBuyMallFloor()
                 break
+                case 128: // 为你精选
+                _this.getSelects();
+                break
                 case 512:// 限时抢购
                 _this.getDiscountMallFloor();
                 break
@@ -377,7 +405,6 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 5)
             _this.teamBuyList = result.data
-            console.log(result.data)
             _this.teamByID = result.data.actcode
             _this.getImgUrl(_this.teamBuyList.list)
             _this.secondKills(_this.stringToDate(_this.teamBuyList.now), _this.teamBuyList.edate)
@@ -434,6 +461,31 @@ export default {
           if (result.code === 200) {
             _this.newGoodsList = result.data.slice(0, 6);
             _this.getImgUrl(_this.newGoodsList);
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 为你精选数据
+    async getSelects() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getChooseForYouMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 20;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.selectedList = result.data.slice(0, 6);
+            console.log(9999);
+            console.log(_this.selectedList)
+            _this.getImgUrl(_this.selectedList);
           } else {
             _this.$message.error(result.message);
           }
@@ -648,6 +700,11 @@ export default {
         path: "/activity/hot-goods"
       });
     },
+    toSelected() {
+      this.$router.push({
+        path: "/activity/selected"
+      });
+    },
     toBuying() {
       this.$router.push({
         path: "/activity/buying",
@@ -712,6 +769,10 @@ li {
 }
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
+}
+.height-auto{
+  min-height: 360px;
+  height: auto!important;
 }
 .active {
   background: #ff0036 !important;
@@ -895,7 +956,7 @@ li {
   color: #333333;
 }
 .elaborate-manufacturer {
-  .position(absolute, 85px, 198px);
+  .position(absolute, 72px, 198px);
   width: 170px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -950,7 +1011,8 @@ li {
   font-weight: bold;
 }
 .onek-shoping {
-  .container-size(block, 1202px, 890px, 0 auto, 0px);
+  .container-size(block, 1202px, auto, 0 auto, 0px);
+  min-height: 310px;
   background: #f2f2f2;
   ul {
     float: left;

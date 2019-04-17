@@ -1,5 +1,5 @@
 <template>
-  <ul class="sider-menu">
+  <ul class="sider-menu" ref="siderui">
     <li
       v-for="(i,index) in list"
       :key="index"
@@ -9,7 +9,7 @@
       @mouseout="hideChildren(i)"
     >
     {{i.label}}
-    
+    <a-icon type="right"/>
       <!-- 弹出层  v-show="i.isActive"-->
       <div :ref="'hover' + index" class="hover-show" v-show="i.isActive">
         <div
@@ -36,8 +36,18 @@ export default {
   },
   mounted() {
     this.getProduceClasses();
+    this.compLiHeight();
   },
   methods: {
+    compLiHeight() {
+      debugger
+      var siderui = this.$refs.siderui.offsetHeight;
+      var siderLi = document.getElementsByClassName('sider-menu-li');
+     for(var i = 0;i<siderLi.length;i++){
+       siderLi[i].style.height = siderui/siderLi.length
+     }
+      console.log(siderLi)
+    },
     toCategory(index) {
       // console.log(index)
       let routeData = this.$router.resolve({
@@ -126,12 +136,13 @@ export default {
 }
 .sider-menu-li:hover {
   background: rgb(255, 0, 54);
-  color: #ffffff;
+  color: #f2f2f2;
 }
 .sider-menu-li i {
   float: right;
   margin-top: 15px;
   margin-right: 5px;
+  color: #999999;
 }
 .hover-show {
   position: absolute;
