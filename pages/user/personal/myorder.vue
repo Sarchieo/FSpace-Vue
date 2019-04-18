@@ -1,40 +1,24 @@
 <template>
   <div>
+     <!-- v-for="(item,index) in orderList" :key="index" -->
     <a-tabs defaultActiveKey="1" @change="callback">
       <a-tab-pane tab="全部订单" key="1">
-        <!-- <f-space-order>
-             <div slot="tabledata">
-               <p>这是插入的内容</p>
-             </div>
-            </f-space-order>
-        <a-table :columns="columns" :dataSource="data" bordered>
-           
-          <template slot="name" slot-scope="text">
-            
-            <a href="javascript:;">{{text}}
-           
-            </a>
-           
-          </template>
-           
-        </a-table> -->
-        
-        <!-- <p class="table-title">
+        <p class="table-title">
           <span class="width33">药品</span>
           <span class="width11">单价</span>
           <span class="width11">数量</span>
-          <span class="width11">订单操作</span>
+          <!-- <span class="width11">订单操作</span> -->
           <span class="width11">实付款</span>
           <span class="width11">交易状态</span>
           <span class="width11">操作</span>
-        </p> -->
+        </p>
         <ul class="order-box">
-          <li v-for="(item,index) in list" :key="index" class="order-box-li">
+          <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
             <p class="order-info-text">
-              <span class="time">{{item.odate}}</span>
-              <span>订单号：{{item.orderno}}</span>
-              <span class="yikuai">一块医药</span>
-              <span class="contact">联系售后</span>
+              <span class="time">{{item.time}}</span>
+              <span>订单号：{{item.num}}</span>
+              <!-- <span class="yikuai">一块医药</span>
+              <span class="contact">联系售后</span> -->
               <a-tooltip class="share">
                 <template slot="title">分享</template>
                 <a-icon type="export"/>
@@ -44,24 +28,24 @@
                 <a-icon type="delete" @click="showDeleteConfirm()"/>
               </a-tooltip>
             </p>
-            <div class="goods-box">
+            <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
               <div class="width33 goods-pic">
                 <img
                   v-lazy="item.src"
                   alt
                 >
-                <p class="goods-text">{{item.text}}</p>
+                <p class="goods-text">999感冒灵</p>
                 <p class="guige">规格：{{item.guige}}</p>
+                <p class="menu-name">三九药业股份有限公司</p>
+                <p class="date">有效期：2019-04-12</p>
               </div>
-              <div class="width11 price">
+              <div class="width11 pay">
                 <p>￥{{item.price}}</p>
               </div>
-              <div class="width11 count">
+              <div class="width11 pay">
                 <p>{{item.count}}</p>
               </div>
-              <div class="width11 sale">
-                <p>申请售后</p>
-              </div>
+
               <div class="width11 pay">
                 <p class="shiji">￥{{item.freight + item.price}}</p>
                 <p class="freight">(含运费{{item.freight}}元)</p>
@@ -71,21 +55,25 @@
                 <p class="sucess">交易成功</p>
                 <p class="detail" @click="toDetails()">订单详情</p>
               </div>
-              
               <div class="width12 operation">
+                <p>申请售后</p>
                 <p @click="toEvaluate()" ref="toevaluate"><a>评论</a></p>
-                
               </div>
             </div>
           </li>
            <a-pagination :defaultCurrent="1" :total="10" class="paging"/>
         </ul>
       </a-tab-pane>
-      <a-tab-pane tab="待付款" key="2" forceRender>待付款</a-tab-pane>
-      <a-tab-pane tab="待发货" key="3">待发货</a-tab-pane>
-      <a-tab-pane tab="待收货" key="4">待收货</a-tab-pane>
-      <a-tab-pane tab="待评价" key="5">待评价</a-tab-pane>
-      <a-tab-pane tab="退货" key="6">退货</a-tab-pane>
+      <a-tab-pane tab="待付款" key="2">
+        待付款</a-tab-pane>
+      <a-tab-pane tab="待发货" key="3">
+        待发货</a-tab-pane>
+      <a-tab-pane tab="待收货" key="4">
+        待收货</a-tab-pane>
+      <a-tab-pane tab="待评价" key="5">
+        待评价</a-tab-pane>
+      <a-tab-pane tab="退货" key="6">
+        退货</a-tab-pane>
     </a-tabs>
   </div>
 </template>
@@ -98,6 +86,73 @@ const renderContent = (value, row, index) => {
   };
   return obj;
 };
+const data = [
+  {
+    key: "1",
+    time: "2019-03-25",
+    num: 2019032400109,
+    delete: "删除",
+    fenxiang: "分享",
+    shangjia: "一块医药",
+    list: [
+      {
+        src:
+          "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+        text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+        guige: "200g*1株",
+        price: 8888,
+        count: 1,
+        freight: 4,
+        shiji: 8892,
+        details: "订单详情",
+        align: "再次购买",
+        pinglun: "评价",
+        tousu: "投诉",
+        shouhou: "申请售后"
+      },
+      {
+        src:
+          "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+        text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+        guige: "200g*1株",
+        price: 8888,
+        count: 1,
+        freight: 4,
+        shiji: 8892,
+        details: "订单详情",
+        align: "再次购买",
+        pinglun: "评价",
+        tousu: "投诉",
+        shouhou: "申请售后"
+      }
+    ]
+  },
+  {
+    key: "2",
+    time: "2019-03-25",
+    num: 2019032400109,
+    delete: "删除",
+    fenxiang: "分享",
+    shangjia: "一块医药",
+    list: [
+      {
+        src:
+          "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+        text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+        guige: "200g*1株",
+        price: 8888,
+        count: 1,
+        freight: 4,
+        shiji: 8892,
+        details: "订单详情",
+        align: "再次购买",
+        pinglun: "评价",
+        tousu: "投诉",
+        shouhou: "申请售后"
+      }
+    ]
+  }
+];
 
 export default {
   components: {
@@ -148,17 +203,161 @@ export default {
       }
     ];
     return {
+      ostatus: '',
+      orderList: [],
       data,
       columns,
       list: [
         {
-          odate: "2019-03-25",
-          orderno: 2019032400109,
+          time: "2019-03-25",
+          num: 2019032400109,
           src:
             "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+          guige: "200g*1株",
           price: 8888,
           count: 1,
           freight: 4,
+          list: [
+            {
+              src:
+                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+              guige: "200g*1株",
+              price: 8888,
+              count: 1,
+              freight: 4,
+              shiji: 8892,
+              details: "订单详情",
+              align: "再次购买",
+              pinglun: "评价",
+              tousu: "投诉",
+              shouhou: "申请售后"
+            },
+            {
+              src:
+                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+              guige: "200g*1株",
+              price: 8888,
+              count: 1,
+              freight: 4,
+              shiji: 8892,
+              details: "订单详情",
+              align: "再次购买",
+              pinglun: "评价",
+              tousu: "投诉",
+              shouhou: "申请售后"
+            }
+          ]
+        },
+        {
+          time: "2019-03-23",
+          num: 2019032400109,
+          src:
+            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+          guige: "200g*1株",
+          price: 8888,
+          count: 1,
+          freight: 22,
+          list: [
+            {
+              src:
+                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+              guige: "200g*1株",
+              price: 8888,
+              count: 1,
+              freight: 4,
+              shiji: 8892,
+              details: "订单详情",
+              align: "再次购买",
+              pinglun: "评价",
+              tousu: "投诉",
+              shouhou: "申请售后"
+            },
+            {
+              src:
+                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+              guige: "200g*1株",
+              price: 8888,
+              count: 1,
+              freight: 4,
+              shiji: 8892,
+              details: "订单详情",
+              align: "再次购买",
+              pinglun: "评价",
+              tousu: "投诉",
+              shouhou: "申请售后"
+            }
+          ]
+        },
+        {
+          time: "2019-03-22",
+          num: 2019032400109,
+          src:
+            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+          guige: "200g*1株",
+          price: 8888,
+          count: 1,
+          freight: 12
+        },
+        {
+          time: "2019-03-22",
+          num: 2019032400109,
+          src:
+            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+          guige: "200g*1株",
+          price: 8888,
+          count: 1,
+          freight: 9,
+          list: [
+            {
+              src:
+                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+              guige: "200g*1株",
+              price: 8888,
+              count: 1,
+              freight: 4,
+              shiji: 8892,
+              details: "订单详情",
+              align: "再次购买",
+              pinglun: "评价",
+              tousu: "投诉",
+              shouhou: "申请售后"
+            },
+            {
+              src:
+                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+              guige: "200g*1株",
+              price: 8888,
+              count: 1,
+              freight: 4,
+              shiji: 8892,
+              details: "订单详情",
+              align: "再次购买",
+              pinglun: "评价",
+              tousu: "投诉",
+              shouhou: "申请售后"
+            }
+          ]
+        },
+        {
+          time: "2019-03-21",
+          num: 2019032400109,
+          src:
+            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
+          guige: "200g*1株",
+          price: 8888,
+          count: 1,
+          freight: 8,
           list: [
             {
               src:
@@ -196,31 +395,30 @@ export default {
     };
   },
   mounted() {
-    // 获取订单列表
-    this.queryOrders()
+    this.queryOrderList()
   },
   methods: {
-    queryOrders() {
+    // 查询订单列表
+    queryOrderList() {
+      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "queryOrders";
-      iRequest.param.arrays = [_this.storeInfo.storeId]
       iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.arrays = ['',''];
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
+        new this.$iceCallback(function result(result) {
+          console.log(result)
           if (result.code === 200) {
-            
-            _this.$message.success(result.message);
+            debugger
+            _this.orderList = result.data;
+            console.log(_this.orderList)
           } else {
             _this.$message.error(result.message);
           }
-        },
-        function error(e) {
-          _this.$message.error(e);
         })
       );
     },
@@ -246,7 +444,7 @@ export default {
         window.open(routeData.href, '_blank');
     },
     callback(key) {
-      console.log(key);
+
     },
     toEvaluate() {
       var routeData = this.$router.resolve({
@@ -275,7 +473,7 @@ export default {
   }
 }
 .width11 {
-  width: 10.5%;
+  width: 13%;
 }
 .width12 {
   width: 11%;
@@ -283,11 +481,12 @@ export default {
 .table-title {
   .p-size(50px, 50px, 16px, center, 0px, #666666);
   display: block;
-  width: 945px;
+  width: 960px;
   margin: 0 auto;
   background: #f2f2f2;
   span {
     display: inline-block;
+    float:left;
     height: 50px;
     line-height: 50px;
   }
@@ -296,7 +495,7 @@ export default {
   .container-size(block, 985px, 905px, 0 auto, 0px);
   overflow: auto;
   li{
-    .container-size(block, 945px, 153px, 0 auto, 0px);
+    .container-size(block, 945px, auto, 0 auto, 0px);
     .container-color(#ffffff, 1px solid #f2f2f2, #666666);
     margin-top: 10px;
     margin-bottom: 10px;
@@ -314,7 +513,7 @@ export default {
           color: #ed3025;
       }
       .share {
-        margin-left: 295px;
+        margin-left: 485px;
       }
       i {
         font-size: 18px;
@@ -333,16 +532,34 @@ export default {
         .goods-text {
           .position(absolute, 10px, 110px);
           width: 200px;
-          height: auto;
+          height: 25px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+          font-size: 16px;
+          color: #333333;
         }
         .goods-text:hover {
           cursor: pointer;
           color: #ed3025;
         }
         .guige {
-          .position(absolute, 70px, 110px);
+          .position(absolute, 35px, 110px);
           width: 200px;
-          height: auto;
+          height: 25px;
+        }
+        .menu-name{
+          .position(absolute, 55px, 110px);
+          width: 200px;
+          height: 25px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+        }
+        .date{
+           .position(absolute, 75px, 110px);
+          width: 200px;
+          height: 25px;
         }
       }
       .count,
@@ -351,10 +568,9 @@ export default {
       .operation {
         .position(relative, 0px, 0px);
         p {
-          .position(absolute, 0px, 0px);
           width: 100%;
-          height: 100%;
-          line-height: 108px;
+          height: 20px;
+          line-height: 20px;
           text-align: center;
         }
       }
