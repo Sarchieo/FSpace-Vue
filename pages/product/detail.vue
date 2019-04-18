@@ -828,7 +828,6 @@ export default {
         unqid: 0,
         conpno: 0
       }]
-      debugger
       iRequest.param.json = JSON.stringify(arr)
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -836,14 +835,14 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
           _this.loading = false
           if (result.code === 200) {
             _this.$route.path.replace()
             _this.$router.push({
-              path: "/order/placeOrder",
-              query: {
-                arr: JSON.stringify(result.data)
+              name: "order-placeOrder",
+              params: {
+                arr: JSON.stringify(result.data),
+                placeType: 1
               }
             });
           } else {
@@ -851,7 +850,6 @@ export default {
           }
         },
         function error(e) {
-          debugger
           _this.loading = false
           _this.$message.error(e);
         })
