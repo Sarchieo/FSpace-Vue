@@ -10,10 +10,10 @@
               <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：刘晖 15116221156
             </p>
             <p class="address-info">
-              <span>收货人：</span>大表哥
+              <span>收货门店：</span> {{ this.storeInfo.storeName }}
             </p>
             <p class="address-info">
-              <span>联系方式：</span>18373270790
+              <span>联系方式：</span>{{ this.storeInfo.phone }}
               <a @click="showModal()">修改</a>
               <a-modal
                 title="编辑收货人"
@@ -22,12 +22,11 @@
                 okText="确认"
                 cancelText="取消"
                 >
-                <p class="modal-name"><span>姓名：</span> <input type="text" ></p>
                 <p class="modal-tel"><span>联系方式：</span> <input type="tel" ></p>
                </a-modal>
             </p>
             <p class="address-info">
-              <span>收货地址：</span>广东省深圳市福田区亮亮路15号亮亮小区2号楼502号
+              <span>收货地址：</span>{{ this.storeInfo.storeName }}
             </p>
           </div>
         </div>
@@ -101,7 +100,7 @@
                     <p>运费：￥12</p>
                     <p>优惠券：-￥100</p>
                     <p class="price">应付金额：￥269</p>
-                    <a-button class="pay-btn" @click="toPay()">去付款</a-button>
+                    <a-button class="pay-btn">提交订单</a-button>
                 </div>
             </div>
         </div>
@@ -120,10 +119,10 @@ export default {
   },
   computed: {
     storeInfo() {
-      console.log(this.$store.getters.user(this))
       return this.$store.getters.user(this);
     }
   },
+  middleware: 'authenticated',
   data() {
     return {
       isCoupon: false,
@@ -177,7 +176,34 @@ export default {
       visible: false
     };
   },
+  mounted() {
+    // 获取发票信息
+    this.getInvoice()
+    // 获取优惠券信息
+
+  },
   methods: {
+    getInvoice(){
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyInvoiceModule";
+      iRequest.method = "getInvoice";
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              // _this.form.setFieldsValue(_this.invoice)
+              // debugger
+            }else {
+             _this.$message.error(result.message)
+            }
+          }
+        )
+      );
+    },
     showModal() {
       this.visible = true
     },
@@ -186,11 +212,6 @@ export default {
     },
     pickCoupon() {
       this.isCoupon = true
-    },
-    toPay() {
-      this.$router.push({
-        path: '/order/pay'
-      })
     },
     handleOk() {
       console.log(1)

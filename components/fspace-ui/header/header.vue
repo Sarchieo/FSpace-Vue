@@ -39,7 +39,7 @@
                 <a-menu-item>
                   <a href="javascript:;">浏览记录</a>
                 </a-menu-item>
-                 <a-menu-item>
+                <a-menu-item>
                   <a @click="logout()">登出</a>
                 </a-menu-item>
               </a-menu>
@@ -72,36 +72,37 @@
             >
               <a-icon type="shopping-cart" class="cart-icon"/>
               <span class="cart-count">6</span>
-               <a-popover class="cart-text" title="采购单">
+              <!-- <a-popover class="cart-text" title="采购单">
                 <template slot="content">
                   <p>Content</p>
                   <p>Content</p>
                 </template> 
                 <a-button type="primary">Hover me</a-button>
-              </a-popover>
-              <!-- <span class="cart-text">采购单</span> -->
-              <!-- <div class="cart-down" v-show="isShowCartList">
-                <ul class="cart-down-ul">
+              </a-popover>-->
+              <span class="cart-text">采购单</span>
+              <!-- <div class="cart-down" v-show="isShowCartList"> -->
+               
+              <div class="cart-down">
+                 <p class="no-data" v-if="cartList.length === 0">您的采购单空空如也</p>
+                <ul class="cart-down-ul" v-if="cartList.length !== 0">
                   <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
                     <a href="javascript:;">
                       <img v-lazy="item.src" class="cart-img">
                       <p class="cart-goods-text">
-                        {{item.text}}
-                        <span>￥{{item.price}}元</span>
+                        {{item.ptitle}}
+                        <span>￥{{item.pdprice * item.num}}元</span>
                       </p>
-                      <p class="cart-goods-count">{{item.guige}} × {{item.count}}</p>
+                      <p class="cart-goods-count">{{item.spec}}</p>
                       <a-icon type="close" class="del-cart-goods"/>
                     </a>
                   </li>
                 </ul>
                 <div class="total-settlement">
                   <p>
-                    商品合计：
-                    <span>1880元</span>
                     <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车</button>
                   </p>
                 </div>
-              </div> -->
+              </div>
             </div>
             <p class="spike" v-show="isShowHeader">
               <a href>新人专享</a>
@@ -166,7 +167,7 @@
 // import HeaderNotice from './HeaderNotice'
 export default {
   name: "f-space-header",
-  props: ["type" , 'searchList'],
+  props: ["type", "searchList"],
   // components: {
   //   HeaderNotice
   // },
@@ -176,11 +177,11 @@ export default {
     },
     keyword: {
       get() {
-        return this.$store.state.keyword
+        return this.$store.state.keyword;
       },
-      set(newValue){
-        this.$store.commit('KEY_WORD', newValue)
-        return this.$store.state.keyword
+      set(newValue) {
+        this.$store.commit("KEY_WORD", newValue);
+        return this.$store.state.keyword;
       }
     }
   },
@@ -194,61 +195,13 @@ export default {
       isDisTip: false,
       isShowCartList: false,
       isLogin: this.$store.getters.userStatus(this),
-      cartList: [
-        {
-          src:
-            "//img.alicdn.com/imgextra/i2/2928278102/O1CN01CbSyKd29ilQb8wH9K_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "汇仁肾宝片126片成人男性肾亏",
-          price: 322,
-          guige: "3g * 126片",
-          count: 9
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB19dR6KVXXXXapXpXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "宁夏红枸杞",
-          price: 50,
-          guige: "300g * 1袋",
-          count: 6
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/TB1lILJNpXXXXbFaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "长白山人参",
-          price: 18888,
-          guige: "30g * 1株",
-          count: 1
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/TB1pn9kNFXXXXcfXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "东阿阿胶片",
-          price: 188,
-          guige: "3g * 126片",
-          count: 3
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/TB1eAO_PXXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "九芝堂六味地黄丸",
-          price: 88,
-          guige: "3g * 126片",
-          count: 2
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/TB1vpUaOFXXXXbxXFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "太极五子衍宗丸",
-          price: 288,
-          guige: "3g * 126片",
-          count: 9
-        }
-      ]
+      cartList: []
     };
   },
   mounted() {
     this.init();
-    window.addEventListener("scroll", this.handleScroll);
+    // window.addEventListener("scroll", this.handleScroll);
+    this.getShoppingCartList();
   },
   methods: {
     init() {
@@ -256,6 +209,33 @@ export default {
       if (this.isDisTip) {
         localStorage.setItem("isDisTip", "1");
       }
+    },
+    getShoppingCartList() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "queryUnCheckShopCartList";
+      iRequest.param.json = JSON.stringify({
+        compid: "536862720"
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor((536862720 / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.cartList = result.data;
+              _this.cartList.forEach(item => {
+                item.checked ? false : true;
+              });
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
     },
     handleLogoutOk(e) {
       this.confirmLoading = true;
@@ -322,7 +302,7 @@ export default {
       });
     },
     toBrand() {
-        this.$router.push({
+      this.$router.push({
         path: "/activity/brand"
       });
     },
@@ -335,17 +315,17 @@ export default {
       });
     },
     toGoods(keyword) {
-      if(keyword === '') {
-        return 
+      if (keyword === "") {
+        return;
       }
       // this.$store.commit('KEY_WORD', keyword)
       let routeData = this.$router.resolve({
-        name: 'category',
+        name: "category",
         query: {
           keyword: keyword
         }
-      })
-      window.open(routeData.href, '_blank');
+      });
+      window.open(routeData.href, "_blank");
     },
     showList() {
       this.isShowCartList = true;
@@ -384,7 +364,7 @@ export default {
     },
     // 退出登录
     logout() {
-      this.isLogout = true
+      this.isLogout = true;
     }
   }
 };
@@ -422,6 +402,9 @@ li {
 }
 .immediately {
   color: rgb(255, 0, 54) !important;
+}
+.no-data{
+  .p-size(40px,40px,14px,center,0px,#666666);
 }
 /* 登录头部 */
 .login-header {
@@ -628,14 +611,14 @@ li {
   font-size: 22px;
 }
 .cart-down {
-  .container-size(block, 300px, 370px, 0px, 0px);
+  .container-size(block, 300px, auto, 0px, 0px);
   .position(relative, 41px, -55px);
   overflow: auto;
   z-index: 99;
   opacity: 1;
 }
 .cart-down-ul {
-  .container-size(block, 300px, 310px, 0px, 0px);
+  .container-size(block, 300px, auto, 0px, 0px);
   overflow: auto;
 }
 .cart-down-list {

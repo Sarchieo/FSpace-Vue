@@ -19,7 +19,7 @@
            
         </a-table> -->
         
-        <p class="table-title">
+        <!-- <p class="table-title">
           <span class="width33">药品</span>
           <span class="width11">单价</span>
           <span class="width11">数量</span>
@@ -27,12 +27,12 @@
           <span class="width11">实付款</span>
           <span class="width11">交易状态</span>
           <span class="width11">操作</span>
-        </p>
+        </p> -->
         <ul class="order-box">
           <li v-for="(item,index) in list" :key="index" class="order-box-li">
             <p class="order-info-text">
-              <span class="time">{{item.time}}</span>
-              <span>订单号：{{item.num}}</span>
+              <span class="time">{{item.odate}}</span>
+              <span>订单号：{{item.orderno}}</span>
               <span class="yikuai">一块医药</span>
               <span class="contact">联系售后</span>
               <a-tooltip class="share">
@@ -98,77 +98,15 @@ const renderContent = (value, row, index) => {
   };
   return obj;
 };
-const data = [
-  {
-    key: "1",
-    time: "2019-03-25",
-    num: 2019032400109,
-    delete: "删除",
-    fenxiang: "分享",
-    shangjia: "一块医药",
-    list: [
-      {
-        src:
-          "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-        text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-        guige: "200g*1株",
-        price: 8888,
-        count: 1,
-        freight: 4,
-        shiji: 8892,
-        details: "订单详情",
-        align: "再次购买",
-        pinglun: "评价",
-        tousu: "投诉",
-        shouhou: "申请售后"
-      },
-      {
-        src:
-          "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-        text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-        guige: "200g*1株",
-        price: 8888,
-        count: 1,
-        freight: 4,
-        shiji: 8892,
-        details: "订单详情",
-        align: "再次购买",
-        pinglun: "评价",
-        tousu: "投诉",
-        shouhou: "申请售后"
-      }
-    ]
-  },
-  {
-    key: "2",
-    time: "2019-03-25",
-    num: 2019032400109,
-    delete: "删除",
-    fenxiang: "分享",
-    shangjia: "一块医药",
-    list: [
-      {
-        src:
-          "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-        text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-        guige: "200g*1株",
-        price: 8888,
-        count: 1,
-        freight: 4,
-        shiji: 8892,
-        details: "订单详情",
-        align: "再次购买",
-        pinglun: "评价",
-        tousu: "投诉",
-        shouhou: "申请售后"
-      }
-    ]
-  }
-];
 
 export default {
   components: {
     FSpaceOrder
+  },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
   },
   data() {
     const columns = [
@@ -214,155 +152,13 @@ export default {
       columns,
       list: [
         {
-          time: "2019-03-25",
-          num: 2019032400109,
+          odate: "2019-03-25",
+          orderno: 2019032400109,
           src:
             "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-          guige: "200g*1株",
           price: 8888,
           count: 1,
           freight: 4,
-          list: [
-            {
-              src:
-                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-              guige: "200g*1株",
-              price: 8888,
-              count: 1,
-              freight: 4,
-              shiji: 8892,
-              details: "订单详情",
-              align: "再次购买",
-              pinglun: "评价",
-              tousu: "投诉",
-              shouhou: "申请售后"
-            },
-            {
-              src:
-                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-              guige: "200g*1株",
-              price: 8888,
-              count: 1,
-              freight: 4,
-              shiji: 8892,
-              details: "订单详情",
-              align: "再次购买",
-              pinglun: "评价",
-              tousu: "投诉",
-              shouhou: "申请售后"
-            }
-          ]
-        },
-        {
-          time: "2019-03-23",
-          num: 2019032400109,
-          src:
-            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-          guige: "200g*1株",
-          price: 8888,
-          count: 1,
-          freight: 22,
-          list: [
-            {
-              src:
-                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-              guige: "200g*1株",
-              price: 8888,
-              count: 1,
-              freight: 4,
-              shiji: 8892,
-              details: "订单详情",
-              align: "再次购买",
-              pinglun: "评价",
-              tousu: "投诉",
-              shouhou: "申请售后"
-            },
-            {
-              src:
-                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-              guige: "200g*1株",
-              price: 8888,
-              count: 1,
-              freight: 4,
-              shiji: 8892,
-              details: "订单详情",
-              align: "再次购买",
-              pinglun: "评价",
-              tousu: "投诉",
-              shouhou: "申请售后"
-            }
-          ]
-        },
-        {
-          time: "2019-03-22",
-          num: 2019032400109,
-          src:
-            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-          guige: "200g*1株",
-          price: 8888,
-          count: 1,
-          freight: 12
-        },
-        {
-          time: "2019-03-22",
-          num: 2019032400109,
-          src:
-            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-          guige: "200g*1株",
-          price: 8888,
-          count: 1,
-          freight: 9,
-          list: [
-            {
-              src:
-                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-              guige: "200g*1株",
-              price: 8888,
-              count: 1,
-              freight: 4,
-              shiji: 8892,
-              details: "订单详情",
-              align: "再次购买",
-              pinglun: "评价",
-              tousu: "投诉",
-              shouhou: "申请售后"
-            },
-            {
-              src:
-                "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-              guige: "200g*1株",
-              price: 8888,
-              count: 1,
-              freight: 4,
-              shiji: 8892,
-              details: "订单详情",
-              align: "再次购买",
-              pinglun: "评价",
-              tousu: "投诉",
-              shouhou: "申请售后"
-            }
-          ]
-        },
-        {
-          time: "2019-03-21",
-          num: 2019032400109,
-          src:
-            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          text: "长白山人参[滋补佳品，提升免疫力，延年益寿]",
-          guige: "200g*1株",
-          price: 8888,
-          count: 1,
-          freight: 8,
           list: [
             {
               src:
@@ -399,7 +195,35 @@ export default {
       ]
     };
   },
+  mounted() {
+    // 获取订单列表
+    this.queryOrders()
+  },
   methods: {
+    queryOrders() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderInfoModule";
+      iRequest.method = "queryOrders";
+      iRequest.param.arrays = [_this.storeInfo.storeId]
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
     showDeleteConfirm() {
       this.$confirm({
         title: "您确定要删除此订单?",

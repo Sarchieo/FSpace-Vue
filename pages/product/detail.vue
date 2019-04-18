@@ -147,7 +147,7 @@
                   <!-- <button class="reduce width22">-</button> -->
                   <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->
                   <button type="danger" class="purchase" @click="placeOrder()">立即购买</button>
-                  <a-button class="add-cart">
+                  <a-button class="add-cart" @click="addCart()">
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
                 </p>
@@ -563,10 +563,10 @@ export default {
   methods: {
     // 新增采购数量
     addCount() {
-      if(this.inventory >= this.maximum) {
-        this.$message.warning('库存不足或超出限购数量')
-        return
-      }
+      // if(this.inventory >= this.maximum) {
+      //   this.$message.warning('库存不足或超出限购数量')
+      //   return
+      // }
       this.inventory ++
     },
     reduceCount() {
@@ -577,7 +577,33 @@ export default {
     },
     // 加入采购单
     addCart() {
-
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "saveShopCart";
+      iRequest.param.json = JSON.stringify({
+        pdno: this.prodDetail.sku,
+        pnum: this.inventory,
+        checked: 0,
+        compid: 536862720
+      })
+      debugger
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(536862720/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      ); 
     },
     // 猜你喜欢列表
     // 领取优惠券
@@ -701,7 +727,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.prodDetail = result.data;
-            console.log(_this.prodDetail)
             _this.queryCouponPub();
             _this.details = JSON.parse(_this.prodDetail.detail);
             if(_this.status == '0') {
@@ -794,6 +819,7 @@ export default {
       this.$router.push({
         path: "/order/placeOrder",
         query: {
+          
           sku: this.prodDetail.sku
         }
       });

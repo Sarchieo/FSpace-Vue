@@ -94,14 +94,14 @@ export default {
       iRequest.cls = "CouponRevModule";
       iRequest.method = "queryRevCouponList";
       iRequest.param.json = JSON.stringify({
-        compid: 536862720,
+        compid: _this.storeInfo.storeId,
         type: ctype,
         pageSize: 5,
         pageNo: 1
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(536862720/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -124,7 +124,7 @@ export default {
        iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
         gcode: -1, // sku
-        compid: '536862720', // 企业id
+        compid: _this.storeInfo.storeId, // 企业id
         pageSize: 5,
         pageNo: 1
       })
@@ -135,8 +135,6 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.couponPub = result.data
-              console.log('更多优惠券')
-              console.log(_this.couponPub)
             } else {
               _this.$message.error(result.message);
             }
