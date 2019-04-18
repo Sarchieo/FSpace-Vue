@@ -157,9 +157,9 @@ export default {
   components: {
     FSpaceOrder
   },
-   computed: {
+  computed: {
     storeInfo() {
-      return this.$store.getters.user(this);
+      return this.$store.state.user;
     }
   },
   data() {

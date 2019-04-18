@@ -147,7 +147,7 @@
                   <!-- <button class="reduce width22">-</button> -->
                   <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->
                   <button type="danger" class="purchase" @click="placeOrder()">立即购买</button>
-                  <a-button class="add-cart">
+                  <a-button class="add-cart" @click="addCart()">
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
                 </p>
@@ -473,11 +473,12 @@ export default {
   },
   computed: {
     storeInfo() {
-      return this.$store.getters.user(this);
+      return this.$store.state.user;
     }
   },
   data() {
     return {
+      loading: false,
       maximum: 1, // 最大库存
       inventory: 1, // 当前库存
       percentAge: 50,
@@ -563,10 +564,10 @@ export default {
   methods: {
     // 新增采购数量
     addCount() {
-      if(this.inventory >= this.maximum) {
-        this.$message.warning('库存不足或超出限购数量')
-        return
-      }
+      // if(this.inventory >= this.maximum) {
+      //   this.$message.warning('库存不足或超出限购数量')
+      //   return
+      // }
       this.inventory ++
     },
     reduceCount() {
@@ -577,7 +578,33 @@ export default {
     },
     // 加入采购单
     addCart() {
-
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "saveShopCart";
+      iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.storeId,
+        pdno: this.prodDetail.sku,
+        pnum: this.inventory,
+        checked: 0
+      })
+      
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      ); 
     },
     // 猜你喜欢列表
     // 领取优惠券
@@ -701,7 +728,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.prodDetail = result.data;
-            console.log(_this.prodDetail)
             _this.queryCouponPub();
             _this.details = JSON.parse(_this.prodDetail.detail);
             if(_this.status == '0') {
@@ -770,9 +796,7 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyCollectModule";
-
       iRequest.method = "check";
-
       iRequest.param.json = JSON.stringify({
         sku: this.prodDetail.sku
       });
@@ -791,15 +815,51 @@ export default {
     },
     // 下单
     placeOrder() {
-      this.$router.push({
-        path: "/order/placeOrder",
-        query: {
-            sku: this.prodDetail.sku,
-            inventory: this.inventory,
-            vatp: this.prodDetail.vatp,
-            placeType: 1
-        }
-      });
+      this.loading = true
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "querySettShopCartList";
+      let arr = [{
+        pdno: this.prodDetail.sku,
+        pnum: this.inventory,
+        compid: this.storeInfo.storeId,
+        checked: 1,
+        unqid: 0,
+        conpno: 0
+      }]
+      iRequest.param.json = JSON.stringify(arr)
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          _this.loading = false
+          if (result.code === 200) {
+            _this.$route.path.replace()
+            _this.$router.push({
+              name: "order-placeOrder",
+              params: {
+                arr: JSON.stringify(result.data),
+                placeType: 1
+              }
+            });
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.loading = false
+          _this.$message.error(e);
+        })
+      );
+      // this.$router.push({
+      //   path: "/order/placeOrder",
+      //   query: {
+      //     sku: this.prodDetail.sku
+      //   }
+      // });
     },
     getImgUrl() {
       let _this = this;
@@ -922,6 +982,7 @@ export default {
           _this.flashSale.s = modulo % 60;
           if (times <= 0) {
             clearInterval(timer);
+            console.log("活动结束");
           }
         }, 1000);
         if (times >= 0) {
@@ -952,9 +1013,9 @@ export default {
       let routeData = this.$router.resolve({
         path: '/product/detail',
         query: {
-            sku: item.sku,
-            spu: item.spu,
-            rulestatus: item.rulestatus,
+          sku: item.sku,
+          spu: item.spu,
+          rulestatus: item.rulestatus
         }
       })
       window.open(routeData.href, '_blank');
@@ -1451,10 +1512,10 @@ li {
   border: 1px solid rgb(238, 238, 238);
 }
 .hot-recommend-title {
-  height: 45px;
+  height: 55px;
   text-indent: 20px;
   line-height: 55px;
-  background: #F2F2F2;
+  background: rgb(246, 246, 246);
   font-size: 20px;
   color: #666666;
 }

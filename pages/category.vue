@@ -115,7 +115,7 @@
               <!-- <button>-</button>
               <button>{{count}}</button>
               <button>+</button> -->
-              <button class="add-card-btn">
+              <button class="add-card-btn" @click.stop="addCart(item)">
                 <a-icon type="shopping-cart"/>加入采购单
               </button>
             </p>
@@ -198,6 +198,35 @@ export default {
     this.getConditionByFullTextSearch();
   },
   methods: {
+    // 加入购物车
+    addCart(item) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "saveShopCart";
+      iRequest.param.json = JSON.stringify({
+        pdno: item.sku,
+        pnum: 1,
+        checked: 0,
+        compid: _this.storeInfo.storeId
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
     // 收藏
     addCollec(item) {
       let _this = this;

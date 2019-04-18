@@ -27,12 +27,12 @@
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
                 <a-checkbox @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
-                <img v-lazy="item.src" alt>
+                <img v-lazy="item.imgURl" alt>
                 <p class="goods-name">{{item.ptitle}}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
-                <p class="icon">
-                  <a-tag color="red">阿发发发发发发顺丰</a-tag>
+                <p class="icon" v-if="item.rule.length > 0">
+                  <a-tag color="red" v-for="(item, index) in item.rule" :key="index">{{ item.rulename  }}</a-tag>
                 </p>
                 <p class="old-price">￥ {{item.pdprice}}</p>
                 <p class="validity">有效期：{{item.vperiod}}</p>
@@ -42,15 +42,15 @@
                   <a-input-number :min="1" :max="item.limit" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
                   <button @click="addCount(index,item)">+</button>
                 </p>
-                <p class="limit">( 限购{{item.limitnum}} )</p>
+                <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
                 <p class="new-price">￥{{item.pdprice * item.num}}</p>
-                <p class="omit">为您节省￥{{item.discount}}</p>
+                <p class="omit" v-if="item.discount != 0">为您节省￥{{item.discount}}</p>
                 <!-- <p class="move">移入收藏夹</p> -->
                 <a-tag color="#f50" class="move">添加收藏夹</a-tag>
                 <!-- <p class="del-goods" @click="removeList(index)">删除</p> -->
-                <a-popconfirm title="您确认要移除当前商品吗?" @confirm="remove(index)" okText="确定" cancelText="取消">
+                <a-popconfirm title="您确认要移除当前商品吗?" @confirm="removeCartList(item, index)" okText="确定" cancelText="取消">
                   <!-- <p class="del-goods">删除</p> -->
-                  <a-tag color="gray" class="del-goods" @click="removeCartList(item)">移出购物车</a-tag>
+                  <a-tag color="gray" class="del-goods">移出购物车</a-tag>
                 </a-popconfirm>
               </div>
             </li>
@@ -60,7 +60,7 @@
             <!-- <span>删除选中商品</span> -->
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
-              <span>活动优惠：-￥{{amt}}</span>
+              <span>活动优惠：￥{{amt}}</span>
               <span class="total-price">应付总金额：￥{{total - amt}}</span>
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
@@ -130,6 +130,9 @@ export default {
     };
   },
   computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    },
     total: function() {
       var total = 0;
       this.cartList.forEach(item => {
@@ -150,23 +153,23 @@ export default {
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "queryUnCheckShopCartList";
       iRequest.param.json = JSON.stringify({
-        compid: '536862720'
+        compid: this.storeInfo.storeId
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(536862720/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
-            _this.cartList = result.data
-            _this.cartList.forEach((item) => {
-              _this.cartList.checked ? false : true
-            })
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
-          }
+            if (result.code === 200) {
+              _this.cartList = result.data
+              _this.cartList.forEach((item) => {
+                item.checked ? false : true
+              })
+              _this.getImgUrl(_this.cartList)
+            } else {
+              _this.$message.error(result.message);
+            }
         },
         function error(e) {
           _this.$message.error(e);
@@ -180,7 +183,7 @@ export default {
       iRequest.method = "queryCheckShopCartList";
       let arr = _this.cartList.map((value) => {
         return {
-          compid: '536862720',
+          compid: _this.storeInfo.storeId,
           pdno: value.pdno,
           pnum: value.num,
           checked: value.checked ? 1 : 0,
@@ -190,7 +193,7 @@ export default {
       iRequest.param.json = JSON.stringify(arr)
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(536862720/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -201,13 +204,8 @@ export default {
                 _this.amt = item.amt
               }
             })
-
-          //   _this.cartList.forEach((item) => {
-          //     _this.cartList.checked ? false : true
-          //   })
-          //   _this.$message.success(result.message);
           } else {
-          //   _this.$message.error(result.message);
+            _this.$message.error(result.message);
           }
         },
         function error(e) {
@@ -215,27 +213,25 @@ export default {
         })
       );
     },
-    addCartList() {
-      
-    },
     // 现在是单条删除
-    removeCartList(item) {
+    removeCartList(item, index) {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "clearShopCart";
       iRequest.param.json = JSON.stringify({
-        compid: '536862720',
+        compid: _this.storeInfo.storeId,
         ids: item.unqid
       })
-      debugger
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(536862720/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
           if (result.code === 200) {
+            _this.$message.success('购物车移除成功~')
+            _this.cartList.splice(index, 1)
             _this.queryCheckShopCartList()
           } else {
             _this.$message.error(result.message);
@@ -267,12 +263,55 @@ export default {
     },
     toPlaceOrder() {
       this.loading = true
-      setTimeout(() => {
-        this.loading = false
-        // this.$router.push({
-        //   path: "order/placeOrder"
-        // });
-      },3000)
+      // 获取sku id
+      let arr = []
+       this.cartList.forEach((item) => {
+        if(item.checked) {
+          arr.push({
+            pdno: item.pdno,
+            pnum: item.num,
+            compid: this.storeInfo.storeId,
+            checked: 1,
+            unqid: item.unqid,
+            conpno: 0
+          })
+        }
+      })
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "querySettShopCartList";
+      iRequest.param.json = JSON.stringify(arr)
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          _this.loading = false
+          if (result.code === 200) {
+            _this.$router.push({
+              name: "order-placeOrder",
+              params: {
+                arr: JSON.stringify(result.data),
+                placeType: 2
+              }
+            });
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.loading = false
+          _this.$message.error(e);
+        })
+      );
+      // setTimeout(() => {
+      //   this.loading = false
+      //   // this.$router.push({
+      //   //   path: "order/pay"
+      //   // });
+      // },3000)
     },
     addCount(index, item) {
       let _this = this
@@ -305,8 +344,53 @@ export default {
         _this.queryCheckShopCartList()
       },1000);
     },
-    remove(index) {
-      this.cartList.splice(index, 1);
+    // 获取商品图片
+    getImgUrl(arr) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = [];
+      arr.forEach(c => {
+        list.push({
+          sku: c.pdno,
+          spu: c.spu
+        });
+      });
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              
+              result.data.goodsFilePathList.forEach((c, index, list) => {
+                _this.$set(
+                  arr[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    arr[index].sku +
+                    "-200x200.jpg" +
+                    "?" +
+                    new Date().getSeconds()
+                );
+              });
+              
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            debugger;
+          }
+        )
+      );
     }
   }
 };
@@ -424,8 +508,8 @@ li {
   .position(absolute, 70px, 10px);
 }
 .goods-name {
-  .position(absolute, 20px, 180px);
-  .p-size(30px, 30px, 18px, left, 0px, #333333);
+  .position(absolute, 10px, 180px);
+  .p-size(30px, 30px, 12px, left, 0px, #333333);
 }
 .goods-guige {
   .position(absolute, 52px, 180px);

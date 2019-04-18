@@ -49,8 +49,6 @@ export default {
           function result(result) {
             if(result.code === 200) {
               _this.invoice = result.data[0]
-              // _this.form.setFieldsValue(_this.invoice)
-              // debugger
             }else {
              _this.$message.error(result.message)
             }
