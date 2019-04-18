@@ -107,14 +107,39 @@
             </div>
           </div>
            <div class="brand-hall height-auto" v-if="item.unqid === 8">
-            <p class="brand-hall-title">
+            <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
-              
-              <a href="javascript:;" @click="toBuying()">
+              <a href="javascript:;" @click="toBuying()" class="see-wholes">
                 查看全部
                 <a-icon type="right"/>
               </a>
-            </p>
+              <h5 class="discount-num">
+                <span>10.0</span>
+                <span>9.9</span>
+                <span>9.8</span>
+                <span>9.7</span>
+                <span>9.6</span>
+                <span>折</span>
+              </h5>
+              <!-- <a-tooltip title="3 done / 3 in progress / 4 to do">
+                 <a-progress :percent="60" :successPercent="30" style="position: absolute;top: 18px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/>
+              </a-tooltip> -->
+              <a-progress strokeLinecap="square" :percent="75" strokeColor="#ed3025" style="position: absolute;top: 28px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/>
+              <!-- <a-progress
+                  :percent="20"
+                  style="position: absolute;top: 18px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"
+                  :strokeColor="black"
+                  status="exception"
+                /> -->
+              <h5 class="person-num">
+                <span>2</span>
+                <span>5</span>
+                <span>10</span>
+                <span>30</span>
+                <span>50</span>
+                <span>人</span>
+              </h5>
+            </div>
             <div class="onek-shoping">
               <ul>
                 <li v-for="(item,index) in teamBuyList.list" :key="index">
@@ -150,6 +175,8 @@
               <ul class="brand-right hot-width">
                 <li v-for="(item,index) in hotGoodsList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
+                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
+                    <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
@@ -159,7 +186,7 @@
                     </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
-                    <p class="sold">已售{{item.store}}{{item.unitName}}</p>
+                    <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
                   </a-card>
                 </li>
               </ul>
@@ -181,7 +208,7 @@
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                   <p class="elaborate-price">￥{{item.vatp}}</p>
-                  <p class="elaborate-sold">已售{{item.store}}{{item.unitName}}</p>
+                  <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
                   <p></p>
                 </a-card>
@@ -204,7 +231,7 @@
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                   <p class="elaborate-price">￥{{item.vatp}}</p>
-                  <p class="elaborate-sold">已售{{item.store}}{{item.unitName}}</p>
+                  <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
                   <p></p>
                 </a-card>
@@ -508,6 +535,9 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotGoodsList = result.data.slice(0, 5);
+            _this.hotGoodsList.forEach((item,index) => {
+               item.top = '/_nuxt/assets/img/top' + (index+1) + '.png'
+            })
             _this.getImgUrl(_this.hotGoodsList);
           } else {
             _this.$message.error(result.message);
@@ -915,7 +945,7 @@ li {
   // display: flex;
   // justify-content: space-between;
   // flex-wrap: wrap;
-  float: left;
+  // float: left;
   width: 1220px;
   height: auto;
   li {
@@ -1308,5 +1338,51 @@ li {
   width: 206px;
   height: 132px;
   margin: 8.5px;
+}
+.top-img{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 30px;
+  height: 40px;
+}
+.height80{
+  position: relative;
+  top: 0px;
+  left: 0px;
+  height: 80px!important;
+  line-height: 80px!important;
+}
+.see-wholes{
+  // float: right;
+  font-size: 16px;
+  font-weight: normal;
+}
+.discount-num{
+  .position(absolute,-20px,260px);
+  display: inline-block;
+  width: 220px;
+  height: 20px;
+  font-size: 14px;
+}
+.discount-num span{
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+}
+.person-num{
+  .position(absolute,20px,260px);
+  display: inline-block;
+  width: 220px;
+  height: 20px;
+  font-size: 14px;
+}
+.person-num span{
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+}
+.ant-progress-inner{
+  background-color: #ffffff;
 }
 </style>

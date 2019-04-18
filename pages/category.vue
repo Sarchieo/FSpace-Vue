@@ -112,9 +112,9 @@
             </p>
             <!-- 按钮 -->
             <p class="add-card">
-              <button>-</button>
+              <!-- <button>-</button>
               <button>{{count}}</button>
-              <button>+</button>
+              <button>+</button> -->
               <button class="add-card-btn">
                 <a-icon type="shopping-cart"/>加入采购单
               </button>
@@ -690,8 +690,8 @@ li {
 }
 .reduce-img{
   .position(absolute, 0px, 10px);
-  width: 45px;
-  height: 55px;
+  width: 35px;
+  height: 45px;
 }
 .card-progress {
   .position(absolute, 0px, 0px);

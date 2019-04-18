@@ -136,10 +136,10 @@
                   <a href>一块物流</a>发货，一块医药提供售后服务. 23:00前下单,预计后天(03月18日)送达
                 </p>-->
                 <p class="btn-p">
-                  <button @click="addCount()">+</button>
-                  <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :min="1" :max="maximum" v-model="inventory" />
                   <button @click="reduceCount()">-</button>
+                  <!-- <button class="goods-count">{{item.count}}</button> -->
+                  <a-input-number :min="1" :max="maximum" v-model="inventory" style="width: 70px;"/>
+                  <button @click="addCount()">+</button>
                 </p>
                 <p class="cart">
                   <!-- <input type="text" readonly="readonly" v-model="count" class="goods-count"> -->
@@ -270,7 +270,30 @@
               <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle">
                 <!-- 详情 -->
                 <a-tab-pane tab="药品详情" key="1">
+                  <div class="probably">
+                    <p><span class="title-left">药品名称：</span>  {{prodDetail.brandName}}  {{prodDetail.prodname}}</p>
+                    <p><span class="title-left">品牌：</span> {{prodDetail.brandName}}<span class="right-text">{{prodDetail.spec}}</span><span class="title-right">规格：</span></p>
+                    <p><span class="title-left">生产厂商：</span>{{prodDetail.manuName}}</p>
+                    <p><span class="title-left">批准文号：</span>{{prodDetail.standarNo}} <span class="right-text">{{prodDetail.rxName}}</span><span class="title-right">产品类型：</span></p>
+                    <p><span class="title-left">温馨提示：</span>  部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准</p>
+                  </div>
+                  <!-- <table class="goods-detal-text">
+                    <thead>
+
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="detail-list">
+                        <td class="goods-title">药品名称</td>
+                        <td class="goods-text"> {{prodDetail.prodname}}</td>
+                      </tr>
+                       <tr class="detail-list">
+                        <td class="goods-title">规格包装</td>
+                        <td class="goods-text"> {{prodDetail.spec}}</td>
+                      </tr>
+                    </tbody>
+                  </table> -->
                   <div class="goods-detail">
+                    <p class="instructions">{{prodDetail.prodname}}说明书</p>
                     <p class="detail-list">
                       <span class="explain-header">药品名称</span>
                       <span>{{ prodDetail.prodname }}</span>
@@ -678,6 +701,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.prodDetail = result.data;
+            console.log(_this.prodDetail)
             _this.queryCouponPub();
             _this.details = JSON.parse(_this.prodDetail.detail);
             if(_this.status == '0') {
@@ -1325,12 +1349,12 @@ li {
   width: 900px;
   height: auto;
   padding: 20px 0;
-  font-size: 18px;
+  font-size: 16px;
 }
 .detail-list {
-  height: 50px;
-  line-height: 50px;
-  font-size: 18px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
 }
 .explain .explain-text {
   display: inline-block;
@@ -1564,6 +1588,15 @@ li {
 .gongshang {
   margin-right: 40px;
 }
+.btn-p{
+  text-indent: 20px;
+}
+.btn-p button{
+  width: 25px;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+}
 .add-cart {
   position: absolute;
   top: 0px;
@@ -1599,5 +1632,60 @@ li {
 .coupon-boxs {
   display: inline-block;
 }
-
+/* 药品说明 */
+.goods-detal-text{
+  display: block;
+  width: 800px;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid #e0e0e0;
+}
+.tbody{
+  width: 800px;
+  height: 100%;
+}
+.goods-title{
+  float: left;
+  width: 100px;
+}
+.goods-text{
+  float: right;
+  width: 696px;
+  min-height: 40px;
+  height: auto;
+  text-indent: 25px;
+}
+.probably{
+  display: block;
+  width: 800px;
+  height: 170px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding: 17px 30px;
+  background: #F7F7F7;
+}
+.probably p{
+  height: 28px;
+  line-height: 28px;
+}
+.title-left{
+  float: left;
+  width: 100px;
+}
+.title-right{
+  float: right;
+  width: 80px;
+}
+.right-text{
+  float: right;
+  margin-right: 200px;
+}
+.instructions{
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color:#ed3025;
+  font-size: 18px;
+  font-weight: bold;
+}
 </style>
