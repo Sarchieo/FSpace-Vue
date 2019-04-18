@@ -27,13 +27,12 @@
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
                 <a-checkbox @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
-                <img  alt>
-                <!-- <p class="goods-name">{{item.ptitle}}</p> -->
-                <p class="goods-name">12321312321321312313131231312</p>
+                <img v-lazy="item.imgURl" alt>
+                <p class="goods-name">{{item.ptitle}}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
-                <p class="icon">
-                  <a-tag color="red">{{  }}</a-tag>
+                <p class="icon" v-if="item.rule.length > 0">
+                  <a-tag color="red" v-for="(item, index) in item.rule" :key="index">{{ item.rulename  }}</a-tag>
                 </p>
                 <p class="old-price">￥ {{item.pdprice}}</p>
                 <p class="validity">有效期：{{item.vperiod}}</p>
@@ -49,7 +48,7 @@
                 <!-- <p class="move">移入收藏夹</p> -->
                 <a-tag color="#f50" class="move">添加收藏夹</a-tag>
                 <!-- <p class="del-goods" @click="removeList(index)">删除</p> -->
-                <a-popconfirm title="您确认要移除当前商品吗?" @confirm="removeCartList(item)" okText="确定" cancelText="取消">
+                <a-popconfirm title="您确认要移除当前商品吗?" @confirm="removeCartList(item, index)" okText="确定" cancelText="取消">
                   <!-- <p class="del-goods">删除</p> -->
                   <a-tag color="gray" class="del-goods">移出购物车</a-tag>
                 </a-popconfirm>
@@ -61,7 +60,7 @@
             <!-- <span>删除选中商品</span> -->
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
-              <span>活动优惠：-￥{{amt}}</span>
+              <span>活动优惠：￥{{amt}}</span>
               <span class="total-price">应付总金额：￥{{total - amt}}</span>
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
@@ -162,17 +161,15 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
-            _this.cartList = result.data
-            debugger
-            _this.cartList.forEach((item) => {
-              item.checked ? false : true
-            })
-            _this.getImgUrl(_this.cartList)
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
-          }
+            if (result.code === 200) {
+              _this.cartList = result.data
+              _this.cartList.forEach((item) => {
+                item.checked ? false : true
+              })
+              _this.getImgUrl(_this.cartList)
+            } else {
+              _this.$message.error(result.message);
+            }
         },
         function error(e) {
           _this.$message.error(e);
@@ -207,7 +204,6 @@ export default {
                 _this.amt = item.amt
               }
             })
-            _this.$message.success(result.message);
           } else {
             _this.$message.error(result.message);
           }
@@ -218,7 +214,7 @@ export default {
       );
     },
     // 现在是单条删除
-    removeCartList(item) {
+    removeCartList(item, index) {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -234,6 +230,8 @@ export default {
         new this.$iceCallback(
           function result(result) {
           if (result.code === 200) {
+            _this.$message.success('购物车移除成功~')
+            _this.cartList.splice(index, 1)
             _this.queryCheckShopCartList()
           } else {
             _this.$message.error(result.message);
@@ -265,12 +263,55 @@ export default {
     },
     toPlaceOrder() {
       this.loading = true
-      setTimeout(() => {
-        this.loading = false
-        // this.$router.push({
-        //   path: "order/placeOrder"
-        // });
-      },3000)
+      // 获取sku id
+      let arr = []
+       this.cartList.forEach((item) => {
+        if(item.checked) {
+          arr.push({
+            pdno: item.pdno,
+            pnum: item.num,
+            compid: this.storeInfo.storeId,
+            checked: 1,
+            unqid: item.unqid,
+            conpno: 0
+          })
+        }
+      })
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "querySettShopCartList";
+      iRequest.param.json = JSON.stringify(arr)
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          _this.loading = false
+          if (result.code === 200) {
+            _this.$router.push({
+              name: "order-placeOrder",
+              params: {
+                arr: JSON.stringify(result.data),
+                placeType: 2
+              }
+            });
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.loading = false
+          _this.$message.error(e);
+        })
+      );
+      // setTimeout(() => {
+      //   this.loading = false
+      //   // this.$router.push({
+      //   //   path: "order/pay"
+      //   // });
+      // },3000)
     },
     addCount(index, item) {
       let _this = this
@@ -314,10 +355,9 @@ export default {
       arr.forEach(c => {
         list.push({
           sku: c.pdno,
-          spu: c.pdno.substring(0, 12)
+          spu: c.spu
         });
       });
-      debugger
       iRequest.param.json = JSON.stringify({
         list: list
       });
@@ -327,6 +367,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+              
               result.data.goodsFilePathList.forEach((c, index, list) => {
                 _this.$set(
                   arr[index],
@@ -340,6 +381,7 @@ export default {
                     new Date().getSeconds()
                 );
               });
+              
             } else {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }

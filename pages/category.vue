@@ -112,9 +112,9 @@
             </p>
             <!-- 按钮 -->
             <p class="add-card">
-              <button>-</button>
+              <!-- <button>-</button>
               <button>{{count}}</button>
-              <button>+</button>
+              <button>+</button> -->
               <button class="add-card-btn" @click.stop="addCart(item)">
                 <a-icon type="shopping-cart"/>加入采购单
               </button>
@@ -379,7 +379,6 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
-              debugger
               _this.getImgUrl();
               if (_this.searchList.length === 0 || _this.searchList === null) {
                 _this.isGoods = true;

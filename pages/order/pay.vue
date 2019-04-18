@@ -42,8 +42,12 @@ export default {
   },
   data() {
     return {
-     value: 1
+     value: 1,
+     list: []
     };
+  },
+  mounted() {
+    
   },
   methods: {
       // 监听单选框的值发生变化

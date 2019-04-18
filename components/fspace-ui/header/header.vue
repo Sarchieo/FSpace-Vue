@@ -80,9 +80,9 @@
                 <a-button type="primary">Hover me</a-button>
               </a-popover>-->
               <span class="cart-text">采购单</span>
-              <!-- <div class="cart-down" v-show="isShowCartList"> -->
+              <div class="cart-down" v-show="isShowCartList">
                
-              <div class="cart-down">
+              <!-- <div class="cart-down"> -->
                  <p class="no-data" v-if="cartList.length === 0">您的采购单空空如也</p>
                 <ul class="cart-down-ul" v-if="cartList.length !== 0">
                   <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
@@ -216,11 +216,11 @@ export default {
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "queryUnCheckShopCartList";
       iRequest.param.json = JSON.stringify({
-        compid: "536862720"
+        compid: this.storeInfo.storeId
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor((536862720 / 8192) % 65535),
+        "orderServer" + Math.floor((_this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {

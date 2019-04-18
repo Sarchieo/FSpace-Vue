@@ -473,11 +473,12 @@ export default {
   },
   computed: {
     storeInfo() {
-      return this.$store.getters.user(this);
+      return this.$store.state.user;
     }
   },
   data() {
     return {
+      loading: false,
       maximum: 1, // 最大库存
       inventory: 1, // 当前库存
       percentAge: 50,
@@ -582,15 +583,15 @@ export default {
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "saveShopCart";
       iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.storeId,
         pdno: this.prodDetail.sku,
         pnum: this.inventory,
-        checked: 0,
-        compid: 536862720
+        checked: 0
       })
-      debugger
+      
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(536862720/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -603,7 +604,7 @@ export default {
         function error(e) {
           _this.$message.error(e);
         })
-      );
+      ); 
     },
     // 猜你喜欢列表
     // 领取优惠券
@@ -795,9 +796,7 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyCollectModule";
-
       iRequest.method = "check";
-
       iRequest.param.json = JSON.stringify({
         sku: this.prodDetail.sku
       });
@@ -816,15 +815,53 @@ export default {
     },
     // 下单
     placeOrder() {
-      this.$router.push({
-        path: "/order/placeOrder",
-        query: {
-            sku: this.prodDetail.sku,
-            inventory: this.inventory,
-            vatp: this.prodDetail.vatp,
-            placeType: 1
-        }
-      });
+      this.loading = true
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "querySettShopCartList";
+      let arr = [{
+        pdno: this.prodDetail.sku,
+        pnum: this.inventory,
+        compid: this.storeInfo.storeId,
+        checked: 1,
+        unqid: 0,
+        conpno: 0
+      }]
+      debugger
+      iRequest.param.json = JSON.stringify(arr)
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            debugger
+          _this.loading = false
+          if (result.code === 200) {
+            _this.$route.path.replace()
+            _this.$router.push({
+              path: "/order/placeOrder",
+              query: {
+                arr: JSON.stringify(result.data)
+              }
+            });
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          debugger
+          _this.loading = false
+          _this.$message.error(e);
+        })
+      );
+      // this.$router.push({
+      //   path: "/order/placeOrder",
+      //   query: {
+      //     sku: this.prodDetail.sku
+      //   }
+      // });
     },
     getImgUrl() {
       let _this = this;
@@ -947,6 +984,7 @@ export default {
           _this.flashSale.s = modulo % 60;
           if (times <= 0) {
             clearInterval(timer);
+            console.log("活动结束");
           }
         }, 1000);
         if (times >= 0) {
@@ -1476,10 +1514,10 @@ li {
   border: 1px solid rgb(238, 238, 238);
 }
 .hot-recommend-title {
-  height: 45px;
+  height: 55px;
   text-indent: 20px;
   line-height: 55px;
-  background: #F2F2F2;
+  background: rgb(246, 246, 246);
   font-size: 20px;
   color: #666666;
 }
