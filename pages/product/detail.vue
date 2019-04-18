@@ -794,7 +794,10 @@ export default {
       this.$router.push({
         path: "/order/placeOrder",
         query: {
-          sku: this.prodDetail.sku
+            sku: this.prodDetail.sku,
+            inventory: this.inventory,
+            vatp: this.prodDetail.vatp,
+            placeType: 1
         }
       });
     },
@@ -949,9 +952,9 @@ export default {
       let routeData = this.$router.resolve({
         path: '/product/detail',
         query: {
-          sku: item.sku,
-          spu: item.spu,
-          rulestatus: item.rulestatus
+            sku: item.sku,
+            spu: item.spu,
+            rulestatus: item.rulestatus,
         }
       })
       window.open(routeData.href, '_blank');
