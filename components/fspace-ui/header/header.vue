@@ -19,9 +19,9 @@
             <!-- 我的消息 -->
             <!-- <header-notice/> -->
             <!-- 签到有礼 -->
-            <a class="margin-right0">
+            <a class="sign ">
               签到有礼
-              <span class="sign"></span>
+              <!-- <span class="sign"></span> -->
             </a>
             <a @click="toMyOrder()">我的订单</a>
             <a-dropdown>
@@ -464,13 +464,7 @@ li {
   margin-left: 0px !important;
 }
 .sign {
-  position: relative;
-  top: 3px;
-  left: -5px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ed3025;
+  margin-right: 15px;
 }
 .header-right a {
   float: right;

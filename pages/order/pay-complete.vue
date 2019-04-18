@@ -35,7 +35,6 @@
           <p class="order-detail">
             <a-button
               type="primary"
-              :size="size"
               class="order-detail-btn"
               @click="toOrderDetail()"
             >订单详情</a-button>

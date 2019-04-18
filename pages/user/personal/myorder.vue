@@ -1,29 +1,13 @@
 <template>
   <div>
+     <!-- v-for="(item,index) in orderList" :key="index" -->
     <a-tabs defaultActiveKey="1" @change="callback">
       <a-tab-pane tab="全部订单" key="1">
-        <!-- <f-space-order>
-             <div slot="tabledata">
-               <p>这是插入的内容</p>
-             </div>
-            </f-space-order>
-        <a-table :columns="columns" :dataSource="data" bordered>
-           
-          <template slot="name" slot-scope="text">
-            
-            <a href="javascript:;">{{text}}
-           
-            </a>
-           
-          </template>
-           
-        </a-table> -->
-        
         <p class="table-title">
           <span class="width33">药品</span>
           <span class="width11">单价</span>
           <span class="width11">数量</span>
-          <span class="width11">订单操作</span>
+          <!-- <span class="width11">订单操作</span> -->
           <span class="width11">实付款</span>
           <span class="width11">交易状态</span>
           <span class="width11">操作</span>
@@ -33,8 +17,8 @@
             <p class="order-info-text">
               <span class="time">{{item.time}}</span>
               <span>订单号：{{item.num}}</span>
-              <span class="yikuai">一块医药</span>
-              <span class="contact">联系售后</span>
+              <!-- <span class="yikuai">一块医药</span>
+              <span class="contact">联系售后</span> -->
               <a-tooltip class="share">
                 <template slot="title">分享</template>
                 <a-icon type="export"/>
@@ -50,8 +34,10 @@
                   v-lazy="item.src"
                   alt
                 >
-                <p class="goods-text">{{item.text}}</p>
+                <p class="goods-text">999感冒灵</p>
                 <p class="guige">规格：{{item.guige}}</p>
+                <p class="menu-name">三九药业股份有限公司</p>
+                <p class="date">有效期：2019-04-12</p>
               </div>
               <div class="width11 price">
                 <p>￥{{item.price}}</p>
@@ -59,9 +45,7 @@
               <div class="width11 count">
                 <p>{{item.count}}</p>
               </div>
-              <div class="width11 sale">
-                <p>申请售后</p>
-              </div>
+             
               <div class="width11 pay">
                 <p class="shiji">￥{{item.freight + item.price}}</p>
                 <p class="freight">(含运费{{item.freight}}元)</p>
@@ -71,21 +55,25 @@
                 <p class="sucess">交易成功</p>
                 <p class="detail" @click="toDetails()">订单详情</p>
               </div>
-              
               <div class="width12 operation">
+                <p>申请售后</p>
                 <p @click="toEvaluate()" ref="toevaluate"><a>评论</a></p>
-                
               </div>
             </div>
           </li>
            <a-pagination :defaultCurrent="1" :total="10" class="paging"/>
         </ul>
       </a-tab-pane>
-      <a-tab-pane tab="待付款" key="2" forceRender>待付款</a-tab-pane>
-      <a-tab-pane tab="待发货" key="3">待发货</a-tab-pane>
-      <a-tab-pane tab="待收货" key="4">待收货</a-tab-pane>
-      <a-tab-pane tab="待评价" key="5">待评价</a-tab-pane>
-      <a-tab-pane tab="退货" key="6">退货</a-tab-pane>
+      <a-tab-pane tab="待付款" key="2">
+        待付款</a-tab-pane>
+      <a-tab-pane tab="待发货" key="3">
+        待发货</a-tab-pane>
+      <a-tab-pane tab="待收货" key="4">
+        待收货</a-tab-pane>
+      <a-tab-pane tab="待评价" key="5">
+        待评价</a-tab-pane>
+      <a-tab-pane tab="退货" key="6">
+        退货</a-tab-pane>
     </a-tabs>
   </div>
 </template>
@@ -170,6 +158,11 @@ export default {
   components: {
     FSpaceOrder
   },
+   computed: {
+    storeInfo() {
+      return this.$store.getters.user(this);
+    }
+  },
   data() {
     const columns = [
       {
@@ -210,6 +203,8 @@ export default {
       }
     ];
     return {
+      ostatus: '',
+      orderList: [],
       data,
       columns,
       list: [
@@ -399,7 +394,35 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.queryOrderList()
+  },
   methods: {
+    // 查询订单列表
+    queryOrderList() {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderInfoModule";
+      iRequest.method = "queryOrders";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.arrays = ['',''];
+      this.$refcallback(
+        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          
+          console.log(result)
+          if (result.code === 200) {
+            debugger
+            _this.orderList = result.data;
+            console.log(_this.orderList)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     showDeleteConfirm() {
       this.$confirm({
         title: "您确定要删除此订单?",
@@ -422,7 +445,7 @@ export default {
         window.open(routeData.href, '_blank');
     },
     callback(key) {
-      console.log(key);
+
     },
     toEvaluate() {
       var routeData = this.$router.resolve({
@@ -451,7 +474,7 @@ export default {
   }
 }
 .width11 {
-  width: 10.5%;
+  width: 13%;
 }
 .width12 {
   width: 11%;
@@ -459,11 +482,12 @@ export default {
 .table-title {
   .p-size(50px, 50px, 16px, center, 0px, #666666);
   display: block;
-  width: 945px;
+  width: 960px;
   margin: 0 auto;
   background: #f2f2f2;
   span {
     display: inline-block;
+    float:left;
     height: 50px;
     line-height: 50px;
   }
@@ -490,7 +514,7 @@ export default {
           color: #ed3025;
       }
       .share {
-        margin-left: 295px;
+        margin-left: 485px;
       }
       i {
         font-size: 18px;
@@ -509,16 +533,34 @@ export default {
         .goods-text {
           .position(absolute, 10px, 110px);
           width: 200px;
-          height: auto;
+          height: 25px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+          font-size: 16px;
+          color: #333333;
         }
         .goods-text:hover {
           cursor: pointer;
           color: #ed3025;
         }
         .guige {
-          .position(absolute, 70px, 110px);
+          .position(absolute, 35px, 110px);
           width: 200px;
-          height: auto;
+          height: 25px;
+        }
+        .menu-name{
+          .position(absolute, 55px, 110px);
+          width: 200px;
+          height: 25px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+        }
+        .date{
+           .position(absolute, 75px, 110px);
+          width: 200px;
+          height: 25px;
         }
       }
       .count,
@@ -527,10 +569,9 @@ export default {
       .operation {
         .position(relative, 0px, 0px);
         p {
-          .position(absolute, 0px, 0px);
           width: 100%;
-          height: 100%;
-          line-height: 108px;
+          height: 20px;
+          line-height: 20px;
           text-align: center;
         }
       }

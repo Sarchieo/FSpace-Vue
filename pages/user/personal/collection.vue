@@ -20,7 +20,7 @@
           <!-- {{item.info.prodname}} -->
           <p class="surplus text-Center top185">{{item.info.prodname}}</p>
           <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
-          <p class="validity">有效期至{{item.info.prodsdate}} - {{item.info.prodedate}}</p>
+          <p class="validity">有效期至{{item.info.prodsdate}}-{{item.info.prodedate}}</p>
           <!-- {{item.info.vatp}} -->
           <p class="card-price top165">￥{{item.info.vatp}} </p>
 
