@@ -124,7 +124,7 @@
                 </p>
                 <p class="packing">
                   <span>有效期至：</span>
-                  <span>{{ prodDetail.vaildsdate + ' ~ ' + prodDetail.prodedate }}</span>
+                  <span>{{ prodDetail.vaildsdate + ' ~ ' + prodDetail.vaildedate }}</span>
                 </p>
                 <!-- <div class="packing">
                   <span>配送至</span>
@@ -146,10 +146,11 @@
                   <!-- <button class="addition width22" @click="addCount()">+</button> -->
                   <!-- <button class="reduce width22">-</button> -->
                   <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->
-                  <button type="danger" class="purchase" @click="placeOrder()">立即购买</button>
-                  <a-button class="add-cart" @click="addCart()">
+                  <button type="danger" class="purchase" @click="placeOrder()"  v-if="status != 1">立即购买</button>
+                  <a-button class="add-cart" @click="addCart()" v-if="status != 1">
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
+                  <a-button type="danger" class="purchase" @click="placeOrder()" v-if="status == 1">立即抢购</a-button>
                 </p>
               </div>
             </div>
@@ -172,7 +173,7 @@
                 <div class="coupon-card" v-if="item.brulecode === 2120" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">{{ item.rulename }}</p>
-                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮</span>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮</span>
                   </div>
                   <div class="coupon-right">
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
@@ -560,8 +561,65 @@ export default {
     if (this.actcode != 0) {
       this.queryActiveType();
     }
+     // 秒杀
+    if(this.status == 1) {
+
+    }
   },
   methods: {
+    beforeSecKill() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "SecKillModule";
+      iRequest.method = "beforeSecKill";
+      iRequest.param.json = JSON.stringify({
+        sku: _this.prodDetail.sku
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      // this.$refcallback(
+      //   "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+      //   iRequest,
+      //   new this.$iceCallback(
+      //     function result(result) {
+      //     if (result.code === 200) {
+          
+      //     } else {
+      //       _this.$message.error(result.message);
+      //     }
+      //   },
+      //   function error(e) {
+      //     _this.$message.error(e);
+      //   })
+      // );
+    },
+    attendSecKill() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "SecKillModule";
+      iRequest.method = "attendSecKill";
+      iRequest.param.json = JSON.stringify({
+        unqid: _this.storeInfo.storeId,
+
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.$message.success('购物车移除成功~')
+            _this.cartList.splice(index, 1)
+            _this.queryCheckShopCartList()
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
     // 新增采购数量
     addCount() {
       // if(this.inventory >= this.maximum) {
@@ -611,11 +669,11 @@ export default {
     revCoupon(item) {
       const _this = this;
       const iRequest = new inf.IRequest();
-      iRequest.cls = "CouponManageModule";
+      iRequest.cls = "CouponRevModule";
       iRequest.method = "revCoupon";
       iRequest.param.json = JSON.stringify(item);
       this.$refcallback(
-        "discountServer",
+       "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -732,9 +790,13 @@ export default {
             _this.details = JSON.parse(_this.prodDetail.detail);
             if(_this.status == '0') {
               _this.maximum = _this.prodDetail.store
-            }else {
+            }else if(_this.status == '1'){
+              _this.beforeSecKill()
+              _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
+            } else {
               _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
             }
+            
           } else {
             _this.$message.error(result.message);
           }

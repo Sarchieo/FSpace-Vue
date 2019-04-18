@@ -138,7 +138,7 @@ export default {
   },
   created() {
     this.cartList = JSON.parse(this.$route.params.arr) 
-    this.placeType = this.$route.v.placeType;
+    this.placeType = this.$route.params.placeType;
     // this.pdno = this.$route.query.sku;
     // this.pnum = this.$route.query.inventory;
     // this.pdprice = this.$route.query.vatp;
@@ -165,11 +165,10 @@ export default {
       let goodsArr = this.cartList.map((value) => {
         return {
           pdno: value.pdno,
-          pnum: value.pnum,
+          pnum: value.num,
           pdprice: value.pdprice
         }
       })
-      debugger
       iRequest.param.json = JSON.stringify({
         placeType: this.placeType,
         coupon: 0,
@@ -177,7 +176,7 @@ export default {
           cusno: this.storeInfo.storeId,
           busno: this.storeInfo.storeId
         },
-        goodsArr: _this.goodsArr
+        goodsArr: goodsArr
       });
       console.log("json-- " + iRequest.param.json);
       this.$refcallback(
@@ -186,7 +185,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              this.$router.push({
+              _this.$router.push({
                 path: "/order/pay"
               });
             } else {

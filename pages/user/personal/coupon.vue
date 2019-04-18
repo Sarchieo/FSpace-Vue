@@ -8,12 +8,20 @@
               <p class="discount-count">{{ item.rulename }}</p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
               <p>有效期:{{item.startdate}}至{{item.enddate}}</p>
+              <!-- <p>有效期 {{ item.validday }} 天</p> -->
+            </div>
+            <div class="discount" v-if="item.brulecode === 2120">
+              <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
+              <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
+            </div>
+            <div class="discount" v-if="item.brulecode === 2130">
+              <p class="discount-count">{{ item.rulename }}</p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </p>
               <p>有效期 {{ item.validday }} 天</p>
             </div>
              <!-- <img class="state-pic" src="../../../assets/img/already.png" alt=""> -->
-             <img class="right-img" src="../../../assets/img/receives.png" v-if="item.brulecode === 2110" alt="">
+             <img class="right-img" src="../../../assets/img/receives.png" alt="">
           </div> 
-          <!-- <img class="right-img" src="../../../assets/img/receives.png" alt=""> -->
         </div>
       </a-tab-pane>
       <a-tab-pane tab="已使用" key="2" forceRender>
@@ -66,7 +74,7 @@
           </div>
           <div class="discount" v-if="item.brulecode === 2120">
             <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
-            <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.offer }}包邮 </p>
+            <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
           </div>
           <img class="right-img" src="../../../assets/img/receive.png" alt="">
         </div>
@@ -81,6 +89,11 @@ export default {
       couponPub: [],
       revCouponList: []
     };
+  },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
   },
   mounted() {
     this.queryRevCouponList(0)
@@ -107,8 +120,6 @@ export default {
           if (result.code === 200) {
             debugger
             _this.revCouponList = result.data
-            console.log('我的优惠券')
-            console.log(result.data)
           } else {
             _this.$message.error(result.message);
           }
@@ -149,19 +160,19 @@ export default {
     revCoupon(item) {
       const _this = this;
       const iRequest = new inf.IRequest();
-      iRequest.cls = "CouponManageModule";
+      iRequest.cls = "CouponRevModule";
       iRequest.method = "revCoupon";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify(item)
       this.$refcallback(
-        "discountServer",
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              debugger
               _this.$message.success(result.message);
               _this.queryRevCouponList(0)
+              _this.queryCouponPub()
             } else {
               _this.$message.error(result.message);
             }
