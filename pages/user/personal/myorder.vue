@@ -16,7 +16,7 @@
           <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
             <p class="order-info-text">
               <span class="time">{{item.time}}</span>
-              <span>订单号：{{item.num}}</span>
+              <span>订单号：{{item.orderno}}</span>
               <!-- <span class="yikuai">一块医药</span>
               <span class="contact">联系售后</span> -->
               <a-tooltip class="share">
@@ -34,25 +34,24 @@
                   v-lazy="item.src"
                   alt
                 >
-                <p class="goods-text">999感冒灵</p>
-                <p class="guige">规格：{{item.guige}}</p>
-                <p class="menu-name">三九药业股份有限公司</p>
-                <p class="date">有效期：2019-04-12</p>
+                <p class="goods-text">{{items.pname}}</p>
+                <p class="guige">规格：{{items.pspec}}</p>
+                <p class="menu-name">{{items.manun}}</p>
               </div>
               <div class="width11 pay">
-                <p>￥{{item.price}}</p>
+                <p>￥{{items.pdprice}}</p>
               </div>
               <div class="width11 pay">
-                <p>{{item.count}}</p>
+                <p>{{items.pnum}}</p>
               </div>
 
               <div class="width11 pay">
-                <p class="shiji">￥{{item.freight + item.price}}</p>
-                <p class="freight">(含运费{{item.freight}}元)</p>
+                <p class="shiji">￥{{items.payamt}}</p>
+                <p class="freight">(含运费{{items.freight}}元)</p>
               </div>
-              
+
               <div class="width11 state">
-                <p class="sucess">交易成功</p>
+                <p class="sucess">{{item.ostatus}}</p>
                 <p class="detail" @click="toDetails()">订单详情</p>
               </div>
               <div class="width12 operation">
