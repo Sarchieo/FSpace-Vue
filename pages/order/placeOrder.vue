@@ -138,7 +138,7 @@ export default {
   },
   created() {
     this.cartList = JSON.parse(this.$route.params.arr) 
-    this.placeType = this.$route.v.placeType;
+    this.placeType = this.$route.params.placeType;
     // this.pdno = this.$route.query.sku;
     // this.pnum = this.$route.query.inventory;
     // this.pdprice = this.$route.query.vatp;
@@ -169,7 +169,6 @@ export default {
           pdprice: value.pdprice
         }
       })
-      debugger
       iRequest.param.json = JSON.stringify({
         placeType: this.placeType,
         coupon: 0,
