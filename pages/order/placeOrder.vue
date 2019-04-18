@@ -101,7 +101,7 @@
                     <p>运费：￥12</p>
                     <p>优惠券：-￥100</p>
                     <p class="price">应付金额：￥269</p>
-                    <a-button class="pay-btn">去付款</a-button>
+                    <a-button class="pay-btn" @click="toPay()">去付款</a-button>
                 </div>
             </div>
         </div>
@@ -180,6 +180,14 @@ export default {
     },
     pickCoupon() {
       this.isCoupon = true
+    },
+    toPay() {
+      this.$router.push({
+        path: '/order/pay'
+      })
+    },
+    handleOk() {
+      console.log(1)
     }
   }
 };

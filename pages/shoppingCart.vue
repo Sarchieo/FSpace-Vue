@@ -40,7 +40,7 @@
                 <p class="btn-p">
                   <button @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :min="1" :max="item.limit" v-model="item.count" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <a-input-number :min="1" :max="item.limit" v-model="item.count" style="position:relative;top:2px;left;0px;height: 30px;width: 50px;" readonly="readonly"/>
                   <button @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit">( 限购{{item.limit}}盒 )</p>
