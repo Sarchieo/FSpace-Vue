@@ -19,37 +19,38 @@
               <a-icon type="shop"/>
               <span>一块医药自营</span>
             </div>
-            <div class="no-data" v-if="cartList === 0">
+            <div class="no-data" v-if="cartList.length === 0">
               <p class="no-icon"><a-icon type="exclamation"/></p>
               <p class="no-text">你的采购单空空如也！</p>
             </div>
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
-                <a-checkbox v-model="item.checked" class="pick-input"></a-checkbox>
+                <a-checkbox @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
                 <img v-lazy="item.src" alt>
-                <p class="goods-name">{{item.name}}</p>
-                <p class="goods-guige">{{item.guige}}</p>
-                <p class="manufactor">{{item.changshang}}</p>
+                <p class="goods-name">{{item.ptitle}}</p>
+                <p class="goods-guige">{{item.spec}}</p>
+                <p class="manufactor">{{item.verdor}}</p>
                 <p class="icon">
-                  <a-tag color="pink">阿发发发发发发顺丰</a-tag>
+                  <a-tag color="red">阿发发发发发发顺丰</a-tag>
                 </p>
-                <p class="old-price">￥ {{item.price}}</p>
-                <p class="original">原价：￥{{item.original}}</p>
-                <p class="validity">有效期：{{item.time}}</p>
+                <p class="old-price">￥ {{item.pdprice}}</p>
+                <p class="validity">有效期：{{item.vperiod}}</p>
                 <p class="btn-p">
                   <button @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :min="1" :max="item.limit" v-model="item.count" style="position:relative;top:2px;left;0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <a-input-number :min="1" :max="item.limit" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
                   <button @click="addCount(index,item)">+</button>
                 </p>
-                <p class="limit">( 限购{{item.limit}}盒 )</p>
-                <p class="new-price">￥{{item.price*item.count}}</p>
-                <p class="omit">为您节省￥{{item.original - item.price}}</p>
-                <p class="move">移入收藏夹</p>
+                <p class="limit">( 限购{{item.limitnum}} )</p>
+                <p class="new-price">￥{{item.pdprice * item.num}}</p>
+                <p class="omit">为您节省￥{{item.discount}}</p>
+                <!-- <p class="move">移入收藏夹</p> -->
+                <a-tag color="#f50" class="move">添加收藏夹</a-tag>
                 <!-- <p class="del-goods" @click="removeList(index)">删除</p> -->
                 <a-popconfirm title="您确认要移除当前商品吗?" @confirm="remove(index)" okText="确定" cancelText="取消">
-                  <p class="del-goods">删除</p>
+                  <!-- <p class="del-goods">删除</p> -->
+                  <a-tag color="gray" class="del-goods" @click="removeCartList(item)">移出购物车</a-tag>
                 </a-popconfirm>
               </div>
             </li>
@@ -59,8 +60,8 @@
             <!-- <span>删除选中商品</span> -->
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
-              <span>活动优惠：-￥{{discount}}</span>
-              <span class="total-price">应付总金额：￥{{total - discount}}</span>
+              <span>活动优惠：-￥{{amt}}</span>
+              <span class="total-price">应付总金额：￥{{total - amt}}</span>
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
           </div>
@@ -116,65 +117,136 @@ export default {
   middleware: 'authenticated',
   data() {
     return {
+      amt: 0,
       loading: false,
       maximum: 1,// 最大库存
       timeoutflag: null,
       checked: false,
       discount: 100,
       mealList: [], // 猜你喜欢列表
-      cartList: [
-        {
-          src:
-              "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "东阿阿胶",
-          guige: "0.4g*12粒",
-          changshang: "吉林市吴太感康药业有限公司",
-          price: 88,
-          original: 100,
-          limit: 10,
-          count: 1,
-          time: "2022-02-30",
-          checked: false
-        },
-        {
-          src:
-              "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "东阿阿胶",
-          guige: "0.4g*12粒",
-          changshang: "吉林市吴太感康药业有限公司",
-          price: 199,
-          original: 210,
-          limit: 9,
-          count: 1,
-          time: "2022-02-30",
-          checked: false
-        },
-        {
-          src:
-              "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "东阿阿胶",
-          guige: "0.4g*12粒",
-          changshang: "吉林市吴太感康药业有限公司",
-          price: 99,
-          original: 100,
-          limit: 11,
-          count: 1,
-          time: "2022-02-30",
-          checked: false
-        }
-      ]
+      cartList: []
+      // acamt amt: 优惠总金额 checked 0未选中 discount: 商品优惠价（优惠多少） inventory 总库存 limitnum 限购 0 不限购 num 商品数量 pdno :sku
+      // pdprice 🐤价格 ptitle 名称   rulename 活动名称 spec 规格 status  unqid 唯一id verdor 厂家 vperiod有效期
     };
   },
   computed: {
     total: function() {
       var total = 0;
       this.cartList.forEach(item => {
-        total += item.price * item.count;
+        if(item.checked) {
+          total += item.pdprice * item.num;
+        }
       });
       return total;
     }
   },
+  mounted() {
+    this.getShoppingCartList()
+  },
   methods: {
+    getShoppingCartList() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "queryUnCheckShopCartList";
+      iRequest.param.json = JSON.stringify({
+        compid: '536862720'
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(536862720/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.cartList = result.data
+            _this.cartList.forEach((item) => {
+              _this.cartList.checked ? false : true
+            })
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
+    queryCheckShopCartList() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "queryCheckShopCartList";
+      let arr = _this.cartList.map((value) => {
+        return {
+          compid: '536862720',
+          pdno: value.pdno,
+          pnum: value.num,
+          checked: value.checked ? 1 : 0,
+          unqid: value.unqid
+        };
+      })
+      iRequest.param.json = JSON.stringify(arr)
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(536862720/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.cartList = result.data
+            _this.cartList.forEach((item) => {
+              if(item.checked) {
+                _this.amt = item.amt
+              }
+            })
+
+          //   _this.cartList.forEach((item) => {
+          //     _this.cartList.checked ? false : true
+          //   })
+          //   _this.$message.success(result.message);
+          } else {
+          //   _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
+    addCartList() {
+      
+    },
+    // 现在是单条删除
+    removeCartList(item) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "clearShopCart";
+      iRequest.param.json = JSON.stringify({
+        compid: '536862720',
+        ids: item.unqid
+      })
+      debugger
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(536862720/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.queryCheckShopCartList()
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
+    // 购物车选中商品
     toDetail() {
       this.$router.push({
         path:'/product/detail'
@@ -182,23 +254,13 @@ export default {
     },
     // 全选
     checkAll(e) {
-      this.checked = e.target.checked
       this.cartList.forEach((item) => {
-        item.checked = this.checked
+        item.checked = e.target.checked
       })
-      if(this.checked) {
-        // 调用后台接口
-
-      }
+      this.queryCheckShopCartList()
     },
-    onChange(item) {
-      item.checked  = !item.checked
-      let flag = true
-      this.cartList.forEach((item) => {
-        if(!item.checked) {
-          flag = false
-        }
-      })
+    onChange(e) {
+      this.queryCheckShopCartList()
     },
     inputChange(index, item) {
       console.log(item)
@@ -211,37 +273,36 @@ export default {
         //   path: "order/placeOrder"
         // });
       },3000)
-    
     },
     addCount(index, item) {
       let _this = this
       // 限购数量
-      if(item.count >= item.limit) {
+      if(item.num >= item.limit) {
         _this.$message.warning(item.name + '限购' + item.limit + '件')
         return
       }
       item.checked = true
-      item.count += 1;
+      item.num += 1;
 
       if(this.timeoutflag != null){
         clearTimeout(this.timeoutflag);
       }
       this.timeoutflag = setTimeout(function(){
-        console.log('调用接口:' + _this.cartList[index].count)
+        _this.queryCheckShopCartList()
       },1000);
     },
     reduceCount(index, item) {
-      if (item.count === 1) {
+      if (item.num === 1) {
         return false;
       }
       let _this = this
-      item.count--
+      item.num--
       item.checked = true
       if(this.timeoutflag != null){
         clearTimeout(this.timeoutflag);
       }
       this.timeoutflag = setTimeout(function(){
-        console.log('调用接口:' + item.count)
+        _this.queryCheckShopCartList()
       },1000);
     },
     remove(index) {
@@ -435,11 +496,11 @@ li {
   color: #999999;
 }
 .move {
-  .position(absolute, 42px, 1000px);
+  .position(absolute, 42px, 1050px);
   text-align: center;
 }
 .del-goods {
-  .position(absolute, 72px, 1000px);
+  .position(absolute, 72px, 1050px);
   text-align: center;
 }
 .whole-pick {

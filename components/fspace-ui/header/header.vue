@@ -72,8 +72,15 @@
             >
               <a-icon type="shopping-cart" class="cart-icon"/>
               <span class="cart-count">6</span>
-              <span class="cart-text">采购单</span>
-              <div class="cart-down" v-show="isShowCartList">
+               <a-popover class="cart-text" title="采购单">
+                <template slot="content">
+                  <p>Content</p>
+                  <p>Content</p>
+                </template> 
+                <a-button type="primary">Hover me</a-button>
+              </a-popover>
+              <!-- <span class="cart-text">采购单</span> -->
+              <!-- <div class="cart-down" v-show="isShowCartList">
                 <ul class="cart-down-ul">
                   <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
                     <a href="javascript:;">
@@ -91,10 +98,10 @@
                   <p>
                     商品合计：
                     <span>1880元</span>
-                    <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车结算</button>
+                    <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车</button>
                   </p>
                 </div>
-              </div>
+              </div> -->
             </div>
             <p class="spike" v-show="isShowHeader">
               <a href>新人专享</a>
@@ -366,7 +373,6 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result);
           if (result.code === 200) {
             // 设置登录
             _this.$store.dispatch("setUserState");
@@ -675,7 +681,7 @@ li {
 }
 
 .settlement-btn {
-  .button-size (120px, 45px, 45px, 16px, 0px, 5px);
+  .button-size (80px, 35px, 35px, 14px, 0px, 5px);
   .button-color(none, #ed3025, #ffffff);
   float: right;
   margin-top: 12px;
