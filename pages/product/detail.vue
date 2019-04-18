@@ -1474,10 +1474,10 @@ li {
   border: 1px solid rgb(238, 238, 238);
 }
 .hot-recommend-title {
-  height: 55px;
+  height: 45px;
   text-indent: 20px;
   line-height: 55px;
-  background: rgb(246, 246, 246);
+  background: #F2F2F2;
   font-size: 20px;
   color: #666666;
 }
