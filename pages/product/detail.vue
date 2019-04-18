@@ -743,7 +743,6 @@ export default {
     },
     // 查询是否被收藏
     isCollec() {
-      console.log(this.storeInfo.storeId);
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyCollectModule";

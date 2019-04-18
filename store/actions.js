@@ -6,8 +6,17 @@ import {
   saveAreas,
   removeUserStatus
 } from '../utils/cache'
+const UserKey = 'f-space-user' 
+const UserStatusKey = 'f-space-user-state'
+
 
 const actions = {
+  nuxtServerInit({ commit }, { app }) {
+    if(app.$cookies.get(UserStatusKey)) {
+      commit(types.SET_LOGIN_STATE, saveUserStatus(true, app))
+      commit(types.SET_USER, saveUser(app.$cookies.get(UserKey), app))
+    }
+  },
   async setUserStatus(store, { context }) {
     store.commit(types.SET_LOGIN_STATE, saveUserStatus(true, context))
   },
@@ -24,9 +33,6 @@ const actions = {
   async setLogout(store, { context }) {
     store.commit(types.SET_USER, removeUser())
     store.commit(types.SET_LOGIN_STATE, removeUserStatus(context))
-    
-  },
-  async nuxtServerInit ({ commit }, { req }) {
     
   }
 }
