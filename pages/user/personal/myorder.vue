@@ -13,7 +13,7 @@
           <span class="width11">操作</span>
         </p>
         <ul class="order-box">
-          <li v-for="(item,index) in list" :key="index" class="order-box-li">
+          <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
             <p class="order-info-text">
               <span class="time">{{item.time}}</span>
               <span>订单号：{{item.num}}</span>
@@ -28,7 +28,7 @@
                 <a-icon type="delete" @click="showDeleteConfirm()"/>
               </a-tooltip>
             </p>
-            <div class="goods-box">
+            <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
               <div class="width33 goods-pic">
                 <img
                   v-lazy="item.src"
@@ -39,10 +39,10 @@
                 <p class="menu-name">三九药业股份有限公司</p>
                 <p class="date">有效期：2019-04-12</p>
               </div>
-              <div class="width11 price">
+              <div class="width11 pay">
                 <p>￥{{item.price}}</p>
               </div>
-              <div class="width11 count">
+              <div class="width11 pay">
                 <p>{{item.count}}</p>
               </div>
              
@@ -410,8 +410,7 @@ export default {
       this.$refcallback(
         "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
         iRequest,
-        new this.$iceCallback(function result(result) {
-          
+        new this.$iceCallback(function result(result) { 
           console.log(result)
           if (result.code === 200) {
             debugger
@@ -496,7 +495,7 @@ export default {
   .container-size(block, 985px, 905px, 0 auto, 0px);
   overflow: auto;
   li{
-    .container-size(block, 945px, 153px, 0 auto, 0px);
+    .container-size(block, 945px, auto, 0 auto, 0px);
     .container-color(#ffffff, 1px solid #f2f2f2, #666666);
     margin-top: 10px;
     margin-bottom: 10px;
