@@ -36,7 +36,7 @@
                 >
                 <p class="goods-text">{{items.pname}}</p>
                 <p class="guige">规格：{{items.pspec}}</p>
-                <p class="menu-name">三九药业股份有限公司</p>
+                <p class="menu-name">{{items.manun}}</p>
               </div>
               <div class="width11 pay">
                 <p>￥{{items.pdprice}}</p>
