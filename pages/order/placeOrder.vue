@@ -100,7 +100,7 @@
                     <p>运费：￥12</p>
                     <p>优惠券：-￥100</p>
                     <p class="price">应付金额：￥269</p>
-                    <a-button class="pay-btn">提交订单</a-button>
+                    <a-button class="pay-btn" @click="toPay()">去付款</a-button>
                 </div>
             </div>
         </div>
@@ -122,19 +122,20 @@ export default {
       return this.$store.getters.user(this);
     }
   },
-  middleware: 'authenticated',
   data() {
     return {
       isCoupon: false,
       cartLists: [
         {
-          src:
+            src:
             "//img.alicdn.com/bao/uploaded/i4/2201202272/TB2e4xPzgmTBuNjy1XbXXaMrVXa_!!2201202272-0-item_pic.jpg",
-          name: "金感胶囊",
-          guige: "0.26g*30片",
-          comp: "北京振东康远制药有限公司",
-          price: 136,
-          count: 2
+            name: "金感胶囊",
+            guige: "0.26g*30片",
+            comp: "北京振东康远制药有限公司",
+            price: 136,
+            count: 2,
+            pdno: ""
+
         },
         {
           src:
@@ -143,7 +144,8 @@ export default {
           guige: "0.5g*126片",
           comp: "北京振东康远制药有限公司",
           price: 269,
-          count: 1
+          count: 1,
+            pdno: ""
         },
         {
           src:
@@ -152,7 +154,8 @@ export default {
           guige: "250g/袋",
           comp: "北京振东康远制药有限公司",
           price: 333,
-          count: 2
+          count: 2,
+            pdno: ""
         },
         {
           src:
@@ -161,7 +164,8 @@ export default {
           guige: "500g/碗",
           comp: "北京振东康远制药有限公司",
           price: 89,
-          count: 3
+          count: 3,
+            pdno: ""
         },
         {
           src:
@@ -170,10 +174,12 @@ export default {
           guige: "0.26g*30袋",
           comp: "北京振东康远制药有限公司",
           price: 18,
-          count: 3
+          count: 3,
+            pdno: ""
         }
       ],
-      visible: false
+      visible: false,
+        goodsArr:[]
     };
   },
   mounted() {
@@ -182,28 +188,17 @@ export default {
     // 获取优惠券信息
 
   },
-  methods: {
-    getInvoice(){
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "MyInvoiceModule";
-      iRequest.method = "getInvoice";
-      iRequest.param.token = localStorage.getItem("identification")
-      this.$refcallback(
-        "userServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if(result.code === 200) {
-              // _this.form.setFieldsValue(_this.invoice)
-              // debugger
-            }else {
-             _this.$message.error(result.message)
-            }
-          }
-        )
-      );
+    created() {
+        this.pdno = this.$route.query.sku;
+        this.pnum = this.$route.query.inventory;
+        this.pdprice = this.$route.query.vatp;
+        this.placeType = this.$route.query.placeType;
+        // this.pdprice = this.$route.query.inventory;
     },
+    mounted() {
+
+    },
+    methods: {
     showModal() {
       this.visible = true
     },
@@ -212,6 +207,46 @@ export default {
     },
     pickCoupon() {
       this.isCoupon = true
+    },
+    toPay() {
+        const _this = this;
+        _this.goodsArr = [];
+        const iRequest = new inf.IRequest();
+        iRequest.cls = "TranOrderOptModule";
+        iRequest.method = "placeOrder";
+        _this.goodsArr.push({
+            pdno: this.pdno,
+            pnum: this.pnum,
+            pdprice:this.pdprice
+        });
+        iRequest.param.json = JSON.stringify({
+            placeType: this.placeType,
+            coupon: 0,
+            orderObj: {
+                cusno: 536862720,
+                busno: 536862722,
+            },
+            goodsArr: _this.goodsArr
+        });
+        console.log("json-- " + iRequest.param.json)
+        this.$refcallback(
+            "orderServer" + Math.floor(536862723/8192%65535),
+            iRequest,
+            new this.$iceCallback(
+                function result(result) {
+                    if (result.code === 200) {
+                        this.$router.push({
+                            path: '/order/pay'
+                        })
+                    } else {
+                        _this.$message.error(result.message);
+                    }
+                },
+                function error(e) {
+                    debugger;
+                }
+            )
+        );
     },
     handleOk() {
       console.log(1)

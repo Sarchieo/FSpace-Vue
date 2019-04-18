@@ -603,7 +603,7 @@ export default {
         function error(e) {
           _this.$message.error(e);
         })
-      ); 
+      );
     },
     // 猜你喜欢列表
     // 领取优惠券
@@ -819,8 +819,10 @@ export default {
       this.$router.push({
         path: "/order/placeOrder",
         query: {
-          
-          sku: this.prodDetail.sku
+            sku: this.prodDetail.sku,
+            inventory: this.inventory,
+            vatp: this.prodDetail.vatp,
+            placeType: 1
         }
       });
     },
