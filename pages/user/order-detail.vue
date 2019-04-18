@@ -15,181 +15,171 @@
             <a href>订单详情</a>
           </a-breadcrumb-item>
         </a-breadcrumb>
-        <div class="step-box">
-          <div class="step-left">
-            <p class="order-num">订单编号：20190329121009</p>
-            <!-- 显示药品列表相对应的订单状态 -->
-            <!-- <p>提交订单</p> -->
-            <!-- <p>商品出库</p> -->
-            <!-- <p>等待收货</p> -->
-            <!-- <p>完成</p> -->
-            <!-- <p>已取消</p> -->
-            <p class="pay-success">付款成功</p>
-            <!-- 付款按钮和提交订单一起显示 -->
-            <!-- <p class="pay-btn"><button>付款</button></p> -->
-            <!-- 确认收货和等待收货一起显示 -->
-            <!-- <p class="pay-btn"><button>确认收货</button></p> -->
-            <!-- 再次购买和已取消以及完成一起显示 -->
-            <!-- <p class="pay-btn"><button>再次购买</button></p> -->
-            <!-- 取消订单只在提交订单和付款成功状态才显示。药品出库后没有取消订单 -->
-            <p class="cancel" @click="cancelOrder()">取消订单</p>
-            <a-modal title="Modal" v-model="visible" @ok="hideModal" okText="提交" cancelText="再想想">
-              <p>订单取消成功后将无法恢复</p>
-              <p>优惠券可能不再返还，支付优惠也将一并取消</p>
-              <div>
-                <a-radio-group defaultValue="a" size="large">
-                  <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
-                  <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
-                  <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
-                  <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
-                  <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
-                  <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
-                </a-radio-group>
-              </div>
-            </a-modal>
+        <div v-for="(item,index) in orderDetail" :key="index">
+          <div class="step-box">
+            <div class="step-left">
+              <p class="order-num">订单编号：{{item.orderno}}</p>
+              <!-- 显示药品列表相对应的订单状态 -->
+              <p class="pay-success" v-if="item.ostatus === 0">提交订单</p>
+              <p class="pay-success" v-if="item.ostatus === 2">等待收货</p>
+              <p class="pay-success" v-if="item.ostatus === 3">完成</p>
+              <p class="pay-success" v-if="item.ostatus === 4">已取消</p>
+              <p class="pay-success" v-if="item.ostatus === 1">付款成功</p>
+              <!-- 付款按钮和提交订单一起显示 -->
+              <p class="pay-btn" v-if="item.ostatus === 0"><button @click="toPay()">付款</button></p>
+              <!-- 确认收货和等待收货一起显示 -->
+              <p class="pay-btn" v-if="item.ostatus === 2"><button>确认收货</button></p>
+              <!-- 再次购买和已取消以及完成一起显示 -->
+              <p class="pay-btn" v-if="item.ostatus === 3"><button>再次购买</button></p>
+              <!-- 取消订单只在提交订单和付款成功状态才显示。药品出库后没有取消订单 -->
+              <p class="cancel" @click="cancelOrder()"  v-if="item.ostatus === 1 || item.ostatus === 0">取消订单</p>
+              <a-modal title="提示" v-model="visible" @ok="hideModal" okText="提交" cancelText="再想想">
+                <p>订单取消成功后将无法恢复</p>
+                <p>优惠券可能不再返还，支付优惠也将一并取消</p>
+                <div>
+                  <a-radio-group defaultValue="a" size="large">
+                    <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
+                    <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
+                    <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
+                    <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
+                    <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
+                    <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
+                  </a-radio-group>
+                </div>
+              </a-modal>
+            </div>
+            <div class="line"></div>
+            <div class="step-right">
+              <a-steps class="setps-box">
+                <a-step status="finish" title="提交订单">
+                  <a-icon type="profile" slot="icon"/>
+                </a-step>
+                <a-step status="finish" title="付款成功">
+                  <a-icon type="pay-circle" slot="icon"/>
+                </a-step>
+                <a-step status="wait" title="商品出库">
+                  <a-icon type="cloud-upload" slot="icon"/>
+                </a-step>
+                <a-step status="wait" title="等待收货">
+                  <a-icon type="car" slot="icon"/>
+                </a-step>
+                <a-step status="wait" title="完成">
+                  <a-icon type="check-square" slot="icon"/>
+                </a-step>
+              </a-steps>
+            </div>
           </div>
-          <div class="line"></div>
-          <div class="step-right">
-            <a-steps class="setps-box">
-              <a-step status="finish" title="提交订单">
-                <a-icon type="profile" slot="icon"/>
-              </a-step>
-              <a-step status="finish" title="付款成功">
-                <a-icon type="pay-circle" slot="icon"/>
-              </a-step>
-              <a-step status="wait" title="商品出库">
-                <a-icon type="cloud-upload" slot="icon"/>
-              </a-step>
-              <a-step status="wait" title="等待收货">
-                <a-icon type="car" slot="icon"/>
-              </a-step>
-              <a-step status="wait" title="完成">
-                <a-icon type="check-square" slot="icon"/>
-              </a-step>
-            </a-steps>
+          <div class="logistics-box-info">
+            <div class="logistics-left">
+              <p>送货方式：普通快递</p>
+              <p>承运人： 中国邮政</p>
+              <p>货运单号：5941557574860</p>
+            </div>
+            <div class="line height220"></div>
+            <div class="logistics-right">
+              <a-steps direction="vertical" size="small" :current="1">
+                <a-step title="完成" description="2019-03-30 08：32：47您提交了订单，等待系统确认"/>
+                <a-step title="进行中" description="2019-03-30 09：32：47您付款成功，等待仓库出库"/>
+                <a-step title="未进行" description="2019-03-30 10：32：47仓库出货，准备分发至长沙仓库中心"/>
+                <a-step title="未进行" description="2019-03-30 11：32：47到达湘潭仓库中心，准备分发至易俗河仓库中心"/>
+                <a-step title="未进行" description="2019-03-30 12：32：47到达易俗河仓库中心，您准备接收快递"/>
+              </a-steps>
+            </div>
           </div>
-        </div>
-        <div class="logistics-box-info">
-          <div class="logistics-left">
-            <p>送货方式：普通快递</p>
-            <p>承运人： 中国邮政</p>
-            <p>货运单号：5941557574860</p>
-          </div>
-          <div class="line height220"></div>
-          <div class="logistics-right">
-            <a-steps direction="vertical" size="small" :current="1">
-              <a-step title="完成" description="2019-03-30 08：32：47您提交了订单，等待系统确认"/>
-              <a-step title="进行中" description="2019-03-30 09：32：47您付款成功，等待仓库出库"/>
-              <a-step title="未进行" description="2019-03-30 10：32：47仓库出货，准备分发至长沙仓库中心"/>
-              <a-step title="未进行" description="2019-03-30 11：32：47到达湘潭仓库中心，准备分发至易俗河仓库中心"/>
-              <a-step title="未进行" description="2019-03-30 12：32：47到达易俗河仓库中心，您准备接收快递"/>
-            </a-steps>
-          </div>
-        </div>
-        <div class="consignee-info">
-          <div class="consignee-left float-left">
-            <h3>收货人信息</h3>
-            <p>
-              <span class="three">收货人：</span> 刘琦
-            </p>
-            <p class="address">
-              <span class="three">地址：</span>
-              <span class="address-goods">
-                  湖南省长沙sfsfsfsfsfsfsfsfsfsfsfsfsfsf市开福区江畔豪庭88栋
-              </span>
-              
-            </p>
-            <p>
-              <span class="three">手机号:</span> 13688888888
-            </p>
-          </div>
-          <div class="line height220 float-left"></div>
-          <div class="consignee-middle float-left">
-            <h3>付款信息</h3>
-            <p>
-              <span>付款方式：</span>线上支付
-            </p>
-            <p>
-              <span>商品总额：</span>￥ 520元
-            </p>
-            <p>
-              <span>应支付金额：</span>￥ 520元
-            </p>
-            <p>
-              <span>运费金额：</span>￥ 0元
-            </p>
-          </div>
-          <div class="line height220"></div>
-          <div class="consignee-right float-right">
-            <h3>发票信息</h3>
-            <p>
-              <span>发票类型：</span>不开发票
-            </p>
-          </div>
-        </div>
-        <p class="goods-title">
-          <span class="width40">药品信息</span>
-          <span class="width15">单价</span>
-          <span class="width15">数量</span>
-          <span class="width15">小计</span>
-          <span class="width15">总计</span>
-        </p>
-        <div class="goods-list-box">
-          <table>
-            <thead class="ablock">
+          <div class="consignee-info">
+            <div class="consignee-left float-left">
+              <h3>收货人信息</h3>
               <p>
-                <a-icon type="shop"/>
-                <span>一块医药自营</span>
+                <span class="three">收货人：</span> 刘琦
               </p>
-            </thead>
-            <tbody class="t-body">
-              <tr class="goods-list">
-                <td class="pic-box widths40">
-                  <div>
-                    <img
-                      src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-                      alt
-                    >
-                    <span class="goods-name">金感胶囊</span>
-                    <span>0.25g*30片</span>
-                    <span>北京振东康远制药有限公司</span>
-                    <!-- <p class="spec">0.25g*30片</p>
-                    <p class="manufactor"></p>-->
-                  </div>
-                </td>
-                <td class="price widths15 td-center padding-left5">
+              <p class="address">
+                <span class="three">地址：</span>
+                <span class="address-goods">湖南省长沙sfsfsfsfsfsfsfsfsfsfsfsfsfsf市开福区江畔豪庭88栋</span>
+              </p>
+              <p>
+                <span class="three">手机号:</span> 13688888888
+              </p>
+            </div>
+            <div class="line height220 float-left"></div>
+            <div class="consignee-middle float-left">
+              <h3>付款信息</h3>
+              <p>
+                <span>付款方式：</span>线上支付
+              </p>
+              <p>
+                <span>商品总额：</span>￥ {{item.payamt}}元
+              </p>
+              <p>
+                <span>应支付金额：</span>￥ {{item.payamt}}元
+              </p>
+              <p>
+                <span>运费金额：</span>￥ 0元
+              </p>
+            </div>
+            <div class="line height220"></div>
+            <div class="consignee-right float-right">
+              <h3>发票信息</h3>
+              <p>
+                <span>发票类型：</span>不开发票
+              </p>
+            </div>
+          </div>
+          <p class="goods-title">
+            <span class="width40">药品信息</span>
+            <span class="width15">单价</span>
+            <span class="width15">数量</span>
+            <span class="width15">小计</span>
+            <span class="width15">总计</span>
+          </p>
+          <div class="goods-list-box">
+            <table>
+              <thead class="ablock">
+                <p>
+                  <a-icon type="shop"/>
+                  <span>一块医药自营</span>
+                </p>
+              </thead>
+              <tbody class="t-body" v-for="(items,index1) in item.goods" :key="index1">
+                <tr class="goods-list">
+                  <td class="pic-box widths40">
+                    <div>
+                      <img
+                        src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+                        alt
+                      >
+                    <span class="goods-name">{{items.pname}}</span>
+                      <span>{{items.pspec}}</span>
+                      <span>{{items.manun}}</span>
+                      <!-- <p class="spec">0.25g*30片</p>
+                      <p class="manufactor"></p>-->
+                    </div>
+                  </td>
+                  <td class="price widths15 td-center padding-left5">￥{{items.pdprice}}</td>
+                  <td class="count widths15 td-center padding-left5">{{item.pdnum}}</td>
+                  <td class="subtotal widths15 td-center padding-left10">￥{{item.pdamt}}</td>
+                  <div style="clear: both;"></div>
+                  <!-- <td class="total width15 td-center padding-left15">
                   ￥35
-                </td>
-                <td class="count widths15 td-center padding-left5">
-                  1
-                </td>
-                <td class="subtotal widths15 td-center padding-left10">
-                  ￥35
-                </td>
-                <div style="clear: both;"></div>
-                <!-- <td class="total width15 td-center padding-left15">
-                  ￥35
-                </td> -->
-              </tr>
-              <div class="total td-center padding-left15">
-                 ￥35
-              </div>
-            </tbody>
-            <tfoot class="t-footer">
-              <div class="pay-title">
-                <p>商品总额：</p>
-                <p>优惠活动：</p>
-                <p>运费：</p>
-                <p class="red-size">应付总额：</p>
-              </div>
-              <div class="pay-count">
-                <p>￥520</p>
-                <p>￥0</p>
-                <p>￥0</p>
-                <p class="total-red">￥520</p>
-              </div>
-            </tfoot>
-          </table>
+                  </td>-->
+                </tr>
+                <div class="total td-center padding-left15">￥{{item.pdamt}}</div>
+              </tbody>
+              <tfoot class="t-footer">
+                <div class="pay-title">
+                  <p>商品总额：</p>
+                  <p>优惠活动：</p>
+                  <p>运费：</p>
+                  <p class="red-size">应付总额：</p>
+                </div>
+                <div class="pay-count">
+                  <p>￥{{item.pdamt}}</p>
+                  <p>￥{{item.distamt}}</p>
+                  <p>￥{{item.freight}}</p>
+                  <p class="total-red">￥{{item.payamt}}</p>
+                </div>
+              </tfoot>
+            </table>
+          </div>
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -204,17 +194,57 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    storeInfo() {
+      return this.$store.getters.user(this);
+    }
+  },
   data() {
     return {
-      visible: false
+      visible: false,
+      orderDetail: []
     };
   },
+  mounted() {
+    this.queryOrderDetail();
+  },
   methods: {
+    // 查询订单详情
+
+    queryOrderDetail() {
+      debugger
+      let _this = this;
+      let orderno = this.$route.query.orderno;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderInfoModule";
+      iRequest.method = "getOrderDetail";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.arrays = [orderno];
+      this.$refcallback(
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          console.log(result);
+          if (result.code === 200) {
+            _this.orderDetail = result.data;
+            console.log(_this.orderDetail);
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     cancelOrder() {
       this.visible = true;
     },
     hideModal() {
       this.visible = false;
+    },
+    toPay() {
+      var routeData = this.$router.resolve({
+            path: "/order/pay"
+          });
+      window.open(routeData.href, '_blank');
     }
   }
 };
@@ -251,14 +281,14 @@ export default {
 }
 .address {
   height: auto !important;
-  line-height: 40px!important;
-  .address-goods{
-    width: 270px!important;
+  line-height: 40px !important;
+  .address-goods {
+    width: 270px !important;
     height: auto;
     min-height: 40px;
     line-height: 40px;
     text-align: left;
-    text-indent: 0px!important;
+    text-indent: 0px !important;
     vertical-align: top;
   }
 }
@@ -352,6 +382,7 @@ export default {
   .logistics-left {
     float: left;
     .container-size(inline-block, 300px, 260px, 0 auto, 0px);
+    padding-top: 30px;
     p {
       .p-size(55px, 55px, 16px, center, 0px, #666666);
     }
@@ -371,6 +402,7 @@ export default {
   .consignee-middle,
   .consignee-right {
     .container-size(inline-block, 389px, 255px, 0 auto, 0px);
+    padding-top: 20px;
     h3 {
       .p-size(40px, 40px, 16px, center, 0px, #666666);
       font-weight: bold;
@@ -381,8 +413,8 @@ export default {
         display: inline-block;
         width: 120px;
       }
-      .three{
-        width: 85px!important;
+      .three {
+        width: 85px !important;
       }
     }
   }
@@ -423,26 +455,27 @@ export default {
     .t-body {
       .container-size(block, 1190px, auto, 0 auto, 0px);
       min-height: 120px;
-      border-bottom: 1px solid #eeeeee;
       .goods-list {
         .container-size(inline-block, 1000px, 120px, 0 auto, 0px);
-        .td-center{
+        border-right: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+        .td-center {
           text-align: center;
           line-height: 120px;
         }
-        .padding-left10{
+        .padding-left10 {
           padding-left: 8px;
         }
-        .padding-left15{
+        .padding-left15 {
           padding-left: 15px;
         }
-        .padding-left5{
+        .padding-left5 {
           padding-left: 24px;
         }
-        .subtotal{
+        .subtotal {
           color: #ed3025;
         }
-       
+
         td {
           display: inline-block;
           height: 100%;
@@ -472,44 +505,44 @@ export default {
           float: left;
         }
       }
-       .total{
-          float: right;
-          width: 190px;
-          height: 100%;
-          text-align: center;
-          padding-top: 48px;
-          min-height: 120px;
-          background: #f2f2f2;
-          border-left: 1px solid #eeeeee;
-          font-size: 18px;
-          font-weight: bold;
-          color: #ed3025;
-        }
+      .total {
+        float: right;
+        width: 190px;
+        height: 100%;
+        text-align: center;
+        padding-top: 48px;
+        min-height: 120px;
+        // background: #f2f2f2;
+        // border-left: 1px solid #eeeeee;
+        font-size: 18px;
+        font-weight: bold;
+        color: #ed3025;
+      }
     }
     .t-footer {
       .container-size(block, 1190px, 210px, 0 auto, 0px);
-      .pay-title{
+      .pay-title {
         .container-size(inline-block, 992px, 210px, 0 auto, 0px);
         float: left;
         padding: 20px 0px;
-        p{
+        p {
           .p-size(40px, 40px, 16px, right, 20px, #333333);
         }
-        .red-size{
+        .red-size {
           color: #ed3025;
         }
       }
-      .pay-count{
+      .pay-count {
         .container-size(inline-block, 190px, 210px, 0 auto, 0px);
-         float: right;
+        float: right;
         background: #f2f2f2;
         padding: 20px 0px;
-        p{
+        p {
           .p-size(40px, 40px, 16px, center, 0px, #333333);
         }
-        .total-red{
-          font-size: 24px!important;
-          color: #ed3025!important;
+        .total-red {
+          font-size: 24px !important;
+          color: #ed3025 !important;
         }
       }
     }
