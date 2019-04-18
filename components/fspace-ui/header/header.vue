@@ -76,7 +76,7 @@
                 <template slot="content">
                   <p>Content</p>
                   <p>Content</p>
-                </template>
+                </template> 
                 <a-button type="primary">Hover me</a-button>
               </a-popover>
               <!-- <span class="cart-text">采购单</span> -->
@@ -373,7 +373,6 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result);
           if (result.code === 200) {
             // 设置登录
             _this.$store.dispatch("setUserState");

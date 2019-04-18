@@ -85,7 +85,7 @@
                     >
                       <div class="coupon-box">
                         <!-- 选中背景色 -->
-                        <div class="coupon" :class="isChecked? 'coupon-back' : ''">
+                        <div class="coupon">
                           <p class="coupon-type">现金券</p>
                           <p class="ladder">满balala送balala</p>
                         </div>
@@ -117,6 +117,12 @@ export default {
   components: {
     FSpaceHeader,
     FSpaceFooter
+  },
+  computed: {
+    storeInfo() {
+      console.log(this.$store.getters.user(this))
+      return this.$store.getters.user(this);
+    }
   },
   data() {
     return {

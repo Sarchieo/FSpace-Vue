@@ -146,7 +146,7 @@
                   <!-- <button class="addition width22" @click="addCount()">+</button> -->
                   <!-- <button class="reduce width22">-</button> -->
                   <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->
-                  <button type="danger" class="purchase">立即购买</button>
+                  <button type="danger" class="purchase" @click="placeOrder()">立即购买</button>
                   <a-button class="add-cart">
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
@@ -788,6 +788,15 @@ export default {
           }
         })
       );
+    },
+    // 下单
+    placeOrder() {
+      this.$router.push({
+        path: "/order/placeOrder",
+        query: {
+          sku: this.prodDetail.sku
+        }
+      });
     },
     getImgUrl() {
       let _this = this;
