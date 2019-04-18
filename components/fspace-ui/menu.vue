@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     compLiHeight() {
-      debugger
       var siderui = this.$refs.siderui.offsetHeight;
       var siderLi = document.getElementsByClassName('sider-menu-li');
      for(var i = 0;i<siderLi.length;i++){

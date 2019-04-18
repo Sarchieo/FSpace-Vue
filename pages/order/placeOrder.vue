@@ -125,6 +125,7 @@ export default {
   },
   data() {
     return {
+      orderType: 0,
       isCoupon: false,
       cartList: [],
       visible: false,
@@ -139,6 +140,7 @@ export default {
   created() {
     this.cartList = JSON.parse(this.$route.params.arr) 
     this.placeType = this.$route.params.placeType;
+    this.orderType = this.$route.params.orderType;
     // this.pdno = this.$route.query.sku;
     // this.pnum = this.$route.query.inventory;
     // this.pdprice = this.$route.query.vatp;
@@ -176,9 +178,9 @@ export default {
           cusno: this.storeInfo.storeId,
           busno: this.storeInfo.storeId
         },
-        goodsArr: goodsArr
+        goodsArr: goodsArr,
+        orderType: this.orderType
       });
-      console.log("json-- " + iRequest.param.json);
       this.$refcallback(
         "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,

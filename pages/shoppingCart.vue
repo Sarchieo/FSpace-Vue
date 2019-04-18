@@ -294,7 +294,8 @@ export default {
               name: "order-placeOrder",
               params: {
                 arr: JSON.stringify(result.data),
-                placeType: 2
+                placeType: 2,
+                orderType: 0
               }
             });
           } else {

@@ -79,7 +79,7 @@
                 </p>
                 <p class="price" v-if="status == 1">
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ discount.killPrice }}</span>
+                  <span class="money-count">￥{{ prodDetail.mp }}</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
                 <p class="price" v-if="status == 2">
@@ -150,7 +150,7 @@
                   <a-button class="add-cart" @click="addCart()" v-if="status != 1">
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
-                  <a-button type="danger" class="purchase" @click="placeOrder()" v-if="status == 1">立即抢购</a-button>
+                  <a-button :disabled="!isKill" type="danger" class="purchase" @click="attendSecKill()" v-if="status == 1">立即抢购</a-button>
                 </p>
               </div>
             </div>
@@ -479,6 +479,8 @@ export default {
   },
   data() {
     return {
+      unqid: 0,
+      isKill: false,
       loading: false,
       maximum: 1, // 最大库存
       inventory: 1, // 当前库存
@@ -561,10 +563,6 @@ export default {
     if (this.actcode != 0) {
       this.queryActiveType();
     }
-     // 秒杀
-    if(this.status == 1) {
-
-    }
   },
   methods: {
     beforeSecKill() {
@@ -573,33 +571,8 @@ export default {
       iRequest.cls = "SecKillModule";
       iRequest.method = "beforeSecKill";
       iRequest.param.json = JSON.stringify({
-        sku: _this.prodDetail.sku
-      })
-      iRequest.param.token = localStorage.getItem("identification");
-      // this.$refcallback(
-      //   "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
-      //   iRequest,
-      //   new this.$iceCallback(
-      //     function result(result) {
-      //     if (result.code === 200) {
-          
-      //     } else {
-      //       _this.$message.error(result.message);
-      //     }
-      //   },
-      //   function error(e) {
-      //     _this.$message.error(e);
-      //   })
-      // );
-    },
-    attendSecKill() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "SecKillModule";
-      iRequest.method = "attendSecKill";
-      iRequest.param.json = JSON.stringify({
-        unqid: _this.storeInfo.storeId,
-
+        sku: _this.prodDetail.sku,
+        actno: _this.actcode
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -608,10 +581,48 @@ export default {
         new this.$iceCallback(
           function result(result) {
           if (result.code === 200) {
-            _this.$message.success('购物车移除成功~')
-            _this.cartList.splice(index, 1)
-            _this.queryCheckShopCartList()
+            _this.isKill = true
+            _this.unqid = result.data
           } else {
+            _this.isKill = false
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
+    attendSecKill() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "SecKillModule";
+      iRequest.method = "attendSecKill";
+      iRequest.param.json = JSON.stringify({
+        sku: _this.prodDetail.sku,
+        actno: _this.actcode,
+        unqid: _this.unqid,
+        stock: _this.inventory
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            debugger
+          if (result.code === 200) {
+            _this.$route.path.replace()
+            _this.$router.push({
+              name: "order-placeOrder",
+              params: {
+                arr: JSON.stringify(result.data),
+                placeType: 1,
+                orderType: 1
+              }
+            });
+          } else {
+            _this.isKill = false
             _this.$message.error(result.message);
           }
         },
@@ -723,14 +734,15 @@ export default {
     queryActiveType() {
       let _this = this;
       let iRequest = new inf.IRequest();
-      iRequest.cls = "DiscountModule";
+      iRequest.cls = "CalculateModule";
       iRequest.method = "getGoodsActInfo";
       iRequest.param.arrays = [this.sku, this.actcode];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "discountServer",
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
+          debugger
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
@@ -904,7 +916,8 @@ export default {
               name: "order-placeOrder",
               params: {
                 arr: JSON.stringify(result.data),
-                placeType: 1
+                placeType: 1,
+                orderType: 0
               }
             });
           } else {
