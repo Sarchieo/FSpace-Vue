@@ -87,7 +87,6 @@
                   <span class="money-count">￥{{ prodDetail.mp }}</span>
                 </p>
                 <p class="price">
-                  <span class="integral">积份</span>
                   <span>购买得50积分</span>
                 </p>
                 <p class="price indent">
@@ -1351,7 +1350,7 @@ li {
   line-height: 30px;
 }
 .margin-right190 {
-  margin-right: 190px;
+  margin-right: 30px;
 }
 .cart {
   position: relative;
@@ -1387,7 +1386,6 @@ li {
 .purchase {
   position: absolute;
   top: 0px;
-  left: 120px;
   width: 170px;
   height: 44px;
   border: 1px solid rgb(247, 37, 38);
@@ -1587,7 +1585,7 @@ li {
   border: 1px solid rgb(238, 238, 238);
 }
 .hot-recommend-title {
-  height: 55px;
+  height: 45px;
   text-indent: 20px;
   line-height: 55px;
   background: rgb(246, 246, 246);
@@ -1748,7 +1746,7 @@ li {
 .add-cart {
   position: absolute;
   top: 0px;
-  left: 300px;
+  left: 200px;
   width: 170px;
   height: 44px;
   line-height: 44px;

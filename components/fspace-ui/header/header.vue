@@ -118,7 +118,7 @@
               <a href>新品上线</a>
               <a href>热销商品</a>
               <a href="javascript:;" @click="toBrand()">品牌专区</a>
-              <a href>全部商品</a>
+              <!-- <a href>全部商品</a> -->
             </div>
           </div>
         </div>
