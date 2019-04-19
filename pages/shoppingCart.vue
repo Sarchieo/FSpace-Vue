@@ -27,7 +27,7 @@
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
                 <a-checkbox @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
-                <img v-lazy="item.imgURl" alt>
+                <img v-lazy="item.imgURl">
                 <p class="goods-name">{{item.ptitle}}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
@@ -43,7 +43,7 @@
                   <button @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
-                <p class="new-price">￥{{item.pdprice * item.num}}</p>
+                <p class="new-price">￥{{ parseFloat(item.pdprice * item.num).toFixed(2) }}</p>
                 <p class="omit" v-if="item.discount != 0">为您节省￥{{item.discount}}</p>
                 <!-- <p class="move">移入收藏夹</p> -->
                 <a-tag color="#f50" class="move">添加收藏夹</a-tag>
@@ -61,7 +61,8 @@
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
               <span>活动优惠：￥{{amt}}</span>
-              <span class="total-price">应付总金额：￥{{total - amt}}</span>
+              <span class="total-price" v-if="total > 0">应付总金额：￥{{total - amt}}</span>
+              <span class="total-price" v-if="total == 0">应付总金额：￥{{total}}</span>
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
           </div>
@@ -92,7 +93,7 @@
                     v-for="(items,index) in item.list"
                     :key="index"
                   >
-                    <img v-lazy="items.url" slot="cover">
+                    <img v-lazy="items.imgURl" slot="cover">
                     <p class="meal-price">${{items.price}}</p>
                     <p class="meal-name">{{items.name}}</p>
                   </a-card>
@@ -134,13 +135,13 @@ export default {
       return this.$store.state.user;
     },
     total: function() {
-      var total = 0;
+      let total = 0;
       this.cartList.forEach(item => {
         if(item.checked) {
-          total += item.pdprice * item.num;
+          total +=  parseFloat(item.pdprice * item.num);
         }
       });
-      return total;
+      return total.toFixed(2);
     }
   },
   mounted() {
@@ -376,13 +377,13 @@ export default {
                   result.data.downPrev +
                     c +
                     "/" +
-                    arr[index].sku +
+                    arr[index].pdno +
                     "-200x200.jpg" +
                     "?" +
                     new Date().getSeconds()
                 );
               });
-              
+              debugger
             } else {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }

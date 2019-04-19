@@ -102,8 +102,6 @@
             <p class="card-price top165" v-if="!item.actprod">
               ￥{{item.mp}}
             </p>
-            <!-- 规格 -->
-            <p class="specifications">{{item.spec}}</p>
             <!-- 厂家 -->
             <p class="manufacturer hidden-text">{{item.manuName}}</p>
             <p class="sold">
@@ -328,7 +326,6 @@ export default {
                   isSelect: false
                 });
               });
-
               result.data.manunameList.forEach(element => {
                 _this.manunameList.push({
                   name: element,
@@ -752,7 +749,7 @@ li {
   .position(absolute, 149px, 0px);
   .p-size(20px, 20px, 14px, center, 0px, #666666);
   width: 226px;
-  background: #e0e0e0;
+  background: #f2f2f2;
 }
 .sold {
   display: inline-block;
