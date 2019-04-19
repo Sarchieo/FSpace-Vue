@@ -1,9 +1,18 @@
 <template>
   <div>
      <!-- v-for="(item,index) in orderList" :key="index" -->
-    <a-tabs defaultActiveKey="1" @change="callback">
-      <a-tab-pane tab="全部订单" key="1">
-        <p class="table-title">
+    <a-tabs defaultActiveKey="" @change="callback">
+      <a-tab-pane tab="全部订单" key=""></a-tab-pane>
+      <a-tab-pane tab="未付款" key="0"></a-tab-pane>
+      <a-tab-pane tab="已付款" key="1"></a-tab-pane>
+      <a-tab-pane tab="已发货" key="2"></a-tab-pane>
+      <a-tab-pane tab="已签收" key="3"></a-tab-pane>
+       <a-tab-pane tab="退货申请" key="-1"></a-tab-pane>
+      <a-tab-pane tab="退货中" key="-2"></a-tab-pane>
+      <a-tab-pane tab="已退货" key="-3"></a-tab-pane>
+      <a-tab-pane tab="取消交易" key="-4"></a-tab-pane>
+    </a-tabs>
+      <p class="table-title">
           <span class="width33">药品</span>
           <span class="width13">单价</span>
           <span class="width13">数量</span>
@@ -11,8 +20,8 @@
           <span class="width13">实付款</span>
           <span class="width13">交易状态</span>
           <span class="width13">操作</span>
-        </p>
-        <ul class="order-box">
+        </p>  
+     <ul class="order-box" v-if="this.orderList.length !== 0 ">
           <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
             <p class="order-info-text">
               <span class="time">{{item.odate}}</span>
@@ -65,18 +74,12 @@
             </div>
             
           </li>
-           <a-pagination :defaultCurrent="1" :total="10"/>
+           <a-pagination  v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
         </ul>
-      </a-tab-pane>
-      <a-tab-pane tab="待付款" key="2">
-        待付款</a-tab-pane>
-      <a-tab-pane tab="待收货" key="3">
-        待收货</a-tab-pane>
-      <a-tab-pane tab="待评价" key="4">
-        待评价</a-tab-pane>
-      <a-tab-pane tab="退货" key="5">
-        退货</a-tab-pane>
-    </a-tabs>
+        <div class="no-data" v-if="this.orderList.length === 0 ">
+          <p class="icon"><a-icon type="exclamation" /></p>
+          <p class="text">没有查询到订单！</p>
+        </div>
   </div>
 </template>
 <script>
@@ -92,21 +95,29 @@ export default {
   components: {
     FSpaceOrder
   },
-   computed: {
+  computed: {
     storeInfo() {
       return this.$store.getters.user(this);
     }
   },
   data() {
     return {
-      ostatus: '',
+      currentIndex: 1,
+      total: 0,
+      ostatus: '', // 
       orderList: []
     };
   },
   mounted() {
     this.queryOrderList()
+    debugger
+    console.log(this.storeInfo)
   },
   methods: {
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.queryOrderList()
+    },  
     // 查询订单列表
     queryOrderList() {
       let _this = this;
@@ -114,15 +125,18 @@ export default {
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "queryOrders";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = ['',''];
+      iRequest.param.arrays = [this.ostatus,''];
+      iRequest.param.pageIndex = this.currentIndex;
+      iRequest.param.pageNumber = 10;
       this.$refcallback(
         "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
         iRequest,
-        new this.$iceCallback(function result(result) { 
-          console.log(result)
+        new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            
             _this.orderList = result.data;
-            console.log(_this.orderList)
+            _this.total = result.total
+            _this.currentIndex = result.pageNo
           } else {
             _this.$message.error(result.message);
           }
@@ -154,7 +168,9 @@ export default {
         window.open(routeData.href, '_blank');
     },
     callback(key) {
-
+      this.ostatus = key
+      this.currentIndex = 1
+      this.queryOrderList()
     },
     toEvaluate() {
       var routeData = this.$router.resolve({
@@ -394,5 +410,18 @@ export default {
 }
 .canle-order{
   color: #999999!important;
+}
+.no-data{
+  .container-size(block, 943px, 200px, 0 auto, 0px);
+  padding-top: 20px;
+  .icon{
+    .p-size(50px,50px,18px,center,0px,#333333);
+    i{
+      font-size: 40px;
+    }
+  }
+  .text{
+    .p-size(50px,50px,18px,center,0px,#333333);
+  }
 }
 </style>

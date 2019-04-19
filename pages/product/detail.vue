@@ -656,7 +656,7 @@ export default {
         pnum: this.inventory,
         checked: 0
       })
-      
+
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
@@ -672,7 +672,7 @@ export default {
         function error(e) {
           _this.$message.error(e);
         })
-      ); 
+      );
     },
     // 猜你喜欢列表
     // 领取优惠券
@@ -741,7 +741,6 @@ export default {
         "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
@@ -797,6 +796,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.prodDetail = result.data;
+            debugger
             _this.queryCouponPub();
             _this.details = JSON.parse(_this.prodDetail.detail);
             if(_this.status == '0') {
@@ -807,7 +807,7 @@ export default {
             } else {
               _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
             }
-            
+
           } else {
             _this.$message.error(result.message);
           }
@@ -1043,17 +1043,17 @@ export default {
           " " +
           eDate
       );
-      let times = endDate - new Date();
+      let times = Math.floor((endDate - new Date())/1000);
+
       let _this = this;
       if (times >= 0) {
         let timer;
         timer = setInterval(function() {
-          times--;
-          let modulo = times % (60 * 60 * 24);
-          _this.flashSale.h = Math.floor(modulo / (60 * 60));
-          modulo = modulo % (60 * 60);
-          _this.flashSale.m = Math.floor(modulo / 60);
-          _this.flashSale.s = modulo % 60;
+          times --;
+          let hour = Math.floor(times/60/60);
+          _this.flashSale.h = Math.floor(times/60/60);
+          _this.flashSale.m = Math.floor(times/60)%60;
+          _this.flashSale.s = times%60;
           if (times <= 0) {
             clearInterval(timer);
             console.log("活动结束");
