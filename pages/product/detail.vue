@@ -87,7 +87,6 @@
                   <span class="money-count">￥{{ prodDetail.mp }}</span>
                 </p>
                 <p class="price">
-                  <span class="integral">积份</span>
                   <span>购买得50积分</span>
                 </p>
                 <p class="price indent">
@@ -657,7 +656,7 @@ export default {
         pnum: this.inventory,
         checked: 0
       })
-      
+
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
@@ -673,7 +672,7 @@ export default {
         function error(e) {
           _this.$message.error(e);
         })
-      ); 
+      );
     },
     // 猜你喜欢列表
     // 领取优惠券
@@ -742,7 +741,6 @@ export default {
         "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
@@ -798,6 +796,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.prodDetail = result.data;
+            debugger
             _this.queryCouponPub();
             _this.details = JSON.parse(_this.prodDetail.detail);
             if(_this.status == '0') {
@@ -808,7 +807,7 @@ export default {
             } else {
               _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
             }
-            
+
           } else {
             _this.$message.error(result.message);
           }
@@ -1044,17 +1043,17 @@ export default {
           " " +
           eDate
       );
-      let times = endDate - new Date();
+      let times = Math.floor((endDate - new Date())/1000);
+
       let _this = this;
       if (times >= 0) {
         let timer;
         timer = setInterval(function() {
-          times--;
-          let modulo = times % (60 * 60 * 24);
-          _this.flashSale.h = Math.floor(modulo / (60 * 60));
-          modulo = modulo % (60 * 60);
-          _this.flashSale.m = Math.floor(modulo / 60);
-          _this.flashSale.s = modulo % 60;
+          times --;
+          let hour = Math.floor(times/60/60);
+          _this.flashSale.h = Math.floor(times/60/60);
+          _this.flashSale.m = Math.floor(times/60)%60;
+          _this.flashSale.s = times%60;
           if (times <= 0) {
             clearInterval(timer);
             console.log("活动结束");
@@ -1351,7 +1350,7 @@ li {
   line-height: 30px;
 }
 .margin-right190 {
-  margin-right: 190px;
+  margin-right: 30px;
 }
 .cart {
   position: relative;
@@ -1387,7 +1386,6 @@ li {
 .purchase {
   position: absolute;
   top: 0px;
-  left: 120px;
   width: 170px;
   height: 44px;
   border: 1px solid rgb(247, 37, 38);
@@ -1587,7 +1585,7 @@ li {
   border: 1px solid rgb(238, 238, 238);
 }
 .hot-recommend-title {
-  height: 55px;
+  height: 45px;
   text-indent: 20px;
   line-height: 55px;
   background: rgb(246, 246, 246);
@@ -1748,7 +1746,7 @@ li {
 .add-cart {
   position: absolute;
   top: 0px;
-  left: 300px;
+  left: 200px;
   width: 170px;
   height: 44px;
   line-height: 44px;

@@ -141,12 +141,6 @@ export default {
     this.cartList = JSON.parse(this.$route.params.arr) 
     this.placeType = this.$route.params.placeType;
     this.orderType = this.$route.params.orderType;
-    // this.pdno = this.$route.query.sku;
-    // this.pnum = this.$route.query.inventory;
-    // this.pdprice = this.$route.query.vatp;
-    
-
-    // this.pdprice = this.$route.query.inventory;
   },
   methods: {
     showModal() {
