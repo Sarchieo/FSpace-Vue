@@ -53,60 +53,59 @@
         </div>
 
         <div v-for="(item,index) in list" :key="index">
-          <!-- 限时抢购 -->
-          <div id="hot" class="brand-hall" v-if="item.unqid === 512">
-            <p class="brand-hall-title">
-             限时抢购
-              <a class="all-hot" @click="toLimited()">
-                查看全部抢购
+          <!-- 新品专区 -->
+          <div id="choice" class="elaborate" v-if="item.unqid === 1">
+            <p class="elaborate-title">新品专区
+               <a href="javascript:;" @click="toNewGoods()">
+                查看全部
                 <a-icon type="right"/>
+              </a> </p>
+            <ul class="elaborate-ui">
+              <li v-for="(item,index) in newGoodsList" :key="index">
+                <a-card hoverable class="elaborate-card" @click="toDetail(item)">
+                  <img v-lazy="item.imgURl" slot="cover">
+                  <p class="elaborate-text">{{item.prodname}}</p>
+                  <p class="elaborate-specifications">{{item.spec}}</p>
+                  <p class="elaborate-manufacturer">{{item.manuName}}</p>
+                  <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                  <p class="elaborate-price">￥{{item.vatp}}</p>
+                  <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
+                  <a-card-meta></a-card-meta>
+                  <p></p>
+                </a-card>
+              </li>
+            </ul>
+          </div>
+           <!-- 热销专区 -->
+          <div class="brand-hall" v-if="item.unqid === 2">
+            <p class="brand-hall-title">
+              热销专区
+              <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
               </a>
             </p>
-            <div class="brand-divs">
-              <div class="brand-left">
-                <p class="brand-time">{{item.time}}</p>
-                <a-icon type="thunderbolt" class="brand-lightning"/>
-                <p class="over-distance">距离结束还有</p>
-                <p class="count-down">
-                  <button>{{ flashSale.h }}</button>:
-                  <button>{{ flashSale.m }}</button>:
-                  <button>{{ flashSale.s }}</button>
-                </p>
-                <button class="see-whole">
-                  查看全部
-                  <a-icon type="right"/>
-                </button>
-              </div>
-              <ul class="brand-right">
-                <li v-for="(items,index) in limitedList.list" :key="index">
-                  <a-card hoverable class="card" @click="toDetail(items, limitedList.actcode, 1)">
-                    <img class="card-img" v-lazy="items.imgURl" slot="cover">
-                    <a-progress
-                      :percent="items.percentage"
-                      style="position:absolute;top:145px;left:20px;width: 188px;"
-                      :showInfo="false"
-                      status="exception"
-                    />
-                    <p class="surplus">
-                      还剩{{items.surplusstock}}{{items.unitName}}
-                      <span>限购{{items.actlimit}}{{items.unitName}}</span>
+            <div class="brand-div">
+              <ul class="brand-right hot-width">
+                <li v-for="(item,index) in hotGoodsList" :key="index">
+                  <a-card hoverable class="card" @click="toDetail(item)">
+                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
+                    <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
+                    <img class="card-img" v-lazy="item.imgURl" slot="cover">
+                    <p class="surplus top185">{{item.brandName}}</p>
+                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="card-price top165">
+                      ￥{{item.vatp}}
+                      <!-- <del>￥</del> -->
                     </p>
-
-                    <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
-                    <div class="goods-info">
-                      <p class="card-prices">
-                        ￥{{items.actprize}}
-                        <del>￥{{items.mp}}</del>
-                      </p>
-                      <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
-                      <p class="brand-text">{{items.brandName}}</p>
-                    </div>
+                    <p class="specifications">{{item.spec}}</p>
+                    <p class="manufacturer">{{item.manuName}}</p>
+                    <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
                   </a-card>
                 </li>
               </ul>
             </div>
           </div>
-           <div class="brand-hall height-auto" v-if="item.unqid === 8">
+           <!-- 一块购 -->
+          <div class="brand-hall height-auto" v-if="item.unqid === 8">
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
               <a href="javascript:;" @click="toBuying()" class="see-wholes">
@@ -164,16 +163,16 @@
               </ul>
             </div>
           </div>
-          <!-- 热销专区 包邮专区 -->
-          <div class="brand-hall" v-if="item.unqid === 2">
+          <!-- 包邮专区 -->
+          <div class="brand-hall" v-if="item.unqid === 16">
             <p class="brand-hall-title">
-              人气专区
-              <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
+              包邮专区
+              <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
               <ul class="brand-right hot-width">
-                <li v-for="(item,index) in hotGoodsList" :key="index">
+                <li v-for="(item,index) in postList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
@@ -192,6 +191,62 @@
               </ul>
             </div>
           </div>
+           <!-- 新人专享 -->
+          <div class="brand-hall" v-if="item.unqid === 32">
+            <p class="brand-hall-title">
+              新人专享
+              <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
+              </a>
+            </p>
+            <div class="brand-div">
+              <ul class="brand-right hot-width">
+                <li v-for="(item,index) in newPersonList" :key="index">
+                  <a-card hoverable class="card" @click="toDetail(item)">
+                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
+                    <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
+                    <img class="card-img" v-lazy="item.imgURl" slot="cover">
+                    <p class="surplus top185">{{item.brandName}}</p>
+                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="card-price top165">
+                      ￥{{item.vatp}}
+                      <!-- <del>￥</del> -->
+                    </p>
+                    <p class="specifications">{{item.spec}}</p>
+                    <p class="manufacturer">{{item.manuName}}</p>
+                    <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- 中华名方 -->
+          <div class="brand-hall" v-if="item.unqid === 64">
+            <p class="brand-hall-title">
+              中华名方
+              <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
+              </a>
+            </p>
+            <div class="brand-div">
+              <ul class="brand-right hot-width">
+                <li v-for="(item,index) in famousList" :key="index">
+                  <a-card hoverable class="card" @click="toDetail(item)">
+                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
+                    <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
+                    <img class="card-img" v-lazy="item.imgURl" slot="cover">
+                    <p class="surplus top185">{{item.brandName}}</p>
+                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="card-price top165">
+                      ￥{{item.vatp}}
+                      <!-- <del>￥</del> -->
+                    </p>
+                    <p class="specifications">{{item.spec}}</p>
+                    <p class="manufacturer">{{item.manuName}}</p>
+                    <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
+          </div>  
            <!-- 为你精选 -->
           <div id="choice" class="elaborate" v-if="item.unqid === 128">
             <p class="elaborate-title">为你精选
@@ -215,29 +270,62 @@
               </li>
             </ul>
           </div>
-          <!-- 新品专区 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 1">
-            <p class="elaborate-title">新品专区
-               <a href="javascript:;" @click="toNewGoods()">
-                查看全部
+          <!-- 限时抢购 -->
+          <div id="hot" class="brand-hall" v-if="item.unqid === 512">
+            <p class="brand-hall-title">
+             限时折扣
+              <a class="all-hot" @click="toLimited()">
+                查看全部抢购
                 <a-icon type="right"/>
-              </a> </p>
-            <ul class="elaborate-ui">
-              <li v-for="(item,index) in newGoodsList" :key="index">
-                <a-card hoverable class="elaborate-card" @click="toDetail(item)">
-                  <img v-lazy="item.imgURl" slot="cover">
-                  <p class="elaborate-text">{{item.prodname}}</p>
-                  <p class="elaborate-specifications">{{item.spec}}</p>
-                  <p class="elaborate-manufacturer">{{item.manuName}}</p>
-                  <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
-                  <p class="elaborate-price">￥{{item.vatp}}</p>
-                  <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
-                  <a-card-meta></a-card-meta>
-                  <p></p>
-                </a-card>
-              </li>
-            </ul>
+              </a>
+            </p>
+            <div class="brand-divs">
+              <div class="brand-left">
+                <p class="brand-time">{{item.time}}</p>
+                <a-icon type="thunderbolt" class="brand-lightning"/>
+                <p class="over-distance">距离结束还有</p>
+                <p class="count-down">
+                  <button>{{ flashSale.h }}</button>:
+                  <button>{{ flashSale.m }}</button>:
+                  <button>{{ flashSale.s }}</button>
+                </p>
+                <button class="see-whole">
+                  查看全部
+                  <a-icon type="right"/>
+                </button>
+              </div>
+              <ul class="brand-right">
+                <li v-for="(items,index) in limitedList.list" :key="index">
+                  <a-card hoverable class="card" @click="toDetail(items, limitedList.actcode, 1)">
+                    <img class="card-img" v-lazy="items.imgURl" slot="cover">
+                    <a-progress
+                      :percent="items.percentage"
+                      style="position:absolute;top:145px;left:20px;width: 188px;"
+                      :showInfo="false"
+                      status="exception"
+                    />
+                    <p class="surplus">
+                      还剩{{items.surplusstock}}{{items.unitName}}
+                      <span>限购{{items.actlimit}}{{items.unitName}}</span>
+                    </p>
+
+                    <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
+                    <div class="goods-info">
+                      <p class="card-prices">
+                        ￥{{items.actprize}}
+                        <del>￥{{items.mp}}</del>
+                      </p>
+                      <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
+                      <p class="brand-text">{{items.brandName}}</p>
+                    </div>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
           </div>
+         
+         
+         
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -291,11 +379,20 @@ export default {
       },
       limitedID: 0,
       teamByID: 0,
+      postID: 0,
+      selectedID: 0,
+      newGoodsID: 0,
+      newPersonID: 0,
+      hotGoodsID: 0,
+      famousId: 0,
       teamBuyList: [],
       limitedList: [], // 限时抢购
       newGoodsList: [], // 新品商品列表
       hotGoodsList: [], // 热销商品列表
       selectedList: [], // 为你精选
+      newPersonList: [], // 新人专享列表
+      postList: [], // 包邮专区
+      famousList: [], // 中华名方
       isShow: false,
       imgSrc:
         "//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg",
@@ -313,6 +410,8 @@ export default {
   mounted() {
     // window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
+    this.getNewPersonList();
+    this.getExemPostMallFloor();
     // this.iceTest()
   },
   methods: {
@@ -441,6 +540,87 @@ export default {
         })
       );
     },
+    // 包邮专区
+    async getExemPostMallFloor() {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getExemPostMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            debugger
+            result.data.list = result.data.list.slice(0, 5)
+            _this.postList = result.data
+            console.log(_this.postList)
+            _this.postID = result.data.actcode
+            _this.getImgUrl(_this.postList.list)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 中华名方 -- 暂时没接口
+    //  async getExemPostMallFloor() {
+    //   debugger
+    //   let _this = this;
+    //   let iRequest = new inf.IRequest();
+    //   iRequest.cls = "ProdModule";
+    //   iRequest.method = "getExemPostMallFloor";
+    //   iRequest.param.pageIndex = 1;
+    //   iRequest.param.pageNumber = 10;
+    //   iRequest.param.json = JSON.stringify({});
+    //   iRequest.param.token = localStorage.getItem("identification");
+    //   this.$refcallback(
+    //     "goodsServer",
+    //     iRequest,
+    //     new this.$iceCallback(function result(result) {
+    //       if (result.code === 200) {
+    //         debugger
+    //         result.data.list = result.data.list.slice(0, 5)
+    //         _this.famousList = result.data
+    //         _this.famousId = result.data.actcode
+    //         _this.getImgUrl(_this.postList.list)
+    //       } else {
+    //         _this.$message.error(result.message);
+    //       }
+    //     })
+    //   );
+    // },
+    //获取新人专享列表
+    async getNewPersonList() {
+       let _this = this;
+       debugger
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getNewMemberMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            result.data.list = result.data.list.slice(0, 5)
+            _this.newPersonList = result.data
+            _this.newPersonID = result.data.actcode
+            _this.getImgUrl(_this.newPersonList.list)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     // 获取限时抢购列表
     async getDiscountMallFloor() {
       let _this = this;
@@ -487,6 +667,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.newGoodsList = result.data.slice(0, 6);
+            _this.newGoodsID = result.data.actcode
             _this.getImgUrl(_this.newGoodsList);
           } else {
             _this.$message.error(result.message);
@@ -510,9 +691,8 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.selectedList = result.data.slice(0, 6);
-            console.log(9999);
-            console.log(_this.selectedList)
             _this.getImgUrl(_this.selectedList);
+            _this.selectedID = result.data.actcode
           } else {
             _this.$message.error(result.message);
           }
@@ -535,6 +715,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotGoodsList = result.data.slice(0, 5);
+            _this.hotGoodsID = result.data.actcode
             _this.hotGoodsList.forEach((item,index) => {
                item.top = '/_nuxt/assets/img/top' + (index+1) + '.png'
             })
@@ -720,19 +901,36 @@ export default {
         }
       });
     },
+    toNewPerson() {
+      this.$router.push({
+        path: '/activity/new-person',
+        query: {
+          actcode: this.newPersonID
+        }
+      })
+    },
     toNewGoods() {
       this.$router.push({
-        path: "/activity/new-goods"
+        path: "/activity/new-goods",
+        query: {
+          actcode: this.newGoodsID
+        }
       });
     },
     toHotGoods() {
       this.$router.push({
-        path: "/activity/hot-goods"
+        path: "/activity/hot-goods",
+        query: {
+          actcode: this.hotGoodsID
+        }
       });
     },
     toSelected() {
       this.$router.push({
-        path: "/activity/selected"
+        path: "/activity/selected",
+        query: {
+          actcode: this.selectedID
+        }
       });
     },
     toBuying() {
@@ -742,6 +940,14 @@ export default {
           actcode: this.teamByID
         }
       });
+    },
+    toPost() {
+      this.$router.push({
+        path: '/activity/post',
+        query: {
+          actcode: this.postID
+        }
+      })
     }
   }
 };

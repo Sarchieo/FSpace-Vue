@@ -62,14 +62,16 @@
               
               <div class="width11 state">
                 <p class="sucess">{{statusText(item.ostatus)}}</p>
-                <p class="detail" @click="toDetails(item)">订单详情</p>
+                
               </div>
               <div class="width12 operation">
-                <p v-if="item.ostatus !== 0"><a-button type="primary" class="confirm-btn">付款</a-button></p>
-                <p v-if="item.ostatus !== 0"><a-button type="primary" class="confirm-btn">确认收货</a-button></p>
-                <p>申请售后</p>
-                <p @click="toEvaluate()" ref="toevaluate"><a>评论</a></p>
+                <p class="button-p" v-if="item.ostatus === 0"><a-button type="primary" class="confirm-btn">付款</a-button></p>
+                <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p>
+                <p v-if="item.ostatus === 3">申请售后</p>
+                <p @click="toEvaluate()" ref="toevaluate" v-if="item.ostatus === 3"><a>评论</a></p>
                 <p class="canle-order">取消订单</p>
+                <p class="detail" @click="toDetails(item)">订单详情</p>
+                <p v-if="item.ostatus !== 0">再次购买</p>
               </div>
             </div>
             
@@ -334,7 +336,10 @@ export default {
       .price,
       .operation {
         float: left;
-        padding: 32px 0px;
+        padding: 10px 0px;
+        .button-p{
+          height: 32px!important;
+        }
         p {
           width: 100%;
           height: 20px;
@@ -356,7 +361,7 @@ export default {
       }
       .state {
         float: left;
-        padding-top: 32px;
+        padding-top: 42px;
         .sucess {
           // .position(absolute, 28px, 0px);
           width: 100%;
@@ -404,6 +409,7 @@ export default {
   margin-top: 20px;
 }
 .confirm-btn{
+
    border-radius: 3px;
    -moz-border-radius: 3px;
    -webkit-border-radius: 3px;
