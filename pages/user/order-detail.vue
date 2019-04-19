@@ -214,7 +214,6 @@ export default {
   },
   methods: {
     // 查询订单详情
-
     queryOrderDetail() {
       let _this = this;
       let orderno = this.$route.query.orderno;
@@ -227,7 +226,6 @@ export default {
         "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result);
           if (result.code === 200) {
             _this.orderDetail = result.data;
             console.log(_this.orderDetail);
@@ -240,8 +238,30 @@ export default {
     cancelOrder() {
       this.visible = true;
     },
+      //取消订单
     hideModal() {
-      this.visible = false;
+        let _this = this;
+        let iRequest = new inf.IRequest();
+        iRequest.cls = "TranOrderOptModule";
+        iRequest.method = "cancelOrder";
+        iRequest.param.token = localStorage.getItem("identification");
+        iRequest.param.json = JSON.stringify({
+            orderno: this.orderDetail[0].orderno,
+            cusno: this.orderDetail[0].cusno
+        });
+        console.log("json-------- " +  iRequest.param.json)
+        this.$refcallback(
+            "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+            iRequest,
+            new this.$iceCallback(function result(result) {
+                if (result.code === 200) {
+                    _this.visible = false;
+                } else {
+                    _this.$message.error(result.message);
+                }
+            })
+        );
+
     },
     toPay() {
       var routeData = this.$router.resolve({
