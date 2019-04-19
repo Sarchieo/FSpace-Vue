@@ -33,42 +33,31 @@
               <p class="pay-btn" v-if="item.ostatus === 3"><button>再次购买</button></p>
               <!-- 取消订单只在提交订单和付款成功状态才显示。药品出库后没有取消订单 -->
               <p class="cancel" @click="cancelOrder()"  v-if="item.ostatus === 1 || item.ostatus === 0">取消订单</p>
-              <a-modal title="提示" v-model="visible" @ok="hideModal" okText="提交" cancelText="再想想">
-                <p>订单取消成功后将无法恢复</p>
-                <p>优惠券可能不再返还，支付优惠也将一并取消</p>
-                <div>
-                  <a-radio-group defaultValue="a" size="large">
-                    <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
-                    <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
-                    <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
-                    <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
-                    <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
-                    <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
-                  </a-radio-group>
-                </div>
-              </a-modal>
+           
             </div>
             <div class="line"></div>
+            <!-- 订单状态 -->
             <div class="step-right">
-              <a-steps class="setps-box">
-                <a-step status="finish" title="提交订单">
+              <a-steps class="setps-box" :current="0">
+                <a-step title="提交订单" >
                   <a-icon type="profile" slot="icon"/>
                 </a-step>
-                <a-step status="finish" title="付款成功">
+                <a-step title="付款成功">
                   <a-icon type="pay-circle" slot="icon"/>
                 </a-step>
-                <a-step status="wait" title="商品出库">
+                <a-step title="商品出库">
                   <a-icon type="cloud-upload" slot="icon"/>
                 </a-step>
-                <a-step status="wait" title="等待收货">
+                <a-step title="等待收货">
                   <a-icon type="car" slot="icon"/>
                 </a-step>
-                <a-step status="wait" title="完成">
+                <a-step title="完成">
                   <a-icon type="check-square" slot="icon"/>
                 </a-step>
               </a-steps>
             </div>
           </div>
+          <!-- 物流信息 -->
           <div class="logistics-box-info">
             <div class="logistics-left">
               <p>送货方式：普通快递</p>
@@ -90,14 +79,14 @@
             <div class="consignee-left float-left">
               <h3>收货人信息</h3>
               <p>
-                <span class="three">收货人：</span> 刘琦
+                <span class="three">收货人：</span> {{ storeInfo.storeName }}
               </p>
               <p class="address">
                 <span class="three">地址：</span>
-                <span class="address-goods">湖南省长沙sfsfsfsfsfsfsfsfsfsfsfsfsfsf市开福区江畔豪庭88栋</span>
+                <span class="address-goods">{{ storeInfo.address }}</span>
               </p>
               <p>
-                <span class="three">手机号:</span> 13688888888
+                <span class="three">手机号:</span> {{ storeInfo.phone }}
               </p>
             </div>
             <div class="line height220 float-left"></div>
@@ -184,6 +173,21 @@
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
+
+    <a-modal title="提示" v-model="visible" @ok="hideModal" okText="提交" cancelText="再想想">
+      <p>订单取消成功后将无法恢复</p>
+      <p>优惠券可能不再返还，支付优惠也将一并取消</p>
+      <div>
+        <a-radio-group defaultValue="a" size="large">
+          <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
+          <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
+          <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
+          <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
+          <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
+          <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
+        </a-radio-group>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script>
@@ -212,7 +216,6 @@ export default {
     // 查询订单详情
 
     queryOrderDetail() {
-      debugger
       let _this = this;
       let orderno = this.$route.query.orderno;
       let iRequest = new inf.IRequest();
