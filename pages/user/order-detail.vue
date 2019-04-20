@@ -215,18 +215,21 @@ export default {
   methods: {
     // 查询订单详情
     queryOrderDetail() {
+      debugger
       let _this = this;
       let orderno = this.$route.query.orderno;
+      let cusno = this.$route.query.cusno;
       let iRequest = new inf.IRequest();
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "getOrderDetail";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = [orderno];
+      iRequest.param.arrays = [cusno,orderno];
       this.$refcallback(
         "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            debugger
             _this.orderDetail = result.data;
             console.log(_this.orderDetail);
           } else {

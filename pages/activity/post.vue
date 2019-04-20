@@ -6,7 +6,7 @@
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
          <div class="buying-text">
-             <p>新人专享</p>
+             <p>包邮专区</p>
              <p></p>
          </div>
          <!-- <div class="person-num">
@@ -19,7 +19,7 @@
          </div> -->
           <div class="limited-goods">
               <p class="search-p"><input type="text" placeholder="在结果中搜索"><button>搜索</button></p>
-              <div class="goods-box" v-for="(item,index) in selectedList" :key="index">
+              <div class="goods-box" v-for="(item,index) in postList" :key="index">
                 <a-card hoverable class="card" @click="toDetails(item)">
                   <span class="collec">收藏 <a-icon type="star"/></span>
                   <img v-lazy="item.src" alt="" class="goods-pic">
@@ -34,7 +34,7 @@
                   <!-- <button @click="toDetails()">查看详情</button> -->
                 </a-card>  
               </div>
-              <a-pagination v-model="current" :total="this.selectedList.length" v-if="this.selectedList.length !== 0 "/>
+              <a-pagination v-model="current" :total="this.postList.length" v-if="this.postList.length !== 0 "/>
           </div>
         </div>
       </a-layout-content>
@@ -53,16 +53,18 @@ export default {
   data() {
     return {
       count: 1,
+      actcode: 0,
         current: 1,
         tabStyle: {
             color: '#c40000',
             background: 'black'
         },
-        selectedList: []
+        postList: []
     }
   },
   mounted() {
-    this.getBrand()
+    this.getPost();
+    this.actcode = this.$route.query.actcode
   },
   methods: {
       callback(key) {
@@ -74,7 +76,7 @@ export default {
           })
       },
           // 为你精选数据
-    getBrand() {
+    getPost() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
@@ -88,10 +90,10 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.selectedList = result.data;
+            _this.postList = result.data;
             console.log(444);
             console.log(_this.selectedList)
-            _this.getImgUrl(_this.selectedList);
+            _this.getImgUrl(_this.postList);
           } else {
             _this.$message.error(result.message);
           }

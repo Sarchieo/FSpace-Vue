@@ -3,6 +3,18 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
+        <div class="stets">
+          <a-steps :current="1">
+            <a-step>
+              <template slot="title">
+                1
+              </template>
+              <span slot="description">我的采购单</span>
+            </a-step>
+            <a-step title="2" description="确认订单信息" />
+            <a-step title="3" description="成功提交订单" />
+          </a-steps>
+        </div>
         <div class="receiving">
           <p class="receiving-address">收货地址</p>
           <div>
@@ -10,7 +22,7 @@
               <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 8888-8888888
             </p>
             <p class="address-info">
-              <span>收货门店：</span> {{ this.storeInfo.storeName }}
+              <span>收货门店：</span>{{ this.storeInfo.storeName }}
             </p>
             <p class="address-info">
               <span>联系方式：</span>{{ this.storeInfo.phone }}
@@ -542,5 +554,9 @@ li {
   border-right: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
   border-left: 1px solid #e0e0e0;
+}
+.stets{
+  .container-size(block, 600px, 100px, 0 200px 0 auto, 0);
+  margin-top: 30px;
 }
 </style>

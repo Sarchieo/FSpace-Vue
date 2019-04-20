@@ -54,7 +54,7 @@
 
         <div v-for="(item,index) in list" :key="index">
           <!-- 新品专区 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 1">
+          <div id="choice" class="elaborate" v-if="item.unqid === 1 || !this.newGoodsList < 6">
             <p class="elaborate-title">新品专区
                <a href="javascript:;" @click="toNewGoods()">
                 查看全部
@@ -77,7 +77,7 @@
             </ul>
           </div>
            <!-- 热销专区 -->
-          <div class="brand-hall" v-if="item.unqid === 2">
+          <div class="brand-hall" v-if="item.unqid === 2 || !this.hotGoodsList < 5">
             <p class="brand-hall-title">
               热销专区
               <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
@@ -105,8 +105,40 @@
             </div>
           </div>
           <!-- 秒杀专区 -->
+          <div class="brand-hall height-auto" v-if="item.unqid === 4 || !this.secondList < 5">
+            <div class="brand-hall-title height80">
+              秒杀专区
+              <a href="javascript:;" @click="toSpike()" class="see-wholes">
+                查看全部
+                <a-icon type="right"/>
+              </a>
+            </div>
+            <div class="onek-shoping">
+              <ul>
+                <li v-for="(item,index) in secondList" :key="index">
+                  <a-card hoverable class="onek-card" @click="toDetail(item, secondList.actcode, 2)">
+                    <img v-lazy="item.imgURl" class="onek-img" slot="cover">
+                    <div class="onek-box" slot="cover">
+                      <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
+                      <p class="goods-manu">{{item.manuName}}</p>
+                      <!-- <p class="goods-success">{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p> -->
+                      <!-- <p class="goods-state"></p> -->
+                      <p class="goods-btn">
+                        <span class="sur-time">还剩</span>
+                        <span>{{teamBuy.h}}</span>时
+                        <span>{{teamBuy.m}}</span>分
+                        <span>{{teamBuy.s}}</span>秒
+                        <button class="imme-btn">立即参加</button>
+                      </p>
+                    </div>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
+          </div>
            <!-- 一块购 -->
-          <div class="brand-hall height-auto" v-if="item.unqid === 8">
+          <div class="brand-hall height-auto" v-if="item.unqid === 8 || !this.teamBuyList< 5">
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
               <a href="javascript:;" @click="toBuying()" class="see-wholes">
@@ -165,7 +197,7 @@
             </div>
           </div>
           <!-- 包邮专区 -->
-          <!-- <div class="brand-hall" v-if="item.unqid === 16">
+          <div class="brand-hall" v-if="item.unqid === 16 || !this.postList < 5">
             <p class="brand-hall-title">
               包邮专区
               <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
@@ -189,9 +221,9 @@
                 </li>
               </ul>
             </div>
-          </div> -->
+          </div>
            <!-- 新人专享 -->
-          <div class="brand-hall" v-if="item.unqid === 32">
+          <div class="brand-hall" v-if="item.unqid === 32 || !this.newPersonList < 5">
             <p class="brand-hall-title">
               新人专享
               <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
@@ -216,6 +248,7 @@
               </ul>
             </div>
           </div>
+          <!-- 暂无数据接口 -->
           <!-- 中华名方 -->
           <!-- <div class="brand-hall" v-if="item.unqid === 64">
             <p class="brand-hall-title">
@@ -243,7 +276,7 @@
             </div>
           </div>   -->
            <!-- 为你精选 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 128">
+          <div id="choice" class="elaborate" v-if="item.unqid === 128 || !this.selectedList < 6">
             <p class="elaborate-title">为你精选
                <a href="javascript:;" @click="toSelected()">
                 查看全部
@@ -266,7 +299,7 @@
             </ul>
           </div>
            <!-- 品牌专区 -->
-          <div class="brand-hall" v-if="item.unqid === 256">
+          <div class="brand-hall" v-if="item.unqid === 256 || !this.brandList < 5">
             <p class="brand-hall-title">
               品牌专区
               <a href="javascript:;" @click="toBrand()">查看全部<a-icon type="right"/>
@@ -274,10 +307,8 @@
             </p>
             <div class="brand-div">
               <ul class="brand-right hot-width">
-                <li v-for="(item,index) in hotGoodsList" :key="index">
+                <li v-for="(item,index) in brandList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
-                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
-                    <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
@@ -294,7 +325,7 @@
             </div>
           </div>
           <!-- 限时抢购 -->
-          <div id="hot" class="brand-hall" v-if="item.unqid === 512">
+          <div id="hot" class="brand-hall" v-if="item.unqid === 512 || !this.limitedList < 4">
             <p class="brand-hall-title">
              限时折扣
               <a class="all-hot" @click="toLimited()">
@@ -616,7 +647,6 @@ export default {
             _this.brandList = result.data
             _this.brandID = result.data.actcode
             _this.getImgUrl(_this.brandList.list)
-            _this.secondKills(_this.stringToDate(_this.brandList.now), _this.brandList.edate)
           } else {
             _this.$message.error(result.message);
           }
