@@ -483,6 +483,7 @@ export default {
   },
   data() {
     return {
+      activitiesBySKU: [],
       configs: {
         width:650,
         height:350,
@@ -572,6 +573,7 @@ export default {
     this.getProd();
     this.getImgUrl();
     this.isCollec();
+    this.getActivitiesBySKU();
     // 获取热销数据
     this.getProdDetailHotArea();
     if (this.actcode != 0) {
@@ -592,6 +594,29 @@ export default {
         return
       }
       this.inventory --
+    },
+    // 获取药品活动类型
+    getActivitiesBySKU() {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "CalculateModule";
+      iRequest.method = "getActivitiesBySKU";
+      iRequest.param.arrays = [this.sku];
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            debugger
+            _this.activitiesBySKU = result.data;
+            console.log(_this.activitiesBySKU)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
     },
     // 加入采购单
     addCart() {
