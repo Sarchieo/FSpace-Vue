@@ -609,7 +609,6 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
           if (result.code === 200) {
             _this.$route.path.replace()
             _this.$router.push({
@@ -796,7 +795,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.prodDetail = result.data;
-            debugger
             _this.queryCouponPub();
             _this.details = JSON.parse(_this.prodDetail.detail);
             if(_this.status == '0') {
@@ -1014,7 +1012,6 @@ export default {
             }
           },
           function error(error) {
-            debugger;
           }
         )
       );

@@ -293,7 +293,6 @@ export default {
             }
           },
           function error(error) {
-            debugger;
           }
         )
       );
@@ -347,7 +346,6 @@ export default {
             }
           },
           function error(error) {
-            debugger;
           }
         )
       );
@@ -388,7 +386,6 @@ export default {
             }
           },
           function error(error) {
-            debugger;
           }
         )
       );

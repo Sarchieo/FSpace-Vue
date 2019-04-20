@@ -17,7 +17,7 @@
           <ul class="goods-lists">
             <div class="nutrition">
               <a-icon type="shop"/>
-              <span>一块医药自营</span>
+              <span>一块医药</span>
             </div>
             <div class="no-data" v-if="cartList.length === 0">
               <p class="no-icon"><a-icon type="exclamation"/></p>
@@ -388,7 +388,6 @@ export default {
             }
           },
           function error(error) {
-            debugger;
           }
         )
       );

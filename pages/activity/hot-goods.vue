@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       current: 1,
+      actcode: 0,
       hotGoodsList: [],
       tabStyle: {
           color: '#c40000',
@@ -47,7 +48,8 @@ export default {
     }
   },
   mounted() {
-    this.getHotGoods()
+    this.getHotGoods();
+    this.actcode = this.$route.query.actcode
   },
   methods: {
      // 热销商品列表
@@ -113,7 +115,6 @@ export default {
             }
           },
           function error(error) {
-            debugger;
           }
         )
       );

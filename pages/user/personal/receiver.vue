@@ -129,7 +129,6 @@ export default {
           function result(result) {
             if(result.code === 200) {
               console.log(result)
-              debugger
               if(result.data) {
                 _this.data = result.data
               }

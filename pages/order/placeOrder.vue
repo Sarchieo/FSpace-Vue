@@ -38,7 +38,7 @@
           </ul>
           <ul class="goods-table">
             <p class="goods-table-name">
-              <a-icon type="shop"/>一块医药自营
+              <a-icon type="shop"/>一块医药
             </p>
             <li v-for="(item,index) in cartList" :key="index">
               <div class="goods-name">
@@ -189,7 +189,6 @@ export default {
             }
           },
           function error(e) {
-            debugger;
           }
         )
       );

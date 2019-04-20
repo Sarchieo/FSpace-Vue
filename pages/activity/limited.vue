@@ -137,7 +137,7 @@ export default {
             _this.$message.error(result.message);
           }
         },function(error) {
-          debugger
+
         })
       );
     },
@@ -181,7 +181,6 @@ export default {
             }
           },
           function error(error) {
-            debugger;
           }
         )
       );

@@ -123,14 +123,15 @@ export default {
   height: 435px;
   padding-top: 15px !important;
   padding-bottom: 15px !important;
-  box-shadow: 1px 1px 3px #999;
+  /* box-shadow: 1px 1px 3px #999; */
   z-index: 99;
 }
 .sider-menu-li {
   position: relative;
   width: 196px;
+  height: 58px;
   box-sizing: border-box;
-  line-height: 45px;
+  line-height: 58px;
   text-indent: 20px;
 }
 .sider-menu-li:hover {

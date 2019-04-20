@@ -6,8 +6,8 @@
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
           <div class="buying-text">
-            <p>一块购</p>
-            <p>一块团购 团购越多越实惠</p>
+            <p>药品秒杀</p>
+            <p></p>
           </div>
           <div class="person-num">
             <div class="person-left">
@@ -84,20 +84,118 @@ export default {
         background: "black"
       },
       teamBuyList: [],
-      pagination: []
+      pagination: [],
+      goodsList: [
+        {
+          src:
+            "//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "冬虫夏草",
+          advantage: "5g/盒",
+          surplus: 56,
+          new: 344,
+          old: 309,
+          menu: "三九制药有限公司",
+          least: 10,
+          most: 100
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "长白山人参",
+          advantage: "5g/盒",
+          surplus: 12,
+          new: 888,
+          old: 1099,
+          menu: "三九制药有限公司",
+          least: 10,
+          most: 100
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i1/TB1EpYsKpXXXXbDXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "宁夏枸杞",
+          advantage: "5g/盒",
+          surplus: 34,
+          new: 23,
+          old: 24,
+          menu: "三九制药有限公司",
+          least: 10,
+          most: 100
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i4/TB1L37TMpXXXXbnXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "胶原蛋白口服液",
+          advantage: "5g/盒",
+          surplus: 99,
+          new: 199,
+          old: 209,
+          menu: "三九制药有限公司",
+          least: 10,
+          most: 100
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "叶酸片",
+          advantage: "5g/盒",
+          surplus: 56,
+          new: 344,
+          old: 309,
+          menu: "三九制药有限公司",
+          least: 10,
+          most: 100
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "山东阿胶",
+          advantage: "5g/盒",
+          surplus: 45,
+          new: 222,
+          old: 233,
+          menu: "三九制药有限公司",
+          least: 10,
+          most: 100
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i1/TB103TQOXXXXXaLaXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg",
+          name: "盘龙云海排毒胶囊",
+          advantage: "5g/盒",
+          surplus: 88,
+          new: 56,
+          old: 59,
+          menu: "三九制药有限公司",
+          least: 10,
+          most: 100
+        },
+        {
+          src:
+            "//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+          name: "多维素片",
+          advantage: "5g/盒",
+          surplus: 19,
+          new: 88,
+          old: 99,
+          menu: "三九制药有限公司",
+          least: 10,
+          most: 100
+        }
+      ]
     };
   },
   mounted() {
-    this.actcode = this.$route.query.actcode;
-    this.getTeamBuyMallFloor();
+    this.actcode = this.$route.query.actcode
+    this.getSeckillMallFloor()
   },
   methods: {
-    // 获取一块购数据
-    async getTeamBuyMallFloor() {
+    // 获取秒杀数据
+    async getSeckillMallFloor() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
-      iRequest.method = "getAllTeamBuy";
+      iRequest.method = "getSeckillMallFloor";
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({

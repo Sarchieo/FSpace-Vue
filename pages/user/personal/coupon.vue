@@ -118,7 +118,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
             _this.revCouponList = result.data
           } else {
             _this.$message.error(result.message);
