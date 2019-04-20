@@ -88,7 +88,6 @@ const columns = [{
 export default {
    data () {
     return {
-      compid: 3123123,
       shipid: 0,
       visible: false,
       data: [],
@@ -119,7 +118,7 @@ export default {
       iRequest.cls = "MyDrugStoreInfoModule";
       iRequest.method = "queryMyConsignee";
       iRequest.param.json = JSON.stringify({
-        compid: _this.compid
+        compid: _this.storeInfo.storeId
       })
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
@@ -145,7 +144,7 @@ export default {
       iRequest.cls = "MyDrugStoreInfoModule";
       iRequest.method = "setDefault";
       iRequest.param.json = JSON.stringify({
-        compid: _this.compid,
+        compid: _this.storeInfo.storeId,
         shipid: record.shipid
       })
       iRequest.param.token = localStorage.getItem("identification")
@@ -211,7 +210,7 @@ export default {
           iRequest.cls = "MyDrugStoreInfoModule";
           iRequest.method = "insertOrUpdConsignee";
           iRequest.param.json = JSON.stringify({
-            compid: _this.compid,
+            compid: _this.storeInfo.storeId,
             contactname: values.contactname,
             contactphone: values.contactphone,
             shipid: this.shipid

@@ -21,6 +21,7 @@ function initIce() {
  * @param  {...any} _IRequest 参数
  */
 function refcallback(moduleName,_IRequest, callback) {
+  console.log('参数:' + JSON.stringify(_IRequest))
   if (!callback || callback.constructor === IceCallback.constructor) {
     throw new Error("callback is not IceCallback!")
   }

@@ -436,7 +436,7 @@ export default {
   },
   mounted() {
     // window.addEventListener("scroll", this.handleScroll);
-    // this.getMallFloorProd();
+    this.getMallFloorProd();
     // this.getNewPersonList();
     // this.getExemPostMallFloor();
     // this.getSeckillMallFloor();

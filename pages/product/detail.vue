@@ -928,32 +928,26 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          _this.loading = false
-          if (result.code === 200) {
-            _this.$route.path.replace()
-            _this.$router.push({
-              name: "order-placeOrder",
-              params: {
-                arr: JSON.stringify(result.data),
-                placeType: 1,
-                orderType: 0
-              }
-            });
-          } else {
-            _this.$message.error(result.message);
-          }
+            _this.loading = false
+            if (result.code === 200) {
+              _this.$route.path.replace()
+              _this.$router.push({
+                name: "order-placeOrder",
+                params: {
+                  arr: JSON.stringify(result.data),
+                  placeType: 1,
+                  orderType: 0
+                }
+              });
+            } else {
+              _this.$message.error(result.message);
+            }
         },
         function error(e) {
           _this.loading = false
-          _this.$message.error(e);
+          _this.$message.error('无法连接服务器或服务器返回异常, 请稍后重试');
         })
       );
-      // this.$router.push({
-      //   path: "/order/placeOrder",
-      //   query: {
-      //     sku: this.prodDetail.sku
-      //   }
-      // });
     },
     getImgUrl() {
       let _this = this;
