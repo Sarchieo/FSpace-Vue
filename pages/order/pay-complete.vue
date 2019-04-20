@@ -28,7 +28,7 @@
                 <span>联系电话：</span> {{ storeInfo.phone }}
               </p>
               <p>
-                <span>收货地址：</span>{{ storeInfo.address }}
+                <span>收货地址：</span>{{ info.address + storeInfo.address }}
               </p>
             </div>
           </div>
@@ -194,7 +194,8 @@ export default {
       this.$router.push({
         path: "/user/order-detail",
         query: {
-          orderno: this.orderno
+          orderno: this.orderno,
+          cusno: this.storeInfo.storeId
         }
       });
     },

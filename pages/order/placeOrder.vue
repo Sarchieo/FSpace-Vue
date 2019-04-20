@@ -7,12 +7,13 @@
           <a-steps :current="1">
             <a-step>
               <template slot="title">
-                1
+                我的采购单
               </template>
-              <span slot="description">我的采购单</span>
+              <span slot="description"></span>
             </a-step>
-            <a-step title="2" description="确认订单信息" />
-            <a-step title="3" description="成功提交订单" />
+            <a-step title="确认订单信息" />
+            <a-step title="订单付款" />
+            <a-step title="订单完成" />
           </a-steps>
         </div>
         <div class="receiving">
@@ -204,10 +205,12 @@ export default {
         coupon: 0,
         orderObj: {
           cusno: this.storeInfo.storeId,
-          busno: this.storeInfo.storeId
+          busno: this.storeInfo.storeId,
+          rvaddno: this.storeInfo.addressCode
         },
         goodsArr: goodsArr,
-        orderType: this.orderType
+        orderType: this.orderType,
+        actcode: this.actcode
       });
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
@@ -556,7 +559,7 @@ li {
   border-left: 1px solid #e0e0e0;
 }
 .stets{
-  .container-size(block, 600px, 100px, 0 200px 0 auto, 0);
+  .container-size(block, 600px, 100px, 0 auto, 0);
   margin-top: 30px;
 }
 </style>

@@ -2,6 +2,19 @@
   <div id="components-layout-demo-basic">
     <a-layout>
       <a-layout-content>
+        <div class="stets">
+          <a-steps :current="2">
+            <a-step>
+              <template slot="title">
+                我的采购单
+              </template>
+              <span slot="description"></span>
+            </a-step>
+            <a-step title="确认订单信息" />
+            <a-step title="订单付款" />
+            <a-step title="订单完成" />
+          </a-steps>
+        </div>
           <div class="payment-header">
               第三方支付
           </div>
@@ -14,9 +27,8 @@
               </p>
               <img :src="url" alt="" class="payment-pic">
               <!-- <a-button type="primary" class="cancel-btn">取消支付</a-button> -->
-              <p class="p-btn"><a-button type="primary" @click="toSuccess()">我已付款成功,下一步</a-button></p>
+              <!-- <a-button class="p-btn"><a-button type="primary" @click="toSuccess()">我已付款成功,下一步</a-button></a-button> -->
           </div>
-          <button @click="toSuccess()">下单成功</button>
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
@@ -155,7 +167,6 @@ li {
     }
     .payment-pic{
          .container-size(block,220px,220px,0 auto,0px);
-         background: pink;
     }
     .p-btn{
   width: 100%;
@@ -172,5 +183,9 @@ li {
   color: #333333;
 }
 }
+}
+.stets{
+  .container-size(block, 600px, 100px, 0 auto, 0);
+  margin-top: 30px;
 }
 </style>

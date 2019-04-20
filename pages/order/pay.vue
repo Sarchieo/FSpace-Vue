@@ -7,12 +7,13 @@
           <a-steps :current="2">
             <a-step>
               <template slot="title">
-                1
+                我的采购单
               </template>
-              <span slot="description">我的采购单</span>
+              <span slot="description"></span>
             </a-step>
-            <a-step title="2" description="确认订单信息" />
-            <a-step title="3" description="成功提交订单" />
+            <a-step title="确认订单信息" />
+            <a-step title="订单付款" />
+            <a-step title="订单完成" />
           </a-steps>
         </div>
           <div class="pay-info">
@@ -315,7 +316,7 @@ li {
     .p-size(40px,40px,16px,right,0px,#666666);
 }
 .stets{
-  .container-size(block, 600px, 100px, 0 200px 0 auto, 0);
+  .container-size(block, 600px, 100px, 0 auto, 0);
   margin-top: 30px;
 }
 </style>
