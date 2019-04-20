@@ -70,14 +70,12 @@ export default {
         orderno: this.orderno,
         compid: this.storeInfo.storeId
       });
-      debugger
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
             if (result.code === 200) {
               _this.payamt = result.data.payamt
               _this.isPay = true
@@ -90,7 +88,7 @@ export default {
             }
           },
           function error(e) {
-            debugger;
+            console.log(error)
           }
         )
       );
@@ -124,7 +122,7 @@ export default {
             }
           },
           function error(e) {
-            debugger;
+            console.log(error)
           }
         )
       );

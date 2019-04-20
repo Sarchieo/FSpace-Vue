@@ -172,7 +172,6 @@ export default {
   // },
   computed: {
     storeInfo() {
-      debugger
       return this.$store.state.user;
     },
     keyword: {
@@ -409,7 +408,7 @@ export default {
             }
           },
           function error(error) {
-            debugger;
+            console.log(error)
           }
         )
       );

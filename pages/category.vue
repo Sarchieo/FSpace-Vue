@@ -291,7 +291,7 @@ export default {
             }
           },
           function error(error) {
-            debugger;
+            console.log(error)
           }
         )
       );
@@ -344,7 +344,7 @@ export default {
             }
           },
           function error(error) {
-            debugger;
+            console.log(error)
           }
         )
       );
@@ -385,7 +385,7 @@ export default {
             }
           },
           function error(error) {
-            debugger;
+            console.log(error)
           }
         )
       );

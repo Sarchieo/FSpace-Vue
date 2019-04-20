@@ -1034,7 +1034,7 @@ export default {
             }
           },
           function error(error) {
-            debugger;
+            console.log(error)
           }
         )
       );

@@ -110,7 +110,6 @@ export default {
   },
   computed: {
     storeInfo() {
-      debugger
       return this.$store.state.user;
     }
   },

@@ -220,7 +220,6 @@ export default {
       );
     },
     async getImgUrl(arr) {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "FileInfoModule";
@@ -260,7 +259,7 @@ export default {
             }
           },
           function error(error) {
-            debugger;
+            console.log(error)
           }
         )
       );

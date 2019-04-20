@@ -112,8 +112,6 @@ export default {
   },
   mounted() {
     this.queryOrderList()
-    debugger
-    console.log(this.storeInfo)
   },
   methods: {
     onChangePage(pageNumber) {

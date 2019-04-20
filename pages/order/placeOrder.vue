@@ -193,7 +193,7 @@ export default {
             }
           },
           function error(e) {
-            debugger;
+            console.log(error)
           }
         )
       );

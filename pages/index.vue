@@ -542,7 +542,6 @@ export default {
     },
     // 包邮专区
     async getExemPostMallFloor() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
@@ -556,7 +555,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
             result.data.list = result.data.list.slice(0, 5)
             _this.postList = result.data
             console.log(_this.postList)
@@ -570,7 +568,6 @@ export default {
     },
     // 中华名方 -- 暂时没接口
     //  async getExemPostMallFloor() {
-    //   debugger
     //   let _this = this;
     //   let iRequest = new inf.IRequest();
     //   iRequest.cls = "ProdModule";
@@ -584,7 +581,6 @@ export default {
     //     iRequest,
     //     new this.$iceCallback(function result(result) {
     //       if (result.code === 200) {
-    //         debugger
     //         result.data.list = result.data.list.slice(0, 5)
     //         _this.famousList = result.data
     //         _this.famousId = result.data.actcode
@@ -597,8 +593,7 @@ export default {
     // },
     //获取新人专享列表
     async getNewPersonList() {
-       let _this = this;
-       debugger
+      let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getNewMemberMallFloor";
@@ -767,7 +762,7 @@ export default {
             }
           },
           function error(error) {
-            debugger;
+            console.log(error)
           }
         )
       );
