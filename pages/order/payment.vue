@@ -30,6 +30,11 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
   data() {
     return {
      value: 1,
@@ -39,21 +44,40 @@ export default {
   mounted() {
     this.url = this.$route.query.url
     this.payamt = this.$route.query.payamt
+    this.orderno = this.$route.query.orderno
+    this.payResult()
   },
   methods: {
+    payResult() {
+      let _this = this
+      let ice_callback = new Ice.Class(inf.PushMessageClient, {
+        receive: function(message, current) {
+          let result = JSON.parse(message)
+          if(result.event == 1 && result.body.tradeStatus == 1) {
+            _this.$router.push({
+              path: '/order/pay-complete',
+              query: {
+                orderno: result.body.orderNo
+              }
+            })
+          } else {
+            _this.$message.error('订单支付异常')
+          }
+        }
+      })
+      this.$initIceLong('orderServer', this.storeInfo.storeId, new ice_callback());
+    },
       // 监听单选框的值发生变化
     onChange (e) {
       console.log(e)
     },
-    toPayment() {
-        this.$router.push({
-        path: '/order/payment'
-      })
-    },
     toSuccess() {
-        this.$router.push({
-            path: '/order/pay-complete'
-        })
+      this.$router.push({
+        path: '/order/pay-complete',
+        query: {
+          orderno: this.orderno
+        }
+      })
     }
   }
 };

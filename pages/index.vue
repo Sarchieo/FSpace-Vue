@@ -471,21 +471,8 @@ export default {
     // this.getNewPersonList();
     // this.getExemPostMallFloor();
     // this.getSeckillMallFloor();
-    // this.iceTest()
   },
   methods: {
-    iceTest() {
-      let _this = this
-      let ice_callback = new Ice.Class(inf.PushMessageClient, {
-        receive: function(message, current) {
-          console.log("received callback #" + message);
-          // 这里根据消息模版 设置页面
-          // _this.$longConnection.offline('536862721')
-          // _this.$longConnection.sendMessageToClient('536862721', 'hello, Zeroc ICE')
-        }
-      })
-      this.$initIceLong('orderServer', 536862721, new ice_callback());
-    },
     handleScroll() {
       var scrollTop =
         window.pageYOffset ||

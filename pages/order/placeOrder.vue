@@ -54,7 +54,7 @@
             </p>
             <li v-for="(item,index) in cartList" :key="index">
               <div class="goods-name">
-                <img v-lazy="item.src" alt>
+                <img v-lazy="item.imgURl" alt>
                 <p class="drugs-name">{{item.ptitle}}</p>
                 <p class="drugs-guige">{{item.spec}}</p>
                 <p class="drugs-comp">{{item.verdor}}</p>
@@ -170,9 +170,11 @@ export default {
     // 猜你喜欢
   },
   created() {
-    this.cartList = JSON.parse(this.$route.params.arr)
-    this.placeType = this.$route.params.placeType;
-    this.orderType = this.$route.params.orderType;
+    this.cartList = JSON.parse(this.$route.query.arr)
+    this.getImgUrl(this.cartList)
+    this.placeType = this.$route.query.placeType
+    this.orderType = this.$route.query.orderType
+    this.actcode =  this.$route.query.actcode || 0
   },
   methods: {
     showModal() {
@@ -186,7 +188,6 @@ export default {
     },
     toPay() {
       const _this = this;
-      // _this.goodsArr = [];
       const iRequest = new inf.IRequest();
       iRequest.cls = "TranOrderOptModule";
       iRequest.method = "placeOrder";
@@ -194,7 +195,8 @@ export default {
         return {
           pdno: value.pdno,
           pnum: value.num,
-          pdprice: value.pdprice
+          pdprice: value.pdprice,
+          actcode: _this.actcode
         }
       })
       iRequest.param.json = JSON.stringify({
@@ -225,6 +227,51 @@ export default {
             }
           },
           function error(e) {
+            console.log(error)
+          }
+        )
+      );
+    }, // 获取商品图片
+    getImgUrl(arr) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = [];
+      arr.forEach(c => {
+        list.push({
+          sku: c.pdno,
+          spu: c.spu
+        });
+      });
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, list) => {
+                _this.$set(
+                  arr[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    arr[index].pdno +
+                    "-200x200.jpg" +
+                    "?" +
+                    new Date().getSeconds()
+                );
+              });
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
             console.log(error)
           }
         )
