@@ -4,10 +4,10 @@
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
           <div class="pay-info">
-              <p class="pay-text">订单提交成功，请尽快付款！订单号：<span>20100418007</span></p>
+              <p class="pay-text">订单提交成功，请尽快付款！订单号：<span>{{ orderno }}</span></p>
               <p class="urge">请您在1小时内完成支付，否则订单会被自动取消。</p>
               <div class="actual-pay">
-                  <span>实付：</span> ￥ 35元
+                  <span>实付：</span> ￥ {{ payamt }}元
               </div>
           </div>
           <div class="pay-type">
@@ -23,9 +23,9 @@
           </div>
           <div class="pay-btn">
               <p class="btn-box">
-                  <a-button type="primary" :size="size" @click="toPayment()">立即支付</a-button>
+                  <a-button type="primary" @click="prePay()">立即支付</a-button>
               </p>
-              <p class="surplus-time">剩余付款时间：<span>1</span>小时<span>23</span>分钟<span>59</span>秒</p>
+              <p class="surplus-time">剩余付款时间：<span>{{ h }}</span>小时<span>{{ m }}</span>分钟<span>{{ s }}</span>秒</p>
           </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -40,24 +40,143 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
   data() {
     return {
      value: 1,
-     list: []
+     payamt: 0,
+     h: 0,
+     m: 0,
+     s: 0,
+     orderno: '',
+     isPay: false
     };
   },
   mounted() {
-    
+    this.orderno = this.$route.query.orderno
+    this.showPayInfo()
   },
   methods: {
+    showPayInfo() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "showPayInfo";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.storeId
+      });
+      debugger
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            debugger
+            if (result.code === 200) {
+              _this.payamt = result.data.payamt
+              _this.isPay = true
+              _this.secondKill(
+              _this.stringToDate(result.data.now),
+                result.data.otime
+              );
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            debugger;
+          }
+        )
+      );
+    },
+    prePay() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "prePay";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.storeId,
+        paytype: "alipay"
+      });
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.$router.push({
+                path: '/order/payment',
+                query: {
+                  url: result.data,
+                  payamt: _this.payamt
+                }
+              })
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            debugger;
+          }
+        )
+      );
+    },
+    stringToDate(str) {
+      var tempStrs = str.split(" ");
+      var dateStrs = tempStrs[0].split("-");
+      var year = parseInt(dateStrs[0], 10);
+      var month = parseInt(dateStrs[1], 10) - 1;
+      var day = parseInt(dateStrs[2], 10);
+      var timeStrs = tempStrs[1].split(":");
+      var hour = parseInt(timeStrs[0], 10);
+      var minute = parseInt(timeStrs[1], 10);
+      var second = parseInt(timeStrs[2], 10);
+      var date = new Date(year, month, day, hour, minute, second);
+      return date;
+    },
+     // 设置倒计时
+    secondKill(date, eDate) {
+      let endDate = this.stringToDate(
+        date.getFullYear() +
+          "-" +
+          (Number(date.getMonth()) + 1) +
+          "-" +
+          date.getDate() +
+          " " +
+          eDate
+      );
+      let times = Math.floor((endDate - date)/1000);
+      let _this = this;
+      if (times >= 0) {
+        let timer;
+        timer = setInterval(function() {
+          times --;
+          _this.h = Math.floor(times/60/60);
+          _this.m = Math.floor(times/60)%60;
+          _this.s = times%60;
+          if (times <= 0) {
+            clearInterval(timer);
+            _this.isPay = false
+          }
+        }, 1000);
+        if (times >= 0) {
+          _this.isPay = true
+        } else {
+          _this.isPay = false
+        }
+      }
+    },
       // 监听单选框的值发生变化
     onChange (e) {
       console.log(e)
-    },
-    toPayment() {
-        this.$router.push({
-        path: '/order/payment'
-      })
     }
   }
 };

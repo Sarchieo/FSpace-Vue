@@ -10,9 +10,11 @@
                   扫一扫付款
               </p>
               <p class="pay-num">
-                  人民币：9527元
+                  人民币：{{ payamt }}元
               </p>
-              <img src="" alt="" class="payment-pic">
+              <img :src="url" alt="" class="payment-pic">
+              <!-- <a-button type="primary" class="cancel-btn">取消支付</a-button> -->
+              <p class="p-btn"><a-button type="primary" @click="toSuccess()">我已付款成功,下一步</a-button></p>
           </div>
           <button @click="toSuccess()">下单成功</button>
       </a-layout-content>
@@ -30,8 +32,13 @@ export default {
   },
   data() {
     return {
-     value: 1
+     value: 1,
+     payamt: ''
     };
+  },
+  mounted() {
+    this.url = this.$route.query.url
+    this.payamt = this.$route.query.payamt
   },
   methods: {
       // 监听单选框的值发生变化
@@ -126,5 +133,20 @@ li {
          .container-size(block,220px,220px,0 auto,0px);
          background: pink;
     }
+    .p-btn{
+  width: 100%;
+  padding: 0px 20%;
+  button{
+    border-radius: 3px;
+   -moz-border-radius:3px;
+   -webkit-border-radius:3px;
+  }
+  .cancel-btn{
+  float: left;
+  border: none;
+  background: #999999;
+  color: #333333;
+}
+}
 }
 </style>

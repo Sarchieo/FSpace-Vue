@@ -722,6 +722,7 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
       iRequest.method = "queryCouponPub";
+      iRequest.param.token = localStorage.getItem("identification")
       iRequest.param.json = JSON.stringify({
         gcode: _this.prodDetail.sku, // sku
         compid: _this.storeInfo.storeId, // 企业id

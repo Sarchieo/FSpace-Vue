@@ -172,6 +172,7 @@ export default {
   // },
   computed: {
     storeInfo() {
+      debugger
       return this.$store.state.user;
     },
     keyword: {
@@ -182,6 +183,9 @@ export default {
         this.$store.commit("KEY_WORD", newValue);
         return this.$store.state.keyword;
       }
+    },
+    isLogin() {
+      return this.$store.state.userStatus
     }
   },
   data() {
@@ -193,14 +197,16 @@ export default {
       isShowHeader: true,
       isDisTip: false,
       isShowCartList: false,
-      isLogin: this.$store.getters.userStatus(this),
       cartList: []
     };
   },
   mounted() {
     this.init();
     window.addEventListener("scroll", this.handleScroll);
-    this.getShoppingCartList();
+    if(this.isLogin) {
+      this.getShoppingCartList();
+    }
+  
   },
   methods: {
     init() {
@@ -385,7 +391,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              
               result.data.goodsFilePathList.forEach((c, index, list) => {
                 _this.$set(
                   arr[index],
@@ -399,7 +404,6 @@ export default {
                     new Date().getSeconds()
                 );
               });
-              debugger
             } else {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }

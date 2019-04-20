@@ -169,10 +169,7 @@ export default {
               _this.$store
                 .dispatch("setUserStatus", { context: _this })
                 .then(res => {
-                   // 登录成功
-                  _this.$router.push({
-                    name: 'index'
-                  })
+                  _this.getBasicInfo()
                 })
                 .catch(err => {
                   console.log(err);
@@ -192,6 +189,32 @@ export default {
             _this.$message.error(error)
           }
         )
+      );
+    },
+    // 获取详情
+    getBasicInfo() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "basicInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$store.dispatch("setUser", {
+              context: _this,
+              user: result.data
+            }).then(res => {
+              // 登录成功
+              _this.$router.push({
+                name: 'index'
+              })
+            })
+          } else {
+          }
+        })
       );
     },
     validatePhone(rule, value, callback) {
