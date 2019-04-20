@@ -69,9 +69,9 @@
                   </p>
                   <button @click="toDetails()">立即抢购</button>
                 </div>
-                 
+
               </a-tab-pane>
-             
+
             </a-tabs>
              <a-pagination v-model="current" :total="this.pagination.length" v-if="this.pagination.length !== 0 "/>
           </div>
@@ -137,7 +137,7 @@ export default {
             _this.$message.error(result.message);
           }
         },function(error) {
-
+          console.log(error)
         })
       );
     },
@@ -181,24 +181,31 @@ export default {
             }
           },
           function error(error) {
+            console.log(error)
           }
         )
       );
     },
     // 设置倒计时
     secondKill(date,eDate) {
-      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
-      let times = endDate - new Date()
+     let endDate = this.stringToDate(
+        date.getFullYear() +
+          "-" +
+          (Number(date.getMonth()) + 1) +
+          "-" +
+          date.getDate() +
+          " " +
+          eDate
+      );
+      let times = Math.floor((endDate - date)/1000);
       let _this = this
       if(times>=0) {
         let timer;
         timer = setInterval(function () {
         times--;
-        let modulo = times % (60 * 60 * 24);
-        _this.flashSale.h = Math.floor(modulo / (60 * 60));
-        modulo = modulo % (60 * 60);
-        _this.flashSale.m = Math.floor(modulo / 60);
-        _this.flashSale.s = modulo % 60;
+        _this.flashSale.h = Math.floor(times/60/60);
+        _this.flashSale.m = Math.floor(times/60)%60;
+        _this.flashSale.s = times%60;
         if (times <= 0) {
           clearInterval(timer);
         }

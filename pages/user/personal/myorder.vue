@@ -20,7 +20,7 @@
           <span class="width13">实付款</span>
           <span class="width13">交易状态</span>
           <span class="width13">操作</span>
-        </p>  
+        </p>
      <ul class="order-box" v-if="this.orderList.length !== 0 ">
           <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
             <p class="order-info-text">
@@ -54,15 +54,15 @@
               <div class="width11 pay count-div">
                 <p>{{items.pnum}}</p>
               </div>
-             
+
               <div class="width11 pay fact-div">
                 <p class="shiji">￥{{items.payamt}}</p>
                 <p class="freight">(含运费{{items.freight}}元)</p>
               </div>
-              
+
               <div class="width11 state">
                 <p class="sucess">{{statusText(item.ostatus)}}</p>
-                
+
               </div>
               <div class="width12 operation">
                 <p class="button-p" v-if="item.ostatus === 0"><a-button type="primary" class="confirm-btn">付款</a-button></p>
@@ -74,7 +74,7 @@
                 <p v-if="item.ostatus !== 0">再次购买</p>
               </div>
             </div>
-            
+
           </li>
            <a-pagination  v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
         </ul>
@@ -106,19 +106,18 @@ export default {
     return {
       currentIndex: 1,
       total: 0,
-      ostatus: '', // 
+      ostatus: '', //
       orderList: []
     };
   },
   mounted() {
     this.queryOrderList()
-    console.log(this.storeInfo)
   },
   methods: {
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
       this.queryOrderList()
-    },  
+    },
     // 查询订单列表
     queryOrderList() {
       let _this = this;
@@ -134,7 +133,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            
+
             _this.orderList = result.data;
             _this.total = result.total
             _this.currentIndex = result.pageNo

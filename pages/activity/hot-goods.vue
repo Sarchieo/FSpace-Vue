@@ -18,7 +18,7 @@
                   <p class="goods-limit">还剩<span>{{item.surplusstock}}</span>盒</p>
                   <p class="goods-price">单价￥{{item.mp}}元 </p>
                   <button @click="toDetail(item)">查看详情</button>
-                </a-card>  
+                </a-card>
               </div>
               <a-pagination v-model="current" :total="this.hotGoodsList.length" v-if="this.hotGoodsList.length !== 0 "/>
           </div>
@@ -115,6 +115,7 @@ export default {
             }
           },
           function error(error) {
+            console.log(error)
           }
         )
       );

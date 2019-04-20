@@ -68,12 +68,12 @@
           </div> -->
           <div class="discount-pay">
             <div class="discount">
-              <!-- <p class="use-coupon">使用优惠券(张)</p>
+              <p class="use-coupon">使用优惠券(张)</p>
               <p class="pick-coupon">
                 <button @click="pickCoupon()">选择优惠券</button>
-              </p> -->
+              </p>
               <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
-              <!-- <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag> -->
+              <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag>
               <a-modal
                 title="选择优惠券"
                 width="750px"
@@ -138,7 +138,7 @@ export default {
     // 获取优惠券信息
   },
   created() {
-    this.cartList = JSON.parse(this.$route.params.arr) 
+    this.cartList = JSON.parse(this.$route.params.arr)
     this.placeType = this.$route.params.placeType;
     this.orderType = this.$route.params.orderType;
   },
@@ -175,6 +175,7 @@ export default {
         goodsArr: goodsArr,
         orderType: this.orderType
       });
+      iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
         iRequest,
@@ -182,13 +183,17 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.$router.push({
-                path: "/order/pay"
+                path: "/order/pay",
+                query: {
+                  orderno: result.data.orderno
+                }
               });
             } else {
               _this.$message.error(result.message);
             }
           },
           function error(e) {
+            console.log(error)
           }
         )
       );

@@ -38,7 +38,7 @@
           :wrapper-col="{ span: 12, offset: 8 }"
         >
         </a-form-item>
-        <a-button 
+        <a-button
           type="primary"
           html-type="submit">
           保存
@@ -128,7 +128,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if(result.code === 200) {
-              console.log(result)
               if(result.data) {
                 _this.data = result.data
               }

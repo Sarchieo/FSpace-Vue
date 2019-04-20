@@ -19,7 +19,7 @@
             <!-- 我的消息 -->
             <!-- <header-notice/> -->
             <!-- 签到有礼 -->
-            <a class="sign ">
+            <a class="sign">
               签到有礼
               <!-- <span class="sign"></span> -->
             </a>
@@ -59,7 +59,7 @@
                   v-model="keyword"
                   placeholder="药品名称/药品通用名"
                   class="search-input"
-                  @keyup.enter="toGoods('category')"
+                  @keyup.enter="toGoods(keyword)"
                 />
                 <button class="search-btn" @click="toGoods(keyword)">搜索</button>
               </div>
@@ -81,13 +81,12 @@
               </a-popover>-->
               <span class="cart-text">采购单</span>
               <div class="cart-down" v-show="isShowCartList">
-               
-              <!-- <div class="cart-down"> -->
-                 <p class="no-data" v-if="cartList.length === 0">您的采购单空空如也</p>
+                <!-- <div class="cart-down"> -->
+                <p class="no-data" v-if="cartList.length === 0">您的采购单空空如也</p>
                 <ul class="cart-down-ul" v-if="cartList.length !== 0">
                   <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
                     <a href="javascript:;">
-                      <img v-lazy="item.src" class="cart-img">
+                      <img v-lazy="item.imgURl" class="cart-img">
                       <p class="cart-goods-text">
                         {{item.ptitle}}
                         <span>￥{{item.pdprice * item.num}}元</span>
@@ -183,6 +182,9 @@ export default {
         this.$store.commit("KEY_WORD", newValue);
         return this.$store.state.keyword;
       }
+    },
+    isLogin() {
+      return this.$store.state.userStatus
     }
   },
   data() {
@@ -194,14 +196,16 @@ export default {
       isShowHeader: true,
       isDisTip: false,
       isShowCartList: false,
-      isLogin: this.$store.getters.userStatus(this),
       cartList: []
     };
   },
   mounted() {
     this.init();
-    // window.addEventListener("scroll", this.handleScroll);
-    this.getShoppingCartList();
+    window.addEventListener("scroll", this.handleScroll);
+    if(this.isLogin) {
+      this.getShoppingCartList();
+    }
+  
   },
   methods: {
     init() {
@@ -209,33 +213,6 @@ export default {
       if (this.isDisTip) {
         localStorage.setItem("isDisTip", "1");
       }
-    },
-    getShoppingCartList() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ShoppingCartModule";
-      iRequest.method = "queryUnCheckShopCartList";
-      iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.storeId
-      });
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        "orderServer" + Math.floor((_this.storeInfo.storeId / 8192) % 65535),
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.cartList = result.data;
-              _this.cartList.forEach(item => {
-                item.checked ? false : true;
-              });
-            }
-          },
-          function error(e) {
-            _this.$message.error(e);
-          }
-        )
-      );
     },
     handleLogoutOk(e) {
       this.confirmLoading = true;
@@ -343,6 +320,34 @@ export default {
         path: "/user/personal/myorder"
       });
     },
+    async getShoppingCartList() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "queryUnCheckShopCartList";
+      iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.storeId
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor((_this.storeInfo.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.cartList = result.data;
+              _this.cartList.forEach(item => {
+                item.checked ? false : true;
+              });
+              _this.getImgUrl(_this.cartList)
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
+          }
+        )
+      );
+    },
     async getBasicInfo() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -360,6 +365,52 @@ export default {
           } else {
           }
         })
+      );
+    },
+      // 获取商品图片
+    async getImgUrl(arr) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = [];
+      arr.forEach(c => {
+        list.push({
+          sku: c.pdno,
+          spu: c.spu
+        });
+      });
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+      this.$refcallback(
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, list) => {
+                _this.$set(
+                  arr[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    arr[index].pdno +
+                    "-200x200.jpg" +
+                    "?" +
+                    new Date().getSeconds()
+                );
+              });
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            console.log(error)
+          }
+        )
       );
     },
     // 退出登录
@@ -403,8 +454,8 @@ li {
 .immediately {
   color: rgb(255, 0, 54) !important;
 }
-.no-data{
-  .p-size(40px,40px,14px,center,0px,#666666);
+.no-data {
+  .p-size(40px, 40px, 14px, center, 0px, #666666);
 }
 /* 登录头部 */
 .login-header {

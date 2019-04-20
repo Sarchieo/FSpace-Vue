@@ -346,9 +346,9 @@
               </ul>
             </div>
           </div>
-         
-         
-         
+
+
+
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -690,7 +690,7 @@ export default {
     // },
     //获取新人专享列表
     async getNewPersonList() {
-       let _this = this;
+      let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getNewMemberMallFloor";
@@ -705,8 +705,6 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 5)
             _this.newPersonList = result.data
-            console.log(666666666666666)
-            console.log(_this.newPersonList)
             _this.newPersonID = result.data.actcode
             _this.getImgUrl(_this.newPersonList.list)
           } else {
@@ -861,6 +859,7 @@ export default {
             }
           },
           function error(error) {
+            console.log(error)
           }
         )
       );
@@ -880,18 +879,24 @@ export default {
     },
     // 批量设置倒计时
     async secondKills(date,eDate) {
-      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
-      let times = endDate - new Date()
+      let endDate = this.stringToDate(
+        date.getFullYear() +
+          "-" +
+          (Number(date.getMonth()) + 1) +
+          "-" +
+          date.getDate() +
+          " " +
+          eDate
+      );
+      let times = Math.floor((endDate - date)/1000);
       let _this = this
       if(times>=0) {
         let timer;
         timer = setInterval(function () {
         times--;
-        let modulo = times % (60 * 60 * 24);
-        _this.teamBuy.h = Math.floor(modulo / (60 * 60));
-        modulo = modulo % (60 * 60);
-        _this.teamBuy.m = Math.floor(modulo / 60);
-        _this.teamBuy.s = modulo % 60;
+        _this.teamBuy.h = Math.floor(times/60/60);
+        _this.teamBuy.m = Math.floor(times/60)%60;
+        _this.teamBuy.s = times%60;
         if (times <= 0) {
           clearInterval(timer);
         }
@@ -905,18 +910,24 @@ export default {
     },
     // 设置倒计时
     async secondKill(date,eDate) {
-      let endDate = this.stringToDate(date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate() + ' ' + eDate)
-      let times = endDate - new Date()
+      let endDate = this.stringToDate(
+        date.getFullYear() +
+          "-" +
+          (Number(date.getMonth()) + 1) +
+          "-" +
+          date.getDate() +
+          " " +
+          eDate
+      );
+      let times = Math.floor((endDate - date)/1000);
       let _this = this
       if(times>=0) {
         let timer;
         timer = setInterval(function () {
         times--;
-        let modulo = times % (60 * 60 * 24);
-        _this.flashSale.h = Math.floor(modulo / (60 * 60));
-        modulo = modulo % (60 * 60);
-        _this.flashSale.m = Math.floor(modulo / 60);
-        _this.flashSale.s = modulo % 60;
+        _this.flashSale.h = Math.floor(times/60/60);
+        _this.flashSale.m = Math.floor(times/60)%60;
+        _this.flashSale.s = times%60;
         if (times <= 0) {
           clearInterval(timer);
         }

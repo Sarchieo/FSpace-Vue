@@ -18,7 +18,8 @@
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
-              <img v-lazy="imgUrl" slot="cover">
+              <!-- <img v-lazy="imgUrl" slot="cover"> -->
+              <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom>
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
               <p v-if="this.isShowCollec === false">
                 <span @click="addCollec()">
@@ -36,7 +37,7 @@
               <p class="goods-name">{{ prodDetail.prodname }}</p>
               <p
                 class="rush-time"
-                v-if="status == 1"
+                v-if="status == 1 && isSecondkill"
               >限时抢购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒</p>
               <p
                 class="rush-time"
@@ -79,16 +80,17 @@
                 </p>
                 <p class="price" v-if="status == 1">
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ prodDetail.mp }}</span>
+                  <span class="money-count">￥{{ discount.killPrice }}</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
                 <p class="price" v-if="status == 2">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ prodDetail.mp }}</span>
                 </p>
-                <p class="price">
+                <!-- 积分 -->
+                <!-- <p class="price">
                   <span>购买得50积分</span>
-                </p>
+                </p> -->
                 <p class="price indent">
                   <a-icon type="check-circle"/>
                   <span>30天无忧退换货</span>
@@ -149,7 +151,7 @@
                   <a-button class="add-cart" @click="addCart()" v-if="status != 1">
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
-                  <a-button :disabled="!isKill" type="danger" class="purchase" @click="attendSecKill()" v-if="status == 1">立即抢购</a-button>
+                  <a-button :disabled="!isKill" type="primary" class="purchase" @click="attendSecKill()" v-if="status == 1 && isSecondkill">立即抢购</a-button>
                 </p>
               </div>
             </div>
@@ -158,10 +160,10 @@
           <div class="coupon-box" v-if="couponPub.length > 0">
             <p class="coupon-title">
               商品优惠券
-              <span @click="toPersonCoupon()">
+              <!-- <span @click="toPersonCoupon()">
                 更多优惠券
                 <a-icon type="right"/>
-              </span>
+              </span> -->
             </p>
             <div class="coupon-content">
               <div
@@ -465,11 +467,14 @@ import moment from "moment";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
+import PicZoom from 'vue-piczoom'
+
 export default {
   components: {
     FSpaceHeader,
     FSpaceButton,
-    FSpaceFooter
+    FSpaceFooter,
+    PicZoom
   },
   computed: {
     storeInfo() {
@@ -478,6 +483,15 @@ export default {
   },
   data() {
     return {
+      configs: {
+        width:650,
+        height:350,
+        maskWidth:100,
+        maskHeight:100,
+        maskColor:'red',
+        maskOpacity:0.2
+      },
+      isSecondkill: true,
       unqid: 0,
       isKill: false,
       loading: false,
@@ -496,7 +510,10 @@ export default {
       spu: "",
       status: 0, // 0 无活动 1 限时抢购 2 一块购
       rulestatus: 0,
-      prodDetail: {},
+      prodDetail: {
+        prodsdate: '',
+        prodedate: ''
+      },
       details: [
         {
           name: "功能主治",
@@ -564,7 +581,51 @@ export default {
     }
   },
   methods: {
-    beforeSecKill() {
+    // 新增采购数量
+    addCount() {
+      // if(this.inventory >= this.maximum) {
+      //   this.$message.warning('库存不足或超出限购数量')
+      //   return
+      // }
+      this.inventory ++
+    },
+    reduceCount() {
+      if(this.inventory <= 1) {
+        return
+      }
+      this.inventory --
+    },
+    // 加入采购单
+    addCart() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "saveShopCart";
+      iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.storeId,
+        pdno: this.prodDetail.sku,
+        pnum: this.inventory,
+        checked: 0
+      })
+
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
+     beforeSecKill() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "SecKillModule";
@@ -629,50 +690,6 @@ export default {
         })
       );
     },
-    // 新增采购数量
-    addCount() {
-      // if(this.inventory >= this.maximum) {
-      //   this.$message.warning('库存不足或超出限购数量')
-      //   return
-      // }
-      this.inventory ++
-    },
-    reduceCount() {
-      if(this.inventory <= 1) {
-        return
-      }
-      this.inventory --
-    },
-    // 加入采购单
-    addCart() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ShoppingCartModule";
-      iRequest.method = "saveShopCart";
-      iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.storeId,
-        pdno: this.prodDetail.sku,
-        pnum: this.inventory,
-        checked: 0
-      })
-
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-          if (result.code === 200) {
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
-          }
-        },
-        function error(e) {
-          _this.$message.error(e);
-        })
-      );
-    },
     // 猜你喜欢列表
     // 领取优惠券
     revCoupon(item) {
@@ -705,6 +722,7 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
       iRequest.method = "queryCouponPub";
+      iRequest.param.token = localStorage.getItem("identification")
       iRequest.param.json = JSON.stringify({
         gcode: _this.prodDetail.sku, // sku
         compid: _this.storeInfo.storeId, // 企业id
@@ -743,11 +761,15 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
+              // 设置秒杀倒计时
+              _this.secondKill(
+                _this.stringToDate(_this.discount.currentDate),
+                _this.discount.endTime
+              );
+              // 设置最大库存
+              _this.maximum = _this.discount.limits
             }
-            _this.secondKill(
-              _this.stringToDate(_this.discount.currentDate),
-              _this.discount.endTime
-            );
+
           } else {
             _this.$message.error(result.message);
           }
@@ -1012,6 +1034,7 @@ export default {
             }
           },
           function error(error) {
+            console.log(error)
           }
         )
       );
@@ -1040,26 +1063,24 @@ export default {
           " " +
           eDate
       );
-      let times = Math.floor((endDate - new Date())/1000);
-
+      let times = Math.floor((endDate - date)/1000);
       let _this = this;
       if (times >= 0) {
         let timer;
         timer = setInterval(function() {
           times --;
-          let hour = Math.floor(times/60/60);
           _this.flashSale.h = Math.floor(times/60/60);
           _this.flashSale.m = Math.floor(times/60)%60;
           _this.flashSale.s = times%60;
           if (times <= 0) {
             clearInterval(timer);
-            console.log("活动结束");
+            _this.isSecondkill = false
           }
         }, 1000);
         if (times >= 0) {
-          console.log(times);
+          _this.isSecondkill = true
         } else {
-          console.log("活动结束");
+          _this.isSecondkill = false
         }
       }
     },
