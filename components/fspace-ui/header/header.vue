@@ -71,7 +71,7 @@
               @mouseout="hideList()"
             >
               <a-icon type="shopping-cart" class="cart-icon"/>
-              <span class="cart-count">6</span>
+              <span class="cart-count">{{  cartList.length }}</span>
               <!-- <a-popover class="cart-text" title="采购单">
                 <template slot="content">
                   <p>Content</p>

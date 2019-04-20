@@ -417,7 +417,6 @@ export default {
   methods: {
     iceTest() {
       let _this = this
-      // 初始化ice
       let ice_callback = new Ice.Class(inf.PushMessageClient, {
         receive: function(message, current) {
           console.log("received callback #" + message);
