@@ -54,7 +54,7 @@
 
         <div v-for="(item,index) in list" :key="index">
           <!-- 新品专区 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 1 || !this.newGoodsList < 6">
+          <div id="choice" class="elaborate" v-if="item.unqid === 1 && newGoodsList.length > 6">
             <p class="elaborate-title">新品专区
                <a href="javascript:;" @click="toNewGoods()">
                 查看全部
@@ -77,7 +77,7 @@
             </ul>
           </div>
            <!-- 热销专区 -->
-          <div class="brand-hall" v-if="item.unqid === 2 || !this.hotGoodsList < 5">
+          <div class="brand-hall" v-if="item.unqid === 2 && hotGoodsList.length > 5">
             <p class="brand-hall-title">
               热销专区
               <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
@@ -105,7 +105,7 @@
             </div>
           </div>
           <!-- 秒杀专区 -->
-          <div class="brand-hall height-auto" v-if="item.unqid === 4 || !this.secondList < 5">
+          <div class="brand-hall height-auto" v-if="item.unqid === 4 && secondList.length > 5">
             <div class="brand-hall-title height80">
               秒杀专区
               <a href="javascript:;" @click="toSpike()" class="see-wholes">
@@ -138,7 +138,7 @@
             </div>
           </div>
            <!-- 一块购 -->
-          <div class="brand-hall height-auto" v-if="item.unqid === 8 || !this.teamBuyList< 5">
+          <div class="brand-hall height-auto" v-if="item.unqid === 8 && teamBuyList.length > 5">
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
               <a href="javascript:;" @click="toBuying()" class="see-wholes">
@@ -197,7 +197,7 @@
             </div>
           </div>
           <!-- 包邮专区 -->
-          <div class="brand-hall" v-if="item.unqid === 16 || !this.postList < 5">
+          <div class="brand-hall" v-if="item.unqid === 16 && postList.length > 5">
             <p class="brand-hall-title">
               包邮专区
               <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
@@ -223,7 +223,7 @@
             </div>
           </div>
            <!-- 新人专享 -->
-          <div class="brand-hall" v-if="item.unqid === 32 || !this.newPersonList < 5">
+          <div class="brand-hall" v-if="item.unqid === 32 && newPersonList.length > 5">
             <p class="brand-hall-title">
               新人专享
               <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
@@ -276,7 +276,7 @@
             </div>
           </div>   -->
            <!-- 为你精选 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 128 || !this.selectedList < 6">
+          <div id="choice" class="elaborate" v-if="item.unqid === 128 && selectedList.length > 6">
             <p class="elaborate-title">为你精选
                <a href="javascript:;" @click="toSelected()">
                 查看全部
@@ -299,7 +299,7 @@
             </ul>
           </div>
            <!-- 品牌专区 -->
-          <div class="brand-hall" v-if="item.unqid === 256 || !this.brandList < 5">
+          <div class="brand-hall" v-if="item.unqid === 256 && brandList.length > 5">
             <p class="brand-hall-title">
               品牌专区
               <a href="javascript:;" @click="toBrand()">查看全部<a-icon type="right"/>
@@ -325,7 +325,7 @@
             </div>
           </div>
           <!-- 限时抢购 -->
-          <div id="hot" class="brand-hall" v-if="item.unqid === 512 || !this.limitedList < 4">
+          <div id="hot" class="brand-hall" v-if="item.unqid === 512 && limitedList.length > 4">
             <p class="brand-hall-title">
              限时折扣
               <a class="all-hot" @click="toLimited()">
