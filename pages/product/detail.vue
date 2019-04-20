@@ -769,7 +769,7 @@ export default {
               // 设置最大库存
               _this.maximum = _this.discount.limits
             }
-           
+
           } else {
             _this.$message.error(result.message);
           }

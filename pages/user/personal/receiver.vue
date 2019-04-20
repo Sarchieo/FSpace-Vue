@@ -38,7 +38,7 @@
           :wrapper-col="{ span: 12, offset: 8 }"
         >
         </a-form-item>
-        <a-button 
+        <a-button
           type="primary"
           html-type="submit">
           保存

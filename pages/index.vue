@@ -104,6 +104,7 @@
               </ul>
             </div>
           </div>
+          <!-- 秒杀专区 -->
            <!-- 一块购 -->
           <div class="brand-hall height-auto" v-if="item.unqid === 8">
             <div class="brand-hall-title height80">
@@ -164,7 +165,7 @@
             </div>
           </div>
           <!-- 包邮专区 -->
-          <div class="brand-hall" v-if="item.unqid === 16">
+          <!-- <div class="brand-hall" v-if="item.unqid === 16">
             <p class="brand-hall-title">
               包邮专区
               <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
@@ -174,14 +175,12 @@
               <ul class="brand-right hot-width">
                 <li v-for="(item,index) in postList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
-                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                     <p class="card-price top165">
                       ￥{{item.vatp}}
-                      <!-- <del>￥</del> -->
                     </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
@@ -190,7 +189,7 @@
                 </li>
               </ul>
             </div>
-          </div>
+          </div> -->
            <!-- 新人专享 -->
           <div class="brand-hall" v-if="item.unqid === 32">
             <p class="brand-hall-title">
@@ -202,14 +201,12 @@
               <ul class="brand-right hot-width">
                 <li v-for="(item,index) in newPersonList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
-                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                     <p class="card-price top165">
                       ￥{{item.vatp}}
-                      <!-- <del>￥</del> -->
                     </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
@@ -220,7 +217,7 @@
             </div>
           </div>
           <!-- 中华名方 -->
-          <div class="brand-hall" v-if="item.unqid === 64">
+          <!-- <div class="brand-hall" v-if="item.unqid === 64">
             <p class="brand-hall-title">
               中华名方
               <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
@@ -230,14 +227,12 @@
               <ul class="brand-right hot-width">
                 <li v-for="(item,index) in famousList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
-                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                     <p class="card-price top165">
                       ￥{{item.vatp}}
-                      <!-- <del>￥</del> -->
                     </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
@@ -246,7 +241,7 @@
                 </li>
               </ul>
             </div>
-          </div>  
+          </div>   -->
            <!-- 为你精选 -->
           <div id="choice" class="elaborate" v-if="item.unqid === 128">
             <p class="elaborate-title">为你精选
@@ -269,6 +264,34 @@
                 </a-card>
               </li>
             </ul>
+          </div>
+           <!-- 品牌专区 -->
+          <div class="brand-hall" v-if="item.unqid === 256">
+            <p class="brand-hall-title">
+              品牌专区
+              <a href="javascript:;" @click="toBrand()">查看全部<a-icon type="right"/>
+              </a>
+            </p>
+            <div class="brand-div">
+              <ul class="brand-right hot-width">
+                <li v-for="(item,index) in hotGoodsList" :key="index">
+                  <a-card hoverable class="card" @click="toDetail(item)">
+                    <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
+                    <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
+                    <img class="card-img" v-lazy="item.imgURl" slot="cover">
+                    <p class="surplus top185">{{item.brandName}}</p>
+                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="card-price top165">
+                      ￥{{item.vatp}}
+                      <!-- <del>￥</del> -->
+                    </p>
+                    <p class="specifications">{{item.spec}}</p>
+                    <p class="manufacturer">{{item.manuName}}</p>
+                    <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
+                  </a-card>
+                </li>
+              </ul>
+            </div>
           </div>
           <!-- 限时抢购 -->
           <div id="hot" class="brand-hall" v-if="item.unqid === 512">
@@ -323,9 +346,9 @@
               </ul>
             </div>
           </div>
-         
-         
-         
+
+
+
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -385,6 +408,8 @@ export default {
       newPersonID: 0,
       hotGoodsID: 0,
       famousId: 0,
+      secondId: 0,
+      brandID: 0,
       teamBuyList: [],
       limitedList: [], // 限时抢购
       newGoodsList: [], // 新品商品列表
@@ -393,6 +418,8 @@ export default {
       newPersonList: [], // 新人专享列表
       postList: [], // 包邮专区
       famousList: [], // 中华名方
+      secondList: [], // 秒杀专区
+      brandList: [], // 品牌专区
       isShow: false,
       imgSrc:
         "//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg",
@@ -409,9 +436,10 @@ export default {
   },
   mounted() {
     // window.addEventListener("scroll", this.handleScroll);
-    this.getMallFloorProd();
-    this.getNewPersonList();
-    this.getExemPostMallFloor();
+    // this.getMallFloorProd();
+    // this.getNewPersonList();
+    // this.getExemPostMallFloor();
+    // this.getSeckillMallFloor();
     // this.iceTest()
   },
   methods: {
@@ -496,11 +524,26 @@ export default {
                 case 2:// 热销专区
                 _this.getHotGoods();
                 break
-                case 8:
+                case 4: // 秒杀专区
+                _this.getSeckillMallFloor();
+                break
+                case 8: // 一块购
                 _this.getTeamBuyMallFloor()
+                break
+                case 16: // 包邮专区
+                _this.getExemPostMallFloor();
+                break
+                case 32: // 新人专享
+                _this.getNewPersonList();
+                break
+                case 64: // 中华名方 暂未提供接口
                 break
                 case 128: // 为你精选
                 _this.getSelects();
+                break
+                case 256: // 品牌专区
+                _this.getBrandMallFloor();
+                break
                 break
                 case 512:// 限时抢购
                 _this.getDiscountMallFloor();
@@ -533,6 +576,60 @@ export default {
             _this.teamByID = result.data.actcode
             _this.getImgUrl(_this.teamBuyList.list)
             _this.secondKills(_this.stringToDate(_this.teamBuyList.now), _this.teamBuyList.edate)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+     // 获取秒杀数据
+    async getSeckillMallFloor() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getSeckillMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            result.data.list = result.data.list.slice(0, 5)
+            _this.secondList = result.data
+            console.log(55555555)
+            console.log(result)
+            _this.secondID = result.data.actcode
+            _this.getImgUrl(_this.secondList.list)
+            _this.secondKills(_this.stringToDate(_this.secondList.now), _this.secondList.edate)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+     // 获取品牌数据
+    async getBrandMallFloor() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "getBrandMallFloor";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            result.data.list = result.data.list.slice(0, 5)
+            _this.brandList = result.data
+            _this.brandID = result.data.actcode
+            _this.getImgUrl(_this.brandList.list)
+            _this.secondKills(_this.stringToDate(_this.brandList.now), _this.brandList.edate)
           } else {
             _this.$message.error(result.message);
           }
@@ -583,7 +680,7 @@ export default {
     //         result.data.list = result.data.list.slice(0, 5)
     //         _this.famousList = result.data
     //         _this.famousId = result.data.actcode
-    //         _this.getImgUrl(_this.postList.list)
+    //         _this.getImgUrl(_this.famousList.list)
     //       } else {
     //         _this.$message.error(result.message);
     //       }
@@ -952,6 +1049,22 @@ export default {
         path: '/activity/post',
         query: {
           actcode: this.postID
+        }
+      })
+    },
+    toSpike() {
+      this.$router.push({
+        path: '/activity/spike',
+        query: {
+          actcode: this.secondID
+        }
+      })
+    },
+    toBrand() {
+       this.$router.push({
+        path: '/activity/brand',
+        query: {
+          actcode: this.brandID
         }
       })
     }

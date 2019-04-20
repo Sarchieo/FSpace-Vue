@@ -125,7 +125,7 @@
               <thead class="ablock">
                 <p>
                   <a-icon type="shop"/>
-                  <span>一块医药自营</span>
+                  <span>一块医药</span>
                 </p>
               </thead>
               <tbody class="t-body" v-for="(items,index1) in item.goods" :key="index1">

@@ -69,9 +69,9 @@
                   </p>
                   <button @click="toDetails()">立即抢购</button>
                 </div>
-                 
+
               </a-tab-pane>
-             
+
             </a-tabs>
              <a-pagination v-model="current" :total="this.pagination.length" v-if="this.pagination.length !== 0 "/>
           </div>

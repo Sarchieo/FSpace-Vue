@@ -17,7 +17,7 @@
           <ul class="goods-lists">
             <div class="nutrition">
               <a-icon type="shop"/>
-              <span>一块医药自营</span>
+              <span>一块医药</span>
             </div>
             <div class="no-data" v-if="cartList.length === 0">
               <p class="no-icon"><a-icon type="exclamation"/></p>
@@ -369,7 +369,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              
+
               result.data.goodsFilePathList.forEach((c, index, list) => {
                 _this.$set(
                   arr[index],
@@ -644,7 +644,7 @@ li {
 .ant-carousel .slick-prev, .ant-carousel .slick-next{
   background-color: rgba(247, 37, 38, 0.5);
 }
-  
+
 .ant-carousel > .slick-slide {
   text-align: center;
   height: 160px;

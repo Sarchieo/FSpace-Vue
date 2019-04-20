@@ -368,7 +368,7 @@ export default {
         // spu: 1000,
         sort: _this.sortGoods
       });
-      
+
       this.$refcallback(
         "goodsServer",
         iRequest,

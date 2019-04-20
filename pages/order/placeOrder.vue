@@ -38,7 +38,7 @@
           </ul>
           <ul class="goods-table">
             <p class="goods-table-name">
-              <a-icon type="shop"/>一块医药自营
+              <a-icon type="shop"/>一块医药
             </p>
             <li v-for="(item,index) in cartList" :key="index">
               <div class="goods-name">
@@ -138,7 +138,7 @@ export default {
     // 获取优惠券信息
   },
   created() {
-    this.cartList = JSON.parse(this.$route.params.arr) 
+    this.cartList = JSON.parse(this.$route.params.arr)
     this.placeType = this.$route.params.placeType;
     this.orderType = this.$route.params.orderType;
   },

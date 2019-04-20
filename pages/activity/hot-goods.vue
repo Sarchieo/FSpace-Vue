@@ -18,7 +18,7 @@
                   <p class="goods-limit">还剩<span>{{item.surplusstock}}</span>盒</p>
                   <p class="goods-price">单价￥{{item.mp}}元 </p>
                   <button @click="toDetail(item)">查看详情</button>
-                </a-card>  
+                </a-card>
               </div>
               <a-pagination v-model="current" :total="this.hotGoodsList.length" v-if="this.hotGoodsList.length !== 0 "/>
           </div>
@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       current: 1,
+      actcode: 0,
       hotGoodsList: [],
       tabStyle: {
           color: '#c40000',
@@ -47,7 +48,8 @@ export default {
     }
   },
   mounted() {
-    this.getHotGoods()
+    this.getHotGoods();
+    this.actcode = this.$route.query.actcode
   },
   methods: {
      // 热销商品列表
