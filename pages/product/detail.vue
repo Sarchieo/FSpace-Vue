@@ -483,6 +483,7 @@ export default {
   },
   data() {
     return {
+      rulecode:0,//活动规则
       activitiesBySKU: [],
       configs: {
         width:650,
@@ -597,7 +598,6 @@ export default {
     },
     // 获取药品活动类型
     getActivitiesBySKU() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CalculateModule";
@@ -609,9 +609,10 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
+              console.log("result.data-- " + JSON.stringify(result.data))
             _this.activitiesBySKU = result.data;
-            console.log(_this.activitiesBySKU)
+            _this.rulecode = _this.activitiesBySKU[0].brulecode
+              // console.log("_this.rulecode-- " + _this.rulecode)
           } else {
             _this.$message.error(result.message);
           }
@@ -985,7 +986,7 @@ export default {
           {
             sku: this.sku,
             spu: this.spu
-          } 
+          }
         ]
       });
       this.$refcallback(
