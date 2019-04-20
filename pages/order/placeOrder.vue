@@ -68,32 +68,51 @@
           </div> -->
           <div class="discount-pay">
             <div class="discount">
-              <p class="use-coupon">使用优惠券(张)</p>
-              <p class="pick-coupon">
-                <button @click="pickCoupon()">选择优惠券</button>
-              </p>
-              <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
-              <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag>
-              <a-modal
-                title="选择优惠券"
-                width="750px"
-                v-model="isCoupon"
-                @ok="handleOk"
-                okText="确定"
-                cancelText="取消"
-              >
-                <div class="coupon-box">
-                  <!-- 选中背景色 -->
-                  <div class="coupon">
-                    <p class="coupon-type">现金券</p>
-                    <p class="ladder">满balala送balala</p>
+              <p class="use-coupon">使用平台优惠券 您已选中<span>1张现金券,优惠20元</span></p>
+              <div class="coupon-box">
+                <div class="coupon">
+                  <div class="coupon-num">
+                    <p class="coupon-title">现金券</p>
+                    <p>满500送50元</p>
+                    <p>满1000送110元</p>
+                    <p>满2000送250元</p>
                   </div>
-                  <div class="coupon">
-                    <p class="coupon-type">包邮券</p>
-                    <p class="ladder">满balala送包邮服务</p>
-                  </div>
+                  <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
                 </div>
-              </a-modal>
+                <div class="coupon">
+                  <div class="coupon-num">
+                    <p class="coupon-title">现金券</p>
+                    <p>满500送50元</p>
+                    <p>满1000送110元</p>
+                    <p>满2000送250元</p>
+                  </div>
+                  <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
+                </div>
+                <div class="coupon">
+                  <div class="coupon-num">
+                    <p class="coupon-title">现金券</p>
+                    <p>满500送50元</p>
+                    <p>满1000送110元</p>
+                    <p>满2000送250元</p>
+                  </div>
+                  <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
+                </div>
+                <div class="coupon">
+                  <div class="coupon-num">
+                    <p class="coupon-title">现金券</p>
+                    <p>满500送50元</p>
+                    <p>满1000送110元</p>
+                    <p>满2000送250元</p>
+                  </div>
+                  <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
+                </div>
+              </div>
+              <!-- <p class="pick-coupon">
+                <button @click="pickCoupon()">选择优惠券</button>
+              </p> -->
+              <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
+              <!-- <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag> -->
+             
             </div>
             <div class="pay">
               <p>商品合计：￥{{ cartList[0].acamt +  cartList[0].amt}}</p>
@@ -201,6 +220,9 @@ export default {
     },
     handleOk() {
       console.log(1);
+    },
+    onChange(e) {
+      console.log(e)
     }
   }
 };
@@ -281,7 +303,11 @@ li {
 }
 .goods-list {
   .container-size(block, 1190px, auto, 0 auto 20px auto, 0);
-  .p-color(#fff, 1px solid #e0e0e0, #333);
+  border-left: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  background: #ffffff;
+  color: #333333;
 }
 .goods-title {
   .container-size(inline-block, 1188px, 50px, 0, 0);
@@ -295,7 +321,7 @@ li {
   width: 450px !important;
 }
 .goods-table {
-  .container-size(block, 1190px, auto, 0 auto 20px auto, 0);
+  .container-size(block, 1190px, auto, 0 auto, 0);
 }
 .goods-table-name {
   .p-size(50px, 50px, 16px, left, 10px, #666666);
@@ -338,8 +364,8 @@ li {
   font-weight: bold;
 }
 .go-pay {
-  .container-size(block, 1190px, 400px, 0 auto 80px auto, 0);
-  background: #f6f6f6;
+  .container-size(block, 1190px, 530px, 0 auto 80px auto, 0);
+  border: 1px solid #e0e0e0;
 }
 .invoice {
   .container-size(block, 1190px, 90px, 0, 0);
@@ -356,9 +382,12 @@ li {
 }
 .discount {
   float: left;
-  .container-size(block, 595px, 310px, 0, 0);
+  .container-size(block, 1190px, 250px, 0, 0);
   .use-coupon {
     .p-size(40px, 40px, 16px, left, 20px, #999999);
+    span{
+      color: #ed2f26;
+    }
   }
   .pick-coupon {
     .p-size(50px, 50px, 16px, left, 20px, #999999);
@@ -414,12 +443,13 @@ li {
 }
 .coupon-box {
   .container-size(block, 700px, auto, 0, 0);
+  overflow-x: auto;
   overflow: auto;
   .coupon {
     .container-size(inline-block, 300px, 120px, 0, 0);
     margin: 0 24px;
     float: left;
-    border: 1px solid #e0e0e0;
+    // border: 1px solid #e0e0e0;
     .coupon-type {
       .p-size(40px, 40px, 16px, center, 0px, #ed2f26);
     }
@@ -433,5 +463,37 @@ li {
 }
 .coupon-back {
   color: #fdf4e9;
+}
+.coupon-box{
+  .container-size(block, 1190px, 210px, 0, 0);
+  .coupon{
+    .container-size(inline-block, 270px, 180px, 0, 0);
+    margin-left: 22px;
+    // background: pink;
+    .coupon-num{
+      .container-size(inline-block, 268px, 145px, 0, 0);
+      background:url('../../assets/img/quan-bg.png')
+    }
+    p{
+      .p-size(30px,30px,14px,left,20px,#ffffff);
+      .coupon-check{
+        float: right;
+        margin-right: 20px;
+      }
+    }
+    .coupon-title{
+      text-indent: 80px!important;
+      font-weight: bold;
+      font-size: 16px!important;
+      color:#ffffff;
+    }
+  }
+}
+.coupon-bottom{
+  width: 268px;
+  color: #999999!important;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
 }
 </style>
