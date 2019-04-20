@@ -130,7 +130,7 @@
               <p>商品合计：￥{{ cartList[0].acamt +  cartList[0].amt}}</p>
               <p>运费：￥ {{ cartList[0].freight }}</p>
               <p>优惠：￥ {{ cartList[0].amt }}</p>
-              <p class="price" v-if="!cartList[0].freepost">应付金额：￥ {{ cartList[0].acamt + cartList[0].freight  }}</p>
+              <p class="price" v-if="!cartList[0].freepost">应付金额：￥ {{ (cartList[0].acamt + cartList[0].freight).toFixed(2)  }}</p>
               <p class="price" v-if="cartList[0].freepost">应付金额：￥ {{ cartList[0].acamt }}</p>
               <a-button class="pay-btn" @click="toPay()">去付款</a-button>
             </div>
@@ -167,6 +167,7 @@ export default {
     // 获取发票信息
     // this.getInvoice()
     // 获取优惠券信息
+    // 猜你喜欢
   },
   created() {
     this.cartList = JSON.parse(this.$route.params.arr)

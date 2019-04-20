@@ -35,7 +35,7 @@
           </div>
           <div class="pay-btn">
               <p class="btn-box">
-                  <a-button type="primary" @click="prePay()">立即支付</a-button>
+                  <a-button :disabled="!isPay" type="primary" @click="prePay()">立即支付</a-button>
               </p>
               <p class="surplus-time">剩余付款时间：<span>{{ h }}</span>小时<span>{{ m }}</span>分钟<span>{{ s }}</span>秒</p>
           </div>
@@ -90,6 +90,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.payamt = result.data.payamt
+              debugger
               _this.isPay = true
               _this.secondKill(
               _this.stringToDate(result.data.now),
@@ -163,7 +164,7 @@ export default {
           " " +
           eDate
       );
-      let times = Math.floor((endDate - date)/1000);
+      let times = Math.floor((endDate - date)/1000) + 1800;
       let _this = this;
       if (times >= 0) {
         let timer;

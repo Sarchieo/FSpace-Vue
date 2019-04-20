@@ -71,7 +71,7 @@
               @mouseout="hideList()"
             >
               <a-icon type="shopping-cart" class="cart-icon"/>
-              <span class="cart-count">6</span>
+              <span class="cart-count">{{  cartList.length }}</span>
               <!-- <a-popover class="cart-text" title="采购单">
                 <template slot="content">
                   <p>Content</p>
@@ -343,7 +343,7 @@ export default {
             }
           },
           function error(e) {
-            _this.$message.error(e);
+            _this.$message.error('无法连接服务器或服务器返回异常, 请稍后重试');
           }
         )
       );

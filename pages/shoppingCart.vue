@@ -25,7 +25,7 @@
             </div>
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
-                <a-checkbox @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
+                <a-checkbox :disabled="item.status == 1" @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
                 <img v-lazy="item.imgURl">
                 <p class="goods-name">{{item.ptitle}}</p>
@@ -37,10 +37,10 @@
                 <p class="old-price">￥ {{item.pdprice}}</p>
                 <p class="validity">有效期：{{item.vperiod}}</p>
                 <p class="btn-p">
-                  <button @click="reduceCount(index,item)">-</button>
+                  <button :disabled="item.status == 1" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :min="1" :max="item.limit" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
-                  <button @click="addCount(index,item)">+</button>
+                  <a-input-number :disabled="item.status == 1" :min="1" :max="item.limit" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <button :disabled="item.status == 1" @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
                 <p class="new-price">￥{{ parseFloat(item.pdprice * item.num).toFixed(2) }}</p>
@@ -118,6 +118,7 @@ export default {
   middleware: 'authenticated',
   data() {
     return {
+      isSubmit: false,
       amt: 0,
       loading: false,
       maximum: 1,// 最大库存
@@ -146,6 +147,7 @@ export default {
   },
   mounted() {
     this.getShoppingCartList()
+    this.guessYouLikeArea()
   },
   methods: {
     getShoppingCartList() {
@@ -172,8 +174,8 @@ export default {
               _this.$message.error(result.message);
             }
         },
-        function error(e) {
-          _this.$message.error(e);
+        function error(error) {
+          _this.$message.error('无法连接服务器或服务器返回异常, 请稍后重试');
         })
       );
     },
@@ -252,7 +254,9 @@ export default {
     // 全选
     checkAll(e) {
       this.cartList.forEach((item) => {
-        item.checked = e.target.checked
+        if(item.status != 1) {
+          item.checked = e.target.checked
+        }
       })
       this.queryCheckShopCartList()
     },
@@ -278,6 +282,11 @@ export default {
           })
         }
       })
+      if(arr.length === 0) {
+        this.$message.error('请选择要购买的药品～')
+        this.loading = false
+        return
+      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -346,6 +355,29 @@ export default {
         _this.queryCheckShopCartList()
       },1000);
     },
+    guessYouLikeArea() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "guessYouLikeArea";
+      iRequest.param.pageIndex = 1;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({
+        keyword: ''
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            debugger
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     // 获取商品图片
     getImgUrl(arr) {
       let _this = this;
@@ -369,7 +401,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-
               result.data.goodsFilePathList.forEach((c, index, list) => {
                 _this.$set(
                   arr[index],

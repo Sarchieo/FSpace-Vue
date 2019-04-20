@@ -213,6 +213,20 @@ export default {
               })
             })
           } else {
+            // 未关联企业
+            _this.$store.dispatch("setUser", {
+              context: _this,
+              user: {
+                storeName: '',
+                storeId: 0,
+                address: ''
+              }
+            }).then(res => {
+              // 登录成功
+              _this.$router.push({
+                name: 'index'
+              })
+            })
           }
         })
       );
