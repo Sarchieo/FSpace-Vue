@@ -10,31 +10,20 @@
             <p></p>
           </div>
           <div class="person-num">
-            <div class="person-left">
-              <span class="buying-content">商品累计拼团人数/折扣</span>
-              <p class="discount-num"><span>10.0</span> <span>9.8</span> <span>9.5</span> <span>9.0</span> <span>8.8</span> <span>8.5</span> <span>折</span></p>
-              <a-progress
-                  :percent="99"
-                  style="position: absolute;top: 32px;left: 203px;width: 295px;height: 8px;margin-left: 20px;"
-                  :showInfo="false"
-                  status="exception"
-                />
-              <p class="discount-person"><span>15</span> <span>20</span> <span>25</span> <span>30</span> <span>35</span> <span>40</span> <span>人</span></p>
-            </div>
             <div class="person-right">
-              <!-- 距团购活动时间还剩 {{ flashSale.h }} 时 {{ flashSale.m }} 分 {{ flashSale.s }} 秒 -->
+              距秒杀活动时间还剩 {{ flashSale.h }} 时 {{ flashSale.m }} 分 {{ flashSale.s }} 秒
             </div>
           </div>
           <div class="limited-goods">
-            <div class="goods-box" v-for="(item,index) in teamBuyList.list" :key="index">
+            <div class="goods-box" v-for="(item,index) in secondList.list" :key="index">
               <a-card hoverable class="card" @click="toDetail(item)">
                 <img v-lazy="item.imgURl" alt class="goods-pic">
                 <p class="goods-name">{{item.prodname}} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
-                <p class="goods-limit">
+                <!-- <p class="goods-limit">
                   {{item.startnum}}{{item.unitName}}起拼/
                   <span>{{item.surplusstock}}</span>{{item.unitName}}成团
-                </p>
+                </p> -->
                 <p class="goods-price">
                   限时价￥{{item.actprize}}元
                   <del>￥{{item.mp}}元</del>
@@ -44,11 +33,11 @@
                         <span>{{teamBuy.h}}</span>时
                         <span>{{teamBuy.m}}</span>分
                         <span>{{teamBuy.s}}</span>秒
-                        <button class="imme-btn">立即参团</button>
+                        <button class="imme-btn">立即参加</button>
                 </p>
               </a-card>
             </div>
-            <a-pagination v-model="current" :total="this.pagination.length" v-if="this.pagination.length !== 0"/>
+            <a-pagination v-model="current" :total="this.secondList.length" v-if="this.secondList.length !== 0"/>
             <!-- <a-pagination v-model="current" :total="this.searchList.length"/> -->
           </div>
         </div>
@@ -190,7 +179,7 @@ export default {
     this.getSeckillMallFloor()
   },
   methods: {
-    // 获取秒杀数据
+  // 获取秒杀数据
     async getSeckillMallFloor() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -198,21 +187,18 @@ export default {
       iRequest.method = "getSeckillMallFloor";
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({
-        keyword: '',
-        actcode: this.actcode
-      });
+      iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            result.data.list = result.data.list;
-            _this.teamBuyList = result.data;
-            _this.pagination =  _this.teamBuyList.list
-            _this.getImgUrl(_this.teamBuyList.list);
-            _this.secondKills(_this.stringToDate(_this.teamBuyList.now) ,_this.teamBuyList.edate)
+            result.data.list = result.data.list.slice(0, 5)
+            _this.secondList = result.data
+            _this.secondID = result.data.actcode
+            _this.getImgUrl(_this.secondList.list)
+            _this.secondKills(_this.stringToDate(_this.secondList.now), _this.secondList.edate)
           } else {
             _this.$message.error(result.message);
           }

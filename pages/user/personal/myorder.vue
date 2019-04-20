@@ -106,7 +106,7 @@ export default {
     return {
       currentIndex: 1,
       total: 0,
-      ostatus: '', //
+      ostatus: '', // 订单状态
       orderList: []
     };
   },
@@ -125,7 +125,7 @@ export default {
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "queryOrders";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = [this.ostatus,''];
+      iRequest.param.arrays = [this.ostatus,this.storeInfo.storeId];
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       this.$refcallback(
@@ -162,7 +162,8 @@ export default {
      var routeData = this.$router.resolve({
             path: "/user/order-detail",
             query: {
-              orderno: item.orderno
+              orderno: item.orderno,
+              cusno: item.cusno
             }
           });
         window.open(routeData.href, '_blank');

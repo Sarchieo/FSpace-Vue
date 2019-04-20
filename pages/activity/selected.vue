@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       count: 1,
+      actcode: 0,
         current: 1,
         tabStyle: {
             color: '#c40000',
@@ -62,7 +63,8 @@ export default {
     }
   },
   mounted() {
-    this.getSelects()
+    this.getSelects();
+    this.actcode = this.$route.query.actcode
   },
   methods: {
       callback(key) {

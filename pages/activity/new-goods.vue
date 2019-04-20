@@ -67,7 +67,7 @@ export default {
                path:'/product/detail'
           })
       },
-      async getNewGoods() {
+    async getNewGoods() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
@@ -81,8 +81,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.newGoodsList = result.data.slice(0, 6);
-            _this.newGoodsID = result.data.actcode
+            _this.newGoodsList = result.data;
             _this.getImgUrl(_this.newGoodsList);
           } else {
             _this.$message.error(result.message);

@@ -3,6 +3,18 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
+        <div class="stets">
+          <a-steps :current="2">
+            <a-step>
+              <template slot="title">
+                1
+              </template>
+              <span slot="description">我的采购单</span>
+            </a-step>
+            <a-step title="2" description="确认订单信息" />
+            <a-step title="3" description="成功提交订单" />
+          </a-steps>
+        </div>
           <div class="pay-info">
               <p class="pay-text">订单提交成功，请尽快付款！订单号：<span>{{ orderno }}</span></p>
               <p class="urge">请您在1小时内完成支付，否则订单会被自动取消。</p>
@@ -299,5 +311,9 @@ li {
 .surplus-time{
     display: block;
     .p-size(40px,40px,16px,right,0px,#666666);
+}
+.stets{
+  .container-size(block, 600px, 100px, 0 200px 0 auto, 0);
+  margin-top: 30px;
 }
 </style>

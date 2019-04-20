@@ -48,7 +48,7 @@
                 </p>
               </a-card>
             </div>
-            <a-pagination v-model="current" :total="this.pagination.length" v-if="this.pagination.length !== 0"/>
+            <a-pagination v-model="current" :total="this.teamBuyList.length" v-if="this.teamBuyList.length !== 0"/>
             <!-- <a-pagination v-model="current" :total="this.searchList.length"/> -->
           </div>
         </div>

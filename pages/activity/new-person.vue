@@ -48,8 +48,8 @@
             </div>
             <a-pagination
               v-model="current"
-              :total="this.selectedList.length"
-              v-if="this.selectedList.length !== 0 "
+              :total="this.newPersonList.length"
+              v-if="this.newPersonList.length !== 0 "
             />
           </div>
         </div>

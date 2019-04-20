@@ -22,7 +22,7 @@
               <input type="text" placeholder="在结果中搜索">
               <button>搜索</button>
             </p>
-            <div class="goods-box" v-for="(item,index) in selectedList" :key="index">
+            <div class="goods-box" v-for="(item,index) in brandList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
                 <span class="collec">
                   收藏
@@ -56,8 +56,8 @@
             </div>
             <a-pagination
               v-model="current"
-              :total="this.selectedList.length"
-              v-if="this.selectedList.length !== 0 "
+              :total="this.brandList.length"
+              v-if="this.brandList.length !== 0 "
             />
           </div>
         </div>
@@ -83,7 +83,7 @@ export default {
         color: "#c40000",
         background: "black"
       },
-      selectedList: []
+      brandList: []
     };
   },
   mounted() {
@@ -99,7 +99,7 @@ export default {
         path: "/product/detail"
       });
     },
-    // 为你精选数据
+    // 品牌专区数据请求
     getBrand() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -117,10 +117,10 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.selectedList = result.data;
+            _this.brandList = result.data;
             console.log(444);
-            console.log(_this.selectedList);
-            _this.getImgUrl(_this.selectedList);
+            console.log(_this.brandList);
+            _this.getImgUrl(_this.brandList);
           } else {
             _this.$message.error(result.message);
           }
