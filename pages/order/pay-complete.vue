@@ -9,26 +9,26 @@
           </p>
           <div class="order-info">
             <div class="info-left">
-              <p>商品合计： ￥9527元</p>
-              <p>运费： ￥0元</p>
-              <p>优惠券： -￥20元</p>
+              <p>商品合计： ￥ {{ info.pdamt }}元</p>
+              <p>运费： ￥{{ info.freight }}元</p>
+              <p>优惠券： ￥ {{ info.coupamt }} 元</p>
               <p>
                 实付：
-                <span>￥ 9507元</span>
+                <span>￥ {{ info.payamt }} 元</span>
               </p>
             </div>
             <div class="info-right">
               <p>
-                <span>下单时间：</span> 2022-03-30 23：59：02
+                <span>下单时间：</span> {{ info.odate + ' ' + info.otime }}
               </p>
               <p>
-                <span>收货人：</span> 肖攀
+                <span>收货人：</span> {{ storeInfo.storeName }}
               </p>
               <p>
-                <span>联系电话：</span> 183****0790
+                <span>联系电话：</span> {{ storeInfo.phone }}
               </p>
               <p>
-                <span>收货地址：</span>湖南省长沙市岳麓区企业广场
+                <span>收货地址：</span>{{ storeInfo.address }}
               </p>
             </div>
           </div>
@@ -129,10 +129,50 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
   data() {
-    return {};
+    return {
+      orderno: '',
+      info: {}
+    };
+  },
+  mounted() {
+    this.orderno = this.$route.query.orderno
+    this.getPayResult()
   },
   methods: {
+    // 获取订单详情
+    getPayResult() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "getPayResult";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.storeId
+      })
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.info = result.data
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            console.log(error)
+          }
+        )
+      );
+    },
     showModal() {
       this.visible = true;
     },
@@ -151,10 +191,12 @@ export default {
       console.log(1);
     },
     toOrderDetail() {
-      var routeData = this.$router.resolve({
-        path: "/user/order-detail"
+      this.$router.push({
+        path: "/user/order-detail",
+        query: {
+          orderno: this.orderno
+        }
       });
-      window.open(routeData.href, "_blank");
     },
     toIndex() {
       this.$router.push({

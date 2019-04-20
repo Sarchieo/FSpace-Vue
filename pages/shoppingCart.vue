@@ -302,7 +302,7 @@ export default {
           if (result.code === 200) {
             _this.$router.push({
               name: "order-placeOrder",
-              params: {
+              query: {
                 arr: JSON.stringify(result.data),
                 placeType: 2,
                 orderType: 0

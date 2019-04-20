@@ -19,7 +19,7 @@
             </a-breadcrumb>
             <div class="goods-big-pic">
               <!-- <img v-lazy="imgUrl" slot="cover"> -->
-              <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom>
+              <!-- <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom> -->
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
               <p v-if="this.isShowCollec === false">
                 <span @click="addCollec()">
@@ -177,7 +177,7 @@
                     <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮</span>
                   </div>
                   <div class="coupon-right">
-                    <img class="state-pic" src="../../assets/img/receive.png" alt>
+                    <!-- <img class="state-pic" src="../../assets/img/receive.png" alt> -->
                   </div>
                 </div>
               </div>
@@ -467,14 +467,14 @@ import moment from "moment";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
-import PicZoom from 'vue-piczoom'
+// import PicZoom from 'vue-piczoom'
 
 export default {
   components: {
     FSpaceHeader,
     FSpaceButton,
     FSpaceFooter,
-    PicZoom
+    // PicZoom
   },
   computed: {
     storeInfo() {
@@ -563,14 +563,12 @@ export default {
       count: 1,
     };
   },
-  created() {
+  mounted() {
     this.sku = this.$route.query.sku;
     this.spu = this.$route.query.spu;
     this.actcode = this.$route.query.actcode;
     this.rulestatus = this.$route.query.rulestatus;
     this.status = this.$route.query.status;
-  },
-  mounted() {
     this.getProd();
     this.getImgUrl();
     this.isCollec();
@@ -583,10 +581,10 @@ export default {
   methods: {
     // 新增采购数量
     addCount() {
-      // if(this.inventory >= this.maximum) {
-      //   this.$message.warning('库存不足或超出限购数量')
-      //   return
-      // }
+      if(this.inventory >= this.maximum) {
+        this.$message.warning('库存不足或超出限购数量')
+        return
+      }
       this.inventory ++
     },
     reduceCount() {
@@ -933,7 +931,7 @@ export default {
               _this.$route.path.replace()
               _this.$router.push({
                 name: "order-placeOrder",
-                params: {
+                query: {
                   arr: JSON.stringify(result.data),
                   placeType: 1,
                   orderType: 0
@@ -962,7 +960,7 @@ export default {
           {
             sku: this.sku,
             spu: this.spu
-          }
+          } 
         ]
       });
       this.$refcallback(

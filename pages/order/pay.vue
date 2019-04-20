@@ -78,7 +78,6 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.payamt = result.data.payamt
-              debugger
               _this.isPay = true
               _this.secondKill(
               _this.stringToDate(result.data.now),
@@ -111,11 +110,13 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+              debugger
               _this.$router.push({
                 path: '/order/payment',
                 query: {
                   url: result.data,
-                  payamt: _this.payamt
+                  payamt: _this.payamt,
+                  orderno: _this.orderno
                 }
               })
             } else {
