@@ -73,7 +73,7 @@ export default {
               }
             })
           } else {
-            _this.$message.error('订单支付异常')
+            _this.$message.error('订单支付异常, 请稍后重试')
           }
         }
       })

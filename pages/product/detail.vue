@@ -9,9 +9,9 @@
             <a-breadcrumb class="crumbs">
               <a-breadcrumb-item>首页</a-breadcrumb-item>
               <a-breadcrumb-item>
-                <a href="javascript:;" v-if="status == 0">商品列表</a>
-                <a href="javascript:;" v-if="status == 1">限时抢购</a>
-                <a href="javascript:;" v-if="status == 2">一块购</a>
+                <a href="javascript:;" v-if="rulecode == 0">商品列表</a>
+                <a href="javascript:;" v-if="rulecode == 1113">限时抢购</a>
+                <a href="javascript:;" v-if="rulecode == 1133">一块购</a>
               </a-breadcrumb-item>
               <a-breadcrumb-item>
                 <a href>{{ prodDetail.prodname }}</a>
@@ -37,14 +37,14 @@
               <p class="goods-name">{{ prodDetail.prodname }}</p>
               <p
                 class="rush-time"
-                v-if="status == 1 && isSecondkill"
+                v-if="rulecode == 1113 && isSecondkill"
               >限时抢购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒</p>
               <p
                 class="rush-time"
-                v-if="status == 2"
+                v-if="rulecode == 1133"
               >一块购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒</p>
               <div class="price-server">
-                <p class="onek-person" v-if="status == 2">
+                <p class="onek-person" v-if="rulecode == 1133">
                   <span>10.0</span>
                   <span>9.8</span>
                   <span>9.5</span>
@@ -54,13 +54,13 @@
                   <span>折</span>
                 </p>
                 <a-progress
-                  v-if="status == 1 || 2"
+                  v-if="rulecode === 1113 || 1133"
                   :percent="percentAge"
                   style="width: 295px;height: 8px;margin-left: 20px;"
                   :showInfo="false"
                   status="exception"
                 />
-                <p class="onek-person" v-if="status == 2">
+                <p class="onek-person" v-if="rulecode === 1133">
                   <span>1</span>
                   <span>5</span>
                   <span>10</span>
@@ -69,21 +69,21 @@
                   <span>25</span>
                   <span>人</span>
                 </p>
-                <p class="surplus" v-if="status == 1">
+                <p class="surplus" v-if="rulecode == 1113">
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
                 </p>
-                <p class="price" v-if="status == 0">
+                <p class="price" v-if="rulecode == 0">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ prodDetail.mp }}</span>
                   <!-- <del>￥32</del> -->
                 </p>
-                <p class="price" v-if="status == 1">
+                <p class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ discount.killPrice }}</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
-                <p class="price" v-if="status == 2">
+                <p class="price" v-if="rulecode === 1133">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ prodDetail.mp }}</span>
                 </p>
@@ -104,8 +104,8 @@
                 <p class="packing">
                   <span>规格/包装：</span>
                   <span class="margin-right190">{{ prodDetail.spec }}</span>
-                  <span>剂 型：</span>
-                  <span>瓶装</span>
+                  <!-- <span>剂 型：</span> -->
+                  <!-- <span>瓶装</span> -->
                 </p>
                 <p class="packing">
                   <span>批准文号：</span>
@@ -125,7 +125,7 @@
                 </p>
                 <p class="packing">
                   <span>有效期至：</span>
-                  <span>{{ prodDetail.vaildsdate + ' ~ ' + prodDetail.vaildedate }}</span>
+                  <span>{{ prodDetail.vaildsdate }} ~ {{ prodDetail.vaildedate }}</span>
                 </p>
                 <!-- <div class="packing">
                   <span>配送至</span>
@@ -147,11 +147,11 @@
                   <!-- <button class="addition width22" @click="addCount()">+</button> -->
                   <!-- <button class="reduce width22">-</button> -->
                   <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->
-                  <button type="danger" class="purchase" @click="placeOrder()"  v-if="status != 1">立即购买</button>
-                  <a-button class="add-cart" @click="addCart()" v-if="status != 1">
+                  <a-button :loading="loading" type="danger" class="purchase" @click="placeOrder()"  v-if="rulecode !== 1113">立即购买</a-button>
+                  <a-button class="add-cart" @click="addCart()" v-if="rulecode !== 1113">
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
-                  <a-button :disabled="!isKill" type="primary" class="purchase" @click="attendSecKill()" v-if="status == 1 && isSecondkill">立即抢购</a-button>
+                  <a-button :disabled="!isKill" type="primary" class="purchase" @click="attendSecKill()" v-if="rulecode === 1113 && isSecondkill">立即抢购</a-button>
                 </p>
               </div>
             </div>
@@ -260,7 +260,7 @@
             </div>
           </div>-->
           <!-- 一块购 -->
-          <div class="coupon-box" v-if="status == 2">
+          <div class="coupon-box" v-if="rulecode === 1133">
             <p class="coupon-title">一块购规则说明</p>
             <div class="coupon-content">
               <img src="../../assets/img/arrow.png" alt>
@@ -483,7 +483,7 @@ export default {
   },
   data() {
     return {
-      rulecode:0,//活动规则
+      rulecode: 0,//活动规则 
       activitiesBySKU: [],
       configs: {
         width:650,
@@ -510,7 +510,6 @@ export default {
       imgUrl: "",
       sku: "",
       spu: "",
-      status: 0, // 0 无活动 1 限时抢购 2 一块购
       rulestatus: 0,
       prodDetail: {
         prodsdate: '',
@@ -570,10 +569,11 @@ export default {
     this.spu = this.$route.query.spu;
     this.actcode = this.$route.query.actcode;
     this.rulestatus = this.$route.query.rulestatus;
-    this.status = this.$route.query.status;
     this.getProd();
     this.getImgUrl();
+    // 获取是否收藏
     this.isCollec();
+    // 获取活动详情
     this.getActivitiesBySKU();
     // 获取热销数据
     this.getProdDetailHotArea();
@@ -609,10 +609,11 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-              console.log("result.data-- " + JSON.stringify(result.data))
+            debugger
             _this.activitiesBySKU = result.data;
-            _this.rulecode = _this.activitiesBySKU[0].brulecode
-              // console.log("_this.rulecode-- " + _this.rulecode)
+            if(_this.activitiesBySKU.length > 0)
+              _this.rulecode = _this.activitiesBySKU[0].brulecode
+              debugger
           } else {
             _this.$message.error(result.message);
           }
@@ -631,7 +632,6 @@ export default {
         pnum: this.inventory,
         checked: 0
       })
-
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
@@ -649,7 +649,7 @@ export default {
         })
       );
     },
-     beforeSecKill() {
+    beforeSecKill() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "SecKillModule";
@@ -840,18 +840,21 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.prodDetail = result.data;
-            _this.queryCouponPub();
-            _this.details = JSON.parse(_this.prodDetail.detail);
-            if(_this.status == '0') {
-              _this.maximum = _this.prodDetail.store
-            }else if(_this.status == '1'){
-              _this.beforeSecKill()
-              _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
-            } else {
-              _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
+            if(result.data) {
+              _this.prodDetail = result.data;
+              _this.queryCouponPub();
+              _this.details = JSON.parse(_this.prodDetail.detail);
+              if(_this.rulecode === 0) {
+                _this.maximum = _this.prodDetail.store
+              }else if(_this.rulecode == 1113){
+                _this.beforeSecKill()
+                _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
+              } else {
+                _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
+              }
+            }else {
+              _this.$message.error('当前商品异常, 请稍后重试')
             }
-
           } else {
             _this.$message.error(result.message);
           }
