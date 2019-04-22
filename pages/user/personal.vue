@@ -115,7 +115,7 @@ export default {
     return {};
   },
   mounted() {
-    this.initData();
+    // this.initData();
   },
   methods: {
     async initData() {
