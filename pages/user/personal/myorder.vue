@@ -150,7 +150,7 @@ export default {
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "queryOrders";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = [this.ostatus,this.storeInfo.storeId];
+      iRequest.param.arrays = [this.ostatus];
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       this.$refcallback(
