@@ -281,25 +281,14 @@
                 <!-- 评价 -->
                 <a-tab-pane tab="药品评价" key="2" forceRender>
                   <div class="evaluate-box">
-                    <!-- <div class="praise">
-                      <div class="probability">
-                        <p class="percentage">好评率</p>
-                        <p class="percentage-num">98.6%</p>
-                        <a-rate :defaultValue="5" disabled/>
-                      </div>
-                    </div> -->
                     <div class="evaluate-list">
-                      <a-comment>
-                       
-                        <a slot="author">药店名称</a>
-                        
-                        <p
-                          slot="content"
-                          class="comment-text"
-                        >药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，</p>
-                        <p>2019-04-22 23:34:02    &nbsp &nbsp评分:<a-rate :defaultValue="evaluateVal" disabled/></p>
+                      <a-comment v-for="(item,index) in appriseArr" :key="index">
+                        <a slot="author">{{item.compName}}</a>
+                        <p slot="content"
+                          class="comment-text">
+                         {{item.content}}</p>
+                        <p>{{item.createtdate}}&nbsp {{item.createtime}}   &nbsp &nbsp评分:<a-rate :defaultValue="item.level" disabled/></p>
                       </a-comment>
-                      
                     </div>
                   </div>
                   <a-pagination :defaultCurrent="currentIndex" :total="total" @change="pageNumber"/>
@@ -352,114 +341,151 @@ export default {
   middleware: 'authenticated',
   data() {
     return {
-      evaluateVal: 0, // 药店评价商品的分数
-      currentIndex: 1, // 第几页
-      total: 0, // 总页数
-      rulecode: 0,//活动规则 
-      activitiesBySKU: [],
-      configs: {
-        width:650,
-        height:350,
-        maskWidth:100,
-        maskHeight:100,
-        maskColor:'red',
-        maskOpacity:0.2
-      },
-      isSecondkill: true,
-      unqid: 0,
-      isKill: false,
-      loading: false,
-      maximum: 1, // 最大库存
-      inventory: 1, // 当前库存
-      percentAge: 50,
-      flashSale: {
-        h: 0,
-        m: 0,
-        s: 0
-      },
-      hotList: [],
-      isShowCollec: false,
-      imgUrl: "",
-      sku: "",
-      spu: "",
-      prodDetail: {
-        prodsdate: '',
-        prodedate: ''
-      },
-      details: [
-        {
-          name: "功能主治",
-          content: "",
-          id: 1
+        appriseArr:[],//评价列表
+        evaluateVal: 0, // 药店评价商品的分数
+        currentIndex: 1, // 第几页
+        total: 0, // 总页数
+        rulecode: 0,//活动规则
+        activitiesBySKU: [],
+        configs: {
+          width:650,
+          height:350,
+          maskWidth:100,
+          maskHeight:100,
+          maskColor:'red',
+          maskOpacity:0.2
         },
-        {
-          name: "主要成分",
-          content: "",
-          id: 2
+        isSecondkill: true,
+        unqid: 0,
+        isKill: false,
+        loading: false,
+        maximum: 1, // 最大库存
+        inventory: 1, // 当前库存
+        percentAge: 50,
+        flashSale: {
+          h: 0,
+          m: 0,
+          s: 0
         },
-        {
-          name: "用法用量",
-          content: "",
-          id: 3
+        hotList: [],
+        isShowCollec: false,
+        imgUrl: "",
+        sku: "",
+        spu: "",
+        prodDetail: {
+          prodsdate: '',
+          prodedate: ''
         },
-        {
-          name: "不良反应",
-          content: "",
-          id: 4
+        details: [
+          {
+            name: "功能主治",
+            content: "",
+            id: 1
+          },
+          {
+            name: "主要成分",
+            content: "",
+            id: 2
+          },
+          {
+            name: "用法用量",
+            content: "",
+            id: 3
+          },
+          {
+            name: "不良反应",
+            content: "",
+            id: 4
+          },
+          {
+            name: "注意事项",
+            content: "",
+            id: 5
+          },
+          {
+            name: "禁忌",
+            content: "",
+            id: 6
+          }
+        ],
+        discount: {},
+        likes: 0,
+        brandNum: "",
+        dislikes: 0,
+        action: null,
+        moment,
+        couponPub: [],
+        isis:
+          "成人及儿童急、慢性腹泻。蒙脱石散（思密达）用于食道、胃、十二指肠疾病引起的相关疼痛症",
+        tabStyle: {
+          color: "black",
+          fontSize: "26px",
+          backgroundColor: "#f2f2f2"
         },
-        {
-          name: "注意事项",
-          content: "",
-          id: 5
-        },
-        {
-          name: "禁忌",
-          content: "",
-          id: 6
-        }
-      ],
-      discount: {},
-      likes: 0,
-      brandNum: "",
-      dislikes: 0,
-      action: null,
-      moment,
-      couponPub: [],
-      isis:
-        "成人及儿童急、慢性腹泻。蒙脱石散（思密达）用于食道、胃、十二指肠疾病引起的相关疼痛症",
-      tabStyle: {
-        color: "black",
-        fontSize: "26px",
-        backgroundColor: "#f2f2f2"
-      },
-      count: 1,
+        count: 1,
     };
   },
   mounted() {
-    this.sku = this.$route.query.sku;
-    this.spu = this.$route.query.spu;
-    this.actcode = this.$route.query.actcode;
-    // 获取商品详情
-    this.getProd();
-    // 获取优惠券
-    this.queryCouponPub();
-    this.getImgUrl();
-    // 获取是否收藏
-    this.isCollec();
-    // 获取活动详情
-    this.getActivitiesBySKU();
-    // 获取热销数据
-    this.getProdDetailHotArea();
-    if (this.actcode != 0) {
-      this.queryActiveType();
-    }
+      this.sku = this.$route.query.sku;
+      this.spu = this.$route.query.spu;
+      this.actcode = this.$route.query.actcode;
+      // 获取商品详情
+      this.getProd();
+      // 获取优惠券
+      this.queryCouponPub();
+      this.getImgUrl();
+      // 获取是否收藏
+      this.isCollec();
+      // 获取活动详情
+      this.getActivitiesBySKU();
+      // 获取热销数据
+      this.getProdDetailHotArea();
+    //获取评价信息
+      this.$nextTick(function(){
+          this.getGoodsApprise();
+      })
+      if (this.actcode != 0) {
+        this.queryActiveType();
+      }
   },
   methods: {
     pageNumber(pageNumber) {
       this.currentIndex = pageNumber
       // 再重新调一次请求评价列表方法
-      // this.
+      this.getGoodsApprise()
     },
+      //获取评价列表
+      getGoodsApprise() {
+          const _this = this;
+          const iRequest = new inf.IRequest();
+          iRequest.cls = "OrderOptModule";
+          iRequest.method = "getGoodsApprise";
+          console.log("appriseArr-- " + JSON.stringify(this.appriseArr));
+          iRequest.param.pageIndex = this.currentIndex
+          iRequest.param.pageNumber = 10
+          iRequest.param.json = JSON.stringify({
+              sku: this.sku,
+          })
+          iRequest.param.token = localStorage.getItem("identification")
+          this.$refcallback(
+              "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+              iRequest,
+              new this.$iceCallback(
+                  function result(result) {
+                      if (result.code === 200) {
+                          console.log("asdasd--- " + JSON.stringify(result.data))
+                          _this.appriseArr = result.data
+                          _this.total = result.total
+                      } else {
+                          _this.$message.error(result.message);
+                      }
+                  },
+                  function error(e) {
+                      console.log(error)
+                  }
+              )
+          );
+      },
     // 新增采购数量
     addCount() {
       if(this.inventory >= this.maximum) {
