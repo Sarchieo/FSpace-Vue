@@ -38,7 +38,7 @@
               </a-tooltip>
             </p>
             <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
-              <div class="width33 goods-pic">
+              <div class="goods-pic">
                 <img
                   v-lazy="item.src"
                   alt
@@ -48,34 +48,31 @@
                 <p class="menu-name">{{items.manun}}</p>
                 <!-- <p class="date">有效期：2019-04-12</p> -->
               </div>
-              <div class="width11 pay price-div">
+              <div class="pay price-div">
                 <p class="price-p">￥{{items.pdprice}}</p>
               </div>
-              <div class="width11 pay count-div">
+              <div class="pay count-div">
                 <p>{{items.pnum}}</p>
               </div>
 
-              <div class="width11 pay fact-div">
+              <div class="pay fact-div">
                 <p class="shiji">￥{{items.payamt}}</p>
                 <p class="freight">(含运费{{items.freight}}元)</p>
               </div>
-
-              <div class="width11 state">
+              <div class="state">
                 <p class="sucess">{{statusText(item.ostatus)}}</p>
-
-              </div>
-              <div class="width12 operation">
-                <p class="button-p" v-if="item.ostatus === 0"><a-button type="primary" class="confirm-btn">付款</a-button></p>
-                <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p>
-                <p v-if="item.ostatus === 3">申请售后</p>
-                <!--  v-if="item.ostatus === 3" -->
-                <p @click="toEvaluate(item)" ref="toevaluate"><a>评论</a></p>
-                <p class="canle-order">取消订单</p>
-                <p class="detail" @click="toDetails(item)">订单详情</p>
-                <p v-if="item.ostatus !== 0">再次购买</p>
               </div>
             </div>
-
+            <div class="operation">
+              <p class="button-p" v-if="item.ostatus === 0"><a-button type="primary" class="confirm-btn">付款</a-button></p>
+              <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p>
+              <p v-if="item.ostatus === 3">申请售后</p>
+              <!--  v-if="item.ostatus === 3" -->
+              <p @click="toEvaluate(item)" ref="toevaluate"><a>评论</a></p>
+              <p class="canle-order">取消订单</p>
+              <p class="detail" @click="toDetails(item)">订单详情</p>
+              <p v-if="item.ostatus !== 0">再次购买</p>
+            </div>
           </li>
            <a-pagination  v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
         </ul>
@@ -326,15 +323,21 @@ export default {
       }
     }
     .goods-box {
-      .container-size(block, 943px, 108px, 0 auto, 0px);
+      .container-size(inline-block, 820px, 108px, 0 auto, 0px);
       border-bottom: 1px solid #e0e0e0;
       div {
         display: inline-block;
         height: 108px;
       }
       .goods-pic {
+        float: left;
         padding-top: 14px;
         padding-left: 10px;
+        img{
+          float: left;
+          width: 80px;
+          height: 80px;
+        }
         .goods-text {
           // .position(absolute, 10px, 110px);
           width: 200px;
@@ -375,8 +378,7 @@ export default {
       }
       .count,
       .sale,
-      .price,
-      .operation {
+      .price{
         float: left;
         padding: 10px 0px;
         .button-p{
@@ -403,7 +405,11 @@ export default {
       }
       .state {
         float: left;
+        width: 126px;
+        min-height: 108px;
+        height: auto;
         padding-top: 42px;
+        border-left: 1px solid #e0e0e0;
         .sucess {
           // .position(absolute, 28px, 0px);
           width: 100%;
@@ -431,15 +437,21 @@ export default {
   float: left;
 }
 .price-div{
+  float: left;
+  width: 126px;
   text-align: center;
   line-height: 108px;
   color: #ed3025;
 }
 .count-div{
+  float: left;
+  width: 126px;
    text-align: center;
   line-height: 108px;
 }
 .fact-div{
+  float: left;
+  width: 126px;
   padding: 32px 0px;
   p{
     text-align: center;
@@ -506,6 +518,18 @@ export default {
   .retreat-right{
     float: right;
     .container-size(inline-block, 140px, 150px, 0, 0px);
+  }
+}
+.operation {
+  float: right;
+  width: 123px;
+  min-height: 108px;
+  height: auto;
+  border-bottom: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
+  padding-top: 10px;
+  p{
+    text-align: center;
   }
 }
 </style>
