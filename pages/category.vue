@@ -138,6 +138,7 @@
       <!-- 如果搜索结果为空显示 -->
       <div v-show="isGoods" class="no-goods-box">
         <a-icon type="info-circle"/>
+        <!-- <img src="../assets/img/nodata.png" /> -->
         <p class="no-goods">没有找到您想找的药品！</p>
       </div>
       <f-space-footer></f-space-footer>

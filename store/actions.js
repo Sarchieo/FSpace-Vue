@@ -32,7 +32,6 @@ const actions = {
   async setLogout(store, { context }) {
     store.commit(types.SET_USER, removeUser())
     store.commit(types.SET_LOGIN_STATE, saveUserStatus(false, context))
-    
   }
 }
 export default actions
