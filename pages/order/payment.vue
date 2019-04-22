@@ -10,9 +10,9 @@
               </template>
               <span slot="description"></span>
             </a-step>
-            <a-step title="确认订单信息" />
-            <a-step title="订单付款" />
-            <a-step title="订单完成" />
+            <a-step title="确认采购单信息" />
+            <a-step title="采购单付款" />
+            <a-step title="采购单完成" />
           </a-steps>
         </div>
           <div class="payment-header">
@@ -73,7 +73,7 @@ export default {
               }
             })
           } else {
-            _this.$message.error('订单支付异常')
+            _this.$message.error('订单支付异常, 请稍后重试')
           }
         }
       })

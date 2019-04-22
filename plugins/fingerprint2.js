@@ -1,6 +1,10 @@
 import Fingerprint2 from 'fingerprintjs2'
 import md5 from 'md5'
 
+(function(){
+  generateIdentification();
+}());
+
 function generateIdentification() {
   let identification = localStorage.getItem("identification")
   if(!identification && identification === null) {
@@ -11,5 +15,3 @@ function generateIdentification() {
     },500)
   }
 }
-
-export { generateIdentification }
