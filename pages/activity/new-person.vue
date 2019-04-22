@@ -47,9 +47,9 @@
               </a-card>
             </div>
             <a-pagination
-              v-model="current"
-              :total="this.newPersonList.length"
+              :total="total"
               v-if="this.newPersonList.length !== 0 "
+              @change = "onChangePage"
             />
           </div>
         </div>
@@ -69,7 +69,8 @@ export default {
   data() {
     return {
       count: 1,
-      current: 1,
+      total: 0,
+      currentIndex: 1,
       actcode: 0, // 活动码
       newPersonList: [],
       tabStyle: {
@@ -99,7 +100,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getNewMemberMallFloor";
-      iRequest.param.pageIndex = 1;
+      iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
@@ -111,6 +112,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.newPersonList = result.data
             _this.newPersonID = result.data.actcode
+            _this.total = result.total
             _this.getImgUrl(_this.newPersonList.list)
           } else {
             _this.$message.error(result.message);
@@ -118,6 +120,10 @@ export default {
         })
       );
     },
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.getNewPersonList();
+    }
   }
 };
 </script>

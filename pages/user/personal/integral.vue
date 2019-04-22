@@ -8,7 +8,7 @@
     </p>
     <p class="integral-detail">积分明细</p>
 
-    <a-table :columns="columns" :dataSource="data" bordered>
+    <a-table :columns="columns" :dataSource="data" bordered style="display: block;width: 935px;margin: 0 auto;margin-top: 25px;">
       <template slot="name" slot-scope="text">
         <a href="javascript:;">{{text}}</a>
       </template>

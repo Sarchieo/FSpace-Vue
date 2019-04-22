@@ -28,7 +28,7 @@
                   <button @click="toDetails()">查看详情</button>
                 </a-card>  
               </div>
-              <a-pagination v-model="current" :total="this.newGoodsList.length" v-if="this.newGoodsList.length !== 0 "/>
+              <a-pagination :total="total" v-if="this.newGoodsList.length !== 0 " @change="onChangePage"/>
           </div>
         </div>
       </a-layout-content>
@@ -46,7 +46,8 @@ export default {
   },
   data() {
     return {
-        current: 1,
+        total: 0,
+        currentIndex: 1,
         actcode: 0,
         tabStyle: {
             color: '#c40000',
@@ -72,8 +73,8 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getNewMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
+      iRequest.param.pageIndex = this.currentIndex;
+      iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -82,6 +83,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.newGoodsList = result.data;
+            _this.total = result.total
             _this.getImgUrl(_this.newGoodsList);
           } else {
             _this.$message.error(result.message);
@@ -89,6 +91,10 @@ export default {
         })
       );
     },
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.getNewGoods();
+    }
   }
 };
 </script>

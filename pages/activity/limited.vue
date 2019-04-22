@@ -73,7 +73,7 @@
               </a-tab-pane>
 
             </a-tabs>
-             <a-pagination v-model="current" :total="this.pagination.length" v-if="this.pagination.length !== 0 "/>
+             <a-pagination :total="total" v-if="this.goodsList.length !== 0 " @change="onChangePage"/>
           </div>
         </div>
       </a-layout-content>
@@ -91,6 +91,8 @@ export default {
   },
   data() {
     return {
+      total: 0,
+      currentIndex: 1,
       current: 1,
       pagination: [],
       tabStyle: {
@@ -112,7 +114,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getAllDiscount";
-      iRequest.param.pageIndex = 1;
+      iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
         keyword: '',
@@ -127,6 +129,7 @@ export default {
             result.data.list = result.data.list;
             _this.goodsList = result.data;
             _this.pagination = _this.goodsList.list
+            _this.total = result.total
             _this.goodsList.list.forEach((item) => {
               item.percentage = 100 - item.buynum/item.surplusstock*100
             })
@@ -140,6 +143,10 @@ export default {
           console.log(error)
         })
       );
+    },
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.getAllDiscount();
     },
     async getImgUrl(arr) {
       let _this = this;

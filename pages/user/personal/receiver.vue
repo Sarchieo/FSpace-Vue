@@ -51,8 +51,8 @@
         <p class="store-info">门店地址：{{ storeInfo.address }}</p>
       </div>
       <!-- <p class="consignee">新增收货人</p> -->
-     <a-button  type="primary" @click='addReceiver'>新增收货人</a-button>
-     <a-table :columns="columns" :dataSource="data" :pagination="false" :bordered="true" rowKey="shipid" style="width: 965px;margin-bottom: 100px;">
+     <a-button type="primary" @click='addReceiver' class="add-person">新增收货人</a-button>
+     <a-table :columns="columns" :dataSource="data" :pagination="false" :bordered="true" rowKey="shipid" style="display: block;width: 935px;margin: 0 auto;margin-bottom: 100px;">
         <span slot="action" slot-scope="record">
           <a href="javascript:;" @click='updConsignee(record)'>修改</a>
           <a-divider type="vertical" />
@@ -267,14 +267,17 @@ export default {
   margin-bottom: 80px;
 }
 .person-count {
-  .p-size(40px,40px,14px,left,0px,#333333);
+  .p-size(40px,40px,14px,left,22px,#333333);
+  margin-top: 10px;
   span{
     color: #ed3025;
   }
 }
 .address-box {
-  width:965px;
+  display: block;
+  width:935px;
   height: 200px;
+  margin: 20px auto;
   border: 1px solid #e0e0e0;
 }
 .my-address {
@@ -284,6 +287,11 @@ export default {
 }
 .store-info {
   .p-size(40px,40px,16px,left,50px,#333333);
+}
+.add-person{
+  .button-size( 90px,36px,36px,14px,0px,3px);
+  margin-left: 24px;
+  margin-bottom: 20px;
 }
 </style>
 

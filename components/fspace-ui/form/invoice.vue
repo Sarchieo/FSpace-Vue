@@ -146,7 +146,7 @@ export default {
      border-radius: 0px!important;
    }
    .comp-name-address {
-     .p-size(60px,60px,14px,left,0px,#333333);
+     .p-size(50px,50px,14px,left,0px,#333333);
      span{
        .container-size(inline-block,206px,auto,0,0px);
        text-align: right;

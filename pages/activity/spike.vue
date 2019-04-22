@@ -37,7 +37,7 @@
                 </p>
               </a-card>
             </div>
-            <a-pagination v-model="current" :total="this.secondList.length" v-if="this.secondList.length !== 0"/>
+            <a-pagination :total="total" v-if="this.secondList.length !== 0" @change="onChangePage"/>
             <!-- <a-pagination v-model="current" :total="this.searchList.length"/> -->
           </div>
         </div>
@@ -56,7 +56,8 @@ export default {
   },
   data() {
     return {
-      current: 1,
+      currentIndex: 1,
+      total: 0,
          teamBuy: {
         h: 0,
         m: 0,
@@ -73,105 +74,7 @@ export default {
         background: "black"
       },
       teamBuyList: [],
-      pagination: [],
-      goodsList: [
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/TB195qYLXXXXXb2XFXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "冬虫夏草",
-          advantage: "5g/盒",
-          surplus: 56,
-          new: 344,
-          old: 309,
-          menu: "三九制药有限公司",
-          least: 10,
-          most: 100
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/TB1YUDFJpXXXXbnXXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "长白山人参",
-          advantage: "5g/盒",
-          surplus: 12,
-          new: 888,
-          old: 1099,
-          menu: "三九制药有限公司",
-          least: 10,
-          most: 100
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/TB1EpYsKpXXXXbDXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "宁夏枸杞",
-          advantage: "5g/盒",
-          surplus: 34,
-          new: 23,
-          old: 24,
-          menu: "三九制药有限公司",
-          least: 10,
-          most: 100
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i4/TB1L37TMpXXXXbnXVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "胶原蛋白口服液",
-          advantage: "5g/盒",
-          surplus: 99,
-          new: 199,
-          old: 209,
-          menu: "三九制药有限公司",
-          least: 10,
-          most: 100
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB1lUe.OVXXXXcpapXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "叶酸片",
-          advantage: "5g/盒",
-          surplus: 56,
-          new: 344,
-          old: 309,
-          menu: "三九制药有限公司",
-          least: 10,
-          most: 100
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "山东阿胶",
-          advantage: "5g/盒",
-          surplus: 45,
-          new: 222,
-          old: 233,
-          menu: "三九制药有限公司",
-          least: 10,
-          most: 100
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i1/TB103TQOXXXXXaLaXXXXXXXXXXX_!!2-item_pic.png_160x160q90.jpg",
-          name: "盘龙云海排毒胶囊",
-          advantage: "5g/盒",
-          surplus: 88,
-          new: 56,
-          old: 59,
-          menu: "三九制药有限公司",
-          least: 10,
-          most: 100
-        },
-        {
-          src:
-            "//img.alicdn.com/imgextra/i3/TB1D1LfPFXXXXb9XVXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-          name: "多维素片",
-          advantage: "5g/盒",
-          surplus: 19,
-          new: 88,
-          old: 99,
-          menu: "三九制药有限公司",
-          least: 10,
-          most: 100
-        }
-      ]
+      pagination: []
     };
   },
   mounted() {
@@ -185,7 +88,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getSeckillMallFloor";
-      iRequest.param.pageIndex = 1;
+      iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
@@ -197,6 +100,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.secondList = result.data
             _this.secondID = result.data.actcode
+            _this.total = result.total
             _this.getImgUrl(_this.secondList.list)
             _this.secondKills(_this.stringToDate(_this.secondList.now), _this.secondList.edate)
           } else {
@@ -204,6 +108,10 @@ export default {
           }
         })
       );
+    },
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.getSeckillMallFloor();
     },
     async getImgUrl(arr) {
       let _this = this;

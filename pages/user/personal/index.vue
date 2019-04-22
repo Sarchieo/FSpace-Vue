@@ -3,7 +3,7 @@
     <div class="certificates-content">
       <h2 class="pharmacy-info">药店信息</h2>
       <a-form class="form-box" :form="form" @submit="handleSubmit">
-        <a-form-item label="所属药店：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+        <a-form-item label="所属药店：" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
           <a-input
             :disabled="!isEditor"
             v-decorator="[
@@ -26,7 +26,7 @@
             ]"
           />
         </a-form-item>
-        <a-form-item label="药店详细地址：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+        <a-form-item label="药店详细地址：" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
           <a-textarea
             :disabled="!isEditor"
             placeholder="请填写营业执照上一致的药店地址"
@@ -51,6 +51,7 @@
             class="upload"
             v-for="(item, index) in uploadList"
             :key="index"
+           
           >
             <div @click="setUploadIndex(index)">
               <a-upload
@@ -632,9 +633,11 @@ export default {
 .ant-input {
   border: 1px solid #e0e0e0;
   border-radius: 0px !important;
+  font-size: 16px;
 }
 .city {
-  width: 450px;
+  width: 460px;
+  font-size: 16px;
   border: 1px solid #e0e0e0;
 }
 .ant-upload.ant-upload-drag p.ant-upload-drag-icon .anticon {
@@ -644,10 +647,6 @@ export default {
   display: inline-block;
   width: 240px;
   height: 200px;
-}
-.ant-upload-list-picture-card .ant-upload-list-item {
-  width: 150px;
-  height: 150px;
 }
 </style>
 
