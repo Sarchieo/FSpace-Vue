@@ -68,7 +68,8 @@
                 <p class="button-p" v-if="item.ostatus === 0"><a-button type="primary" class="confirm-btn">付款</a-button></p>
                 <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p>
                 <p v-if="item.ostatus === 3">申请售后</p>
-                <p @click="toEvaluate()" ref="toevaluate" v-if="item.ostatus === 3"><a>评论</a></p>
+                <!--  v-if="item.ostatus === 3" -->
+                <p @click="toEvaluate(item)" ref="toevaluate"><a>评论</a></p>
                 <p class="canle-order">取消订单</p>
                 <p class="detail" @click="toDetails(item)">订单详情</p>
                 <p v-if="item.ostatus !== 0">再次购买</p>
@@ -207,11 +208,15 @@ export default {
       this.currentIndex = 1
       this.queryOrderList()
     },
-    toEvaluate() {
+    toEvaluate(value) {
       var routeData = this.$router.resolve({
-            path: "/user/evaluate"
-          });
-        window.open(routeData.href, '_blank');
+        path: "/user/evaluate",
+        query: {
+          orderno: value.orderno,
+          goods: JSON.stringify(value.goods) 
+        }
+      });
+      window.open(routeData.href, '_blank');
     },
     statusText(val) {
       var text = ''

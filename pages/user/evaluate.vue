@@ -41,7 +41,7 @@
                <a-textarea placeholder="请对您购买的药品进行评价" :rows="5" v-model="evaluateText" class="evaluate-text" maxlength="300" @input="descInput"/>
              <span class="float-right">{{txtVal}}/300</span>
             </div>
-            
+<!--             
             <a-upload
               style="display: inline-block;margin-top:10px;"
               action="//jsonplaceholder.typicode.com/posts/"
@@ -55,7 +55,7 @@
                 <div class="ant-upload-text">上传照片,最多八张</div>
               </div>
             </a-upload>
-            
+             -->
             <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
               <img alt="example" style="width: 100%" :src="previewImage" />
             </a-modal>
@@ -84,7 +84,14 @@ export default {
        previewVisible: false,
       previewImage: '',
       fileList: [],
+      orderno: '',
+      goods: []
     };
+  },
+  mounted() {
+    this.orderno = this.$route.query.orderno
+    this.goods = this.$route.query.goods
+    console.log(this.orderno,this.goods )
   },
   methods: {
      handleCancel () {
@@ -196,7 +203,7 @@ export default {
   margin-bottom: 10px;
   li {
     .container-size(block, 1150px, auto, 0 auto, 0px);
-    border-bottom: 1px solid #e0e0e0;
+    // border-bottom: 1px solid #e0e0e0;
     padding: 30px 30px 30px 10px;
     .goods-pic {
       float: left;
@@ -225,10 +232,9 @@ export default {
   }
 }
 .comm-btn{
-  float: right;
+ display: block;
   .button-size(150px,40px,40px,16px,0px,5px);
   .button-color(1px solid transparent,#ed3025,#ffffff);
-  margin-right: 20px;
-  margin-top: 45px;
+  margin: 0 auto;
 }
 </style>
