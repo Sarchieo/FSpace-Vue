@@ -37,7 +37,7 @@ export function saveUserStatus (state, context) {
     path: '/',
     maxAge: 60 * 60 * 24 * 7
   })
-  return true
+  return state
 }
 
 export function removeUserStatus (context) {

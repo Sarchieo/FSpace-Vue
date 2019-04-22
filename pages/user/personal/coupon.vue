@@ -213,6 +213,7 @@ export default {
       height: 175px;
     }
     .discount {
+      float: left;
       .container-size(inline-block, 245px, 175px, 0, 0px);
       .position(relative, 0px, 0px);
       border: 1px solid #e0e0e0;
@@ -270,7 +271,7 @@ export default {
       }
       .discount {
         .container-size(inline-block, 245px, 175px, 0, 0px);
-        .position(relative, 0px, 0px);
+        // .position(relative, 0px, 0px);
         border: 1px solid #e0e0e0;
         .state-pic{
           .position(relative, -46px, 176px);

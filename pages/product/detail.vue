@@ -346,6 +346,7 @@ export default {
       return this.$store.state.user;
     }
   },
+  middleware: 'authenticated',
   data() {
     return {
       evaluateVal: 0, // 药店评价商品的分数
@@ -378,7 +379,6 @@ export default {
       imgUrl: "",
       sku: "",
       spu: "",
-      rulestatus: 0,
       prodDetail: {
         prodsdate: '',
         prodedate: ''
@@ -436,8 +436,10 @@ export default {
     this.sku = this.$route.query.sku;
     this.spu = this.$route.query.spu;
     this.actcode = this.$route.query.actcode;
-    this.rulestatus = this.$route.query.rulestatus;
+    // 获取商品详情
     this.getProd();
+    // 获取优惠券
+    this.queryCouponPub();
     this.getImgUrl();
     // 获取是否收藏
     this.isCollec();
@@ -482,11 +484,9 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
             _this.activitiesBySKU = result.data;
             if(_this.activitiesBySKU.length > 0)
               _this.rulecode = _this.activitiesBySKU[0].brulecode
-              debugger
           } else {
             _this.$message.error(result.message);
           }
@@ -715,7 +715,6 @@ export default {
           if (result.code === 200) {
             if(result.data) {
               _this.prodDetail = result.data;
-              _this.queryCouponPub();
               _this.details = JSON.parse(_this.prodDetail.detail);
               if(_this.rulecode === 0) {
                 _this.maximum = _this.prodDetail.store
@@ -1000,8 +999,7 @@ export default {
         path: '/product/detail',
         query: {
           sku: item.sku,
-          spu: item.spu,
-          rulestatus: item.rulestatus
+          spu: item.spu
         }
       })
       window.open(routeData.href, '_blank');

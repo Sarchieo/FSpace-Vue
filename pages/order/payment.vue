@@ -10,7 +10,7 @@
               </template>
               <span slot="description"></span>
             </a-step>
-            <a-step title="确认采购单信息" />
+            <a-step title="采购单信息" />
             <a-step title="采购单付款" />
             <a-step title="采购单完成" />
           </a-steps>
