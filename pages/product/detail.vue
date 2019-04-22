@@ -531,7 +531,7 @@ export default {
       iRequest.cls = "SecKillModule";
       iRequest.method = "beforeSecKill";
       iRequest.param.json = JSON.stringify({
-        sku: _this.prodDetail.sku,
+        sku: _this.sku,
         actno: _this.actcode
       })
       iRequest.param.token = localStorage.getItem("identification");
@@ -624,7 +624,7 @@ export default {
       iRequest.method = "queryCouponPub";
       iRequest.param.token = localStorage.getItem("identification")
       iRequest.param.json = JSON.stringify({
-        gcode: _this.prodDetail.sku, // sku
+        gcode: _this.sku, // sku
         compid: _this.storeInfo.storeId, // 企业id
         pageSize: 5,
         pageNo: 1
@@ -637,6 +637,7 @@ export default {
             if (result.code === 200) {
               _this.couponPub = result.data;
             } else {
+              debugger
               _this.$message.error(result.message);
             }
           },

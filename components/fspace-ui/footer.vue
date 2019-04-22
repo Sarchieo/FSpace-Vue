@@ -5,8 +5,8 @@
         <p class="footer-message-p">客户服务</p>
         <div class="footer-message-box">
           <div class="footer-message-box-item">
-            <a-icon type="smile"/>
-            <p class="p-left">在线客服</p>
+            <!-- <a-icon type="smile"/> -->
+            <!-- <p class="p-left">在线客服</p> -->
           </div>
           <div class="footer-message-box-item">
             <a-icon type="message"/>

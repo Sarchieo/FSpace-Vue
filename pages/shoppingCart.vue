@@ -379,7 +379,7 @@ export default {
             _this.likeList = result.data
             _this.getImgUrl(_this.likeList)
           } else {
-            _this.$message.error('猜你喜欢获取失败, 原因:' + result.message);
+            _this.$message.error(result.message);
           }
         })
       );
