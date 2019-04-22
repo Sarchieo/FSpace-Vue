@@ -64,11 +64,11 @@
               </div>
             </div>
             <div class="operation">
-              <p class="button-p" v-if="item.ostatus === 0"><a-button type="primary" class="confirm-btn">付款</a-button></p>
-              <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p>
+              <p class="button-p" v-if="item.ostatus === 0"><a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button></p>
+              <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
               <p v-if="item.ostatus === 3">申请售后</p>
               <!--  v-if="item.ostatus === 3" -->
-              <p @click="toEvaluate(item)" ref="toevaluate"><a>评论</a></p>
+              <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
               <p class="canle-order">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
               <p v-if="item.ostatus !== 0">再次购买</p>
@@ -79,7 +79,7 @@
         <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
-          <p @click="saleAfter()">申请售后</p>
+          <!-- <p @click="saleAfter()">申请售后</p> -->
         </div>
         <a-modal
           title="选择售后类型"
@@ -120,7 +120,7 @@ export default {
   },
   computed: {
     storeInfo() {
-      return this.$store.getters.user(this);
+      return this.$store.state.user;
     }
   },
   data() {
@@ -155,7 +155,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-
             _this.orderList = result.data;
             _this.total = result.total
             _this.currentIndex = result.pageNo
@@ -181,24 +180,20 @@ export default {
       });
     },
     handleOk(e) {
-      debugger
-      console.log(e)
       this.visible = false
     },
     handleCancel(e) {
-      debugger
-       console.log(e)
       this.visible = false
     },
     toDetails(item) {
      var routeData = this.$router.resolve({
-            path: "/user/order-detail",
-            query: {
-              orderno: item.orderno,
-              cusno: item.cusno
-            }
-          });
-        window.open(routeData.href, '_blank');
+        path: "/user/order-detail",
+        query: {
+          orderno: item.orderno,
+          cusno: item.cusno
+        }
+      });
+    window.open(routeData.href, '_blank');
     },
     callback(key) {
       this.ostatus = key
@@ -243,6 +238,15 @@ export default {
         break;
       }
       return text
+    },
+    toPay(item) {
+      var routeData = this.$router.resolve({
+        path: "/order/pay",
+        query: {
+          orderno: item.orderno
+        }
+      });
+      window.open(routeData.href, '_blank');
     },
     saleAfter() {
       this.visible = true

@@ -39,7 +39,7 @@
                 <p class="btn-p">
                   <button :disabled="item.status == 1" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :disabled="item.status == 1" :min="1" :max="item.limit" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <a-input-number :disabled="item.status == 1" :min="1" :max="item.inventory" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
                   <button :disabled="item.status == 1" @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
@@ -66,7 +66,7 @@
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
           </div>
-          <div class="guess">
+          <div class="guess" v-if="likeList.length > 0">
             <p class="title">猜你喜欢</p>
             <div class="carousel">
               <a-carousel arrows>
@@ -86,7 +86,7 @@
                 >
                   <a-icon type="right-circle"/>
                 </div>
-                <div v-for="(item,index) in mealList" :key="index" style="padding-left: 6.5%;" @click="toDetail()">
+                <div v-for="(item,index) in likeList" :key="index" style="padding-left: 6.5%;" @click="toDetail()">
                   <a-card
                     hoverable
                     class="meal-card"
@@ -94,8 +94,8 @@
                     :key="index"
                   >
                     <img v-lazy="items.imgURl" slot="cover">
-                    <p class="meal-price">${{items.price}}</p>
-                    <p class="meal-name">{{items.name}}</p>
+                    <p class="meal-price">${{items.mp}}</p>
+                    <p class="meal-name">{{items.prodname}}</p>
                   </a-card>
                 </div>
               </a-carousel>
@@ -126,7 +126,8 @@ export default {
       checked: false,
       discount: 100,
       mealList: [], // 猜你喜欢列表
-      cartList: []
+      cartList: [],
+      likeList: []
       // acamt amt: 优惠总金额 checked 0未选中 discount: 商品优惠价（优惠多少） inventory 总库存 limitnum 限购 0 不限购 num 商品数量 pdno :sku
       // pdprice 🐤价格 ptitle 名称   rulename 活动名称 spec 规格 status  unqid 唯一id verdor 厂家 vperiod有效期
     };
@@ -165,11 +166,14 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.cartList = result.data
-              _this.cartList.forEach((item) => {
-                item.checked ? false : true
-              })
-              _this.getImgUrl(_this.cartList)
+              if(result.data) {
+                _this.cartList = result.data
+                console.log(_this.cartList)
+                _this.cartList.forEach((item) => {
+                  item.checked ? false : true
+                })
+                _this.getImgUrl(_this.cartList)
+              }
             } else {
               _this.$message.error(result.message);
             }
@@ -328,8 +332,8 @@ export default {
     addCount(index, item) {
       let _this = this
       // 限购数量
-      if(item.num >= item.limit) {
-        _this.$message.warning(item.name + '限购' + item.limit + '件')
+      if(item.num >= item.inventory) {
+        _this.$message.warning(item.ptitle + '限购' + item.inventory + '件')
         return
       }
       item.checked = true
@@ -372,9 +376,10 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
+            _this.likeList = result.data
+            _this.getImgUrl(_this.likeList)
           } else {
-            _this.$message.error(result.message);
+            _this.$message.error('猜你喜欢获取失败, 原因:' + result.message);
           }
         })
       );

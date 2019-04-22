@@ -23,7 +23,7 @@
               <p class="pay-success" v-if="item.ostatus === 0">提交订单</p>
               <p class="pay-success" v-if="item.ostatus === 2">等待收货</p>
               <p class="pay-success" v-if="item.ostatus === 3">完成</p>
-              <p class="pay-success" v-if="item.ostatus === 4">已取消</p>
+              <p class="pay-success" v-if="item.ostatus === -4">已取消</p>
               <p class="pay-success" v-if="item.ostatus === 1">付款成功</p>
               <!-- 付款按钮和提交订单一起显示 -->
               <p class="pay-btn" v-if="item.ostatus === 0"><button @click="toPay()">付款</button></p>
@@ -37,7 +37,7 @@
             </div>
             <div class="line"></div>
             <!-- 订单状态 -->
-            <div class="step-right">
+            <div class="step-right" v-if="item.ostatus !== -4">
               <a-steps class="setps-box" :current="0">
                 <a-step title="提交订单" >
                   <a-icon type="profile" slot="icon"/>
@@ -58,7 +58,7 @@
             </div>
           </div>
           <!-- 物流信息 -->
-          <div class="logistics-box-info">
+          <div class="logistics-box-info" v-if="item.ostatus >= 2 && item.ostatus != -4">
             <div class="logistics-left">
               <p>送货方式：普通快递</p>
               <p>承运人： 中国邮政</p>
@@ -215,7 +215,6 @@ export default {
   methods: {
     // 查询订单详情
     queryOrderDetail() {
-      debugger
       let _this = this;
       let orderno = this.$route.query.orderno;
       let cusno = this.$route.query.cusno;
@@ -229,7 +228,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
             _this.orderDetail = result.data;
             console.log(_this.orderDetail);
           } else {
@@ -241,7 +239,7 @@ export default {
     cancelOrder() {
       this.visible = true;
     },
-      //取消订单
+    // 取消订单
     hideModal() {
         let _this = this;
         let iRequest = new inf.IRequest();
@@ -258,9 +256,10 @@ export default {
             iRequest,
             new this.$iceCallback(function result(result) {
                 if (result.code === 200) {
-                    _this.visible = false;
+                  _this.visible = false;
+                  _this.queryOrderDetail()
                 } else {
-                    _this.$message.error(result.message);
+                  _this.$message.error(result.message);
                 }
             })
         );
@@ -268,8 +267,11 @@ export default {
     },
     toPay() {
       var routeData = this.$router.resolve({
-            path: "/order/pay"
-          });
+        path: "/order/pay",
+        query: {
+          orderno: this.orderDetail[0].orderno
+        }
+      });
       window.open(routeData.href, '_blank');
     }
   }
