@@ -218,47 +218,6 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="coupon-box">
-            <p class="coupon-title">
-              商品优惠券
-              <span>
-                更多优惠券
-                <a-icon type="right"/>
-              </span>
-            </p>
-            <div class="coupon-content">
-              <div class="coupon-card" @click="revCoupon()">
-                <div class="coupon-left">
-                  <p class="coupon-type">满500包邮</p>
-                  <span>满500包邮</span>
-                </div>
-                <div class="coupon-right">
-                    <img src="../../assets/img/receive.png" class="state-pic" alt>
-                </div>
-              </div>
-              <div class="coupon-card" @click="revCoupon()">
-                <div class="coupon-left">
-                  <p class="coupon-type">包邮券</p>
-                  <span>满500打9折</span>
-                  <span>有效期 10 天</span>
-                </div>
-                <div class="coupon-right">
-                    <img class="state-pic" src="../../assets/img/receive.png" alt>
-                </div>
-              </div>
-              <div class="coupon-card" @click="revCoupon()">
-                <div class="coupon-left">
-                  <p class="coupon-type">减现券</p>
-                  <span>满500 减 5</span>
-                  <span>有效期 10 天</span>
-                </div>
-                <div class="coupon-right">
-                    <img class="state-pic" src="../../assets/img/receive.png" alt>
-                </div>
-              </div>
-            </div>
-          </div>-->
           <!-- 一块购 -->
           <div class="coupon-box" v-if="rulecode === 1133">
             <p class="coupon-title">一块购规则说明</p>
@@ -279,21 +238,6 @@
                     <p><span class="title-left">批准文号：</span>{{prodDetail.standarNo}} <span class="right-text">{{prodDetail.rxName}}</span><span class="title-right">产品类型：</span></p>
                     <p><span class="title-left">温馨提示：</span>  部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准</p>
                   </div>
-                  <!-- <table class="goods-detal-text">
-                    <thead>
-
-                    </thead>
-                    <tbody class="tbody">
-                      <tr class="detail-list">
-                        <td class="goods-title">药品名称</td>
-                        <td class="goods-text"> {{prodDetail.prodname}}</td>
-                      </tr>
-                       <tr class="detail-list">
-                        <td class="goods-title">规格包装</td>
-                        <td class="goods-text"> {{prodDetail.spec}}</td>
-                      </tr>
-                    </tbody>
-                  </table> -->
                   <div class="goods-detail">
                     <p class="instructions">{{prodDetail.prodname}}说明书</p>
                     <p class="detail-list">
@@ -337,104 +281,28 @@
                 <!-- 评价 -->
                 <a-tab-pane tab="药品评价" key="2" forceRender>
                   <div class="evaluate-box">
-                    <div class="praise">
+                    <!-- <div class="praise">
                       <div class="probability">
                         <p class="percentage">好评率</p>
                         <p class="percentage-num">98.6%</p>
                         <a-rate :defaultValue="5" disabled/>
                       </div>
-                      <div class="everybody">
-                        <p>大家都在说</p>
-                        <a href class="is-active">全部(200+)</a>
-                        <a href>物流快(30)</a>
-                        <a href>有图(30)</a>
-                        <a href>追评(50)</a>
-                        <a href>服务很好(30)</a>
-                        <a href>药效明显(60)</a>
-                      </div>
-                    </div>
+                    </div> -->
                     <div class="evaluate-list">
                       <a-comment>
-                        <template slot="actions">
-                          <span>
-                            <a-tooltip title="Like">
-                              <a-icon
-                                type="like"
-                                :theme="action === 'liked' ? 'filled' : 'outlined'"
-                                @click="like"
-                              />
-                            </a-tooltip>
-                            <span style="padding-left: '8px';cursor: 'auto'">{{likes}}</span>
-                          </span>
-                          <span>
-                            <a-tooltip title="Dislike">
-                              <a-icon
-                                type="dislike"
-                                :theme="action === 'disliked' ? 'filled' : 'outlined'"
-                                @click="dislike"
-                              />
-                            </a-tooltip>
-                            <span style="padding-left: '8px';cursor: 'auto'">{{dislikes}}</span>
-                          </span>
-                          <span>Reply to</span>
-                        </template>
-                        <a slot="author">Han Solo</a>
-                        <a-avatar
-                          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                          alt="Han Solo"
-                          slot="avatar"
-                        />
+                       
+                        <a slot="author">药店名称</a>
+                        
                         <p
                           slot="content"
                           class="comment-text"
-                        >药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备</p>
-                        <a-tooltip slot="datetime" :title="moment().format('YYYY-MM-DD HH:mm:ss')">
-                          <span>{{moment().fromNow()}}</span>
-                        </a-tooltip>
+                        >药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，</p>
+                        <p>2019-04-22 23:34:02    &nbsp &nbsp评分:<a-rate :defaultValue="evaluateVal" disabled/></p>
                       </a-comment>
-                    </div>
-                    <div class="evaluate-list">
-                      <a-comment>
-                        <template slot="actions">
-                          <span>
-                            <a-tooltip title="Like">
-                              <a-icon
-                                type="like"
-                                :theme="action === 'liked' ? 'filled' : 'outlined'"
-                                @click="like"
-                              />
-                            </a-tooltip>
-                            <span style="padding-left: '8px';cursor: 'auto'">{{likes}}</span>
-                          </span>
-                          <span>
-                            <a-tooltip title="Dislike">
-                              <a-icon
-                                type="dislike"
-                                :theme="action === 'disliked' ? 'filled' : 'outlined'"
-                                @click="dislike"
-                              />
-                            </a-tooltip>
-                            <span style="padding-left: '8px';cursor: 'auto'">{{dislikes}}</span>
-                          </span>
-                          <span>Reply to</span>
-                        </template>
-                        <a slot="author">Han Solo</a>
-                        <a-avatar
-                          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                          alt="Han Solo"
-                          slot="avatar"
-                        />
-                        <p
-                          slot="content"
-                          class="comment-text"
-                        >药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备药效立杆见影，包装精美，快递也很给力，准备长期购买，家中常备</p>
-                        <a-tooltip slot="datetime" :title="moment().format('YYYY-MM-DD HH:mm:ss')">
-                          <span>{{moment().fromNow()}}</span>
-                        </a-tooltip>
-                      </a-comment>
+                      
                     </div>
                   </div>
-                  <a-pagination :defaultCurrent="6" :total="500"/>
+                  <a-pagination :defaultCurrent="currentIndex" :total="total" @change="pageNumber"/>
                 </a-tab-pane>
               </a-tabs>
             </div>
@@ -484,6 +352,9 @@ export default {
   middleware: 'authenticated',
   data() {
     return {
+      evaluateVal: 0, // 药店评价商品的分数
+      currentIndex: 1, // 第几页
+      total: 0, // 总页数
       rulecode: 0,//活动规则 
       activitiesBySKU: [],
       configs: {
@@ -584,6 +455,11 @@ export default {
     }
   },
   methods: {
+    pageNumber(pageNumber) {
+      this.currentIndex = pageNumber
+      // 再重新调一次请求评价列表方法
+      // this.
+    },
     // 新增采购数量
     addCount() {
       if(this.inventory >= this.maximum) {
@@ -1571,7 +1447,7 @@ li {
   width: 150px;
   height: 150px;
   margin-left: 30px;
-  border-right: 1px solid rgb(238, 238, 238);
+  /* border-right: 1px solid rgb(238, 238, 238); */
 }
 .probability .percentage,
 .probability .percentage-num {
