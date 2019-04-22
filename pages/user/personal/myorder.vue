@@ -91,7 +91,6 @@
           okText="下一步"
           @ok="handleOk"
           @cancel="handleCancel"
-          :confirmLoading="confirmLoading"
         >
           <div class="retreat">
             <div class="retreat-left">
