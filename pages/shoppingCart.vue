@@ -200,6 +200,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
+            
           if (result.code === 200) {
             _this.cartList = result.data
             _this.cartList.forEach((item) => {

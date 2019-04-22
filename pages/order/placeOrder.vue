@@ -11,9 +11,9 @@
               </template>
               <span slot="description"></span>
             </a-step>
-            <a-step title="确认订单信息" />
-            <a-step title="订单付款" />
-            <a-step title="订单完成" />
+            <a-step title="确认采购单信息" />
+            <a-step title="采购单付款" />
+            <a-step title="采购单完成" />
           </a-steps>
         </div>
         <div class="receiving">
@@ -80,10 +80,10 @@
             </p>
           </div> -->
           <div class="discount-pay">
-            <div class="discount">
-              <p class="use-coupon">使用平台优惠券 您已选中<span>1张现金券,优惠20元</span></p>
+            <div class="discount" v-if="couponList.length > 0">
+              <p class="use-coupon">使用平台优惠券</p>
               <div class="coupon-box">
-                <div class="coupon">
+                <!-- <div class="coupon">
                   <div class="coupon-num">
                     <p class="coupon-title">现金券</p>
                     <p>满500送50元</p>
@@ -91,33 +91,32 @@
                     <p>满2000送250元</p>
                   </div>
                   <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
-                </div>
-                <div class="coupon">
-                  <div class="coupon-num">
-                    <p class="coupon-title">现金券</p>
-                    <p>满500送50元</p>
-                    <p>满1000送110元</p>
-                    <p>满2000送250元</p>
+                </div> -->
+                <div v-for="(item, index) in couponList" :key="index">
+                  <!-- 现金券 -->
+                  <div class="coupon" v-if="item.brulecode === 2110">
+                    <div class="coupon-num">
+                      <p class="coupon-title">{{ item.rulename }}</p>
+                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
+                    </div>
+                    <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked"  @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                   </div>
-                  <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
-                </div>
-                <div class="coupon">
-                  <div class="coupon-num">
-                    <p class="coupon-title">现金券</p>
-                    <p>满500送50元</p>
-                    <p>满1000送110元</p>
-                    <p>满2000送250元</p>
+                  <!-- 包邮券 -->
+                  <div class="coupon" v-if="item.brulecode === 2120">
+                    <div class="coupon-num">
+                      <p class="coupon-title">{{ item.rulename }}</p>
+                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
+                    </div>
+                    <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                   </div>
-                  <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
-                </div>
-                <div class="coupon">
-                  <div class="coupon-num">
-                    <p class="coupon-title">现金券</p>
-                    <p>满500送50元</p>
-                    <p>满1000送110元</p>
-                    <p>满2000送250元</p>
+                  <!-- 折扣券 -->
+                  <div class="coupon" v-if="item.brulecode === 2130">
+                    <div class="coupon-num">
+                      <p class="coupon-title">{{ item.rulename }}</p>
+                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </p>
+                    </div>
+                    <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                   </div>
-                  <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
                 </div>
               </div>
               <!-- <p class="pick-coupon">
@@ -125,14 +124,15 @@
               </p> -->
               <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
               <!-- <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag> -->
-             
             </div>
             <div class="pay">
               <p>商品合计：￥{{ cartList[0].acamt +  cartList[0].amt}}</p>
               <p>运费：￥ {{ cartList[0].freight }}</p>
               <p>优惠：￥ {{ cartList[0].amt }}</p>
-              <p class="price" v-if="!cartList[0].freepost">应付金额：￥ {{ (cartList[0].acamt + cartList[0].freight).toFixed(2)  }}</p>
-              <p class="price" v-if="cartList[0].freepost">应付金额：￥ {{ cartList[0].acamt }}</p>
+              <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
+              <p class="price" v-if="cartList[0].freepost || isPostal">应付金额：￥ {{ cartList[0].acamt - coupNum }}</p>
+              <p class="price" v-else>应付金额：￥ {{ (cartList[0].acamt + cartList[0].freight).toFixed(2) - coupNum  }}</p>
+              
               <a-button class="pay-btn" @click="toPay()">去付款</a-button>
             </div>
           </div>
@@ -161,23 +161,66 @@ export default {
       isCoupon: false,
       cartList: [],
       visible: false,
-      goodsArr: []
+      goodsArr: [],
+      couponList: [],
+      couponCode: 0, // 选中优惠券ID
+      coupNum: 0,
+      isPostal: false // 是否使用包邮券
     };
-  },
-  mounted() {
-    // 获取发票信息
-    // this.getInvoice()
-    // 获取优惠券信息
-    // 猜你喜欢
   },
   created() {
     this.cartList = JSON.parse(this.$route.query.arr)
-    this.getImgUrl(this.cartList)
+  },
+  mounted() {
     this.placeType = this.$route.query.placeType
     this.orderType = this.$route.query.orderType
     this.actcode =  this.$route.query.actcode || 0
+    // 获取优惠券信息
+    this.queryActCouponList()
+    this.getImgUrl(this.cartList)
   },
   methods: {
+    queryActCouponList() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CouponRevModule";
+      iRequest.method = "queryActCouponList";
+      let arr = this.cartList.map((value) => {
+        return {
+          pdno: value.pdno,
+          pnum: value.num,
+          compid: _this.storeInfo.storeId,
+          pdprice: value.pdprice,
+          amt: value.pdprice *  value.num,
+          samt: value.acamt +  value.amt,
+          flag: value.oflag ? 1 : 0
+        }
+      })
+      iRequest.param.json = JSON.stringify(arr);
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              console.log(result.data)
+              if(result.data.length > 0) {
+                result.data.forEach((item) => {
+                  item.isChecked = false
+                })
+                _this.couponList = result.data
+              }
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            console.log(error)
+          }
+        )
+      );
+    },
     showModal() {
       this.visible = true;
     },
@@ -202,7 +245,7 @@ export default {
       })
       iRequest.param.json = JSON.stringify({
         placeType: this.placeType,
-        coupon: 0,
+        coupon: this.couponCode,
         orderObj: {
           cusno: this.storeInfo.storeId,
           busno: this.storeInfo.storeId,
@@ -283,8 +326,21 @@ export default {
     handleOk() {
       console.log(1);
     },
-    onChange(e) {
-      console.log(e)
+    onChange(item, index) {
+      if(item.isChecked) {
+        this.couponCode = item.coupno
+        this.coupNum = item.offerAmt
+        item.brulecode === 2120 ? this.isPostal = true : this.isPostal = false
+      }else {
+        this.couponCode = 0
+        this.coupNum = 0
+        this.isPostal = false
+      }
+      this.couponList.forEach((item, i) => {
+        if(index !== i) {
+          item.isChecked = false
+        }
+      })
     }
   }
 };

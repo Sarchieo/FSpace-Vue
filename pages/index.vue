@@ -527,7 +527,7 @@ export default {
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.token = localStorage.getItem("identification")|| "";
       this.$refcallback(
         "goodsServer",
         iRequest,

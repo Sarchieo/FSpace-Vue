@@ -42,6 +42,7 @@ module.exports = {
     '@/plugins/antd-ui',
     { src: '~/plugins/vue-lazyload.js', ssr: true },
     { src: '~/plugins/fs-plugin.js', ssr: false },
+    { src: '~/plugins/fingerprint2.js', ssr: false },
     { src: '~/plugins/element-ui', ssr: true }
   ],
   /*
