@@ -11,9 +11,9 @@
               </template>
               <span slot="description"></span>
             </a-step>
-            <a-step title="确认订单信息" />
-            <a-step title="订单付款" />
-            <a-step title="订单完成" />
+            <a-step title="确认采购单信息" />
+            <a-step title="采购单付款" />
+            <a-step title="采购单完成" />
           </a-steps>
         </div>
         <div class="receiving">
@@ -124,7 +124,6 @@
               </p> -->
               <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
               <!-- <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag> -->
-             
             </div>
             <div class="pay">
               <p>商品合计：￥{{ cartList[0].acamt +  cartList[0].amt}}</p>
@@ -207,7 +206,6 @@ export default {
             if (result.code === 200) {
               console.log(result.data)
               if(result.data.length > 0) {
-                
                 result.data.forEach((item) => {
                   item.isChecked = false
                 })

@@ -19,7 +19,7 @@
             </a-breadcrumb>
             <div class="goods-big-pic">
               <!-- <img v-lazy="imgUrl" slot="cover"> -->
-              <!-- <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom> -->
+              <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom>
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
               <p v-if="this.isShowCollec === false">
                 <span @click="addCollec()">
@@ -467,14 +467,14 @@ import moment from "moment";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
-// import PicZoom from 'vue-piczoom'
+import PicZoom from 'vue-piczoom'
 
 export default {
   components: {
     FSpaceHeader,
     FSpaceButton,
     FSpaceFooter,
-    // PicZoom
+    PicZoom
   },
   computed: {
     storeInfo() {
