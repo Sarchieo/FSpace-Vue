@@ -28,11 +28,10 @@ const actions = {
   },
   async removeUser(store) {
     store.commit(types.REMOVE_USER, removeUser())
-    store.commit(types.REMOVE_LOGIN_STATE, removeLoginState())
   },
   async setLogout(store, { context }) {
     store.commit(types.SET_USER, removeUser())
-    store.commit(types.SET_LOGIN_STATE, removeUserStatus(context))
+    store.commit(types.SET_LOGIN_STATE, saveUserStatus(false, context))
     
   }
 }

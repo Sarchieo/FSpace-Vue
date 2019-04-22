@@ -95,12 +95,15 @@
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64　||　item.rulestatus === 128 || item.rulestatus === 256 || item.rulestatus === 512||　item.rulestatus === 1024" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
-            <p class="card-price top165" v-if="item.actprod">
+            <p class="card-price top165" v-if="item.actprod && userStatus">
               ￥{{item.vatp}}
               <del>￥{{item.mp}}</del>
             </p>
-            <p class="card-price top165" v-if="!item.actprod">
+            <p class="card-price top165" v-if="!item.actprod && userStatus">
               ￥{{item.mp}}
+            </p>
+             <p class="card-price top165" v-if="!userStatus">
+               登录后价格可见
             </p>
             <!-- 厂家 -->
             <p class="manufacturer hidden-text">{{item.manuName}}</p>
@@ -171,7 +174,10 @@ export default {
   },
   computed: {
     storeInfo() {
-      return this.$store.getters.user(this);
+      return this.$store.state.user;
+    },
+    userStatus() {
+      return this.$store.state.userStatus
     },
     keyword: {
       get() {
@@ -376,7 +382,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
-              debugger
+              console.log(_this.searchList)
               _this.getImgUrl();
               if (_this.searchList.length === 0 || _this.searchList === null) {
                 _this.isGoods = true;
