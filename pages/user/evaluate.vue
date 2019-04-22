@@ -23,25 +23,39 @@
         </p>
       </div>
       <ul class="evaluate-ui">
-        <li>
+        <li v-for="(item,index) in appriseArr" :key="index">
           <div class="goods-pic">
             <img src="https://img.ysbang.cn/uploads/sale/2015/09/03/55e7a30dc3f92.jpg" alt>
-            <p class="goods-name">香港原装黄道益活络油</p>
-            <p class="spec">200g/瓶</p>
+            <p class="goods-name">{{item.pname}}</p>
+            <p class="spec">{{item.pspec}}</p>
           </div>
           <div class="evaluate-star">
             <p class="evaluate-num">
-              <span>评分：</span>
+              <span>评价等级：</span>
               <span>
-                <a-rate v-model="value"/>
-                <span class="ant-rate-text">{{evaluateNum(value)}}</span>
+                <a-rate v-model="item.level"/>
+                <span class="ant-rate-text">{{evaluateNum(item.level)}}</span>
+              </span>
+            </p>
+            <p class="evaluate-num">
+              <span>描述相符：</span>
+              <span>
+                <a-rate v-model="item.descmatch"/>
+                <span class="ant-rate-text">{{evaluateNum(item.descmatch)}}</span>
+              </span>
+            </p>
+            <p class="evaluate-num">
+              <span>物流服务：</span>
+              <span>
+                <a-rate v-model="item.logisticssrv"/>
+                <span class="ant-rate-text">{{evaluateNum(item.logisticssrv)}}</span>
               </span>
             </p>
             <div>
-               <a-textarea placeholder="请对您购买的药品进行评价" :rows="5" v-model="evaluateText" class="evaluate-text" maxlength="300" @input="descInput"/>
-             <span class="float-right">{{txtVal}}/300</span>
+               <a-textarea placeholder="请对您购买的药品进行评价" :rows="5" v-model="item.content" class="evaluate-text" maxlength="300" @input="descInput"/>
+             <span class="float-right">{{item.content.length}}/300</span>
             </div>
-<!--             
+<!--
             <a-upload
               style="display: inline-block;margin-top:10px;"
               action="//jsonplaceholder.typicode.com/posts/"
@@ -59,10 +73,11 @@
             <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
               <img alt="example" style="width: 100%" :src="previewImage" />
             </a-modal>
-           <button class="comm-btn">提交</button>
+
           </div>
           <div style="clear: both;"></div>
         </li>
+        <button class="comm-btn" @click="insertApprise">提交</button>
       </ul>
       <f-space-footer></f-space-footer>
     </a-layout>
@@ -72,28 +87,75 @@
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceFooter from "../../components/fspace-ui/footer";
 export default {
+
   components: {
     FSpaceHeader,
     FSpaceFooter
   },
+    computed: {
+        storeInfo() {
+            return this.$store.state.user;
+        }
+    },
   data() {
     return {
-      evaluateText: '',
-      txtVal: 0,
-      value: 5,
-       previewVisible: false,
-      previewImage: '',
-      fileList: [],
-      orderno: '',
-      goods: []
+        evaluateText: '',
+        txtVal: 0,
+        previewVisible: false,
+        previewImage: '',
+        fileList: [],
+        orderno: '',
+        goods: [],
+        appriseArr: []//评价集合
     };
   },
   mounted() {
-    this.orderno = this.$route.query.orderno
-    this.goods = this.$route.query.goods
-    console.log(this.orderno,this.goods )
+      this.orderno = this.$route.query.orderno
+      this.goods = JSON.parse(this.$route.query.goods)
+      for (let i = 0; i < this.goods.length; i++) {
+          this.appriseArr.push({
+              orderno:this.goods[i].orderno,
+              level: 5,
+              descmatch: 5,
+              logisticssrv: 5,
+              content: "",
+              compid: this.goods[i].compid,
+              sku: this.goods[i].pdno
+          })
+      }
   },
   methods: {
+      //评价
+      insertApprise() {
+          const _this = this;
+          const iRequest = new inf.IRequest();
+          iRequest.cls = "OrderOptModule";
+          iRequest.method = "insertApprise";
+          console.log("appriseArr-- " + JSON.stringify(this.appriseArr));
+          iRequest.param.json = JSON.stringify({
+              orderno: this.orderno,
+              compid: this.storeInfo.storeId,
+              appriseArr: this.appriseArr,
+          })
+          iRequest.param.token = localStorage.getItem("identification")
+          this.$refcallback(
+              "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+              iRequest,
+              new this.$iceCallback(
+                  function result(result) {
+                      if (result.code === 200) {
+                          //评价成功
+                          
+                      } else {
+                          _this.$message.error(result.message);
+                      }
+                  },
+                  function error(e) {
+                      console.log(error)
+                  }
+              )
+          );
+      },
      handleCancel () {
       this.previewVisible = false
     },
@@ -232,9 +294,9 @@ export default {
   }
 }
 .comm-btn{
- display: block;
+ float:right;
   .button-size(150px,40px,40px,16px,0px,5px);
   .button-color(1px solid transparent,#ed3025,#ffffff);
-  margin: 0 auto;
+  margin-right: 80px;
 }
 </style>
