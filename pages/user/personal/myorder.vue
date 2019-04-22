@@ -78,10 +78,34 @@
           </li>
            <a-pagination  v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
         </ul>
-        <div class="no-data" v-if="this.orderList.length === 0 ">
+        <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
+          <p @click="saleAfter()">申请售后</p>
         </div>
+        <a-modal
+          title="选择售后类型"
+          :visible="visible"
+          keyboard
+          cancelText="取消"
+          okText="下一步"
+          @ok="handleOk"
+          @cancel="handleCancel"
+          :confirmLoading="confirmLoading"
+        >
+          <div class="retreat">
+            <div class="retreat-left">
+              <p><img src="../../../assets/img/u6490.png" alt="" class="retreat-p"></p>
+              <p class="retreat-text">换货</p>
+              <p> <a-checkbox @change="onChange" class="retreat-check"></a-checkbox></p>
+            </div>
+            <div class="retreat-right">
+              <p><img src="../../../assets/img/u6507.png" alt="" class="retreat-p"></p>
+              <p class="retreat-text">退货</p>
+              <p> <a-checkbox @change="onChange" class="retreat-check"></a-checkbox></p>
+            </div>
+          </div>
+        </a-modal>
   </div>
 </template>
 <script>
@@ -104,6 +128,7 @@ export default {
   },
   data() {
     return {
+      visible: false,
       currentIndex: 1,
       total: 0,
       ostatus: '', // 订单状态
@@ -158,6 +183,16 @@ export default {
         }
       });
     },
+    handleOk(e) {
+      debugger
+      console.log(e)
+      this.visible = false
+    },
+    handleCancel(e) {
+      debugger
+       console.log(e)
+      this.visible = false
+    },
     toDetails(item) {
      var routeData = this.$router.resolve({
             path: "/user/order-detail",
@@ -207,6 +242,9 @@ export default {
         break;
       }
       return text
+    },
+    saleAfter() {
+      this.visible = true
     }
   }
 };
@@ -323,6 +361,7 @@ export default {
           overflow: hidden;
           text-overflow:ellipsis;
           white-space: nowrap;
+          color: #333333;
         }
         .date{
            .position(absolute, 75px, 110px);
@@ -400,6 +439,7 @@ export default {
   padding: 32px 0px;
   p{
     text-align: center;
+    color: #ed3025!important;
   }
 }
 .ant-pagination{
@@ -427,6 +467,41 @@ export default {
   }
   .text{
     .p-size(50px,50px,18px,center,0px,#333333);
+  }
+}
+.price-p{
+  color: #ed3025!important;
+}
+.retreat div:hover{
+  cursor: pointer;
+  border: 1px solid #ed3025;
+}
+.retreat-text{
+  margin-bottom: 3px;
+}
+.retreat div:hover .retreat-text{
+  color: #ed3025;
+}
+.retreat{
+  .container-size(block, 300px, 150px, 0 auto, 0px);
+  div{
+    border: 1px solid #e0e0e0;
+    padding: 40px 0px 20px 0px;
+    p{
+      text-align: center;
+    }
+    .retreat-check{
+       float: right;
+       margin-right: 15px;
+    }
+  }
+  .retreat-left{
+    float: left;
+    .container-size(inline-block, 140px, 150px, 0, 0px);
+  }
+  .retreat-right{
+    float: right;
+    .container-size(inline-block, 140px, 150px, 0, 0px);
   }
 }
 </style>

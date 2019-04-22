@@ -20,7 +20,7 @@
                   <button @click="toDetail(item)">查看详情</button>
                 </a-card>
               </div>
-              <a-pagination v-model="current" :total="this.hotGoodsList.length" v-if="this.hotGoodsList.length !== 0 "/>
+              <a-pagination :total="total" v-if="this.hotGoodsList.length !== 0 " @change="onChangePage"/>
           </div>
         </div>
       </a-layout-content>
@@ -38,6 +38,8 @@ export default {
   },
   data() {
     return {
+      total: 0,
+      currentIndex: 1,
       current: 1,
       actcode: 0,
       hotGoodsList: [],
@@ -58,7 +60,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getHotMallFloor";
-      iRequest.param.pageIndex = 1;
+      iRequest.param.pageIndex = this.currentIndex
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
@@ -68,6 +70,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotGoodsList = result.data
+            _this.total = result.total
             _this.getImgUrl(_this.hotGoodsList)
           } else {
             _this.$message.error(result.message);
@@ -119,6 +122,10 @@ export default {
           }
         )
       );
+    },
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.getHotGoods();
     },
     callback(key) {
         console.log(key)

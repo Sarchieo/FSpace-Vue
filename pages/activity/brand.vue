@@ -55,9 +55,9 @@
               </a-card>
             </div>
             <a-pagination
-              v-model="current"
-              :total="this.brandList.length"
+              :total="total"
               v-if="this.brandList.length !== 0 "
+               @change="onChangePage"
             />
           </div>
         </div>
@@ -77,6 +77,8 @@ export default {
   data() {
     return {
       count: 1,
+      total: 0,
+      currentIndex: 1,
       actcode: 0,
       current: 1,
       tabStyle: {
@@ -99,14 +101,18 @@ export default {
         path: "/product/detail"
       });
     },
+    onChangePage(pageNumber) {
+    this.currentIndex = pageNumber
+    this.getBrand()
+    },
     // 品牌专区数据请求
     getBrand() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getBrandMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
+      iRequest.param.pageIndex = this.currentIndex;
+      iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
         keyword: "",
         actcode: this.actcode
@@ -118,8 +124,8 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.brandList = result.data;
-            console.log(444);
-            console.log(_this.brandList);
+            _this.total = result.total
+            _this.currentIndex = result.pageNo
             _this.getImgUrl(_this.brandList);
           } else {
             _this.$message.error(result.message);

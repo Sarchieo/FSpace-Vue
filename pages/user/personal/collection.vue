@@ -4,6 +4,7 @@
      <div class="no-data" v-if="this.collecList.length === 0">
        <p><a-icon type="exclamation"/></p>
        <p>您还没有收藏药品！</p>
+        <a-icon type="delete" @click.stop="delCollec(item.sku)"/>
      </div>
      <ul class="goods-list-box" v-if="this.collecList.length !== 0">
         <li v-for="(item,index) in collecList" :key="index" @click="toDetals()">
@@ -16,7 +17,7 @@
             v-lazy="item.src"
             slot="cover"
           />
-          <a-icon type="close" class="close-coll" @click.stop="delCollec(item.sku)"/>
+          <a-icon type="delete" class="close-coll" @click.stop="delCollec(item.sku)"/>
           <!-- {{item.info.prodname}} -->
           <p class="surplus text-Center top185">{{item.info.prodname}}</p>
           <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
@@ -58,57 +59,7 @@ export default {
   data() {
     return {
       count: 1,
-      collecList: [],
-       list: [
-        {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        },
-         {
-          src:'//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg',
-          text: '999感冒灵颗粒',
-          validity: '2019-09-03',
-          new: 34,
-          old: 35,
-          specifications: '0.5g/袋',
-          manufacturer: '华润三九医药股份有限公司',
-          sold: 33,
-          evaluate: 269,
-          isShowCard: false
-        }
-      ]
+      collecList: []
     }
   },
   mounted() {

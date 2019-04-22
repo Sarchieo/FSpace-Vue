@@ -31,9 +31,6 @@
             <p>
               <span>积分</span>268
             </p>
-            <p>
-              <span>我的红包</span>5元
-            </p>
           </div>
           <div class="order-info">
             <!-- <p class="order-title">订单信息</p> -->

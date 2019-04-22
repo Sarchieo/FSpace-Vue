@@ -44,7 +44,6 @@
       </a-form-item>
        <a-form-item v-bind="tailFormItemLayout">
           <a-button type="primary" html-type="submit" class="register-btn" block>提交修改</a-button>
-          
         </a-form-item>
     </a-form>
   </a-modal>
@@ -142,6 +141,21 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped lang="less">
+  .register-btn{
+    display: block;
+    width: 98px;
+    height: 36px;
+    margin-left: 20px;
+    border-radius: 2px;
+   -moz-border-radius:2px;
+   -webkit-border-radius:2px;
+  }
+  .ant-input{
+    border: 1px solid #e0e0e0;
+    border-radius: 0px!important;
+   -moz-border-radius:0px!important;
+   -webkit-border-radius:0px!important;
+  }
 </style>
 

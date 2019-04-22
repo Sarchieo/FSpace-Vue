@@ -48,7 +48,7 @@
                 </p>
               </a-card>
             </div>
-            <a-pagination v-model="current" :total="this.teamBuyList.length" v-if="this.teamBuyList.length !== 0"/>
+            <a-pagination :total="total" v-if="this.teamBuyList.length !== 0" @change="onChangePage" />
             <!-- <a-pagination v-model="current" :total="this.searchList.length"/> -->
           </div>
         </div>
@@ -67,6 +67,7 @@ export default {
   },
   data() {
     return {
+      total: 0,
       current: 1,
          teamBuy: {
         h: 0,
@@ -84,6 +85,7 @@ export default {
         background: "black"
       },
       teamBuyList: [],
+      currentIndex: 1,
       pagination: []
     };
   },
@@ -98,7 +100,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getAllTeamBuy";
-      iRequest.param.pageIndex = 1;
+      iRequest.param.pageIndex = this.currentIndex
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
         keyword: '',
@@ -113,6 +115,7 @@ export default {
             result.data.list = result.data.list;
             _this.teamBuyList = result.data;
             _this.pagination =  _this.teamBuyList.list
+            _this.total  = result.total
             _this.getImgUrl(_this.teamBuyList.list);
             _this.secondKills(_this.stringToDate(_this.teamBuyList.now) ,_this.teamBuyList.edate)
           } else {
@@ -240,6 +243,10 @@ export default {
           console.log('活动结束')
         }
       }
+    },
+    onChangePage(pageNumber) {
+    this.currentIndex = pageNumber
+    this.getTeamBuyMallFloor()
     },
     callback(key) {
       console.log(key);

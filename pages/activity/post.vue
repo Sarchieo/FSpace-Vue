@@ -34,7 +34,7 @@
                   <!-- <button @click="toDetails()">查看详情</button> -->
                 </a-card>  
               </div>
-              <a-pagination v-model="current" :total="this.postList.length" v-if="this.postList.length !== 0 "/>
+              <a-pagination :total="total" v-if="this.postList.length !== 0 " @change="onChangePage"/>
           </div>
         </div>
       </a-layout-content>
@@ -53,6 +53,8 @@ export default {
   data() {
     return {
       count: 1,
+      total: 0,
+      currentIndex: 1,
       actcode: 0,
         current: 1,
         tabStyle: {
@@ -81,8 +83,8 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getBrandMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
+      iRequest.param.pageIndex = this.currentIndex;
+      iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -91,6 +93,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.postList = result.data;
+            _this.total = result.total
             console.log(444);
             console.log(_this.selectedList)
             _this.getImgUrl(_this.postList);
@@ -100,6 +103,10 @@ export default {
         })
       );
     },
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.getPost();
+    }
   }
 };
 </script>
