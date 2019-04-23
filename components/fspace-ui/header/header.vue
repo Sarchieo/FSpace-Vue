@@ -19,7 +19,7 @@
             <!-- 我的消息 -->
             <!-- <header-notice/> -->
             <!-- 签到有礼 -->
-            <a class="sign">
+            <a class="sign" @click="toIntegral()">
               签到有礼
               <!-- <span class="sign"></span> -->
             </a>
@@ -419,6 +419,13 @@ export default {
     // 退出登录
     logout() {
       this.isLogout = true;
+    },
+    toIntegral() {
+       let routeData = this.$router.resolve({
+        path: "/user/integral",
+      });
+      window.open(routeData.href, "_blank");
+
     }
   }
 };
