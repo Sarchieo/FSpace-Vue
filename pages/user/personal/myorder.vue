@@ -261,7 +261,6 @@ export default {
     },
     // 取消订单
     cancelOrder(item) {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "TranOrderOptModule";
@@ -277,7 +276,6 @@ export default {
           iRequest,
           new this.$iceCallback(function result(result) {
               if (result.code === 200) {
-                debugger
                 _this.visible = false;
                 _this.queryOrderList()
               } else {

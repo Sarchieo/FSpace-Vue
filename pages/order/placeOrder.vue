@@ -189,7 +189,7 @@ export default {
         return {
           pdno: value.pdno,
           pnum: value.num,
-          compid: _this.storeInfo.storeId,
+          compid: _this.storeInfo.comp.storeId,
           pdprice: value.pdprice,
           amt: value.pdprice *  value.num,
           samt: value.acamt +  value.amt,

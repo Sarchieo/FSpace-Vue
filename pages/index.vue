@@ -778,7 +778,6 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
           if (result.code === 200) {
             _this.newGoodsList = result.data.slice(0, 6);
             _this.newGoodsID = result.data.actcode

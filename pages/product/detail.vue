@@ -471,7 +471,7 @@ export default {
           })
           iRequest.param.token = localStorage.getItem("identification")
           this.$refcallback(
-              "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+              "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
               iRequest,
               new this.$iceCallback(
                   function result(result) {
@@ -512,17 +512,18 @@ export default {
       iRequest.param.arrays = [this.sku];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.activitiesBySKU = result.data;
             debugger
+            _this.activitiesBySKU = result.data;
             if(_this.activitiesBySKU.length > 0) {
+            
               _this.rulecode = _this.activitiesBySKU[0].brulecode
               
             }
-             _this.queryActiveType();
+             _this.queryActiveType(_this.activitiesBySKU[0].unqid);
           } else {
             _this.$message.error(result.message);
           }
@@ -536,14 +537,14 @@ export default {
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "saveShopCart";
       iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.storeId,
+        compid: this.storeInfo.comp.storeId,
         pdno: this.prodDetail.sku,
         pnum: this.inventory,
         checked: 0
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -569,7 +570,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -599,7 +600,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -632,7 +633,7 @@ export default {
       iRequest.method = "revCoupon";
       iRequest.param.json = JSON.stringify(item);
       this.$refcallback(
-       "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+       "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -658,7 +659,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification")
       iRequest.param.json = JSON.stringify({
         gcode: _this.sku, // sku
-        compid: _this.storeInfo.storeId, // 企业id
+        compid: _this.storeInfo.comp.storeId, // 企业id
         pageSize: 5,
         pageNo: 1
       });
@@ -670,7 +671,6 @@ export default {
             if (result.code === 200) {
               _this.couponPub = result.data;
             } else {
-              debugger
               _this.$message.error(result.message);
             }
           },
@@ -681,18 +681,17 @@ export default {
       );
     },
     // 查询商品活动类型
-    queryActiveType() {
+    queryActiveType(unqid) {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CalculateModule";
       iRequest.method = "getGoodsActInfo";
-      iRequest.param.arrays = [this.sku, this.actcode];
+      iRequest.param.arrays = [this.sku, unqid];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(this.storeInfo.storeId / 8192 % 65535),
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
@@ -753,7 +752,6 @@ export default {
           if (result.code === 200) {
             if(result.data) {
               _this.prodDetail = result.data;
-              debugger
               _this.details = JSON.parse(_this.prodDetail.detail);
               if(_this.rulecode === 0) {
                 _this.maximum = _this.prodDetail.store
@@ -786,7 +784,7 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -811,7 +809,7 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -833,7 +831,7 @@ export default {
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -854,7 +852,7 @@ export default {
       let arr = [{
         pdno: this.prodDetail.sku,
         pnum: this.inventory,
-        compid: this.storeInfo.storeId,
+        compid: this.storeInfo.comp.storeId,
         checked: 1,
         unqid: 0,
         conpno: 0
@@ -862,7 +860,7 @@ export default {
       iRequest.param.json = JSON.stringify(arr)
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {

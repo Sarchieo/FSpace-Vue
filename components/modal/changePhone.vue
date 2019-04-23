@@ -117,7 +117,6 @@ export default {
   },
   methods: {
     infoPhone() {
-      debugger;
       this.oldPhone = this.storeInfo.phone;
       // console.log(this.storeInfo)
       // console.log(this.form)
@@ -158,7 +157,6 @@ export default {
     },
     // 获取手机号的短信验证码 ,验证码的类型需和后台确定参数。
     getAuthCode(type) {
-      debugger;
       if (type === 1) {
       }
       this.sendAuthCodeText = "请稍后";

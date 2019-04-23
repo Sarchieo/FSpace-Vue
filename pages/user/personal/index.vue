@@ -115,9 +115,6 @@ export default {
   computed: {
     storeInfo() {
       return this.$store.state.user;
-    },
-    areas() {
-      return this.$store.getters.areas;
     }
   },
   middleware: 'authenticated',
@@ -347,8 +344,8 @@ export default {
             _this.isRelated = result.data.isRelated;
             _this.isEditor = !_this.isRelated
             // 获取地区数据
-            if(result.data.addressCode) {
-              _this.getAncestors(result.data.addressCode)
+            if(result.data.comp.addressCode) {
+              _this.getAncestors(result.data.comp.addressCode)
             }
           } else {
             _this.$message.error(result.message)

@@ -123,7 +123,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              debugger
               _this.$router.push({
                 path: '/order/payment',
                 query: {
