@@ -54,7 +54,7 @@
 
         <div v-for="(item,index) in list" :key="index">
           <!-- 新品专区 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 1 && newGoodsList.length > 6">
+          <div id="choice" class="elaborate" v-if="item.unqid === 1 && newGoodsList.length > 4">
             <p class="elaborate-title">新品专区
                <a href="javascript:;" @click="toNewGoods()">
                 查看全部
@@ -68,7 +68,9 @@
                   <p class="elaborate-specifications">{{item.spec}}</p>
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
-                  <p class="elaborate-price">￥{{item.vatp}}</p>
+
+                  <p class="elaborate-price" v-if="!userStatus">￥{{item.vatp}}</p>
+                  <p class="elaborate-price" v-else>￥登录后可见</p>
                   <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
                   <p></p>
@@ -77,7 +79,7 @@
             </ul>
           </div>
            <!-- 热销专区 -->
-          <div class="brand-hall" v-if="item.unqid === 2 && hotGoodsList.length > 5">
+          <div class="brand-hall" v-if="item.unqid === 2 && hotGoodsList.length > 4">
             <p class="brand-hall-title">
               热销专区
               <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
@@ -92,10 +94,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
-                    <p class="card-price top165">
-                      ￥{{item.vatp}}
-                      <!-- <del>￥</del> -->
-                    </p>
+                    <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}}</p>
+                    <p class="card-price top165" v-else>￥登录后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -105,7 +105,7 @@
             </div>
           </div>
           <!-- 秒杀专区 -->
-          <div class="brand-hall height-auto" v-if="item.unqid === 4 && secondList.length > 5">
+          <div class="brand-hall height-auto" v-if="item.unqid === 4 && secondList.length > 4">
             <div class="brand-hall-title height80">
               秒杀专区
               <a href="javascript:;" @click="toSpike()" class="see-wholes">
@@ -119,7 +119,8 @@
                   <a-card hoverable class="onek-card" @click="toDetail(item, secondList.actcode, 2)">
                     <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                     <div class="onek-box" slot="cover">
-                      <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-if="!userStatus">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-else>￥登录后可见</p>
                       <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
                       <!-- <p class="goods-success">{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p> -->
@@ -138,7 +139,7 @@
             </div>
           </div>
            <!-- 一块购 -->
-          <div class="brand-hall height-auto" v-if="item.unqid === 8 && teamBuyList.length > 5">
+          <div class="brand-hall height-auto" v-if="item.unqid === 8 && teamBuyList.length > 4">
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
               <a href="javascript:;" @click="toBuying()" class="see-wholes">
@@ -178,7 +179,8 @@
                   <a-card hoverable class="onek-card" @click="toDetail(item, teamBuyList.actcode, 2)">
                     <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                     <div class="onek-box" slot="cover">
-                      <p class="onek-price">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-if="!userStatus">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-else>￥登录后可见</p>
                       <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
                       <p class="goods-success">{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p>
@@ -197,7 +199,7 @@
             </div>
           </div>
           <!-- 包邮专区 -->
-          <div class="brand-hall" v-if="item.unqid === 16 && postList.length > 5">
+          <div class="brand-hall" v-if="item.unqid === 16 && postList.length > 4">
             <p class="brand-hall-title">
               包邮专区
               <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
@@ -211,9 +213,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
-                    <p class="card-price top165">
-                      ￥{{item.vatp}}
-                    </p>
+                    <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}} </p>
+                     <p class="card-price top165" v-else>￥登录后可见 </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -223,7 +224,7 @@
             </div>
           </div>
            <!-- 新人专享 -->
-          <div class="brand-hall" v-if="item.unqid === 32 && newPersonList.length > 5">
+          <div class="brand-hall" v-if="item.unqid === 32 && newPersonList.length > 4">
             <p class="brand-hall-title">
               新人专享
               <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
@@ -237,9 +238,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
-                    <p class="card-price top165">
-                      ￥{{item.vatp}}
-                    </p>
+                    <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}}</p>
+                    <p class="card-price top165" v-else>￥登录后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -276,7 +276,7 @@
             </div>
           </div>   -->
            <!-- 为你精选 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 128 && selectedList.length > 6">
+          <div id="choice" class="elaborate" v-if="item.unqid === 128 && selectedList.length > 5">
             <p class="elaborate-title">为你精选
                <a href="javascript:;" @click="toSelected()">
                 查看全部
@@ -290,7 +290,8 @@
                   <p class="elaborate-specifications">{{item.spec}}</p>
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
-                  <p class="elaborate-price">￥{{item.vatp}}</p>
+                  <p class="elaborate-price" v-if="!userStatus">￥{{item.vatp}}</p>
+                  <p class="elaborate-price" v-else>￥登录后可见</p>
                   <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
                   <p></p>
@@ -299,7 +300,7 @@
             </ul>
           </div>
            <!-- 品牌专区 -->
-          <div class="brand-hall" v-if="item.unqid === 256 && brandList.length > 5">
+          <div class="brand-hall" v-if="item.unqid === 256 && brandList.length > 4">
             <p class="brand-hall-title">
               品牌专区
               <a href="javascript:;" @click="toBrand()">查看全部<a-icon type="right"/>
@@ -312,10 +313,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
-                    <p class="card-price top165">
-                      ￥{{item.vatp}}
-                      <!-- <del>￥</del> -->
-                    </p>
+                    <p class="card-price top165" v-if="userStatus">￥{{item.vatp}} </p>
+                    <p class="card-price top165" else>￥登录后可见 </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -365,9 +364,12 @@
 
                     <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
                     <div class="goods-info">
-                      <p class="card-prices">
+                      <p class="card-prices" v-if="userStatus">
                         ￥{{items.actprize}}
                         <del>￥{{items.mp}}</del>
+                      </p>
+                        <p class="card-prices" else>
+                        ￥登录后可见
                       </p>
                       <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
                       <p class="brand-text">{{items.brandName}}</p>
@@ -417,6 +419,9 @@ export default {
     FSpaceHeader,
     FSpaceMenu,
     FSpaceFooter
+  },
+  userStatus() {
+    return this.$store.state.userStatus
   },
   data() {
     return {
@@ -773,6 +778,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
+          debugger
           if (result.code === 200) {
             _this.newGoodsList = result.data.slice(0, 6);
             _this.newGoodsID = result.data.actcode
@@ -865,9 +871,7 @@ export default {
                     c +
                     "/" +
                     arr[index].sku +
-                    "-200x200.jpg" +
-                    "?" +
-                    new Date().getSeconds()
+                    "-200x200.jpg"
                 );
               });
             } else {

@@ -22,13 +22,13 @@
                 <span>下单时间：</span> {{ info.odate + ' ' + info.otime }}
               </p>
               <p>
-                <span>收货人：</span> {{ storeInfo.storeName }}
+                <span>收货人：</span> {{ storeInfo.comp.storeName }}
               </p>
               <p>
                 <span>联系电话：</span> {{ storeInfo.phone }}
               </p>
               <p>
-                <span>收货地址：</span>{{ info.address + storeInfo.address }}
+                <span>收货地址：</span>{{ info.address + storeInfo.comp.address }}
               </p>
             </div>
           </div>
@@ -153,11 +153,11 @@ export default {
       iRequest.method = "getPayResult";
       iRequest.param.json = JSON.stringify({
         orderno: this.orderno,
-        compid: this.storeInfo.storeId
+        compid: this.storeInfo.comp.storeId
       })
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
-        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -195,7 +195,7 @@ export default {
         path: "/user/order-detail",
         query: {
           orderno: this.orderno,
-          cusno: this.storeInfo.storeId
+          cusno: this.storeInfo.comp.storeId
         }
       });
     },

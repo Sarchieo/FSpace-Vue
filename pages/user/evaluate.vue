@@ -134,12 +134,12 @@ export default {
           console.log("appriseArr-- " + JSON.stringify(this.appriseArr));
           iRequest.param.json = JSON.stringify({
               orderno: this.orderno,
-              compid: this.storeInfo.storeId,
+              compid: this.storeInfo.comp.storeId,
               appriseArr: this.appriseArr,
           })
           iRequest.param.token = localStorage.getItem("identification")
           this.$refcallback(
-              "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+              "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
               iRequest,
               new this.$iceCallback(
                   function result(result) {

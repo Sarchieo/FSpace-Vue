@@ -97,10 +97,10 @@
             <p class="validity">有效期至{{item.vaildedate}}</p>
             <p class="card-price top165" v-if="item.actprod && userStatus">
               ￥{{item.vatp}}
-              <del>￥{{item.mp}}</del>
+              <del>￥{{item.vatp}}</del>
             </p>
             <p class="card-price top165" v-if="!item.actprod && userStatus">
-              ￥{{item.mp}}
+              ￥{{item.vatp}}
             </p>
              <p class="card-price top165" v-if="!userStatus">
                登录后价格可见
@@ -213,11 +213,11 @@ export default {
         pdno: item.sku,
         pnum: 1,
         checked: 0,
-        compid: _this.storeInfo.storeId
+        compid: _this.storeInfo.comp.storeId
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -246,7 +246,7 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {

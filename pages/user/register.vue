@@ -188,10 +188,10 @@ export default {
     },
     validatePwd(rule, value, callback) {
       const form = this.form;
-      if (value && value.length > 5) {
+      if (value && value.length > 5 && value.length <=19) {
         callback();
       } else {
-        callback("请输入密码");
+        callback("请输入正确的密码, 要求6-18位大小写字母数字加字符组合");
       }
     },
     validatePwd2(rule, value, callback) {
