@@ -204,7 +204,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              console.log(result.data)
               if(result.data.length > 0) {
                 result.data.forEach((item) => {
                   item.isChecked = false
