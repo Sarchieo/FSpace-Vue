@@ -69,10 +69,24 @@
               <p v-if="item.ostatus === 3">申请售后</p>
               <!--  v-if="item.ostatus === 3" -->
               <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
-              <p class="canle-order">取消订单</p>
+              <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
               <p v-if="item.ostatus !== 0">再次购买</p>
             </div>
+            <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
+              <p>订单取消成功后将无法恢复</p>
+              <p>优惠券可能不再返还，支付优惠也将一并取消</p>
+              <div>
+                <a-radio-group defaultValue="a" size="large">
+                  <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
+                  <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
+                  <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
+                  <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
+                  <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
+                  <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
+                </a-radio-group>
+              </div>
+            </a-modal>
           </li>
            <a-pagination  v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
         </ul>
@@ -81,7 +95,7 @@
           <p class="text">没有查询到订单！</p>
           <!-- <p @click="saleAfter()">申请售后</p> -->
         </div>
-        <a-modal
+        <!-- <a-modal
           title="选择售后类型"
           :visible="visible"
           keyboard
@@ -102,7 +116,7 @@
               <p> <a-checkbox @change="onChange" class="retreat-check"></a-checkbox></p>
             </div>
           </div>
-        </a-modal>
+        </a-modal> -->
   </div>
 </template>
 <script>
@@ -139,6 +153,9 @@ export default {
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
       this.queryOrderList()
+    },
+    onChange(val) {
+      console.log(val)
     },
     // 查询订单列表
     queryOrderList() {
@@ -239,6 +256,36 @@ export default {
       }
       return text
     },
+    isShowCancel() {
+      this.visible = true
+    },
+    // 取消订单
+    cancelOrder(item) {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "TranOrderOptModule";
+      iRequest.method = "cancelOrder";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.json = JSON.stringify({
+          orderno: item.orderno,
+          cusno: item.cusno
+      });
+      console.log("json--- " + iRequest.param.json )
+      this.$refcallback(
+          "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+          iRequest,
+          new this.$iceCallback(function result(result) {
+              if (result.code === 200) {
+                debugger
+                _this.visible = false;
+                _this.queryOrderList()
+              } else {
+                _this.$message.error(result.message);
+              }
+          })
+      );
+    },
     toPay(item) {
       var routeData = this.$router.resolve({
         path: "/order/pay",
@@ -338,9 +385,10 @@ export default {
         padding-top: 14px;
         padding-left: 10px;
         img{
-          float: left;
+          float: left;        
           width: 80px;
           height: 80px;
+          margin-right: 5px;
         }
         .goods-text {
           // .position(absolute, 10px, 110px);
@@ -535,5 +583,11 @@ export default {
   p{
     text-align: center;
   }
+}
+.cancel-reason {
+  width: 220px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 </style>

@@ -541,6 +541,9 @@ li {
 .first-div p {
   .container-size(inline-block, 182px, 30px, 0, 0px);
   line-height: 30px;
+   overflow: hidden;
+ text-overflow:ellipsis;
+ white-space: nowrap;
 }
 .first-div .pick-input {
   .position(absolute, 70px, 10px);
@@ -562,7 +565,7 @@ li {
 .icon {
   .position(absolute, 100px, 180px);
   .p-size(20px, 20px, 14px, left, 0px, #999999);
-  height: 20px !important;
+  height: 30px !important;
 }
 .goods-count {
   .container-size(inline-block, 20px, 20px, 0, 0px);
