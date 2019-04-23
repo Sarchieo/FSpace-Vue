@@ -79,11 +79,11 @@
             <div class="consignee-left float-left">
               <h3>收货人信息</h3>
               <p>
-                <span class="three">收货人：</span> {{ storeInfo.storeName }}
+                <span class="three">收货人：</span> {{ storeInfo.comp.storeName }}
               </p>
               <p class="address">
                 <span class="three">地址：</span>
-                <span class="address-goods">{{ storeInfo.address }}</span>
+                <span class="address-goods">{{ storeInfo.comp.address }}</span>
               </p>
               <p>
                 <span class="three">手机号:</span> {{ storeInfo.phone }}
@@ -224,7 +224,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.arrays = [cusno,orderno];
       this.$refcallback(
-        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -252,7 +252,7 @@ export default {
         });
         console.log("json-------- " +  iRequest.param.json)
         this.$refcallback(
-            "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+            "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
             iRequest,
             new this.$iceCallback(function result(result) {
                 if (result.code === 200) {

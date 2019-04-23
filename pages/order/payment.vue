@@ -77,7 +77,7 @@ export default {
           }
         }
       })
-      this.$initIceLong('orderServer', this.storeInfo.storeId, new ice_callback());
+      this.$initIceLong('orderServer', this.storeInfo.comp.storeId, new ice_callback());
     },
       // 监听单选框的值发生变化
     onChange (e) {

@@ -64,7 +64,7 @@ export default {
   },
   mounted() {
     this.queryCollec();
-    console.log(this.storeInfo.storeId)
+    console.log(this.storeInfo.comp.storeId)
   },
   methods:{
     toDetals() {
@@ -80,7 +80,7 @@ export default {
       iRequest.method = "query";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           
@@ -112,7 +112,7 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           console.log(result)

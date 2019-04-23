@@ -196,7 +196,7 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "basicInfo";
+      iRequest.method = "getStoreSession";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "userServer",

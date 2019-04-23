@@ -123,15 +123,15 @@ export default {
   middleware: 'authenticated',
   watch: {
     storeInfo(val) {
-      if (val.addressCode) {
-        let code = val.addressCode.toString();
-        val.addressCode = [
+      if (val.comp.addressCode) {
+        let code = val.comp.addressCode.toString();
+        val.comp.addressCode = [
           code.substr(0, 2) + "0000",
           code.substr(0, 4) + "00",
           code
         ].map(Number);
       }
-      this.form.setFieldsValue(val);
+      this.form.setFieldsValue(val.comp);
     }
   },
   data() {
@@ -330,7 +330,7 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "basicInfo";
+      iRequest.method = "getStoreSession";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "userServer",
@@ -343,7 +343,7 @@ export default {
             });
             _this.code = []
             _this.getFilePathPrev();
-            _this.authenticationMessage = result.data.authenticationMessage;
+            _this.authenticationMessage = result.data.comp.authenticationMessage;
             _this.isRelated = result.data.isRelated;
             _this.isEditor = !_this.isRelated
             // 获取地区数据

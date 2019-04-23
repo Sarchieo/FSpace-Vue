@@ -12,11 +12,11 @@
           <div class="left">
             <p>
               <a-icon type="profile"/>
-              {{ storeInfo.storeName }}
+              {{ storeInfo.comp.storeName }}
             </p>
             <p>
               <a-icon type="environment"/>
-              {{ storeInfo.address }}
+              {{ storeInfo.comp.address }}
             </p>
             <p>
               <a-icon type="mobile"/>
@@ -122,7 +122,7 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "basicInfo";
+      iRequest.method = "getStoreSession";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "userServer",

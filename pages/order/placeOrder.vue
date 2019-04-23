@@ -23,7 +23,7 @@
               <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 8888-8888888
             </p>
             <p class="address-info">
-              <span>收货门店：</span>{{ this.storeInfo.storeName }}
+              <span>收货门店：</span>{{ this.storeInfo.comp.storeName }}
             </p>
             <p class="address-info">
               <span>联系方式：</span>{{ this.storeInfo.phone }}
@@ -36,7 +36,7 @@
               </a-modal>
             </p>
             <p class="address-info">
-              <span>收货地址：</span>{{ this.storeInfo.storeName }}
+              <span>收货地址：</span>{{ this.storeInfo.comp.storeName }}
             </p>
           </div>
         </div>
@@ -199,7 +199,7 @@ export default {
       iRequest.param.json = JSON.stringify(arr);
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
-        "orderServer" + Math.floor(this.storeInfo.storeId / 8192 % 65535),
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -246,8 +246,8 @@ export default {
         placeType: this.placeType,
         coupon: this.couponCode,
         orderObj: {
-          cusno: this.storeInfo.storeId,
-          busno: this.storeInfo.storeId,
+          cusno: this.storeInfo.comp.storeId,
+          busno: this.storeInfo.comp.storeId,
           rvaddno: this.storeInfo.addressCode
         },
         goodsArr: goodsArr,
@@ -256,7 +256,7 @@ export default {
       });
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
-        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {

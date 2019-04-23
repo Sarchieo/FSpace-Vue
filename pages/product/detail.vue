@@ -75,7 +75,7 @@
                 </p>
                 <p class="price" v-if="rulecode == 0">
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ prodDetail.mp }}</span>
+                  <span class="money-count">￥{{ prodDetail.vatp }}</span>
                   <!-- <del>￥32</del> -->
                 </p>
                 <p class="price" v-if="rulecode == 1113">
@@ -85,7 +85,7 @@
                 </p>
                 <p class="price" v-if="rulecode === 1133">
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ prodDetail.mp }}</span>
+                  <span class="money-count">￥{{ prodDetail.vatp }}</span>
                 </p>
                 <!-- 积分 -->
                 <!-- <p class="price">
@@ -269,6 +269,10 @@
                       <span class="explain-text">{{ details[2].content }}</span>
                     </div>
                     <div class="explain">
+                      <span class="explain-header">不良反应</span>
+                      <span class="explain-text">{{ details[3].content }}</span>
+                    </div>
+                    <div class="explain">
                       <span class="explain-header">注意事项</span>
                       <span class="explain-text">{{ details[4].content }}</span>
                     </div>
@@ -428,7 +432,7 @@ export default {
   mounted() {
       this.sku = this.$route.query.sku;
       this.spu = this.$route.query.spu;
-      this.actcode = this.$route.query.actcode;
+      // this.actcode = this.$route.query.actcode;
       // 获取商品详情
       this.getProd();
       // 获取优惠券
@@ -440,13 +444,12 @@ export default {
       this.getActivitiesBySKU();
       // 获取热销数据
       this.getProdDetailHotArea();
-    //获取评价信息
+      //获取评价信息
       this.$nextTick(function(){
         this.getGoodsApprise();
       })
-      if (this.actcode != 0) {
-        this.queryActiveType();
-      }
+      // if (this.actcode != 0) {
+      // }
   },
   methods: {
     pageNumber(pageNumber) {
@@ -514,8 +517,12 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
-            if(_this.activitiesBySKU.length > 0)
+            debugger
+            if(_this.activitiesBySKU.length > 0) {
               _this.rulecode = _this.activitiesBySKU[0].brulecode
+              
+            }
+             _this.queryActiveType();
           } else {
             _this.$message.error(result.message);
           }
@@ -682,9 +689,10 @@ export default {
       iRequest.param.arrays = [this.sku, this.actcode];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor((this.storeInfo.storeId / 8192) % 65535),
+        "orderServer" + Math.floor(this.storeInfo.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
+          debugger
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
@@ -745,6 +753,7 @@ export default {
           if (result.code === 200) {
             if(result.data) {
               _this.prodDetail = result.data;
+              debugger
               _this.details = JSON.parse(_this.prodDetail.detail);
               if(_this.rulecode === 0) {
                 _this.maximum = _this.prodDetail.store

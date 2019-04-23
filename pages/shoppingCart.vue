@@ -46,7 +46,12 @@
                 <p class="new-price">￥{{ parseFloat(item.pdprice * item.num).toFixed(2) }}</p>
                 <p class="omit" v-if="item.discount != 0">为您节省￥{{item.discount}}</p>
                 <!-- <p class="move">移入收藏夹</p> -->
-                <a-tag color="#f50" class="move">添加收藏夹</a-tag>
+                
+                 <a-popconfirm title="商品加入收藏夹?" @confirm="addCollec(item)" okText="确定" cancelText="取消">
+                  <!-- <p class="del-goods">删除</p> -->
+                  <a-tag color="#f50" class="move">添加收藏夹</a-tag>
+                </a-popconfirm>
+                
                 <!-- <p class="del-goods" @click="removeList(index)">删除</p> -->
                 <a-popconfirm title="您确认要移除当前商品吗?" @confirm="removeCartList(item, index)" okText="确定" cancelText="取消">
                   <!-- <p class="del-goods">删除</p> -->
@@ -157,11 +162,11 @@ export default {
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "queryUnCheckShopCartList";
       iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.storeId
+        compid: this.storeInfo.comp.storeId
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -190,7 +195,7 @@ export default {
       iRequest.method = "queryCheckShopCartList";
       let arr = _this.cartList.map((value) => {
         return {
-          compid: _this.storeInfo.storeId,
+          compid: _this.storeInfo.comp.storeId,
           pdno: value.pdno,
           pnum: value.num,
           checked: value.checked ? 1 : 0,
@@ -200,7 +205,7 @@ export default {
       iRequest.param.json = JSON.stringify(arr)
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -228,12 +233,12 @@ export default {
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "clearShopCart";
       iRequest.param.json = JSON.stringify({
-        compid: _this.storeInfo.storeId,
+        compid: _this.storeInfo.comp.storeId,
         ids: item.unqid
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -280,7 +285,7 @@ export default {
           arr.push({
             pdno: item.pdno,
             pnum: item.num,
-            compid: this.storeInfo.storeId,
+            compid: this.storeInfo.comp.storeId,
             checked: 1,
             unqid: item.unqid,
             conpno: 0
@@ -299,7 +304,7 @@ export default {
       iRequest.param.json = JSON.stringify(arr)
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -378,6 +383,31 @@ export default {
           if (result.code === 200) {
             _this.likeList = result.data
             _this.getImgUrl(_this.likeList)
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 添加收藏
+    addCollec(item) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyCollectModule";
+      iRequest.method = "add";
+      iRequest.param.json = JSON.stringify({
+        sku: item.pdno,
+        prize: item.pdprice,
+        promtype: 0
+      });
+      // 促销类型未传，暂定0，促销完善补上
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
           } else {
             _this.$message.error(result.message);
           }

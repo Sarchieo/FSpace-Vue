@@ -107,14 +107,14 @@ export default {
       iRequest.cls = "CouponRevModule";
       iRequest.method = "queryRevCouponList";
       iRequest.param.json = JSON.stringify({
-        compid: _this.storeInfo.storeId,
+        compid: _this.storeInfo.comp.storeId,
         type: ctype,
         pageSize: 5,
         pageNo: 1
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -134,7 +134,7 @@ export default {
        iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
         gcode: -1, // sku
-        compid: _this.storeInfo.storeId, // 企业id
+        compid: _this.storeInfo.comp.storeId, // 企业id
         pageSize: 5,
         pageNo: 1
       })
@@ -164,7 +164,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify(item)
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.storeId/8192%65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {

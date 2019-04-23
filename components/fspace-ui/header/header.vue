@@ -146,7 +146,9 @@
         </div>
         <div class="ant-layout-header-back">
           <a class="already">已有账号</a>
-          <a class="immediately">立即登录</a>
+          <nuxt-link to="/user/login">
+           <a class="immediately">立即登录</a>
+          </nuxt-link>
         </div>
         <div class="divider"></div>
       </div>
@@ -326,11 +328,11 @@ export default {
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "queryUnCheckShopCartList";
       iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.storeId
+        compid: this.storeInfo.comp.storeId
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor((_this.storeInfo.storeId / 8192) % 65535),
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -355,7 +357,7 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "basicInfo";
+      iRequest.method = "getStoreSession";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         "userServer",

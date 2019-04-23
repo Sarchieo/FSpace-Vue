@@ -47,8 +47,8 @@
     </a-modal>
       <div class="address-box">
         <p class="my-address">默认收货地址</p>
-        <p class="store-info">收货门店：{{ storeInfo.storeName }}</p>
-        <p class="store-info">门店地址：{{ storeInfo.address }}</p>
+        <p class="store-info">收货门店：{{ storeInfo.comp.storeName }}</p>
+        <p class="store-info">门店地址：{{ storeInfo.comp.address }}</p>
       </div>
       <!-- <p class="consignee">新增收货人</p> -->
      <a-button type="primary" @click='addReceiver' class="add-person">新增收货人</a-button>
@@ -118,7 +118,7 @@ export default {
       iRequest.cls = "MyDrugStoreInfoModule";
       iRequest.method = "queryMyConsignee";
       iRequest.param.json = JSON.stringify({
-        compid: _this.storeInfo.storeId
+        compid: _this.storeInfo.comp.storeId
       })
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
@@ -144,7 +144,7 @@ export default {
       iRequest.cls = "MyDrugStoreInfoModule";
       iRequest.method = "setDefault";
       iRequest.param.json = JSON.stringify({
-        compid: _this.storeInfo.storeId,
+        compid: _this.storeInfo.comp.storeId,
         shipid: record.shipid
       })
       iRequest.param.token = localStorage.getItem("identification")
@@ -210,7 +210,7 @@ export default {
           iRequest.cls = "MyDrugStoreInfoModule";
           iRequest.method = "insertOrUpdConsignee";
           iRequest.param.json = JSON.stringify({
-            compid: _this.storeInfo.storeId,
+            compid: _this.storeInfo.comp.storeId,
             contactname: values.contactname,
             contactphone: values.contactphone,
             shipid: this.shipid
