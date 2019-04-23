@@ -174,7 +174,7 @@
                 <div class="coupon-card" v-if="item.brulecode === 2120" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">{{ item.rulename }}</p>
-                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮</span>
+                    <span class="ladder" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 包邮</span>
                   </div>
                   <div class="coupon-right">
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
@@ -188,13 +188,16 @@
               >
                 <div class="coupon-card" v-if="item.brulecode === 2130"  @click="revCoupon(item)">
                   <div class="coupon-left">
-                    <p class="coupon-type">{{ item.rulename }}</p>
+
+                    <p class="coupon-type">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
                     <span
+                     class="ladder"
                       v-for="(j, i) in item.ladderVOS"
                       :key="i"
-                    >满{{ j.ladamt }} 打 {{ j.offer/10}}折</span>
-                    <span>有效期 {{ item.validday }} 天</span>
+                    >满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span> 折</span>
+                    
                   </div>
+
                   <div class="coupon-right">
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                   </div>
@@ -207,9 +210,9 @@
               >
                 <div class="coupon-card" v-if="item.brulecode === 2110" @click="revCoupon(item)">
                   <div class="coupon-left">
-                    <p class="coupon-type">{{ item.rulename }}</p>
-                    <span v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}}</span>
-                    <span>有效期 {{ item.validday }} 天</span>
+                    <p class="coupon-type">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span> </p>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i" class="ladder">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span></span>
+                    <!-- <span>有效期 {{ item.validday }} 天</span> -->
                   </div>
                   <div class="coupon-right">
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
@@ -291,7 +294,7 @@
                         <p slot="content"
                           class="comment-text">
                          {{item.content}}</p>
-                        <p>{{item.createtdate}}&nbsp {{item.createtime}}   &nbsp &nbsp评分:<a-rate :defaultValue="item.level" disabled/></p>
+                        <p>评分:<a-rate :defaultValue="item.level" disabled/>   &nbsp &nbsp {{item.createtdate}}&nbsp {{item.createtime}}</p>
                       </a-comment>
                     </div>
                   </div>
@@ -1139,23 +1142,45 @@ li {
   float: left;
   width: 280px;
   height: 160px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #fdddc5;
+  background: #fffbf3;
 }
 .coupon-type {
   height: 40px;
   line-height: 40px;
-  text-align: center;
+  text-align: left;
+  text-indent: 20px;
+  margin-bottom: 15px;
+  background: #666666;
   font-size: 20px;
-  color: #ed3025;
+  color: #ffffff;
 }
-.coupon-left span {
+.coupon-type .term{
+  float: right;
+  margin-right: 20px;
+  font-size: 14px;
+  color: #ffffff;
+}
+.ladder{
+  display: inline-block;
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  text-align: left;
+  text-indent: 20px;
+  color: #666666;
+}
+.ladder span{
+  color:#ed3025;
+}
+/* .coupon-left span {
   display: inline-block;
   width: 100%;
   height: 30px;
   text-align: left;
   text-indent: 20px;
   color: #999999;
-}
+} */
 .coupon-right {
   float: right;
   width: 60px;
