@@ -442,7 +442,7 @@ export default {
       this.getProdDetailHotArea();
     //获取评价信息
       this.$nextTick(function(){
-          this.getGoodsApprise();
+        this.getGoodsApprise();
       })
       if (this.actcode != 0) {
         this.queryActiveType();
