@@ -1,23 +1,28 @@
 <template>
   <div class="collection-box">
     <p class="collection-text">我的足迹</p>
-    <div class="my-collection">
+     <div class="no-data" v-if="this.footList.length === 0">
+       <p><a-icon type="exclamation"/></p>
+       <p>您还没有药品足迹！</p>
+        <!-- <a-icon type="delete" @click.stop="delCollec(item.sku)"/> -->
+     </div>
+    <div class="my-collection" v-if="this.footList.length !== 0">
       <ul class="goods-list-box" v-for="(item,index) in footList" :key="index">
         <p class="foot-data">{{item.date}}</p>
-        <li v-for="(items,index1) in item.list" :key="index1" @click="toDetals()">
+        <li v-for="(items,index1) in item.list" :key="index1" @click="toDetail(items)">
           <a-card hoverable class="card">
             <img class="card-img" v-lazy="items.src" slot="cover">
-            <a-icon type="delete" class="del-foot" @click="delFoot()"/>
+            <a-icon type="delete" class="del-foot" @click="delFoot(items.sku)"/>
             <p class="surplus text-Center top185">{{items.brandName}} {{items.popname}}</p>
             <p class="validity">有效期至{{items.prodedate}}</p>
             <p class="card-price top165">￥{{items.vatp}}</p>
             <p class="specifications">{{items.spec}}</p>
             <p class="manufacturer">{{items.manuName}}</p>
             <p class="add-card">
-              <button>-</button>
-              <button>{{count}}</button>
-              <button>+</button>
-              <button class="cart-btns">
+             
+             
+              
+              <button class="cart-btns" @click.stop="addCart(items)">
                 <a-icon type="shopping-cart"/>加入采购单
               </button>
             </p>
@@ -187,22 +192,56 @@ export default {
     };
   },
   mounted() {
+    // this.delFoot();
     this.getFootList();
   },
   methods: {
-    toDetals() {
-      this.$router.push({
-        path:'/product/detail'
+    // 加入采购单
+    addCart(items) {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "saveShopCart";
+      iRequest.param.json = JSON.stringify({
+        pdno: items.sku,
+        pnum: 1,
+        checked: 0,
+        compid: _this.storeInfo.comp.storeId
       })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
+    toDetail(items) {
+      this.$router.push({
+        path: "/product/detail",
+        query: {
+          sku: items.sku,
+          spu: items.spu
+        }
+      });
     },
     // 获取足迹列表
     getFootList() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyFootprintModule";
       iRequest.method = "query";
-       iRequest.param.json = JSON.stringify({
+      iRequest.param.json = JSON.stringify({
         compid: this.storeInfo.comp.storeId
       });
       iRequest.param.token = localStorage.getItem("identification");
@@ -220,8 +259,27 @@ export default {
       );
     },
     // 删除足迹
-    delFoot() {
-
+    delFoot(sku) {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      let arr = [sku]
+      iRequest.cls = "MyFootprintModule";
+      iRequest.method = "del";
+      iRequest.param.json = JSON.stringify(arr);
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.getFootList();
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
     },
     onChange(pageNumber) {
       console.log(pageNumber)
@@ -342,7 +400,8 @@ export default {
   display: inline-block;
   .position(absolute, 265px, 0px);
   width: 225px;
-  text-align: center;
+  text-align: left;
+  text-indent: 10px;
 }
 
 .add-card {
@@ -352,11 +411,15 @@ export default {
   text-align: center;
 }
 .del-foot{
-  .position(absolute,5px,19px);
+  .position(absolute,5px,190px);
   display: none;
   color: #333333;
 }
 .cart-btns {
+  display: block;
+  width: 200px;
+  height: 30px;
+  margin: 0 auto;
   border: none;
   background: #ed3025;
   color: #ffffff;
@@ -374,6 +437,17 @@ export default {
   display: inline-block;
   font-size: 26px;
   color:#ed3025;
+}
+.no-data{
+  width: 985px;
+  height: 400px;
+  margin-top: 200px;
+  p{
+    .p-size(60px,60px,20px,center,0px,#666666);
+    i{
+      font-size: 40px!important;
+    }
+  }
 }
 </style>
 
