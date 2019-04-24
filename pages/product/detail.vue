@@ -159,7 +159,6 @@
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
                   <a-button
-                    :disabled="!isKill"
                     type="primary"
                     class="purchase"
                     @click="attendSecKill()"
@@ -398,8 +397,8 @@ export default {
         maskOpacity: 0.2
       },
       isSecondkill: true,
-      unqid: 0,
-      isKill: false,
+      unqid: 0, // 活动码
+      unqid2: 0, // 秒杀前生成的码
       loading: false,
       maximum: 1, // 最大库存
       inventory: 1, // 当前库存
@@ -496,7 +495,6 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "OrderOptModule";
       iRequest.method = "getGoodsApprise";
-      console.log("appriseArr-- " + JSON.stringify(this.appriseArr));
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
@@ -556,6 +554,10 @@ export default {
             _this.activitiesBySKU = result.data;
             if (_this.activitiesBySKU.length > 0) {
               _this.rulecode = _this.activitiesBySKU[0].brulecode;
+              if(_this.rulecode === 1113) {
+                _this.unqid = _this.activitiesBySKU[0].unqid
+                _this.beforeSecKill();
+              }
             }
             _this.queryActiveType(_this.activitiesBySKU[0].unqid);
           } else {
@@ -603,7 +605,7 @@ export default {
       iRequest.method = "beforeSecKill";
       iRequest.param.json = JSON.stringify({
         sku: _this.sku,
-        actno: _this.actcode
+        actno: _this.unqid
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -614,10 +616,8 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.isKill = true;
-              _this.unqid = result.data;
+              _this.unqid2 = result.data;
             } else {
-              _this.isKill = false;
               _this.$message.error(result.message);
             }
           },
@@ -634,8 +634,8 @@ export default {
       iRequest.method = "attendSecKill";
       iRequest.param.json = JSON.stringify({
         sku: _this.prodDetail.sku,
-        actno: _this.actcode,
-        unqid: _this.unqid,
+        actno: _this.unqid,
+        unqid: _this.unqid2,
         stock: _this.inventory
       });
       iRequest.param.token = localStorage.getItem("identification");
@@ -657,7 +657,6 @@ export default {
                 }
               });
             } else {
-              _this.isKill = false;
               _this.$message.error(result.message);
             }
           },
@@ -806,7 +805,6 @@ export default {
               if (_this.rulecode === 0) {
                 _this.maximum = _this.prodDetail.store;
               } else if (_this.rulecode == 1113) {
-                _this.beforeSecKill();
                 _this.maximum =
                   _this.prodDetail.limits > _this.prodDetail.store
                     ? _this.prodDetail.store

@@ -541,7 +541,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger
             _this.list = result.data;
             _this.list.map((value, index) => {
               switch(value.unqid) {
@@ -552,7 +551,6 @@ export default {
                 _this.getHotGoods();
                 break
                 case 4: // 秒杀专区
-                
                 _this.getSeckillMallFloor();
                 break
                 case 8: // 一块购
@@ -599,7 +597,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data.list) {
             result.data.list = result.data.list.slice(0, 5)
             _this.teamBuyList = result.data.list
             _this.teamByID = result.data.actcode
@@ -626,12 +624,12 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data.list) {
             result.data.list = result.data.list.slice(0, 5)
-            _this.secondList = result.data
+            _this.secondList = result.data.list
             _this.secondID = result.data.actcode
-            _this.getImgUrl(_this.secondList.list)
-            _this.secondKills(_this.stringToDate(_this.secondList.now), _this.secondList.edate)
+            _this.getImgUrl(_this.secondList)
+            _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
           } else {
             _this.$message.error(result.message);
           }
@@ -653,11 +651,11 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data.list) {
             result.data.list = result.data.list.slice(0, 5)
-            _this.brandList = result.data
+            _this.brandList = result.data.list
             _this.brandID = result.data.actcode
-            _this.getImgUrl(_this.brandList.list)
+            _this.getImgUrl(_this.brandList)
           } else {
             _this.$message.error(result.message);
           }
@@ -679,12 +677,11 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data.list) {
             result.data.list = result.data.list.slice(0, 5)
-            _this.postList = result.data
-            console.log(_this.postList)
+            _this.postList = result.data.list
             _this.postID = result.data.actcode
-            _this.getImgUrl(_this.postList.list)
+            _this.getImgUrl(_this.postList)
           } else {
             _this.$message.error(result.message);
           }
@@ -731,11 +728,11 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data.list) {
             result.data.list = result.data.list.slice(0, 5)
-            _this.newPersonList = result.data
+            _this.newPersonList = result.data.list
             _this.newPersonID = result.data.actcode
-            _this.getImgUrl(_this.newPersonList.list)
+            _this.getImgUrl(_this.newPersonList)
           } else {
             _this.$message.error(result.message);
           }
@@ -757,7 +754,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data.list) {
             result.data.list = result.data.list.slice(0, 4)
             _this.limitedList = result.data.list
             _this.limitedList.forEach((item) => {
