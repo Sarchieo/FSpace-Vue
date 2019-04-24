@@ -331,14 +331,12 @@ import moment from "moment";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
-import PicZoom from 'vue-piczoom'
 
 export default {
   components: {
     FSpaceHeader,
     FSpaceButton,
-    FSpaceFooter,
-    PicZoom
+    FSpaceFooter
   },
   computed: {
     storeInfo() {
@@ -422,8 +420,6 @@ export default {
         action: null,
         moment,
         couponPub: [],
-        isis:
-          "成人及儿童急、慢性腹泻。蒙脱石散（思密达）用于食道、胃、十二指肠疾病引起的相关疼痛症",
         tabStyle: {
           color: "black",
           fontSize: "26px",
@@ -433,27 +429,23 @@ export default {
     };
   },
   mounted() {
-      this.sku = this.$route.query.sku;
-      this.spu = this.$route.query.spu;
-      // this.actcode = this.$route.query.actcode;
-      // 获取商品详情
-      this.getProd();
-       
-      // 获取优惠券
-      this.queryCouponPub();
-      this.getImgUrl();
-      // 获取是否收藏
-      this.isCollec();
-      // 获取活动详情
-      this.getActivitiesBySKU();
-      // 获取热销数据
-      this.getProdDetailHotArea();
-      //获取评价信息
-      this.$nextTick(function(){
-        this.getGoodsApprise();
-      })
-      // if (this.actcode != 0) {
-      // }
+    this.sku = this.$route.query.sku;
+    this.spu = this.$route.query.spu;
+    // 获取商品详情
+    this.getProd();
+    // 获取优惠券
+    this.queryCouponPub();
+    this.getImgUrl();
+    // 获取是否收藏
+    this.isCollec();
+    // 获取活动详情
+    this.getActivitiesBySKU();
+    // 获取热销数据
+    this.getProdDetailHotArea();
+    //获取评价信息
+    this.$nextTick(function(){
+      this.getGoodsApprise();
+    })
   },
   methods: {
     pageNumber(pageNumber) {

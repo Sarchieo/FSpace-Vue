@@ -433,6 +433,7 @@ export default {
               function result(result) {
                 if(result.code === 200) {
                   _this.queryMyConsignee()
+                  _this.visible = false
                 }else {
                   _this.$message.error(result.message)
                 }
