@@ -125,6 +125,7 @@ export default {
       iRequest.method = "getStoreSession";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {

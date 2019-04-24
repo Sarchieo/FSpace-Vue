@@ -157,6 +157,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
+        this,
         "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(

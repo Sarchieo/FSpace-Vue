@@ -71,7 +71,7 @@
               @mouseout="hideList()"
             >
               <a-icon type="shopping-cart" class="cart-icon"/>
-              <span class="cart-count">{{  cartList.length }}</span>
+              <span class="cart-count">{{ cartList.length }}</span>
               <!-- <a-popover class="cart-text" title="采购单">
                 <template slot="content">
                   <p>Content</p>
@@ -147,7 +147,7 @@
         <div class="ant-layout-header-back">
           <a class="already">已有账号</a>
           <nuxt-link to="/user/login">
-           <a class="immediately">立即登录</a>
+            <a class="immediately">立即登录</a>
           </nuxt-link>
         </div>
         <div class="divider"></div>
@@ -186,7 +186,7 @@ export default {
       }
     },
     isLogin() {
-      return this.$store.state.userStatus
+      return this.$store.state.userStatus;
     }
   },
   data() {
@@ -204,10 +204,9 @@ export default {
   mounted() {
     this.init();
     window.addEventListener("scroll", this.handleScroll);
-    if(this.isLogin) {
+    if (this.isLogin) {
       this.getShoppingCartList();
     }
-  
   },
   methods: {
     init() {
@@ -224,6 +223,7 @@ export default {
       iRequest.method = "logout";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+         this,
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -239,13 +239,27 @@ export default {
                   _this.$router.push({
                     path: "/user/login"
                   });
-                }, 1000);
+                }, 500);
               })
               .catch(err => {
                 console.log(err);
               });
           } else {
-            _this.$message.error(result.message);
+            _this.$store
+              .dispatch("setLogout", { context: _this })
+              .then(res => {
+                _this.isLogout = false;
+                _this.confirmLoading = false;
+                // 跳转页面
+                setTimeout(() => {
+                  _this.$router.push({
+                    path: "/user/login"
+                  });
+                }, 500);
+              })
+              .catch(err => {
+                console.log(err);
+              });
           }
         })
       );
@@ -330,26 +344,30 @@ export default {
       iRequest.param.json = JSON.stringify({
         compid: this.storeInfo.comp.storeId
       });
-      console.log("orderServer" + Math.floor(_this.storeInfo.comp.storeId / 8192 % 65535))
+      console.log(
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535)
+      );
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId / 8192 % 65535),
+        this,
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              if(result.data) {
-                _this.cartList = result.data
+              if (result.data) {
+                _this.cartList = result.data;
                 _this.cartList.forEach(item => {
                   item.checked ? false : true;
                 });
-                _this.getImgUrl(_this.cartList)
+                _this.getImgUrl(_this.cartList);
               }
-              
             }
           },
           function error(e) {
-            _this.$message.error('无法连接服务器或服务器返回异常, 请稍后重试');
+            _this.$message.error("无法连接服务器或服务器返回异常, 请稍后重试");
           }
         )
       );
@@ -361,6 +379,7 @@ export default {
       iRequest.method = "getStoreSession";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -373,7 +392,7 @@ export default {
         })
       );
     },
-      // 获取商品图片
+    // 获取商品图片
     async getImgUrl(arr) {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -391,6 +410,7 @@ export default {
         list: list
       });
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(
@@ -414,7 +434,7 @@ export default {
             }
           },
           function error(error) {
-            console.log(error)
+            console.log(error);
           }
         )
       );
@@ -424,11 +444,10 @@ export default {
       this.isLogout = true;
     },
     toIntegral() {
-       let routeData = this.$router.resolve({
-        path: "/user/integral",
+      let routeData = this.$router.resolve({
+        path: "/user/integral"
       });
       window.open(routeData.href, "_blank");
-
     }
   }
 };

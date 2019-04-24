@@ -114,6 +114,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -139,6 +140,7 @@ export default {
         pageNo: 1
       })
       this.$refcallback(
+        this,
         "discountServer",
         iRequest,
         new this.$iceCallback(
@@ -164,6 +166,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify(item)
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(

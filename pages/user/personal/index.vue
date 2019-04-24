@@ -222,6 +222,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.arrays = [code];
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(
@@ -247,6 +248,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.arrays = [data[index].areac];
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(
@@ -330,6 +332,7 @@ export default {
       iRequest.method = "getStoreSession";
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -363,6 +366,7 @@ export default {
         compid: this.$store.state.user.storeId
       })
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -435,6 +439,7 @@ export default {
             latitude: 0
           });
           this.$refcallback(
+            this,
             "userServer",
             iRequest,
             new this.$iceCallback(function result(result) {
@@ -469,6 +474,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.arrays = [targetOption.value];
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(
@@ -500,6 +506,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.arrays = [0];
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(

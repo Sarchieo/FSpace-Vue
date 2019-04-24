@@ -224,6 +224,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.arrays = [cusno,orderno];
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -252,6 +253,7 @@ export default {
         });
         console.log("json-------- " +  iRequest.param.json)
         this.$refcallback(
+          this,
             "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
             iRequest,
             new this.$iceCallback(function result(result) {

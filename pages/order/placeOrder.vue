@@ -18,22 +18,20 @@
         </div>
         <div class="receiving">
           <p class="receiving-address">收货地址</p>
-          <div>
-            <p class="tips">
+           <p class="tips">
               <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 8888-8888888
             </p>
+          <div>
             <p class="address-info">
-              <span>收货门店：</span>{{ this.storeInfo.comp.storeName }}
+              <span>联系人：</span>{{ consignee }}
             </p>
             <p class="address-info">
-              <span>联系方式：</span>{{ this.storeInfo.phone }}
-              <!-- <a @click="showModal()">修改</a> -->
-              <a-modal title="编辑收货人" v-model="visible" @ok="hideModal" okText="确认" cancelText="取消">
-                <p class="modal-tel">
-                  <span>联系方式：</span>
-                  <input type="tel">
-                </p>
-              </a-modal>
+              <span>联系方式：</span>{{ contact }}
+
+            </p>
+
+            <p class="address-info">
+              <span>收货门店：</span>{{ this.storeInfo.comp.storeName }}
             </p>
             <p class="address-info">
               <span>收货地址：</span>{{ this.storeInfo.comp.storeName }}
@@ -132,7 +130,7 @@
               <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
               <p class="price" v-if="cartList[0].freepost || isPostal">应付金额：￥ {{ cartList[0].acamt - coupNum }}</p>
               <p class="price" v-else>应付金额：￥ {{ (cartList[0].acamt + cartList[0].freight).toFixed(2) - coupNum  }}</p>
-              
+
               <a-button class="pay-btn" @click="toPay()">去付款</a-button>
             </div>
           </div>
@@ -140,6 +138,50 @@
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
+    <a-modal
+      title="收货人编辑"
+      v-model="visible"
+      :footer= "null"
+    >
+     <a-form
+        :form="form"
+        @submit="handleSubmit"
+      >
+       <a-form-item
+          label="收货人姓名："
+          :label-col="{ span: 5 }"
+          :wrapper-col="{ span: 12 }"
+        >
+          <a-input
+            v-decorator="[
+              'contactname',
+              {rules: [{ required: true, message: '请填写收货人姓名' }]}
+            ]"
+          />
+        </a-form-item>
+        <a-form-item
+          label="收货人电话："
+          :label-col="{ span: 5 }"
+          :wrapper-col="{ span: 12 }"
+        >
+          <a-input
+            v-decorator="[
+              'contactphone',
+              {rules: [{ required: true, validator: validatePhone}]}
+            ]"
+          />
+        </a-form-item>
+        <a-form-item
+          :wrapper-col="{ span: 12, offset: 8 }"
+        >
+        </a-form-item>
+        <a-button
+          type="primary"
+          html-type="submit">
+          保存
+        </a-button>
+     </a-form>
+    </a-modal>
   </div>
 </template>
 <script>
@@ -157,6 +199,7 @@ export default {
   },
   data() {
     return {
+      form: this.$form.createForm(this),
       orderType: 0,
       isCoupon: false,
       cartList: [],
@@ -164,8 +207,12 @@ export default {
       goodsArr: [],
       couponList: [],
       couponCode: 0, // 选中优惠券ID
+      unqid: 0,//优惠券领取表id
       coupNum: 0,
-      isPostal: false // 是否使用包邮券
+      isPostal: false, // 是否使用包邮券
+      receiverList: [],
+      consignee: '',
+      contact: ''
     };
   },
   created() {
@@ -178,8 +225,41 @@ export default {
     // 获取优惠券信息
     this.queryActCouponList()
     this.getImgUrl(this.cartList)
+    // 获取联系人信息
+    this.queryMyConsignee()
   },
   methods: {
+    queryMyConsignee() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyDrugStoreInfoModule";
+      iRequest.method = "queryMyConsignee";
+      iRequest.param.json = JSON.stringify({
+        compid: _this.storeInfo.comp.storeId
+      })
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              if(result.data && result.data.length > 0) {
+                _this.receiverList = result.data
+                _this.consignee = _this.receiverList[0].contactname
+                _this.contact = _this.receiverList[0].contactphone
+              } else {
+                _this.visible = true
+              }
+            }else {
+             _this.$message.error(result.message);
+             _this.visible = true
+            }
+          }
+        )
+      );
+    },
     queryActCouponList() {
       const _this = this;
       const iRequest = new inf.IRequest();
@@ -199,6 +279,7 @@ export default {
       iRequest.param.json = JSON.stringify(arr);
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(
@@ -244,11 +325,15 @@ export default {
       })
       iRequest.param.json = JSON.stringify({
         placeType: this.placeType,
-        coupon: this.couponCode,
+        coupon: this.couponCode, // 优惠券码
+        unqid: this.unqid,
         orderObj: {
           cusno: this.storeInfo.comp.storeId,
-          busno: this.storeInfo.comp.storeId,
-          rvaddno: this.storeInfo.addressCode
+          busno: 536862720,//自营暂时写死
+          consignee: this.consignee,
+          contact: this.contact,
+          rvaddno: this.storeInfo.comp.addressCode,
+          address: this.storeInfo.comp.address
         },
         goodsArr: goodsArr,
         orderType: this.orderType,
@@ -256,6 +341,7 @@ export default {
       });
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(
@@ -294,6 +380,7 @@ export default {
         list: list
       });
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(
@@ -322,15 +409,64 @@ export default {
         )
       );
     },
+    // 新增收货人
+    handleSubmit (e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          debugger
+          let _this = this;
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "MyDrugStoreInfoModule";
+          iRequest.method = "insertOrUpdConsignee";
+          iRequest.param.json = JSON.stringify({
+            compid: _this.storeInfo.comp.storeId,
+            contactname: values.contactname,
+            contactphone: values.contactphone,
+            shipid: 0
+          })
+          iRequest.param.token = localStorage.getItem("identification")
+          this.$refcallback(
+            this,
+            "userServer",
+            iRequest,
+            new this.$iceCallback(
+              function result(result) {
+                if(result.code === 200) {
+                  _this.queryMyConsignee()
+                  _this.visible = false
+                }else {
+                  _this.$message.error(result.message)
+                }
+              }
+            )
+          );
+        }
+      });
+    },
+    validatePhone(rule, value, callback) {
+      let _this = this;
+      const form = this.form;
+      if (value && /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/.test(value)) {
+        callback()
+      } else {
+        this.sendAuthCode = false
+        callback('收货人手机号码有误');
+      }
+    },
     handleOk() {
       console.log(1);
     },
     onChange(item, index) {
+        debugger
+        // console.log("item -- " + JSON.stringify(item))
       if(item.isChecked) {
-        this.couponCode = item.unqid
+        this.unqid =  item.unqid
+        this.couponCode = item.coupno
         this.coupNum = item.offerAmt
         item.brulecode === 2120 ? this.isPostal = true : this.isPostal = false
       }else {
+        this.unqid =  0
         this.couponCode = 0
         this.coupNum = 0
         this.isPostal = false
@@ -393,7 +529,7 @@ li {
   margin: 0;
 }
 .receiving {
-  .container-size(block, 1190px, 250px, 20px auto 20px auto, 0px);
+  .container-size(block, 1190px, 280px, 20px auto 20px auto, 0px);
   .container-color(#ffffff, 1px solid #e0e0e0, #333333);
 }
 .receiving-address {

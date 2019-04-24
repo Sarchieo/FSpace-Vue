@@ -331,14 +331,12 @@ import moment from "moment";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
-import PicZoom from 'vue-piczoom'
 
 export default {
   components: {
     FSpaceHeader,
     FSpaceButton,
-    FSpaceFooter,
-    PicZoom
+    FSpaceFooter
   },
   computed: {
     storeInfo() {
@@ -422,8 +420,6 @@ export default {
         action: null,
         moment,
         couponPub: [],
-        isis:
-          "成人及儿童急、慢性腹泻。蒙脱石散（思密达）用于食道、胃、十二指肠疾病引起的相关疼痛症",
         tabStyle: {
           color: "black",
           fontSize: "26px",
@@ -433,27 +429,23 @@ export default {
     };
   },
   mounted() {
-      this.sku = this.$route.query.sku;
-      this.spu = this.$route.query.spu;
-      // this.actcode = this.$route.query.actcode;
-      // 获取商品详情
-      this.getProd();
-       
-      // 获取优惠券
-      this.queryCouponPub();
-      this.getImgUrl();
-      // 获取是否收藏
-      this.isCollec();
-      // 获取活动详情
-      this.getActivitiesBySKU();
-      // 获取热销数据
-      this.getProdDetailHotArea();
-      //获取评价信息
-      this.$nextTick(function(){
-        this.getGoodsApprise();
-      })
-      // if (this.actcode != 0) {
-      // }
+    this.sku = this.$route.query.sku;
+    this.spu = this.$route.query.spu;
+    // 获取商品详情
+    this.getProd();
+    // 获取优惠券
+    this.queryCouponPub();
+    this.getImgUrl();
+    // 获取是否收藏
+    this.isCollec();
+    // 获取活动详情
+    this.getActivitiesBySKU();
+    // 获取热销数据
+    this.getProdDetailHotArea();
+    //获取评价信息
+    this.$nextTick(function(){
+      this.getGoodsApprise();
+    })
   },
   methods: {
     pageNumber(pageNumber) {
@@ -475,6 +467,7 @@ export default {
           })
           iRequest.param.token = localStorage.getItem("identification")
           this.$refcallback(
+            this,
               "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
               iRequest,
               new this.$iceCallback(
@@ -516,15 +509,14 @@ export default {
       iRequest.param.arrays = [this.sku];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
             if(_this.activitiesBySKU.length > 0) {
-            
               _this.rulecode = _this.activitiesBySKU[0].brulecode
-              
             }
              _this.queryActiveType(_this.activitiesBySKU[0].unqid);
           } else {
@@ -547,6 +539,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
@@ -573,6 +566,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
@@ -603,6 +597,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
@@ -636,6 +631,7 @@ export default {
       iRequest.method = "revCoupon";
       iRequest.param.json = JSON.stringify(item);
       this.$refcallback(
+        this,
        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
@@ -667,6 +663,7 @@ export default {
         pageNo: 1
       });
       this.$refcallback(
+        this,
         "discountServer",
         iRequest,
         new this.$iceCallback(
@@ -692,6 +689,7 @@ export default {
       iRequest.param.arrays = [this.sku, unqid];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -726,6 +724,7 @@ export default {
       iRequest.param.pageNumber = 10;
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -749,6 +748,7 @@ export default {
       iRequest.param.arrays = [this.sku];
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -812,6 +812,7 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -837,6 +838,7 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -859,6 +861,7 @@ export default {
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -888,6 +891,7 @@ export default {
       iRequest.param.json = JSON.stringify(arr)
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
@@ -930,6 +934,7 @@ export default {
         ]
       });
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(
@@ -969,6 +974,7 @@ export default {
         list: list
       });
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(

@@ -43,6 +43,7 @@ export default {
       iRequest.method = "getInvoice";
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
+        this,
         "userServer",
         iRequest,
         new this.$iceCallback(
