@@ -541,6 +541,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            debugger
             _this.list = result.data;
             _this.list.map((value, index) => {
               switch(value.unqid) {

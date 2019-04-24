@@ -69,7 +69,7 @@
               <!-- v-if="item.ostatus === 3" -->
               <p @click="saleAfter()">申请售后</p>
               <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
-              <p class="canle-order" v-if="item.ostatus === 0" @click="isShowCancel()">取消订单</p>
+              <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
               <p v-if="item.ostatus !== 0">再次购买</p>
             </div>
@@ -179,7 +179,6 @@ export default {
             _this.orderList.forEach(element => {
               _this.getImgUrl(element.goods)
             });
-          
           } else {
             _this.$message.error(result.message);
           }
@@ -194,13 +193,12 @@ export default {
       iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
       let list = [];
-      debugger
-      arr.forEach(c => {
-        list.push({
-          sku: c.sku,
-          spu: c.spu
-        });
-      });
+      // arr.forEach(c => {
+      //   list.push({
+      //     sku: ,
+      //     spu: 
+      //   });
+      // });
       iRequest.param.json = JSON.stringify({
         list: list
       });
@@ -273,7 +271,7 @@ export default {
         path: "/user/evaluate",
         query: {
           orderno: value.orderno,
-          goods: JSON.stringify(value.goods)
+          goods: JSON.stringify(value.goods) 
         }
       });
       window.open(routeData.href, '_blank');
@@ -436,7 +434,7 @@ export default {
         padding-top: 14px;
         padding-left: 10px;
         img{
-          float: left;
+          float: left;        
           width: 80px;
           height: 80px;
           margin-right: 5px;

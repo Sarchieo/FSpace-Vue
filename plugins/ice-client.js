@@ -41,7 +41,8 @@ function refcallback(context, moduleName,_IRequest, callback) {
       function (result) {
         let success = JSON.parse(result)
         if(success.code === -1 && context.$route.name !== 'user-login') {
-          context.$message.error('登录失效, 请重新登录～');
+          console.log()
+          context.$message.error('登录失效, 请重新登录～' + '模块名:'+ _IRequest.cls + '  方法名:' + _IRequest.method + '原因:' + success.message);
           context.$store
             .dispatch("setLogout", { context: context })
             .then(res => {
@@ -50,7 +51,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
                 context.$router.push({
                   path: "/user/login"
                 });
-              }, 500);
+              }, 10000);
             })
             .catch(err => {
               console.log(err);

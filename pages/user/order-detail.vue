@@ -38,15 +38,12 @@
             <div class="line"></div>
             <!-- 订单状态 -->
             <div class="step-right" v-if="item.ostatus !== -4">
-              <a-steps class="setps-box" :current="0">
+              <a-steps class="setps-box" :current="steps">
                 <a-step title="提交订单" >
                   <a-icon type="profile" slot="icon"/>
                 </a-step>
                 <a-step title="付款成功">
                   <a-icon type="pay-circle" slot="icon"/>
-                </a-step>
-                <a-step title="商品出库">
-                  <a-icon type="cloud-upload" slot="icon"/>
                 </a-step>
                 <a-step title="等待收货">
                   <a-icon type="car" slot="icon"/>
@@ -58,20 +55,16 @@
             </div>
           </div>
           <!-- 物流信息 -->
-          <div class="logistics-box-info" v-if="item.ostatus >= 2 && item.ostatus != -4">
+          <div class="logistics-box-info" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node.length > 0">
             <div class="logistics-left">
               <p>送货方式：普通快递</p>
               <p>承运人： 中国邮政</p>
-              <p>货运单号：5941557574860</p>
+              <p>货运单号：{{ logistixs.billno }}</p>
             </div>
             <div class="line height220"></div>
             <div class="logistics-right">
-              <a-steps direction="vertical" size="small" :current="1">
-                <a-step title="完成" description="2019-03-30 08：32：47您提交了订单，等待系统确认"/>
-                <a-step title="进行中" description="2019-03-30 09：32：47您付款成功，等待仓库出库"/>
-                <a-step title="未进行" description="2019-03-30 10：32：47仓库出货，准备分发至长沙仓库中心"/>
-                <a-step title="未进行" description="2019-03-30 11：32：47到达湘潭仓库中心，准备分发至易俗河仓库中心"/>
-                <a-step title="未进行" description="2019-03-30 12：32：47到达易俗河仓库中心，您准备接收快递"/>
+              <a-steps direction="vertical" size="small" :current="1" >
+                <a-step v-for="(item, index) in logistixs.node" :key="index" :title="item.status" :description="item.date + item.time + item.des"/>
               </a-steps>
             </div>
           </div>
@@ -118,7 +111,6 @@
             <span class="width15">单价</span>
             <span class="width15">数量</span>
             <span class="width15">小计</span>
-            <span class="width15">总计</span>
           </p>
           <div class="goods-list-box">
             <table>
@@ -144,8 +136,8 @@
                     </div>
                   </td>
                   <td class="price widths15 td-center padding-left5">￥{{items.pdprice}}</td>
-                  <td class="count widths15 td-center padding-left5">{{item.pdnum}}</td>
-                  <td class="subtotal widths15 td-center padding-left10">￥{{item.pdamt}}</td>
+                  <td class="count widths15 td-center padding-left5">{{items.pnum}}</td>
+                  <td class="subtotal widths15 td-center padding-left10">￥{{items.pdamt}}</td>
                   <div style="clear: both;"></div>
                   <!-- <td class="total width15 td-center padding-left15">
                   ￥35
@@ -205,18 +197,20 @@ export default {
   },
   data() {
     return {
+      steps: 0,
       visible: false,
       orderDetail: [],
       orderno: '',
-      cusno: ''
+      cusno: '',
+      logistixs: []
     };
   },
   mounted() {
     this.orderno = this.$route.query.orderno;
     this.cusno = this.$route.query.cusno;
-    // this.queryOrderDetail();
-    // 获取物流信息
+    this.queryOrderDetail();
     this.getLogisticsInfo();
+    this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}') 
   },
   methods: {
     getLogisticsInfo() {
@@ -233,9 +227,12 @@ export default {
         this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
-        new this.$iceCallback(function result(result) {
+        new this.$iceCallback(
+          function result(result) {
+          console.log(JSON.stringify(result))
           if (result.code === 200) {
-            debugger
+            _this.logistixs = result.data
+            
           } else {
             _this.$message.error(result.message);
           }
@@ -258,6 +255,22 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderDetail = result.data;
+            switch(_this.orderDetail.ostatus) {
+              case 0:
+                _this.steps = 0
+              break
+              case 1:
+                _this.steps = 1
+              break
+               case 2:
+                _this.steps = 2
+                // 获取物流信息
+                // _this.getLogisticsInfo();
+              break
+               case 3:
+                _this.steps = 3
+              break
+            }
           } else {
             _this.$message.error(result.message);
           }

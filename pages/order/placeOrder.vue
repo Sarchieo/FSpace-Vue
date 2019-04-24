@@ -339,6 +339,7 @@ export default {
         orderType: this.orderType,
         actcode: this.actcode
       });
+      debugger
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         this,
