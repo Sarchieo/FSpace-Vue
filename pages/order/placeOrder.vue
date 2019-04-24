@@ -27,9 +27,9 @@
             </p>
             <p class="address-info">
               <span>联系方式：</span>{{ contact }}
-             
+
             </p>
-           
+
             <p class="address-info">
               <span>收货门店：</span>{{ this.storeInfo.comp.storeName }}
             </p>
@@ -130,7 +130,7 @@
               <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
               <p class="price" v-if="cartList[0].freepost || isPostal">应付金额：￥ {{ cartList[0].acamt - coupNum }}</p>
               <p class="price" v-else>应付金额：￥ {{ (cartList[0].acamt + cartList[0].freight).toFixed(2) - coupNum  }}</p>
-              
+
               <a-button class="pay-btn" @click="toPay()">去付款</a-button>
             </div>
           </div>
@@ -207,6 +207,7 @@ export default {
       goodsArr: [],
       couponList: [],
       couponCode: 0, // 选中优惠券ID
+      unqid: 0,//优惠券领取表id
       coupNum: 0,
       isPostal: false, // 是否使用包邮券
       receiverList: [],
@@ -325,10 +326,10 @@ export default {
       iRequest.param.json = JSON.stringify({
         placeType: this.placeType,
         coupon: this.couponCode, // 优惠券码
-
+        unqid: this.unqid,
         orderObj: {
           cusno: this.storeInfo.comp.storeId,
-          busno: this.storeInfo.comp.storeId,
+          busno: 536862720,//自营暂时写死
           consignee: this.consignee,
           contact: this.contact,
           rvaddno: this.storeInfo.comp.addressCode,
@@ -457,12 +458,15 @@ export default {
       console.log(1);
     },
     onChange(item, index) {
-      if(item.isChecked) {
         debugger
-        this.couponCode = item.unqid
+        // console.log("item -- " + JSON.stringify(item))
+      if(item.isChecked) {
+        this.unqid =  item.unqid
+        this.couponCode = item.coupno
         this.coupNum = item.offerAmt
         item.brulecode === 2120 ? this.isPostal = true : this.isPostal = false
       }else {
+        this.unqid =  0
         this.couponCode = 0
         this.coupNum = 0
         this.isPostal = false
