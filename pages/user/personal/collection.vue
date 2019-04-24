@@ -4,10 +4,10 @@
      <div class="no-data" v-if="this.collecList.length === 0">
        <p><a-icon type="exclamation"/></p>
        <p>您还没有收藏药品！</p>
-        <a-icon type="delete" @click.stop="delCollec(item.sku)"/>
+        <!-- <a-icon type="delete" @click.stop="delCollec(item.sku)"/> -->
      </div>
      <ul class="goods-list-box" v-if="this.collecList.length !== 0">
-        <li v-for="(item,index) in collecList" :key="index" @click="toDetals()">
+        <li v-for="(item,index) in collecList" :key="index" @click="toDetail(item)">
            <a-card
           hoverable
           class="card"
@@ -21,7 +21,7 @@
           <!-- {{item.info.prodname}} -->
           <p class="surplus text-Center top185">{{item.info.prodname}}</p>
           <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
-          <p class="validity">有效期至{{item.info.prodsdate}}-{{item.info.prodedate}}</p>
+          <p class="validity">有效期{{item.info.prodsdate}}-{{item.info.prodedate}}</p>
           <!-- {{item.info.vatp}} -->
           <p class="card-price top165">￥{{item.info.vatp}} </p>
 
@@ -32,10 +32,7 @@
           <!-- {{item.info.manuName}} -->
           <p class="manufacturer">{{item.info.manuName}}</p>
           <p class="add-card">
-            <button>-</button>
-            <button>{{count}}</button>
-            <button>+</button>
-            <button class="cart-btns">
+            <button class="cart-btns" @click.stop="addCart(item)">
               <a-icon type="shopping-cart"/>
               加入采购单
             </button>
@@ -67,11 +64,6 @@ export default {
     console.log(this.storeInfo.comp.storeId)
   },
   methods:{
-    toDetals() {
-      this.$router.push({
-        path:'/product/detail'
-      })
-    },
     // 查询收藏列表
     queryCollec() {
       let _this = this;
@@ -127,6 +119,46 @@ export default {
         })
       );
     },
+       // 加入采购单
+    addCart(item) {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "saveShopCart";
+      iRequest.param.json = JSON.stringify({
+        pdno: item.sku,
+        pnum: 1,
+        checked: 0,
+        compid: _this.storeInfo.comp.storeId
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        },
+        function error(e) {
+          _this.$message.error(e);
+        })
+      );
+    },
+    // 跳转详情
+    toDetail(item) {
+      this.$router.push({
+        path: "/product/detail",
+        query: {
+          sku: item.sku,
+          spu: item.spu
+        }
+      });
+    }
   }
 }
 </script>
@@ -241,6 +273,10 @@ export default {
   text-align: center;
 }
 .cart-btns {
+  display: block;
+  width: 200px;
+  height: 30px;
+  margin: 0 auto;
   border: none;
   background: #ed3025;
   color: #ffffff;
