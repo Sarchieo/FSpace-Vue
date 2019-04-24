@@ -40,8 +40,7 @@
             <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
               <div class="goods-pic">
                 <img
-                  v-lazy="item.src"
-                  alt
+                  v-lazy="item.imgURl"
                 >
                 <p class="goods-text">{{items.pname}}</p>
                 <p class="guige">规格：{{items.pspec}}</p>
@@ -177,10 +176,60 @@ export default {
             _this.orderList = result.data;
             _this.total = result.total
             _this.currentIndex = result.pageNo
+            _this.orderList.forEach(element => {
+              _this.getImgUrl(element.goods)
+            });
+          
           } else {
             _this.$message.error(result.message);
           }
         })
+      );
+    },
+     // 获取商品图片
+    async getImgUrl(arr) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      let list = [];
+      debugger
+      arr.forEach(c => {
+        list.push({
+          sku: c.sku,
+          spu: c.spu
+        });
+      });
+      iRequest.param.json = JSON.stringify({
+        list: list
+      });
+      this.$refcallback(
+        this,
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              result.data.goodsFilePathList.forEach((c, index, list) => {
+                _this.$set(
+                  arr[index],
+                  "imgURl",
+                  result.data.downPrev +
+                    c +
+                    "/" +
+                    arr[index].sku +
+                    "-200x200.jpg"
+                );
+              });
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            console.log(error)
+          }
+        )
       );
     },
     showDeleteConfirm() {
@@ -365,7 +414,7 @@ export default {
           color: #ed3025;
       }
       .share {
-        margin-left: 465px;
+        margin-left: 430px;
       }
       i {
         font-size: 18px;

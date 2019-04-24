@@ -69,7 +69,7 @@
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期至{{item.vaildedate}}</p>
 
-                  <p class="elaborate-price" v-if="!userStatus">￥{{item.vatp}}</p>
+                  <p class="elaborate-price" v-if="userStatus">￥{{item.vatp}}</p>
                   <p class="elaborate-price" v-else>￥登录后可见</p>
                   <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
@@ -94,7 +94,7 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}}</p>
+                    <p class="card-price top165" v-if="userStatus">￥{{item.vatp}}</p>
                     <p class="card-price top165" v-else>￥登录后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
@@ -119,7 +119,7 @@
                   <a-card hoverable class="onek-card" @click="toDetail(item, secondList.actcode, 2)">
                     <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                     <div class="onek-box" slot="cover">
-                      <p class="onek-price" v-if="!userStatus">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-if="userStatus">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
                       <p class="onek-price" v-else>￥登录后可见</p>
                       <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
@@ -175,11 +175,11 @@
             </div>
             <div class="onek-shoping">
               <ul>
-                <li v-for="(item,index) in teamBuyList.list" :key="index">
+                <li v-for="(item,index) in teamBuyList" :key="index">
                   <a-card hoverable class="onek-card" @click="toDetail(item, teamBuyList.actcode, 2)">
                     <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                     <div class="onek-box" slot="cover">
-                      <p class="onek-price" v-if="!userStatus">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-if="userStatus">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
                       <p class="onek-price" v-else>￥登录后可见</p>
                       <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
@@ -213,7 +213,7 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}} </p>
+                    <p class="card-price top165" v-if="userStatus">￥{{item.vatp}} </p>
                      <p class="card-price top165" v-else>￥登录后可见 </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
@@ -238,7 +238,7 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}}</p>
+                    <p class="card-price top165" v-if="userStatus">￥{{item.vatp}}</p>
                     <p class="card-price top165" v-else>￥登录后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
@@ -290,7 +290,7 @@
                   <p class="elaborate-specifications">{{item.spec}}</p>
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期至{{item.vaildedate}}</p>
-                  <p class="elaborate-price" v-if="!userStatus">￥{{item.vatp}}</p>
+                  <p class="elaborate-price" v-if="userStatus">￥{{item.vatp}}</p>
                   <p class="elaborate-price" v-else>￥登录后可见</p>
                   <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
@@ -324,7 +324,7 @@
             </div>
           </div>
           <!-- 限时抢购 -->
-          <div id="hot" class="brand-hall" v-if="item.unqid === 512 && limitedList.length > 4">
+          <div id="hot" class="brand-hall" v-if="item.unqid === 512 && limitedList.length > 3">
             <p class="brand-hall-title">
              限时折扣
               <a class="all-hot" @click="toLimited()">
@@ -348,7 +348,7 @@
                 </button>
               </div>
               <ul class="brand-right">
-                <li v-for="(items,index) in limitedList.list" :key="index">
+                <li v-for="(items,index) in limitedList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(items, limitedList.actcode, 1)">
                     <img class="card-img" v-lazy="items.imgURl" slot="cover">
                     <a-progress
@@ -368,7 +368,7 @@
                         ￥{{items.actprize}}
                         <del>￥{{items.mp}}</del>
                       </p>
-                        <p class="card-prices" else>
+                        <p class="card-prices" v-else>
                         ￥登录后可见
                       </p>
                       <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
@@ -420,8 +420,10 @@ export default {
     FSpaceMenu,
     FSpaceFooter
   },
-  userStatus() {
-    return this.$store.state.userStatus
+  computed: {
+    userStatus() {
+      return this.$store.state.userStatus
+    },
   },
   data() {
     return {
@@ -549,6 +551,7 @@ export default {
                 _this.getHotGoods();
                 break
                 case 4: // 秒杀专区
+                
                 _this.getSeckillMallFloor();
                 break
                 case 8: // 一块购
@@ -597,10 +600,10 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 5)
-            _this.teamBuyList = result.data
+            _this.teamBuyList = result.data.list
             _this.teamByID = result.data.actcode
-            _this.getImgUrl(_this.teamBuyList.list)
-            _this.secondKills(_this.stringToDate(_this.teamBuyList.now), _this.teamBuyList.edate)
+            _this.getImgUrl(_this.teamBuyList)
+            _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
           } else {
             _this.$message.error(result.message);
           }
@@ -625,8 +628,6 @@ export default {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 5)
             _this.secondList = result.data
-            console.log(55555555)
-            console.log(result)
             _this.secondID = result.data.actcode
             _this.getImgUrl(_this.secondList.list)
             _this.secondKills(_this.stringToDate(_this.secondList.now), _this.secondList.edate)
@@ -757,14 +758,14 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             result.data.list = result.data.list.slice(0, 4)
-            _this.limitedList = result.data
-            _this.limitedList.list.forEach((item) => {
+            _this.limitedList = result.data.list
+            _this.limitedList.forEach((item) => {
               item.percentage = 100 - item.buynum/item.surplusstock*100
             })
             _this.limitedID = result.data.actcode
-            _this.secondKill(_this.stringToDate(_this.limitedList.now), _this.limitedList.edate)
-            _this.getImgUrl(_this.limitedList.list)
-            _this.getTimeDiff(_this.limitedList.edate)
+            _this.secondKill(_this.stringToDate(result.data.now), result.data.edate)
+            _this.getImgUrl(_this.limitedList)
+            _this.getTimeDiff(result.data.edate)
           } else {
             _this.$message.error(result.message);
           }

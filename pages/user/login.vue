@@ -195,6 +195,7 @@ export default {
     },
     // 获取详情
     getBasicInfo() {
+      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
@@ -205,7 +206,9 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
+          debugger
           if (result.code === 200) {
+            
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
@@ -220,9 +223,13 @@ export default {
             _this.$store.dispatch("setUser", {
               context: _this,
               user: {
-                storeName: '',
-                storeId: 0,
-                address: ''
+                comp: {
+                  storeName: '',
+                  storeId: 0,
+                  address: ''
+                },
+                compId: 0,
+                phone: ''
               }
             }).then(res => {
               // 登录成功

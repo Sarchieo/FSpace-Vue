@@ -458,7 +458,6 @@ export default {
     },
     onChange(item, index) {
       if(item.isChecked) {
-        debugger
         this.couponCode = item.unqid
         this.coupNum = item.offerAmt
         item.brulecode === 2120 ? this.isPostal = true : this.isPostal = false

@@ -18,8 +18,9 @@
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
-              <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom>
+              <!-- <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom> -->
               <!-- <img v-lazy="imgUrl" slot="cover"> -->
+              <f-space-pic-zoom :imgUrl="imgUrl" />
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
               <p v-if="this.isShowCollec === false">
                 <span @click="addCollec()">
@@ -90,7 +91,7 @@
                 <!-- 积分 -->
                 <!-- <p class="price">
                   <span>购买得50积分</span>
-                </p> -->
+                </p>-->
                 <p class="price indent">
                   <a-icon type="check-circle"/>
                   <span>30天无忧退换货</span>
@@ -147,11 +148,23 @@
                   <!-- <button class="addition width22" @click="addCount()">+</button> -->
                   <!-- <button class="reduce width22">-</button> -->
                   <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->
-                  <a-button :loading="loading" type="danger" class="purchase" @click="placeOrder()"  v-if="rulecode !== 1113">立即购买</a-button>
+                  <a-button
+                    :loading="loading"
+                    type="danger"
+                    class="purchase"
+                    @click="placeOrder()"
+                    v-if="rulecode !== 1113"
+                  >立即购买</a-button>
                   <a-button class="add-cart" @click="addCart()" v-if="rulecode !== 1113">
                     <a-icon type="shopping-cart"/>加入采购单
                   </a-button>
-                  <a-button :disabled="!isKill" type="primary" class="purchase" @click="attendSecKill()" v-if="rulecode === 1113 && isSecondkill">立即抢购</a-button>
+                  <a-button
+                    :disabled="!isKill"
+                    type="primary"
+                    class="purchase"
+                    @click="attendSecKill()"
+                    v-if="rulecode === 1113 && isSecondkill"
+                  >立即抢购</a-button>
                 </p>
               </div>
             </div>
@@ -163,39 +176,38 @@
               <!-- <span @click="toPersonCoupon()">
                 更多优惠券
                 <a-icon type="right"/>
-              </span> -->
+              </span>-->
             </p>
             <div class="coupon-content">
-              <div
-                class="coupon-boxs"
-                v-for="(item, index) in couponPub"
-                :key="index"
-              >
+              <div class="coupon-boxs" v-for="(item, index) in couponPub" :key="index">
                 <div class="coupon-card" v-if="item.brulecode === 2120" @click="revCoupon(item)">
                   <div class="coupon-left">
-                    <p class="coupon-type">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
-                    <span class="ladder" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 包邮</span>
+                    <p class="coupon-type">
+                      {{ item.rulename }}
+                      <span class="term">有效期 {{ item.validday }} 天</span>
+                    </p>
+                    <span class="ladder" v-for="(j, i) in item.ladderVOS" :key="i">
+                      满
+                      <span>{{ j.ladamt }}</span> 包邮
+                    </span>
                   </div>
                   <div class="coupon-right">
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                   </div>
                 </div>
               </div>
-              <div
-                v-for="(item, index) in couponPub"
-                :key="index"
-                class="coupon-boxs"
-              >
-                <div class="coupon-card" v-if="item.brulecode === 2130"  @click="revCoupon(item)">
+              <div v-for="(item, index) in couponPub" :key="index" class="coupon-boxs">
+                <div class="coupon-card" v-if="item.brulecode === 2130" @click="revCoupon(item)">
                   <div class="coupon-left">
-
-                    <p class="coupon-type">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
-                    <span
-                     class="ladder"
-                      v-for="(j, i) in item.ladderVOS"
-                      :key="i"
-                    >满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span> 折</span>
-                    
+                    <p class="coupon-type">
+                      {{ item.rulename }}
+                      <span class="term">有效期 {{ item.validday }} 天</span>
+                    </p>
+                    <span class="ladder" v-for="(j, i) in item.ladderVOS" :key="i">
+                      满
+                      <span>{{ j.ladamt }}</span> 打
+                      <span>{{ j.offer/10}}</span> 折
+                    </span>
                   </div>
 
                   <div class="coupon-right">
@@ -203,15 +215,18 @@
                   </div>
                 </div>
               </div>
-              <div
-                class="coupon-boxs"
-                v-for="(item, index) in couponPub"
-                :key="index"
-              >
+              <div class="coupon-boxs" v-for="(item, index) in couponPub" :key="index">
                 <div class="coupon-card" v-if="item.brulecode === 2110" @click="revCoupon(item)">
                   <div class="coupon-left">
-                    <p class="coupon-type">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span> </p>
-                    <span v-for="(j, i) in item.ladderVOS" :key="i" class="ladder">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span></span>
+                    <p class="coupon-type">
+                      {{ item.rulename }}
+                      <span class="term">有效期 {{ item.validday }} 天</span>
+                    </p>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i" class="ladder">
+                      满
+                      <span>{{ j.ladamt }}</span> 减
+                      <span>{{ j.offer}}</span>
+                    </span>
                     <!-- <span>有效期 {{ item.validday }} 天</span> -->
                   </div>
                   <div class="coupon-right">
@@ -235,11 +250,29 @@
                 <!-- 详情 -->
                 <a-tab-pane tab="药品详情" key="1">
                   <div class="probably">
-                    <p><span class="title-left">药品名称：</span>  {{prodDetail.brandName}}  {{prodDetail.prodname}}</p>
-                    <p><span class="title-left">品牌：</span> {{prodDetail.brandName}}<span class="right-text">{{prodDetail.spec}}</span><span class="title-right">规格：</span></p>
-                    <p><span class="title-left">生产厂商：</span>{{prodDetail.manuName}}</p>
-                    <p><span class="title-left">批准文号：</span>{{prodDetail.standarNo}} <span class="right-text">{{prodDetail.rxName}}</span><span class="title-right">产品类型：</span></p>
-                    <p><span class="title-left">温馨提示：</span>  部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准</p>
+                    <p>
+                      <span class="title-left">药品名称：</span>
+                      {{prodDetail.brandName}} {{prodDetail.prodname}}
+                    </p>
+                    <p>
+                      <span class="title-left">品牌：</span>
+                      {{prodDetail.brandName}}
+                      <span class="right-text">{{prodDetail.spec}}</span>
+                      <span class="title-right">规格：</span>
+                    </p>
+                    <p>
+                      <span class="title-left">生产厂商：</span>
+                      {{prodDetail.manuName}}
+                    </p>
+                    <p>
+                      <span class="title-left">批准文号：</span>
+                      {{prodDetail.standarNo}}
+                      <span class="right-text">{{prodDetail.rxName}}</span>
+                      <span class="title-right">产品类型：</span>
+                    </p>
+                    <p>
+                      <span class="title-left">温馨提示：</span> 部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准
+                    </p>
                   </div>
                   <div class="goods-detail">
                     <p class="instructions">{{prodDetail.prodname}}说明书</p>
@@ -291,10 +324,12 @@
                     <div class="evaluate-list">
                       <a-comment v-for="(item,index) in appriseArr" :key="index">
                         <a slot="author">{{item.compName}}</a>
-                        <p slot="content"
-                          class="comment-text">
-                         {{item.content}}</p>
-                        <p>评分:<a-rate :defaultValue="item.level" disabled/>   &nbsp &nbsp {{item.createtdate}}&nbsp {{item.createtime}}</p>
+                        <p slot="content" class="comment-text">{{item.content}}</p>
+                        <p>
+                          评分:
+                          <a-rate :defaultValue="item.level" disabled/>
+                          &nbsp &nbsp {{item.createtdate}}&nbsp {{item.createtime}}
+                        </p>
                       </a-comment>
                     </div>
                   </div>
@@ -331,101 +366,103 @@ import moment from "moment";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
+import FSpacePicZoom from "../../components/fspace-ui/piczoom"
 
 export default {
   components: {
     FSpaceHeader,
     FSpaceButton,
-    FSpaceFooter
+    FSpaceFooter,
+    FSpacePicZoom
   },
   computed: {
     storeInfo() {
       return this.$store.state.user;
     }
   },
-  middleware: 'authenticated',
+  middleware: "authenticated",
   data() {
     return {
-        appriseArr:[],//评价列表
-        evaluateVal: 0, // 药店评价商品的分数
-        currentIndex: 1, // 第几页
-        total: 0, // 总页数
-        rulecode: 0,//活动规则
-        activitiesBySKU: [],
-        configs: {
-          width:650,
-          height:350,
-          maskWidth:100,
-          maskHeight:100,
-          maskColor:'red',
-          maskOpacity:0.2
+      appriseArr: [], //评价列表
+      evaluateVal: 0, // 药店评价商品的分数
+      currentIndex: 1, // 第几页
+      total: 0, // 总页数
+      rulecode: 0, //活动规则
+      activitiesBySKU: [],
+      configs: {
+        width: 650,
+        height: 350,
+        maskWidth: 100,
+        maskHeight: 100,
+        maskColor: "red",
+        maskOpacity: 0.2
+      },
+      isSecondkill: true,
+      unqid: 0,
+      isKill: false,
+      loading: false,
+      maximum: 1, // 最大库存
+      inventory: 1, // 当前库存
+      percentAge: 50,
+      flashSale: {
+        h: 0,
+        m: 0,
+        s: 0
+      },
+      hotList: [],
+      isShowCollec: false,
+      imgUrl: "",
+      sku: "",
+      spu: "",
+      prodDetail: {
+        prodsdate: "",
+        prodedate: ""
+      },
+      details: [
+        {
+          name: "功能主治",
+          content: "",
+          id: 1
         },
-        isSecondkill: true,
-        unqid: 0,
-        isKill: false,
-        loading: false,
-        maximum: 1, // 最大库存
-        inventory: 1, // 当前库存
-        percentAge: 50,
-        flashSale: {
-          h: 0,
-          m: 0,
-          s: 0
+        {
+          name: "主要成分",
+          content: "",
+          id: 2
         },
-        hotList: [],
-        isShowCollec: false,
-        imgUrl: "",
-        sku: "",
-        spu: "",
-        prodDetail: {
-          prodsdate: '',
-          prodedate: ''
+        {
+          name: "用法用量",
+          content: "",
+          id: 3
         },
-        details: [
-          {
-            name: "功能主治",
-            content: "",
-            id: 1
-          },
-          {
-            name: "主要成分",
-            content: "",
-            id: 2
-          },
-          {
-            name: "用法用量",
-            content: "",
-            id: 3
-          },
-          {
-            name: "不良反应",
-            content: "",
-            id: 4
-          },
-          {
-            name: "注意事项",
-            content: "",
-            id: 5
-          },
-          {
-            name: "禁忌",
-            content: "",
-            id: 6
-          }
-        ],
-        discount: {},
-        likes: 0,
-        brandNum: "",
-        dislikes: 0,
-        action: null,
-        moment,
-        couponPub: [],
-        tabStyle: {
-          color: "black",
-          fontSize: "26px",
-          backgroundColor: "#f2f2f2"
+        {
+          name: "不良反应",
+          content: "",
+          id: 4
         },
-        count: 1,
+        {
+          name: "注意事项",
+          content: "",
+          id: 5
+        },
+        {
+          name: "禁忌",
+          content: "",
+          id: 6
+        }
+      ],
+      discount: {},
+      likes: 0,
+      brandNum: "",
+      dislikes: 0,
+      action: null,
+      moment,
+      couponPub: [],
+      tabStyle: {
+        color: "black",
+        fontSize: "26px",
+        backgroundColor: "#f2f2f2"
+      },
+      count: 1
     };
   },
   mounted() {
@@ -443,62 +480,63 @@ export default {
     // 获取热销数据
     this.getProdDetailHotArea();
     //获取评价信息
-    this.$nextTick(function(){
+    this.$nextTick(function() {
       this.getGoodsApprise();
-    })
+    });
   },
   methods: {
     pageNumber(pageNumber) {
-      this.currentIndex = pageNumber
+      this.currentIndex = pageNumber;
       // 再重新调一次请求评价列表方法
-      this.getGoodsApprise()
+      this.getGoodsApprise();
     },
-      //获取评价列表
-      getGoodsApprise() {
-          const _this = this;
-          const iRequest = new inf.IRequest();
-          iRequest.cls = "OrderOptModule";
-          iRequest.method = "getGoodsApprise";
-          console.log("appriseArr-- " + JSON.stringify(this.appriseArr));
-          iRequest.param.pageIndex = this.currentIndex
-          iRequest.param.pageNumber = 10
-          iRequest.param.json = JSON.stringify({
-              sku: this.sku,
-          })
-          iRequest.param.token = localStorage.getItem("identification")
-          this.$refcallback(
-            this,
-              "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
-              iRequest,
-              new this.$iceCallback(
-                  function result(result) {
-                      if (result.code === 200) {
-                          console.log("asdasd--- " + JSON.stringify(result.data))
-                          _this.appriseArr = result.data
-                          _this.total = result.total
-                      } else {
-                          _this.$message.error(result.message);
-                      }
-                  },
-                  function error(e) {
-                      console.log(error)
-                  }
-              )
-          );
-      },
+    //获取评价列表
+    getGoodsApprise() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "OrderOptModule";
+      iRequest.method = "getGoodsApprise";
+      console.log("appriseArr-- " + JSON.stringify(this.appriseArr));
+      iRequest.param.pageIndex = this.currentIndex;
+      iRequest.param.pageNumber = 10;
+      iRequest.param.json = JSON.stringify({
+        sku: this.sku
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              console.log("asdasd--- " + JSON.stringify(result.data));
+              _this.appriseArr = result.data;
+              _this.total = result.total;
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            console.log(error);
+          }
+        )
+      );
+    },
     // 新增采购数量
     addCount() {
-      if(this.inventory >= this.maximum) {
-        this.$message.warning('库存不足或超出限购数量')
-        return
+      if (this.inventory >= this.maximum) {
+        this.$message.warning("库存不足或超出限购数量");
+        return;
       }
-      this.inventory ++
+      this.inventory++;
     },
     reduceCount() {
-      if(this.inventory <= 1) {
-        return
+      if (this.inventory <= 1) {
+        return;
       }
-      this.inventory --
+      this.inventory--;
     },
     // 获取药品活动类型
     getActivitiesBySKU() {
@@ -510,15 +548,16 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
-            if(_this.activitiesBySKU.length > 0) {
-              _this.rulecode = _this.activitiesBySKU[0].brulecode
+            if (_this.activitiesBySKU.length > 0) {
+              _this.rulecode = _this.activitiesBySKU[0].brulecode;
             }
-             _this.queryActiveType(_this.activitiesBySKU[0].unqid);
+            _this.queryActiveType(_this.activitiesBySKU[0].unqid);
           } else {
             _this.$message.error(result.message);
           }
@@ -536,23 +575,25 @@ export default {
         pdno: this.prodDetail.sku,
         pnum: this.inventory,
         checked: 0
-      })
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
+            if (result.code === 200) {
+              _this.$message.success(result.message);
+            } else {
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
           }
-        },
-        function error(e) {
-          _this.$message.error(e);
-        })
+        )
       );
     },
     beforeSecKill() {
@@ -563,25 +604,27 @@ export default {
       iRequest.param.json = JSON.stringify({
         sku: _this.sku,
         actno: _this.actcode
-      })
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
-            _this.isKill = true
-            _this.unqid = result.data
-          } else {
-            _this.isKill = false
-            _this.$message.error(result.message);
+            if (result.code === 200) {
+              _this.isKill = true;
+              _this.unqid = result.data;
+            } else {
+              _this.isKill = false;
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
           }
-        },
-        function error(e) {
-          _this.$message.error(e);
-        })
+        )
       );
     },
     attendSecKill() {
@@ -594,32 +637,34 @@ export default {
         actno: _this.actcode,
         unqid: _this.unqid,
         stock: _this.inventory
-      })
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
-            _this.$route.path.replace()
-            _this.$router.push({
-              name: "order-placeOrder",
-              params: {
-                arr: JSON.stringify(result.data),
-                placeType: 1,
-                orderType: 1
-              }
-            });
-          } else {
-            _this.isKill = false
-            _this.$message.error(result.message);
+            if (result.code === 200) {
+              _this.$route.path.replace();
+              _this.$router.push({
+                name: "order-placeOrder",
+                params: {
+                  arr: JSON.stringify(result.data),
+                  placeType: 1,
+                  orderType: 1
+                }
+              });
+            } else {
+              _this.isKill = false;
+              _this.$message.error(result.message);
+            }
+          },
+          function error(e) {
+            _this.$message.error(e);
           }
-        },
-        function error(e) {
-          _this.$message.error(e);
-        })
+        )
       );
     },
     // 猜你喜欢列表
@@ -632,7 +677,8 @@ export default {
       iRequest.param.json = JSON.stringify(item);
       this.$refcallback(
         this,
-       "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -655,7 +701,7 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
       iRequest.method = "queryCouponPub";
-      iRequest.param.token = localStorage.getItem("identification")
+      iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
         gcode: _this.sku, // sku
         compid: _this.storeInfo.comp.storeId, // 企业id
@@ -690,7 +736,8 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -702,9 +749,8 @@ export default {
                 _this.discount.endTime
               );
               // 设置最大库存
-              _this.maximum = _this.discount.limits
+              _this.maximum = _this.discount.limits;
             }
-
           } else {
             _this.$message.error(result.message);
           }
@@ -753,20 +799,26 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            if(result.data) {
+            if (result.data) {
               _this.prodDetail = result.data;
               _this.getFoot();
               _this.details = JSON.parse(_this.prodDetail.detail);
-              if(_this.rulecode === 0) {
-                _this.maximum = _this.prodDetail.store
-              }else if(_this.rulecode == 1113){
-                _this.beforeSecKill()
-                _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
+              if (_this.rulecode === 0) {
+                _this.maximum = _this.prodDetail.store;
+              } else if (_this.rulecode == 1113) {
+                _this.beforeSecKill();
+                _this.maximum =
+                  _this.prodDetail.limits > _this.prodDetail.store
+                    ? _this.prodDetail.store
+                    : _this.prodDetail.limits;
               } else {
-                _this.maximum = _this.prodDetail.limits > _this.prodDetail.store ? _this.prodDetail.store : _this.prodDetail.limits
+                _this.maximum =
+                  _this.prodDetail.limits > _this.prodDetail.store
+                    ? _this.prodDetail.store
+                    : _this.prodDetail.limits;
               }
-            }else {
-              _this.$message.error('当前商品异常, 请稍后重试')
+            } else {
+              _this.$message.error("当前商品异常, 请稍后重试");
             }
           } else {
             _this.$message.error(result.message);
@@ -780,7 +832,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyFootprintModule";
       iRequest.method = "add";
-      console.log(this.storeInfo.comp.storeId)
+      console.log(this.storeInfo.comp.storeId);
       iRequest.param.json = JSON.stringify({
         sku: this.prodDetail.sku,
         compid: this.storeInfo.comp.storeId
@@ -788,7 +840,8 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
-        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -813,7 +866,8 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -839,7 +893,8 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -862,7 +917,8 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -875,30 +931,33 @@ export default {
     },
     // 下单
     placeOrder() {
-      this.loading = true
+      this.loading = true;
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "querySettShopCartList";
-      let arr = [{
-        pdno: this.prodDetail.sku,
-        pnum: this.inventory,
-        compid: this.storeInfo.comp.storeId,
-        checked: 1,
-        unqid: 0,
-        conpno: 0
-      }]
-      iRequest.param.json = JSON.stringify(arr)
+      let arr = [
+        {
+          pdno: this.prodDetail.sku,
+          pnum: this.inventory,
+          compid: this.storeInfo.comp.storeId,
+          checked: 1,
+          unqid: 0,
+          conpno: 0
+        }
+      ];
+      iRequest.param.json = JSON.stringify(arr);
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            _this.loading = false
+            _this.loading = false;
             if (result.code === 200) {
-              _this.$route.path.replace()
+              _this.$route.path.replace();
               _this.$router.push({
                 name: "order-placeOrder",
                 query: {
@@ -910,11 +969,12 @@ export default {
             } else {
               _this.$message.error(result.message);
             }
-        },
-        function error(e) {
-          _this.loading = false
-          _this.$message.error('无法连接服务器或服务器返回异常, 请稍后重试');
-        })
+          },
+          function error(e) {
+            _this.loading = false;
+            _this.$message.error("无法连接服务器或服务器返回异常, 请稍后重试");
+          }
+        )
       );
     },
     getImgUrl() {
@@ -998,7 +1058,7 @@ export default {
             }
           },
           function error(error) {
-            console.log(error)
+            console.log(error);
           }
         )
       );
@@ -1027,24 +1087,24 @@ export default {
           " " +
           eDate
       );
-      let times = Math.floor((endDate - date)/1000);
+      let times = Math.floor((endDate - date) / 1000);
       let _this = this;
       if (times >= 0) {
         let timer;
         timer = setInterval(function() {
-          times --;
-          _this.flashSale.h = Math.floor(times/60/60);
-          _this.flashSale.m = Math.floor(times/60)%60;
-          _this.flashSale.s = times%60;
+          times--;
+          _this.flashSale.h = Math.floor(times / 60 / 60);
+          _this.flashSale.m = Math.floor(times / 60) % 60;
+          _this.flashSale.s = times % 60;
           if (times <= 0) {
             clearInterval(timer);
-            _this.isSecondkill = false
+            _this.isSecondkill = false;
           }
         }, 1000);
         if (times >= 0) {
-          _this.isSecondkill = true
+          _this.isSecondkill = true;
         } else {
-          _this.isSecondkill = false
+          _this.isSecondkill = false;
         }
       }
     },
@@ -1067,13 +1127,13 @@ export default {
     callback(key) {},
     toDetail(item) {
       let routeData = this.$router.resolve({
-        path: '/product/detail',
+        path: "/product/detail",
         query: {
           sku: item.sku,
           spu: item.spu
         }
-      })
-      window.open(routeData.href, '_blank');
+      });
+      window.open(routeData.href, "_blank");
     }
   }
 };
@@ -1186,13 +1246,13 @@ li {
   font-size: 20px;
   color: #ffffff;
 }
-.coupon-type .term{
+.coupon-type .term {
   float: right;
   margin-right: 20px;
   font-size: 14px;
   color: #ffffff;
 }
-.ladder{
+.ladder {
   display: inline-block;
   width: 100%;
   height: 20px;
@@ -1201,8 +1261,8 @@ li {
   text-indent: 20px;
   color: #666666;
 }
-.ladder span{
-  color:#ed3025;
+.ladder span {
+  color: #ed3025;
 }
 /* .coupon-left span {
   display: inline-block;
@@ -1737,10 +1797,10 @@ li {
 .gongshang {
   margin-right: 40px;
 }
-.btn-p{
+.btn-p {
   text-indent: 20px;
 }
-.btn-p button{
+.btn-p button {
   width: 25px;
   text-align: center;
   border: 1px solid #e0e0e0;
@@ -1782,58 +1842,58 @@ li {
   display: inline-block;
 }
 /* 药品说明 */
-.goods-detal-text{
+.goods-detal-text {
   display: block;
   width: 800px;
   height: auto;
   margin: 0 auto;
   border: 1px solid #e0e0e0;
 }
-.tbody{
+.tbody {
   width: 800px;
   height: 100%;
 }
-.goods-title{
+.goods-title {
   float: left;
   width: 100px;
 }
-.goods-text{
+.goods-text {
   float: right;
   width: 696px;
   min-height: 40px;
   height: auto;
   text-indent: 25px;
 }
-.probably{
+.probably {
   display: block;
   width: 800px;
   height: 170px;
   margin: 0 auto;
   margin-bottom: 20px;
   padding: 17px 30px;
-  background: #F7F7F7;
+  background: #f7f7f7;
 }
-.probably p{
+.probably p {
   height: 28px;
   line-height: 28px;
 }
-.title-left{
+.title-left {
   float: left;
   width: 100px;
 }
-.title-right{
+.title-right {
   float: right;
   width: 80px;
 }
-.right-text{
+.right-text {
   float: right;
   margin-right: 200px;
 }
-.instructions{
+.instructions {
   height: 50px;
   line-height: 50px;
   text-align: center;
-  color:#ed3025;
+  color: #ed3025;
   font-size: 18px;
   font-weight: bold;
 }

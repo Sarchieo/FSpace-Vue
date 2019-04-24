@@ -200,29 +200,57 @@ export default {
   },
   computed: {
     storeInfo() {
-      return this.$store.getters.user(this);
+      return this.$store.state.user;
     }
   },
   data() {
     return {
       visible: false,
-      orderDetail: []
+      orderDetail: [],
+      orderno: '',
+      cusno: ''
     };
   },
   mounted() {
-    this.queryOrderDetail();
+    this.orderno = this.$route.query.orderno;
+    this.cusno = this.$route.query.cusno;
+    // this.queryOrderDetail();
+    // 获取物流信息
+    this.getLogisticsInfo();
   },
   methods: {
+    getLogisticsInfo() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderOptModule";
+      iRequest.method = "getLogisticsInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.comp.storeId
+      })
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            debugger
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     // 查询订单详情
     queryOrderDetail() {
       let _this = this;
-      let orderno = this.$route.query.orderno;
-      let cusno = this.$route.query.cusno;
+     
       let iRequest = new inf.IRequest();
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "getOrderDetail";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = [cusno,orderno];
+      iRequest.param.arrays = [this.cusno,this.orderno];
       this.$refcallback(
         this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
@@ -230,7 +258,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderDetail = result.data;
-            console.log(_this.orderDetail);
           } else {
             _this.$message.error(result.message);
           }

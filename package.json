@@ -25,9 +25,7 @@
     "md5": "^2.2.1",
     "node-sass": "^4.11.0",
     "nuxt": "^2.4.0",
-    "sass-resources-loader": "^2.0.0",
-    "vue-photo-zoom-pro": "^1.2.5",
-    "vue-piczoom": "^1.0.6"
+    "sass-resources-loader": "^2.0.0"
   },
   "devDependencies": {
     "babel-plugin-component": "^1.1.1",
