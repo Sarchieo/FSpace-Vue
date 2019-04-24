@@ -103,7 +103,7 @@
       <img alt="example" style="width: 100%" :src="previewImage">
     </a-modal>
     <f-space-modal-pwd :visible="isChangePwd" @handleCancel="changePwdCancel()"></f-space-modal-pwd>
-    <f-space-modal-phone :visible="isChangePhone" @handleCancel="changePhoneCancel()"></f-space-modal-phone>
+    <f-space-modal-phone :visible="isChangePhone" @handleCancel="changePhoneCancel()" @handleSussece="changePhoneSussece"></f-space-modal-phone>
   </div>
 </template>
 <script>
@@ -321,6 +321,10 @@ export default {
     },
     changePhoneCancel() {
       this.isChangePhone = false;
+    },
+    changePhoneSussece() {
+      this.isChangePhone = false;
+      this.getBasicInfo()
     },
     changePwdCancel() {
       this.isChangePwd = false;

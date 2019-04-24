@@ -4,30 +4,50 @@
       <a-form-item v-bind="formItemLayout" label="旧手机号" has-feedback>
         <a-input v-model="oldPhone" :disabled="isDisabled" id="validating"></a-input>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="短信验证码">
+     
         <a-row :gutter="8">
           <a-col :span="24">
+          <a-form-item v-bind="formItemLayout" label="短信验证码">
             <a-input
+              v-model="verification"
               v-decorator="[
                 'smsCode',
                 {rules: [{ required: true, message: '请填写短信验证码', min:6 }]}
               ]"
             />
-            <a-col :span="12">
-              <a-button
-                class="captcha"
-                :loading="sendAuthCodeLoading"
-                @click="getAuthCode(1)"
-              >{{sendAuthCodeText}}</a-button>
-            </a-col>
+            <a-button
+              class="captcha"
+              :loading="sendAuthCodeLoading"
+              @click="getAuthCode()"
+            >{{sendAuthCodeText}}</a-button>
+          </a-form-item>
           </a-col>
-        </a-row>
-      </a-form-item>
+          </a-row>
+          <a-row :gutter="8">
+          <a-col :span="24">
+              <a-form-item v-bind="formItemLayout" label="新手机号" has-feedback>
+                <a-input
+                  v-model="newPhone"
+                  v-decorator="[
+                    'phone',
+                    {
+                      rules: [ {
+                        validator: validatePhone,
+                      }],
+                    }
+                  ]"
+                  id="validating"
+                  placeholder="请输入您新的手机号码"
+                ></a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+      
       <a-form-item v-bind="tailFormItemLayout">
-        <a-button type="primary" html-type="submit" class="register-btn" block>下一步</a-button>
+        <a-button type="primary" html-type="submit" class="register-btn" block>确定</a-button>
       </a-form-item>
     </a-form>
-    <a-form :form="form" @submit="handleSubmitNew" v-show="isShowNewPhone">
+    <!-- <a-form :form="form" @submit="handleSubmitNew" v-show="isShowNewPhone">
       <a-form-item v-bind="formItemLayout" label="新手机号" has-feedback>
         <a-input
           v-decorator="[
@@ -65,7 +85,7 @@
       <a-form-item v-bind="tailFormItemLayout">
         <a-button type="primary" html-type="submit" class="register-btn" block>确定修改</a-button>
       </a-form-item>
-    </a-form>
+    </a-form>-->
   </a-modal>
 </template>
 <script>
@@ -81,6 +101,8 @@ export default {
     return {
       isDisabled: true,
       oldPhone: "",
+      newPhone: "",
+      verification: "",
       isShowNewPhone: false,
       sendAuthCode: true, // 控制验证码按钮
       sendAuthCodeText: "获取验证码",
@@ -121,6 +143,34 @@ export default {
       // console.log(this.storeInfo)
       // console.log(this.form)
     },
+    handleSubmitOld(e) {
+      e.preventDefault();
+      debugger;
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "changeUserInfo";
+      iRequest.param.json = JSON.stringify({
+        oldPhone: this.oldPhone,
+        newPhone: this.newPhone,
+        smsCode: this.verification
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            // 回到登录页面
+            _this.$emit(handleSussece);
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
     handleOk() {},
     handleCancel() {
       this.$emit("handleCancel");
@@ -156,28 +206,62 @@ export default {
         callback("请输入手机正确的手机号码");
       }
     },
-    // 获取手机号的短信验证码 ,验证码的类型需和后台确定参数。
-    getAuthCode(type) {
-      if (type === 1) {
-      }
+    // 获取手机号的短信验证码
+    getAuthCode() {
+      debugger;
       this.sendAuthCodeText = "请稍后";
       this.sendAuthCodeLoading = true;
       // 发送验证码
-      setTimeout(() => {
-        this.auth_time = 60;
-        this.$message.success("短信发送成功");
-        let auth_timetimer = setInterval(() => {
-          this.sendAuthCodeLoading = false;
-          this.sendAuthCode = false;
-          this.auth_time--;
-          this.sendAuthCodeText = this.auth_time + "s";
-          if (this.auth_time <= 0) {
-            this.sendAuthCode = true;
-            this.sendAuthCodeText = "获取验证码";
-            clearInterval(auth_timetimer);
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "obtainVerificationCode";
+      debugger;
+      iRequest.param.json = JSON.stringify({
+        type: 2,
+        phone: this.oldPhone
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.auth_time = 60;
+            _this.$message.success("短信发送成功");
+            let auth_timetimer = setInterval(() => {
+              _this.sendAuthCodeLoading = false;
+              _this.sendAuthCode = false;
+              _this.auth_time--;
+              _this.sendAuthCodeText = _this.auth_time + "s";
+              if (_this.auth_time <= 0) {
+                _this.sendAuthCode = true;
+                _this.sendAuthCodeText = "获取验证码";
+                clearInterval(auth_timetimer);
+              }
+            }, 1000);
+          } else {
+            _this.$message.error(result.message);
           }
-        }, 1000);
-      }, 1500);
+        })
+      );
+
+      // setTimeout(()=> {
+      //   this.auth_time = 60;
+      //   this.$message.success('短信发送成功');
+      //   let auth_timetimer =  setInterval(()=>{
+      //     this.sendAuthCodeLoading = false
+      //     this.sendAuthCode = false;
+      //     this.auth_time--;
+      //     this.sendAuthCodeText = this.auth_time + 's'
+      //     if(this.auth_time<=0){
+      //       this.sendAuthCode = true;
+      //       this.sendAuthCodeText = '获取验证码'
+      //       clearInterval(auth_timetimer);
+      //     }
+      //   }, 1000);
+      // },1500)
     },
 
     validatePwd(rule, value, callback) {
@@ -196,96 +280,97 @@ export default {
       } else {
         callback("密码不一致, 请重新输入");
       }
-    },
+    }
 
     // 旧手机号码上的下一步按钮事件
-    handleSubmitOld(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          let _this = this;
-          let iRequest = new inf.IRequest();
-          iRequest.cls = "LoginRegistrationModule";
-          iRequest.method = "changeUserInfo";
-          iRequest.param.json = JSON.stringify({
-            oldPassword: values.oldPassword,
-            newPassword: values.newPassword,
-            oldPhone: "",
-            newPhone: "",
-            smsCode: ""
-          });
-          iRequest.param.token = localStorage.getItem("identification");
-          this.$refcallback(
-            this,
-            "userServer",
-            iRequest,
-            new this.$iceCallback(
-              function result(result) {
-                if (result.code === 200) {
-                  _this.$message.success(result.message);
-                  _this.isShowNewPhone = true;
-                  // _this.$emit("handleCancel");
-                } else {
-                  // 文件地址获取失败 .
-                  _this.$message.error(result.message);
-                }
-              },
-              function error(error) {
-                _this.$message.error(
-                  "无法连接服务器或服务器返回异常, 请稍后重试"
-                );
-              }
-            )
-          );
-        }
-      });
-    },
+    // handleSubmitOld(e) {
+    //   e.preventDefault();
+    //   this.form.validateFields((err, values) => {
+    //     if (!err) {
+    //       let _this = this;
+    //       let iRequest = new inf.IRequest();
+    //       iRequest.cls = "LoginRegistrationModule";
+    //       iRequest.method = "changeUserInfo";
+    //       iRequest.param.json = JSON.stringify({
+    //         oldPassword: values.oldPassword,
+    //         newPassword: values.newPassword,
+    //         oldPhone: "",
+    //         newPhone: "",
+    //         smsCode: ""
+    //       });
+    //       iRequest.param.token = localStorage.getItem("identification");
+    //       this.$refcallback(
+    //         this,
+    //         "userServer",
+    //         iRequest,
+    //         new this.$iceCallback(
+    //           function result(result) {
+    //             if (result.code === 200) {
+    //               _this.$message.success(result.message);
+    //               _this.isShowNewPhone = true;
+    //               // _this.$emit("handleCancel");
+    //             } else {
+    //               // 文件地址获取失败 .
+    //               _this.$message.error(result.message);
+    //             }
+    //           },
+    //           function error(error) {
+    //             _this.$message.error(
+    //               "无法连接服务器或服务器返回异常, 请稍后重试"
+    //             );
+    //           }
+    //         )
+    //       );
+    //     }
+    //   });
+    // },
     // 新手机号码上的确认修改按钮事件
-    handleSubmitNew(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          let _this = this;
-          let iRequest = new inf.IRequest();
-          iRequest.cls = "LoginRegistrationModule";
-          iRequest.method = "changeUserInfo";
-          iRequest.param.json = JSON.stringify({
-            oldPassword: values.oldPassword,
-            newPassword: values.newPassword,
-            oldPhone: "",
-            newPhone: "",
-            smsCode: ""
-          });
-          iRequest.param.token = localStorage.getItem("identification");
-          this.$refcallback(
-            this,
-            "userServer",
-            iRequest,
-            new this.$iceCallback(
-              function result(result) {
-                if (result.code === 200) {
-                  _this.$message.success(result.message);
-                  _this.$emit("handleCancel");
-                } else {
-                  // 文件地址获取失败 .
-                  _this.$message.error(result.message);
-                }
-              },
-              function error(error) {
-                _this.$message.error(
-                  "无法连接服务器或服务器返回异常, 请稍后重试"
-                );
-              }
-            )
-          );
-        }
-      });
-    }
+    // handleSubmitNew(e) {
+    //   e.preventDefault();
+    //   this.form.validateFields((err, values) => {
+    //     if (!err) {
+    //       let _this = this;
+    //       let iRequest = new inf.IRequest();
+    //       iRequest.cls = "LoginRegistrationModule";
+    //       iRequest.method = "changeUserInfo";
+    //       iRequest.param.json = JSON.stringify({
+    //         oldPassword: values.oldPassword,
+    //         newPassword: values.newPassword,
+    //         oldPhone: "",
+    //         newPhone: "",
+    //         smsCode: ""
+    //       });
+    //       iRequest.param.token = localStorage.getItem("identification");
+    //       this.$refcallback(
+    //         this,
+    //         "userServer",
+    //         iRequest,
+    //         new this.$iceCallback(
+    //           function result(result) {
+    //             if (result.code === 200) {
+    //               _this.$message.success(result.message);
+    //               _this.$emit("handleCancel");
+    //             } else {
+    //               // 文件地址获取失败 .
+    //               _this.$message.error(result.message);
+    //             }
+    //           },
+    //           function error(error) {
+    //             _this.$message.error(
+    //               "无法连接服务器或服务器返回异常, 请稍后重试"
+    //             );
+    //           }
+    //         )
+    //       );
+    //     }
+    //   });
+    // }
   }
 };
 </script>
 <style scoped lang="less">
 .ant-input {
+  width: 200px !important;
   border: 1px solid #e0e0e0 !important;
   border-radius: 0px !important;
   font-size: 14px;
@@ -300,8 +385,9 @@ export default {
   -webkit-border-radius: 3px;
 }
 .captcha {
-  margin-top: 10px;
-  margin-left: -4px;
+  height: 38px;
+  // margin-top: 10px;
+  margin-left: 4px;
 }
 </style>
 
