@@ -54,8 +54,8 @@
               </a-steps>
             </div>
           </div>
-          <!-- 物流信息 -->
           <div class="logistics-box-info" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node.length > 0">
+            <!-- <div class="logistics-box-info"> -->
             <div class="logistics-left">
               <p>送货方式：普通快递</p>
               <p>承运人： 中国邮政</p>
@@ -63,7 +63,7 @@
             </div>
             <div class="line height220"></div>
             <div class="logistics-right">
-              <a-steps direction="vertical" size="small" :current="1" >
+              <a-steps direction="vertical" size="small" :current="logistixs.node.length -1 " >
                 <a-step v-for="(item, index) in logistixs.node" :key="index" :title="item.status" :description="item.date + item.time + item.des"/>
               </a-steps>
             </div>
@@ -138,7 +138,7 @@
                   <td class="price widths15 td-center padding-left5">￥{{items.pdprice}}</td>
                   <td class="count widths15 td-center padding-left5">{{items.pnum}}</td>
                   <td class="subtotal widths15 td-center padding-left10">￥{{items.pdamt}}</td>
-                  <div style="clear: both;"></div>
+                  <!-- <div style="clear: both;"></div> -->
                   <!-- <td class="total width15 td-center padding-left15">
                   ￥35
                   </td>-->
@@ -210,7 +210,7 @@ export default {
     this.cusno = this.$route.query.cusno;
     this.queryOrderDetail();
     this.getLogisticsInfo();
-    this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}') 
+    // this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}').data 
   },
   methods: {
     getLogisticsInfo() {
@@ -229,10 +229,8 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          console.log(JSON.stringify(result))
           if (result.code === 200) {
             _this.logistixs = result.data
-            
           } else {
             _this.$message.error(result.message);
           }
@@ -254,7 +252,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderDetail = result.data;
-            switch(_this.orderDetail.ostatus) {
+            switch(_this.orderDetail[0].ostatus) {
               case 0:
                 _this.steps = 0
               break
@@ -264,7 +262,7 @@ export default {
                case 2:
                 _this.steps = 2
                 // 获取物流信息
-                // _this.getLogisticsInfo();
+                _this.getLogisticsInfo();
               break
                case 3:
                 _this.steps = 3
@@ -281,30 +279,29 @@ export default {
     },
     // 取消订单
     hideModal() {
-        let _this = this;
-        let iRequest = new inf.IRequest();
-        iRequest.cls = "TranOrderOptModule";
-        iRequest.method = "cancelOrder";
-        iRequest.param.token = localStorage.getItem("identification");
-        iRequest.param.json = JSON.stringify({
-            orderno: this.orderDetail[0].orderno,
-            cusno: this.orderDetail[0].cusno
-        });
-        console.log("json-------- " +  iRequest.param.json)
-        this.$refcallback(
-          this,
-            "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
-            iRequest,
-            new this.$iceCallback(function result(result) {
-                if (result.code === 200) {
-                  _this.visible = false;
-                  _this.queryOrderDetail()
-                } else {
-                  _this.$message.error(result.message);
-                }
-            })
-        );
-
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "TranOrderOptModule";
+      iRequest.method = "cancelOrder";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.json = JSON.stringify({
+          orderno: this.orderDetail[0].orderno,
+          cusno: this.orderDetail[0].cusno
+      });
+      console.log("json-------- " +  iRequest.param.json)
+      this.$refcallback(
+        this,
+          "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+          iRequest,
+          new this.$iceCallback(function result(result) {
+              if (result.code === 200) {
+                _this.visible = false;
+                _this.queryOrderDetail()
+              } else {
+                _this.$message.error(result.message);
+              }
+          })
+      );
     },
     toPay() {
       var routeData = this.$router.resolve({
