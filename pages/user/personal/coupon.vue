@@ -5,19 +5,19 @@
         <div class="haved-coupon" >
           <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
             <div class="discount" v-if="item.brulecode === 2110">
-              <p class="discount-count">{{ item.rulename }}</p>
-              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
-              <p>有效期:{{item.startdate}}至{{item.enddate}}</p>
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期:{{item.startdate}}至{{item.enddate}}</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
+              <!-- <p>有效期:{{item.startdate}}至{{item.enddate}}</p> -->
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
             </div>
             <div class="discount" v-if="item.brulecode === 2120">
-              <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
-              <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
+              <p class="discount-count margin-bottom35">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span>包邮 </p>
             </div>
             <div class="discount" v-if="item.brulecode === 2130">
-              <p class="discount-count">{{ item.rulename }}</p>
-              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </p>
-              <p>有效期 {{ item.validday }} 天</p>
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span>折 </p>
+              <!-- <p>有效期 {{ item.validday }} 天</p> -->
             </div>
              <!-- <img class="state-pic" src="../../../assets/img/already.png" alt=""> -->
              <img class="right-img" src="../../../assets/img/receives.png" alt="">
@@ -63,18 +63,18 @@
       <div class="condition-price-box">
         <div class="condition-price"  v-for="(item, index) in couponPub" :key="index" @click="revCoupon(item)">
           <div class="discount" v-if="item.brulecode === 2130">
-            <p class="discount-count">{{ item.rulename }}</p>
-            <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </p>
-            <p>有效期 {{ item.validday }} 天</p>
+            <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+            <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span>折 </p>
+            <!-- <p>有效期 {{ item.validday }} 天</p> -->
           </div>
           <div class="discount"  v-if="item.brulecode === 2110">
-            <p class="discount-count">{{ item.rulename }}</p>
-            <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
-            <p>有效期 {{ item.validday }} 天</p>
+            <p class="discount-count">{{ item.rulename }}  <span class="term">有效期 {{ item.validday }} 天</span></p>
+            <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
+            <!-- <p>有效期 {{ item.validday }} 天</p> -->
           </div>
           <div class="discount" v-if="item.brulecode === 2120">
-            <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
-            <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
+            <p class="discount-count margin-bottom35">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+            <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span>包邮 </p>
           </div>
           <img class="right-img" src="../../../assets/img/receive.png" alt="">
         </div>
@@ -194,8 +194,17 @@ export default {
 <style lang="less" scoped>
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
+.term{
+  float: right;
+  margin-right: 20px;
+  font-size: 14px;
+  color: #ffffff;
+}
 .discount-coupon{
-  .p-size(30px,30px,14px,left,10px,#999999);
+  .p-size(20px, 20px, 14px, left, 13px, #666666);
+  span{
+    color:#ed3025;
+  }
 }
 .margin-bottom35{
   margin-bottom: 35px!important;
@@ -218,14 +227,15 @@ export default {
     .discount {
       float: left;
       .container-size(inline-block, 245px, 175px, 0, 0px);
-      .position(relative, 0px, 0px);
-      border: 1px solid #e0e0e0;
+      // .position(relative, 0px, 0px);
+      border: 1px solid #fdddc5;
+      background: #fffbf3;
       .state-pic {
         .position(relative, -58px, 176px);
       }
       .discount-count {
         .container-size(inline-block, 245px, 50px, 0, 0px);
-        .p-size(40px, 40px, 20px, center, 0px, #ed3025);
+        .p-size(40px, 40px, 20px, left, 13px, #ffffff);
         margin-bottom: 10px;
       }
       .discount-str {
@@ -246,9 +256,9 @@ export default {
         padding: 0 8px;
         box-sizing: border-box;
       }
-      p {
-        .p-size(30px, 30px, 14px, left, 13px, #999999);
-      }
+      // p {
+      //   .p-size(20px, 20px, 14px, left, 13px, #666666);
+      // }
     }
   }
 }
@@ -273,16 +283,19 @@ export default {
           height: 175px;
       }
       .discount {
+        float: left;
         .container-size(inline-block, 245px, 175px, 0, 0px);
         // .position(relative, 0px, 0px);
-        border: 1px solid #e0e0e0;
+        border: 1px solid #fdddc5;
+        background: #fffbf3;
         .state-pic{
           .position(relative, -46px, 176px);
         }
         .discount-count {
         .container-size(inline-block, 245px, 50px, 0, 0px);
-        .p-size(40px, 40px, 20px, center, 0px, #ed3025);
+        .p-size(40px, 40px, 20px, left, 13px, #ffffff);
         margin-bottom: 10px;
+        background: #666666;
       }
         .discount-str {
           .position(absolute, 12px, 3px);
@@ -302,9 +315,9 @@ export default {
           padding: 0 8px;
           box-sizing: border-box;
         }
-        p {
-          .p-size(30px, 30px, 14px, left, 13px, #999999);
-        }
+        // p {
+        //   .p-size(20px, 20px, 14px, left, 13px, #666666);
+        // }
       }
     }
   }

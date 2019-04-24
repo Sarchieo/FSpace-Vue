@@ -173,7 +173,7 @@
               >
                 <div class="coupon-card" v-if="item.brulecode === 2120" @click="revCoupon(item)">
                   <div class="coupon-left">
-                    <p class="coupon-type">{{ item.rulename }}</p>
+                    <p class="coupon-type">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
                     <span class="ladder" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 包邮</span>
                   </div>
                   <div class="coupon-right">
@@ -438,6 +438,7 @@ export default {
       // this.actcode = this.$route.query.actcode;
       // 获取商品详情
       this.getProd();
+       
       // 获取优惠券
       this.queryCouponPub();
       this.getImgUrl();
@@ -762,6 +763,7 @@ export default {
           if (result.code === 200) {
             if(result.data) {
               _this.prodDetail = result.data;
+              _this.getFoot();
               _this.details = JSON.parse(_this.prodDetail.detail);
               if(_this.rulecode === 0) {
                 _this.maximum = _this.prodDetail.store
@@ -774,6 +776,30 @@ export default {
             }else {
               _this.$message.error('当前商品异常, 请稍后重试')
             }
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 进详情页面获取足迹
+    getFoot() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyFootprintModule";
+      iRequest.method = "add";
+      console.log(this.storeInfo.comp.storeId)
+      iRequest.param.json = JSON.stringify({
+        sku: this.prodDetail.sku,
+        compid: this.storeInfo.comp.storeId
+      });
+      // 促销类型未传，暂定0，促销完善补上
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
           } else {
             _this.$message.error(result.message);
           }

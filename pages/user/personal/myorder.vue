@@ -60,14 +60,15 @@
                 <p class="freight">(含运费{{items.freight}}元)</p>
               </div>
               <div class="state">
+                <p class="sucess" v-if="item.ostatus === 2 || item.ostatus === -2">申请售后</p>
                 <p class="sucess">{{statusText(item.ostatus)}}</p>
               </div>
             </div>
             <div class="operation">
               <p class="button-p" v-if="item.ostatus === 0"><a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button></p>
               <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
-              <p v-if="item.ostatus === 3">申请售后</p>
-              <!--  v-if="item.ostatus === 3" -->
+              <!-- v-if="item.ostatus === 3" -->
+              <p @click="saleAfter()">申请售后</p>
               <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
               <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
@@ -93,7 +94,7 @@
         <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
-          <!-- <p @click="saleAfter()">申请售后</p> -->
+          <p @click="saleAfter()">申请售后</p>
         </div>
         <!-- <a-modal
           title="选择售后类型"
@@ -382,6 +383,7 @@ export default {
       }
       .goods-pic {
         float: left;
+        width: 315px;
         padding-top: 14px;
         padding-left: 10px;
         img{
@@ -466,6 +468,7 @@ export default {
           // .position(absolute, 28px, 0px);
           width: 100%;
           text-align: center;
+          color: #3189f5;
         }
         .detail {
           // .position(absolute, 56px, 0px);
