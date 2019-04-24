@@ -1,16 +1,18 @@
 <template>
   <div class="collection-box">
     <p class="collection-text">我的足迹</p>
-    <div v-for="(item,index) in list" :key="index" class="my-collection">
-      <ul class="goods-list-box">
-        <li v-for="(items,index1) in item.lists" :key="index1" @click="toDetals()">
+    <div class="my-collection">
+      <ul class="goods-list-box" v-for="(item,index) in footList" :key="index">
+        <p class="foot-data">{{item.date}}</p>
+        <li v-for="(items,index1) in item.list" :key="index1" @click="toDetals()">
           <a-card hoverable class="card">
             <img class="card-img" v-lazy="items.src" slot="cover">
-            <p class="surplus text-Center top185">{{items.text}}</p>
-            <p class="validity">有效期至{{items.validity}}</p>
-            <p class="card-price top165">￥{{items.new}}</p>
-            <p class="specifications">{{items.specifications}}</p>
-            <p class="manufacturer">{{items.manufacturer}}</p>
+            <a-icon type="delete" class="del-foot" @click="delFoot()"/>
+            <p class="surplus text-Center top185">{{items.brandName}} {{items.popname}}</p>
+            <p class="validity">有效期至{{items.prodedate}}</p>
+            <p class="card-price top165">￥{{items.vatp}}</p>
+            <p class="specifications">{{items.spec}}</p>
+            <p class="manufacturer">{{items.manuName}}</p>
             <p class="add-card">
               <button>-</button>
               <button>{{count}}</button>
@@ -24,19 +26,53 @@
         </li>
       </ul>
     </div>
-    <a-pagination showQuickJumper :defaultCurrent="1" :total="20" @change="onChange" />
+    <!-- <a-pagination :total="total" @change="onChange" /> -->
   </div>
 </template>
 <script>
 export default {
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
   data() {
     return {
       count: 1,
+      total: 0,
+      currentIndex: 1,
+      footList: [],
       list: [
         {
           time: '2019-03-23',
           lists: [
             {
+              src:
+                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              text: "999感冒灵颗粒",
+              validity: "2019-09-03",
+              new: 34,
+              old: 35,
+              specifications: "0.5g/袋",
+              manufacturer: "华润三九医药股份有限公司",
+              sold: 33,
+              evaluate: 269,
+              isShowCard: false
+            },
+             {
+              src:
+                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
+              text: "999感冒灵颗粒",
+              validity: "2019-09-03",
+              new: 34,
+              old: 35,
+              specifications: "0.5g/袋",
+              manufacturer: "华润三九医药股份有限公司",
+              sold: 33,
+              evaluate: 269,
+              isShowCard: false
+            },
+             {
               src:
                 "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
               text: "999感冒灵颗粒",
@@ -150,11 +186,45 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.getFootList();
+  },
   methods: {
     toDetals() {
       this.$router.push({
         path:'/product/detail'
       })
+    },
+    // 获取足迹列表
+    getFootList() {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyFootprintModule";
+      iRequest.method = "query";
+       iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.comp.storeId
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            console.log(result.data)
+            _this.footList = result.data;
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    // 删除足迹
+    delFoot() {
+
+    },
+    onChange(pageNumber) {
+      console.log(pageNumber)
     }
   }
 };
@@ -169,7 +239,8 @@ export default {
   color:#ed3025;
 }
 .collection-box {
-  .container-size(block, 983px, 920px, 0px, 0px);
+  .container-size(block, 983px, 100%, 0px, 0px);
+  overflow: auto;
 }
 .collection-time {
   .p-size(55px, 55px, 30px, left, 20px, #333333);
@@ -181,7 +252,7 @@ export default {
   }
 }
 .my-collection{
-    width: 983px;
+    width: 965px;
     overflow: auto;
 }
 .line {
@@ -191,11 +262,11 @@ export default {
   border-top: 1px solid #e0e0e0;
 }
 .goods-list-box {
-  .container-size(block, 983px, auto, 0 auto, 0px);
+  .container-size(block, 965px, auto, 0 auto, 0px);
   padding-left: 10px;
 }
 .goods-list-box li {
-  .container-size(inline-block, 228px, 350px, 24px 6.5px, 0px);
+  .container-size(inline-block, 228px, 350px, 6px 5px, 0px);
   .container-color(#ffffff, none, #999);
 }
 .card {
@@ -206,7 +277,11 @@ export default {
 .surplus {
   .position(absolute, 245px, 0px);
   width: 225px;
-  text-align: center;
+   overflow: hidden;
+ text-overflow:ellipsis;
+ white-space: nowrap;
+  text-align: left;
+  padding: 0px 10px;
   color: #333333;
 }
 .card-img {
@@ -257,7 +332,11 @@ export default {
   display: inline-block;
   .position(absolute, 287px, 0px);
   width: 225px;
-  text-align: center;
+  text-align: left;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  padding: 0px 10px;
 }
 .specifications {
   display: inline-block;
@@ -272,6 +351,11 @@ export default {
   width: 225px;
   text-align: center;
 }
+.del-foot{
+  .position(absolute,5px,19px);
+  display: none;
+  color: #333333;
+}
 .cart-btns {
   border: none;
   background: #ed3025;
@@ -279,6 +363,17 @@ export default {
 }
 .ant-pagination{
   text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.foot-data{
+  .p-size(50px, 50px, 18px, left, 5px, #333333);
+  font-weight: bold;
+}
+.card:hover .del-foot{
+  display: inline-block;
+  font-size: 26px;
+  color:#ed3025;
 }
 </style>
 
