@@ -242,7 +242,6 @@ export default {
     // 查询订单详情
     queryOrderDetail() {
       let _this = this;
-     
       let iRequest = new inf.IRequest();
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "getOrderDetail";

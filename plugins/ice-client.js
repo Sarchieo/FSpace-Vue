@@ -40,23 +40,24 @@ function refcallback(context, moduleName,_IRequest, callback) {
     .then(
       function (result) {
         let success = JSON.parse(result)
-        if(success.code === -1 && context.$route.name !== 'user-login') {
-          console.log()
-          context.$message.error('登录失效, 请重新登录～' + '模块名:'+ _IRequest.cls + '  方法名:' + _IRequest.method + '原因:' + success.message);
-          context.$store
-            .dispatch("setLogout", { context: context })
-            .then(res => {
-              // 跳转页面
-              setTimeout(() => {
-                context.$router.push({
-                  path: "/user/login"
-                });
-              }, 10000);
-            })
-            .catch(err => {
-              console.log(err);
-            });
-          return
+        if(success.code === -2 && context.$route.name !== 'user-login') {
+          context.$message.error('开发环境提示: <触发登录失效处理> 可能是由于当前账号在别处登录 or 后台异常 系统将在10s后跳转登录页面', 10);
+          context.$message.error('开发环境提示: 模块名<'+ _IRequest.cls + '>  方法名:<' + _IRequest.method + '>原因:' + success.message, 10);
+          // context.$store
+          //   .dispatch("setLogout", { context: context })
+          //   .then(res => {
+          //     // 跳转页面
+          //     setTimeout(() => {
+          //       context.$router.push({
+          //         path: "/user/login"
+          //       });
+          //     }, 10000);
+          //   })
+          //   .catch(err => {
+          //     console.log(err);
+          //   });
+          // return
+          callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else {
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         }
