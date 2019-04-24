@@ -72,6 +72,7 @@ export default {
       iRequest.method = "getProduceClasses";
       // iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(

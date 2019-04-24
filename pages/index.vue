@@ -67,7 +67,7 @@
                   <p class="elaborate-text">{{item.prodname}}</p>
                   <p class="elaborate-specifications">{{item.spec}}</p>
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
-                  <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                  <p class="elaborate-validity">有效期至{{item.vaildedate}}</p>
 
                   <p class="elaborate-price" v-if="!userStatus">￥{{item.vatp}}</p>
                   <p class="elaborate-price" v-else>￥登录后可见</p>
@@ -93,7 +93,7 @@
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
-                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}}</p>
                     <p class="card-price top165" v-else>￥登录后可见</p>
                     <p class="specifications">{{item.spec}}</p>
@@ -212,7 +212,7 @@
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
-                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}} </p>
                      <p class="card-price top165" v-else>￥登录后可见 </p>
                     <p class="specifications">{{item.spec}}</p>
@@ -237,7 +237,7 @@
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
-                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165" v-if="!userStatus">￥{{item.vatp}}</p>
                     <p class="card-price top165" v-else>￥登录后可见</p>
                     <p class="specifications">{{item.spec}}</p>
@@ -263,7 +263,7 @@
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
-                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165">
                       ￥{{item.vatp}}
                     </p>
@@ -289,7 +289,7 @@
                   <p class="elaborate-text">{{item.prodname}}</p>
                   <p class="elaborate-specifications">{{item.spec}}</p>
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
-                  <p class="elaborate-validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                  <p class="elaborate-validity">有效期至{{item.vaildedate}}</p>
                   <p class="elaborate-price" v-if="!userStatus">￥{{item.vatp}}</p>
                   <p class="elaborate-price" v-else>￥登录后可见</p>
                   <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -312,7 +312,7 @@
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
-                    <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                    <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165" v-if="userStatus">￥{{item.vatp}} </p>
                     <p class="card-price top165" else>￥登录后可见 </p>
                     <p class="specifications">{{item.spec}}</p>
@@ -534,6 +534,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification")|| "";
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -590,6 +591,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -616,6 +618,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -644,6 +647,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -669,6 +673,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -720,6 +725,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -745,6 +751,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -775,6 +782,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -799,6 +807,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -823,6 +832,7 @@ export default {
       iRequest.param.json = JSON.stringify({});
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -857,6 +867,7 @@ export default {
         list: list
       });
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(

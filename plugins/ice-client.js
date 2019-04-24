@@ -16,12 +16,12 @@ function initIce() {
 }
 /**
  * 接口查询
+ * @param context 实例
  * @param {*} moduleName 模块名
  * @param {*} callback
  * @param  {...any} _IRequest 参数
  */
-function refcallback(moduleName,_IRequest, callback) {
-  console.log('参数:' + JSON.stringify(_IRequest))
+function refcallback(context, moduleName,_IRequest, callback) {
   if (!callback || callback.constructor === IceCallback.constructor) {
     throw new Error("callback is not IceCallback!")
   }
@@ -39,7 +39,26 @@ function refcallback(moduleName,_IRequest, callback) {
     )
     .then(
       function (result) {
-        callback.onCallback(CALLBACK_ACTION.COMPLETE, JSON.parse(result));
+        let success = JSON.parse(result)
+        if(success.code === -1 && context.$route.name !== 'user-login') {
+          context.$message.error('登录失效, 请重新登录～');
+          context.$store
+            .dispatch("setLogout", { context: context })
+            .then(res => {
+              // 跳转页面
+              setTimeout(() => {
+                context.$router.push({
+                  path: "/user/login"
+                });
+              }, 500);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          return
+        } else {
+          callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
+        }
       }
     )
     .exception(

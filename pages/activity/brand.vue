@@ -119,6 +119,7 @@ export default {
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {

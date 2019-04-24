@@ -138,6 +138,7 @@ export default {
           phone: value
         });
         this.$refcallback(
+          this,
           "userServer",
           iRequest,
           new this.$iceCallback(function result(result) {
@@ -215,6 +216,7 @@ export default {
           });
           iRequest.param.token = localStorage.getItem("identification");
           this.$refcallback(
+            this,
             "userServer",
             iRequest,
             new this.$iceCallback(
@@ -256,6 +258,7 @@ export default {
           });
           iRequest.param.token = localStorage.getItem("identification");
           this.$refcallback(
+            this,
             "userServer",
             iRequest,
             new this.$iceCallback(

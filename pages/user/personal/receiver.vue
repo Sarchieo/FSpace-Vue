@@ -1,7 +1,7 @@
 <template>
    <div>
      <!-- 收货人编辑 -->
-     <a-modal
+    <a-modal
       title="收货人编辑"
       v-model="visible"
       :footer= "null"
@@ -122,6 +122,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
+        this,
         "userServer",
         iRequest,
         new this.$iceCallback(
@@ -149,6 +150,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
+        this,
         "userServer",
         iRequest,
         new this.$iceCallback(
@@ -180,6 +182,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
+        this,
         "userServer",
         iRequest,
         new this.$iceCallback(
@@ -217,6 +220,7 @@ export default {
           })
           iRequest.param.token = localStorage.getItem("identification")
           this.$refcallback(
+            this,
             "userServer",
             iRequest,
             new this.$iceCallback(

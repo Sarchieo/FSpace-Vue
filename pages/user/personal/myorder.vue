@@ -168,6 +168,7 @@ export default {
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -272,6 +273,7 @@ export default {
       });
       console.log("json--- " + iRequest.param.json )
       this.$refcallback(
+        this,
           "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
           iRequest,
           new this.$iceCallback(function result(result) {

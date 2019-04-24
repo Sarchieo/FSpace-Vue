@@ -112,7 +112,7 @@
               <span class="sold-count">已售{{item.sales}}{{item.unitName}}</span>
             </p>
             <!-- 按钮 -->
-            <p class="add-card">
+            <p class="add-card" v-if="userStatus"> 
               <!-- <button>-</button>
               <button>{{count}}</button>
               <button>+</button> -->
@@ -217,6 +217,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
@@ -246,6 +247,7 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
@@ -275,6 +277,7 @@ export default {
       });
 
       this.$refcallback(
+        this,
         "globalServer",
         iRequest,
         new this.$iceCallback(
@@ -317,6 +320,7 @@ export default {
         spu: Number(_this.goodsType || 0)
       });
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(
@@ -377,13 +381,13 @@ export default {
       });
 
       this.$refcallback(
+        this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
-              console.log(_this.searchList)
               _this.getImgUrl();
               if (_this.searchList.length === 0 || _this.searchList === null) {
                 _this.isGoods = true;

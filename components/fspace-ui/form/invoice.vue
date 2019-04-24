@@ -111,6 +111,7 @@ export default {
           })
           iRequest.param.token = localStorage.getItem("identification")
           this.$refcallback(
+            this,
             "userServer",
             iRequest,
             new this.$iceCallback(
@@ -122,8 +123,7 @@ export default {
                   _this.$message.error(result.message)
                 }
               }
-            )
-          );
+            ));
         }
       });
     },
