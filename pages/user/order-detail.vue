@@ -54,7 +54,7 @@
               </a-steps>
             </div>
           </div>
-          <div class="logistics-box-info" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node.length > 0">
+          <div class="logistics-box-info" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node && logistixs.node.length > 0">
             <!-- <div class="logistics-box-info"> -->
             <div class="logistics-left">
               <p>送货方式：普通快递</p>
@@ -229,6 +229,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
+            debugger
           if (result.code === 200) {
             _this.logistixs = result.data
           } else {

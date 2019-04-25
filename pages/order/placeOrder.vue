@@ -218,6 +218,7 @@ export default {
   },
   mounted() {
     this.cartList = JSON.parse(sessionStorage.getItem('placeOrderList'));
+    debugger
     this.placeType = this.$route.query.placeType
     this.orderType = this.$route.query.orderType
     this.actcode =  this.$route.query.actcode || 0
@@ -321,7 +322,7 @@ export default {
           pdno: value.pdno,
           pnum: value.num,
           pdprice: value.pdprice,
-          actcode: _this.actcode
+          actcode: value.actcode
         }
       })
       iRequest.param.json = JSON.stringify({
@@ -338,9 +339,8 @@ export default {
         },
         goodsArr: goodsArr,
         orderType: this.orderType,
-        actcode: this.actcode
+        actcode: this.cartList[0].actcode
       });
-      debugger
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         this,
