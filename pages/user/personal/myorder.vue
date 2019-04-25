@@ -175,7 +175,21 @@ export default {
       this.isApply = false
     },
      pickOK() {
-        sessionStorage.setItem('afterSaleGoods', JSON.stringify(this.goodsArr));
+         let arr = this.goodsArr.map((value) => {
+             return {
+                 pname: value.pname,
+                 pspec: value.pspec,
+                 manun: value.manun,
+                 checked: 0,
+                 pdprice: value.pdprice,
+                 pnum: value.pnum,
+                 payamt: value.payamt,
+                 pdno: value.pdno,
+                 orderno: value.orderno,
+                 compid: value.compid
+             };
+         })
+        sessionStorage.setItem('afterSaleGoods', JSON.stringify(arr));
         this.$router.push({
             path: '/order/after-sale',
             query: {
