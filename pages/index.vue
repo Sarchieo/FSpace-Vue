@@ -729,8 +729,6 @@ export default {
             _this.newPersonList = result.data.list
             _this.newPersonID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.newPersonList, 'sku', 'spu')
-          } else {
-            ;
           }
         })
       );

@@ -122,12 +122,34 @@ export default {
         previewVisible: false,
         previewImage: '',
         fileList: [],
+        dict: []
     };
   },
   mounted() {
+    // 获取字典
+    this.queryDictList()
   },
   methods: {
-      handleCancel () {
+    queryDictList() {
+      let _this = this
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "CommonModule";
+      iRequest.method = "getDicts";
+      this.$refcallback(
+        this,
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200) {
+              _this.dict = JSON.parse(result.data)
+              console.log(_this.dict)
+            }
+          }
+        )
+      );
+    },
+    handleCancel () {
       this.previewVisible = false
     },
     handlePreview (file) {
