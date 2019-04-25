@@ -186,7 +186,8 @@ export default {
                  payamt: value.payamt,
                  pdno: value.pdno,
                  orderno: value.orderno,
-                 compid: value.compid
+                 compid: value.compid,
+                 spu:value.spu
              };
          })
         sessionStorage.setItem('afterSaleGoods', JSON.stringify(arr));
