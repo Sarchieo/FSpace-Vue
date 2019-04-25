@@ -238,7 +238,7 @@ export default {
   }
   .right {
     width: 985px;
-    height: 1017px;
+    height: 1022px;
     float: left;
     margin-left: 20px;
     background: white;
