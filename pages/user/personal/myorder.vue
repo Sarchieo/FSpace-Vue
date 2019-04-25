@@ -67,11 +67,12 @@
               <p class="button-p" v-if="item.ostatus === 0"><a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button></p>
               <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
               <!-- v-if="item.ostatus === 3" -->
-              <p @click="saleAfter()">申请售后</p>
+              <p @click="afterApply()">申请售后</p>
               <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
               <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
               <p v-if="item.ostatus !== 0">再次购买</p>
+              <p v-if="item.ostatus === 3">补开发票</p>
             </div>
             <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
               <p>订单取消成功后将无法恢复</p>
@@ -93,16 +94,16 @@
         <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
-          <p @click="saleAfter()">申请售后</p>
+          <!-- <p @click="saleAfter()">申请售后</p> -->
         </div>
-        <!-- <a-modal
+        <a-modal
           title="选择售后类型"
-          :visible="visible"
+          :visible="isApply"
           keyboard
           cancelText="取消"
           okText="下一步"
-          @ok="handleOk"
-          @cancel="handleCancel"
+          @ok="pickOK"
+          @cancel="pickCancel"
         >
           <div class="retreat">
             <div class="retreat-left">
@@ -116,7 +117,7 @@
               <p> <a-checkbox @change="onChange" class="retreat-check"></a-checkbox></p>
             </div>
           </div>
-        </a-modal> -->
+        </a-modal>
   </div>
 </template>
 <script>
@@ -139,6 +140,7 @@ export default {
   },
   data() {
     return {
+      isApply: false,
       visible: false,
       currentIndex: 1,
       total: 0,
@@ -156,6 +158,17 @@ export default {
     },
     onChange(val) {
       console.log(val)
+    },
+    afterApply() {
+      this.isApply = true
+    },
+    pickCancel() {
+      this.isApply = false
+    },
+    pickOK() {
+      this.$router.push({
+        path: '/order/after-sale'
+      })
     },
     // 查询订单列表
     queryOrderList() {
