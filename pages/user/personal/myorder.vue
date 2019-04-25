@@ -313,7 +313,7 @@ export default {
         text = '已退货'
         break;
         case -4:
-        text = '取消交易'
+        text = '已取消'
         break;
       }
       return text

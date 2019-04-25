@@ -648,10 +648,10 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.$route.path.replace();
+              sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
               _this.$router.push({
                 name: "order-placeOrder",
-                params: {
-                  arr: JSON.stringify(result.data),
+                query: {
                   placeType: 1,
                   orderType: 1
                 }
@@ -956,10 +956,10 @@ export default {
             _this.loading = false;
             if (result.code === 200) {
               _this.$route.path.replace();
+              sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
               _this.$router.push({
                 name: "order-placeOrder",
                 query: {
-                  arr: JSON.stringify(result.data),
                   placeType: 1,
                   orderType: 0
                 }

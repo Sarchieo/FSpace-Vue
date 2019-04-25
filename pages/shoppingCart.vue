@@ -32,6 +32,8 @@
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
                 <p class="icon" v-if="item.rule.length > 0">
+                  <a-tag color="#999999" v-if="item.status === 1">秒杀商品无法从购物车购买</a-tag>
+                  <a-tag color="#999999" v-if="item.status === 2">当前商品库存不足</a-tag>
                   <a-tag color="red" v-for="(item, index) in item.rule" :key="index">{{ item.rulename  }}</a-tag>
                 </p>
                 <p class="old-price">￥ {{item.pdprice}}</p>
@@ -174,7 +176,6 @@ export default {
             if (result.code === 200) {
               if(result.data) {
                 _this.cartList = result.data
-                console.log(_this.cartList)
                 _this.cartList.forEach((item) => {
                   item.checked ? false : true
                 })
@@ -314,10 +315,10 @@ export default {
           function result(result) {
           _this.loading = false
           if (result.code === 200) {
+            sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
             _this.$router.push({
               name: "order-placeOrder",
               query: {
-                arr: JSON.stringify(result.data),
                 placeType: 2,
                 orderType: 0
               }
@@ -576,11 +577,12 @@ li {
   .position(absolute, 20px, 60px);
 }
 .first-div p {
-  .container-size(inline-block, 182px, 30px, 0, 0px);
-  line-height: 30px;
+  .container-size(inline-block, 400px, 32px, 0, 0px);
+  line-height: 32px;
+  font-size: 14px;
    overflow: hidden;
- text-overflow:ellipsis;
- white-space: nowrap;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .first-div .pick-input {
   .position(absolute, 70px, 10px);
@@ -591,11 +593,13 @@ li {
 }
 .goods-guige {
   .position(absolute, 52px, 180px);
-  .p-size(30px, 30px, 14px, left, 0px, #999999);
+  .p-size(30px, 30px, 13px, left, 0px, #999999);
+  font-size: 13px!important;
 }
 .manufactor {
   .position(absolute, 80px, 180px);
   .p-size(30px, 30px, 14px, left, 0px, #999999);
+  font-size: 13px!important;
   height: auto !important;
   line-height: 14px !important;
 }
@@ -618,8 +622,9 @@ li {
   color: #999999;
 }
 .validity {
-  .position(absolute, 90px, 410px);
+  .position(absolute, 32px, 180px);
   text-align: left;
+  font-size: 13px!important;
   color: #999999;
 }
 .goods-count {
@@ -750,6 +755,10 @@ li {
 }
 .back-pink{
   background: #fdf4e9;
+}
+.goods-name:hover{
+  color: #ed2f26;
+  cursor: pointer;
 }
 </style>
 

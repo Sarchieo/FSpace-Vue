@@ -34,7 +34,7 @@
               <span>收货门店：</span>{{ this.storeInfo.comp.storeName }}
             </p>
             <p class="address-info">
-              <span>收货地址：</span>{{ this.storeInfo.comp.storeName }}
+              <span>收货地址：</span>{{ this.storeInfo.comp.address }}
             </p>
           </div>
         </div>
@@ -123,8 +123,8 @@
               <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
               <!-- <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag> -->
             </div>
-            <div class="pay">
-              <p>商品合计：￥{{ cartList[0].acamt +  cartList[0].amt}}</p>
+            <div class="pay" v-if="cartList.length > 0">
+              <p>商品合计：￥{{ (cartList[0].acamt +  cartList[0].amt).toFixed(2) }}</p>
               <p>运费：￥ {{ cartList[0].freight }}</p>
               <p>优惠：￥ {{ cartList[0].amt }}</p>
               <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
@@ -176,6 +176,7 @@
         >
         </a-form-item>
         <a-button
+          class="save-btn"
           type="primary"
           html-type="submit">
           保存
@@ -215,15 +216,15 @@ export default {
       contact: ''
     };
   },
-  created() {
-    this.cartList = JSON.parse(this.$route.query.arr)
-  },
   mounted() {
+    this.cartList = JSON.parse(sessionStorage.getItem('placeOrderList'));
+    debugger
     this.placeType = this.$route.query.placeType
     this.orderType = this.$route.query.orderType
     this.actcode =  this.$route.query.actcode || 0
     // 获取优惠券信息
     this.queryActCouponList()
+    // 加载图片
     this.getImgUrl(this.cartList)
     // 获取联系人信息
     this.queryMyConsignee()
@@ -246,6 +247,7 @@ export default {
           function result(result) {
             if(result.code === 200) {
               if(result.data && result.data.length > 0) {
+                debugger
                 _this.receiverList = result.data
                 _this.consignee = _this.receiverList[0].contactname
                 _this.contact = _this.receiverList[0].contactphone
@@ -320,7 +322,7 @@ export default {
           pdno: value.pdno,
           pnum: value.num,
           pdprice: value.pdprice,
-          actcode: _this.actcode
+          actcode: value.actcode
         }
       })
       iRequest.param.json = JSON.stringify({
@@ -337,9 +339,8 @@ export default {
         },
         goodsArr: goodsArr,
         orderType: this.orderType,
-        actcode: this.actcode
+        actcode: this.cartList[0].actcode
       });
-      debugger
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(
         this,
@@ -610,7 +611,7 @@ li {
   float: left;
   .container-size(inline-block, 240px, 120px, 0, 0);
   .container-align(center, 0, 120px);
-  margin-left: 5px;
+  margin-left: 4px;
 }
 .price-total {
   .p-size(50px, 70px, 22px, center, 0px, #ed2f26);
@@ -664,7 +665,7 @@ li {
   .container-size(block, 595px, 310px, 0, 0);
 }
 .pay p {
-  .p-size(50px, 50px, 16px, center, 20px, #666666);
+  .p-size(50px, 50px, 16px, left, 195px, #666666);
 }
 .pay .price {
   font-size: 20px !important;
@@ -752,5 +753,18 @@ li {
 .stets{
   .container-size(block, 600px, 100px, 0 auto, 0);
   margin-top: 30px;
+}
+.ant-input {
+  height: 32px;
+  border: 1px solid #e0e0e0;
+  border-radius: 0px!important;
+  -moz-border-radius:0px!important;
+  -webkit-border-radius:0px!important;
+}
+.save-btn{
+  .button-size(90px,36px,36px,14px,0px,3px);
+  .button-display(block,0 auto);
+  .button-color(1px solid transparent,#ed2f26,#ffffff);
+  margin-top: 10px;
 }
 </style>
