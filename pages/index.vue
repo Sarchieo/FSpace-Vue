@@ -146,32 +146,32 @@
                 查看全部
                 <a-icon type="right"/>
               </a>
-              <h5 class="discount-num">
+              <!-- <h5 class="discount-num">
                 <span>10.0</span>
                 <span>9.9</span>
                 <span>9.8</span>
                 <span>9.7</span>
                 <span>9.6</span>
                 <span>折</span>
-              </h5>
+              </h5> -->
               <!-- <a-tooltip title="3 done / 3 in progress / 4 to do">
                  <a-progress :percent="60" :successPercent="30" style="position: absolute;top: 18px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/>
               </a-tooltip> -->
-              <a-progress strokeLinecap="square" :percent="75" strokeColor="#ed3025" style="position: absolute;top: 28px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/>
+              <!-- <a-progress strokeLinecap="square" :percent="75" strokeColor="#ed3025" style="position: absolute;top: 28px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/> -->
               <!-- <a-progress
                   :percent="20"
                   style="position: absolute;top: 18px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"
                   :strokeColor="black"
                   status="exception"
                 /> -->
-              <h5 class="person-num">
+              <!-- <h5 class="person-num">
                 <span>2</span>
                 <span>5</span>
                 <span>10</span>
                 <span>30</span>
                 <span>50</span>
                 <span>人</span>
-              </h5>
+              </h5> -->
             </div>
             <div class="onek-shoping">
               <ul>
@@ -342,7 +342,7 @@
                   <button>{{ flashSale.m }}</button>:
                   <button>{{ flashSale.s }}</button>
                 </p>
-                <button class="see-whole">
+                <button class="see-whole" @click="toLimited()">
                   查看全部
                   <a-icon type="right"/>
                 </button>
@@ -576,8 +576,6 @@ export default {
                 break
               }
             })
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -601,10 +599,10 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.teamBuyList = result.data.list
             _this.teamByID = result.data.actcode
-            _this.getImgUrl(_this.teamBuyList)
+            _this.fsGeneralMethods.addImages(_this, _this.teamBuyList, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -628,10 +626,10 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.secondList = result.data.list
             _this.secondID = result.data.actcode
-            _this.getImgUrl(_this.secondList)
+            _this.fsGeneralMethods.addImages(_this, _this.secondList, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -655,9 +653,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.brandList = result.data.list
             _this.brandID = result.data.actcode
-            _this.getImgUrl(_this.brandList)
-          } else {
-            _this.$message.error(result.message);
+            _this.fsGeneralMethods.addImages(_this, _this.brandList, 'sku', 'spu')
           }
         })
       );
@@ -681,9 +677,9 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.postList = result.data.list
             _this.postID = result.data.actcode
-            _this.getImgUrl(_this.postList)
+            _this.fsGeneralMethods.addImages(_this, _this.postList, 'sku', 'spu')
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -708,7 +704,7 @@ export default {
     //         _this.famousId = result.data.actcode
     //         _this.getImgUrl(_this.famousList.list)
     //       } else {
-    //         _this.$message.error(result.message);
+    //         ;
     //       }
     //     })
     //   );
@@ -732,9 +728,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.newPersonList = result.data.list
             _this.newPersonID = result.data.actcode
-            _this.getImgUrl(_this.newPersonList)
-          } else {
-            _this.$message.error(result.message);
+            _this.fsGeneralMethods.addImages(_this, _this.newPersonList, 'sku', 'spu')
           }
         })
       );
@@ -762,10 +756,7 @@ export default {
             })
             _this.limitedID = result.data.actcode
             _this.secondKill(_this.stringToDate(result.data.now), result.data.edate)
-            _this.getImgUrl(_this.limitedList)
-            _this.getTimeDiff(result.data.edate)
-          } else {
-            _this.$message.error(result.message);
+            _this.fsGeneralMethods.addImages(_this, _this.limitedList, 'sku', 'spu')
           }
         })
       );
@@ -788,9 +779,7 @@ export default {
           if (result.code === 200) {
             _this.newGoodsList = result.data.slice(0, 6);
             _this.newGoodsID = result.data.actcode
-            _this.getImgUrl(_this.newGoodsList);
-          } else {
-            _this.$message.error(result.message);
+            _this.fsGeneralMethods.addImages(_this, _this.newGoodsList, 'sku', 'spu')
           }
         })
       );
@@ -812,10 +801,10 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.selectedList = result.data.slice(0, 6);
-            _this.getImgUrl(_this.selectedList);
+            _this.fsGeneralMethods.addImages(_this, _this.selectedList, 'sku', 'spu')
             _this.selectedID = result.data.actcode
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -841,56 +830,9 @@ export default {
             _this.hotGoodsList.forEach((item,index) => {
                item.top = '/_nuxt/assets/img/top' + (index+1) + '.png'
             })
-            _this.getImgUrl(_this.hotGoodsList);
-          } else {
-            _this.$message.error(result.message);
+            _this.fsGeneralMethods.addImages(_this, _this.hotGoodsList, 'sku', 'spu')
           }
         })
-      );
-    },
-    // 获取商品图片
-    async getImgUrl(arr) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      arr.forEach(c => {
-        list.push({
-          sku: c.sku,
-          spu: c.spu
-        });
-      });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, list) => {
-                _this.$set(
-                  arr[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    arr[index].sku +
-                    "-200x200.jpg"
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          },
-          function error(error) {
-            console.log(error)
-          }
-        )
       );
     },
     stringToDate(str) {
@@ -1425,24 +1367,24 @@ li {
             }
           }
           .goods-name{
-            .p-size(25px,25px,16px,left,10px,#333333);
+            .p-size(25px,25px,14px,left,10px,#333333);
             width: 100%;
              overflow: hidden;
               text-overflow:ellipsis;
               white-space: nowrap;
           }
           .goods-manu{
-             .p-size(25px,25px,14px,left,10px,#999999);
+             .p-size(25px,25px,13px,left,10px,#999999);
              width: 100%;
               overflow: hidden;
               text-overflow:ellipsis;
               white-space: nowrap;
           }
           .goods-state{
-            .p-size(25px,25px,14px,left,10px,#999999);
+            .p-size(25px,25px,13px,left,10px,#999999);
           }
           .goods-btn{
-            .p-size(50px,50px,14px,left,10px,#999999);
+            .p-size(50px,50px,13px,left,10px,#999999);
             border: 1px solid #ed3025;
             button{
               float: right;
@@ -1455,7 +1397,7 @@ li {
             }
           }
           .goods-success{
-            .p-size(27px,27px,14px,left,10px,#999999);
+            .p-size(27px,27px,13px,left,10px,#999999);
           }
         }
         .onek-pic {
@@ -1690,9 +1632,12 @@ li {
 }
 
 .onek-img {
-  width: 206px;
+  display: block;
+  width: 135px;
   height: 132px;
-  margin: 8.5px;
+  margin: 0 auto;
+  margin-bottom:  9px;
+  margin-top:  9px;
 }
 .top-img{
   position: absolute;

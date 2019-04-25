@@ -40,16 +40,21 @@ module.exports = {
   plugins: [
     '@/plugins/antd-ui',
     { src: '~/plugins/vue-lazyload.js', ssr: true },
+    { src: '~/plugins/element-ui', ssr: true },
     { src: '~/plugins/fs-plugin.js', ssr: false },
     { src: '~/plugins/fingerprint2.js', ssr: false },
-    { src: '~/plugins/element-ui', ssr: true },
-    { src: '~/plugins/piczoom', ssr: false }
+    { src: '~/plugins/commom.js', ssr: false }
   ],
   /*
   ** Nuxt.js modules
   */
   modules: [
-    'cookie-universal-nuxt'
+    'cookie-universal-nuxt',
+    '@nuxtjs/component-cache',
+    ['@nuxtjs/component-cache', {
+      max: 10000,
+      maxAge: 1000 * 60 * 5
+    }],
   ],
 
   /*

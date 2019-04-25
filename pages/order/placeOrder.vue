@@ -60,7 +60,7 @@
               </div>
               <div class="goods-price">￥{{item.pdprice}}</div>
               <div class="goods-price">{{item.num}}</div>
-              <div class="goods-price">￥{{item.pdprice * item.num}}</div>
+              <div class="goods-price">￥{{(item.pdprice * item.num).toFixed(2)}}</div>
             </li>
             <!-- <p class="price-total">商品总计： ￥360元</p> -->
           </ul>
@@ -123,13 +123,23 @@
               <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
               <!-- <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag> -->
             </div>
-            <div class="pay" v-if="cartList.length > 0">
+            <!-- <div class="pay" v-if="cartList.length > 0 && couponCode === 0">
               <p>商品合计：￥{{ (cartList[0].acamt +  cartList[0].amt).toFixed(2) }}</p>
               <p>运费：￥ {{ cartList[0].freight }}</p>
               <p>优惠：￥ {{ cartList[0].amt }}</p>
-              <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
+
               <p class="price" v-if="cartList[0].freepost || isPostal">应付金额：￥ {{ cartList[0].acamt - coupNum }}</p>
               <p class="price" v-else>应付金额：￥ {{ (cartList[0].acamt + cartList[0].freight).toFixed(2) - coupNum  }}</p>
+
+              <a-button class="pay-btn" @click="toPay()">去付款</a-button>
+            </div> -->
+
+            <div class="pay" v-if="cartList.length > 0">
+              <p>商品合计：￥{{ selectCounpon.tprice }}</p>
+              <p>运费：￥ {{  cartList[0].freight }}</p>
+              <p>优惠：￥ {{ selectCounpon.tdiscount  }}</p>
+              <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
+              <p class="price">应付金额：￥ {{ selectCounpon.payamt }}</p>
 
               <a-button class="pay-btn" @click="toPay()">去付款</a-button>
             </div>
@@ -213,21 +223,30 @@ export default {
       isPostal: false, // 是否使用包邮券
       receiverList: [],
       consignee: '',
-      contact: ''
+      contact: '',
+      selectCounpon: {
+        acvalue: 0, // 活动优惠
+        cpvalue: 0, // 优惠券金额
+        freeship: false, // 是不是免运费
+        payamt: 0, // 实付金额
+        tdiscount: 0, // 总共优惠
+        tprice: 0 // 总计金额
+      }
     };
   },
   mounted() {
     this.cartList = JSON.parse(sessionStorage.getItem('placeOrderList'));
-    debugger
     this.placeType = this.$route.query.placeType
     this.orderType = this.$route.query.orderType
     this.actcode =  this.$route.query.actcode || 0
     // 获取优惠券信息
     this.queryActCouponList()
     // 加载图片
-    this.getImgUrl(this.cartList)
+    this.fsGeneralMethods.addImages(this, this.cartList, 'pdno', 'spu')
     // 获取联系人信息
     this.queryMyConsignee()
+    // 获取金额
+    this.couponCalculate()
   },
   methods: {
     queryMyConsignee() {
@@ -247,7 +266,6 @@ export default {
           function result(result) {
             if(result.code === 200) {
               if(result.data && result.data.length > 0) {
-                debugger
                 _this.receiverList = result.data
                 _this.consignee = _this.receiverList[0].contactname
                 _this.contact = _this.receiverList[0].contactphone
@@ -255,7 +273,6 @@ export default {
                 _this.visible = true
               }
             }else {
-             _this.$message.error(result.message);
              _this.visible = true
             }
           }
@@ -272,7 +289,7 @@ export default {
           pdno: value.pdno,
           pnum: value.num,
           compid: _this.storeInfo.comp.storeId,
-          pdprice: value.pdprice,
+          price: value.pdprice,
           amt: value.pdprice *  value.num,
           samt: value.acamt +  value.amt,
           flag: value.oflag ? 1 : 0
@@ -286,19 +303,43 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
-              if(result.data.length > 0) {
-                result.data.forEach((item) => {
-                  item.isChecked = false
-                })
-                _this.couponList = result.data
-              }
-            } else {
-              _this.$message.error(result.message);
+            if (result.code === 200 && result.data.length > 0) {
+              result.data.forEach((item) => {
+                item.isChecked = false
+              })
+              _this.couponList = result.data
             }
-          },
-          function error(e) {
-            console.log(error)
+          }
+        )
+      );
+    },
+    couponCalculate(item) {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "CouponRevModule";
+      iRequest.method = "CouponCalculate";
+      let arr = this.cartList.map((value) => {
+        return {
+          pdno: value.pdno,
+          pnum: value.num,
+          compid: _this.storeInfo.comp.storeId,
+          price: value.pdprice,
+          amt: value.pdprice *  value.num,
+          coupon: _this.unqid,
+          shipfee: _this.cartList[0].freight
+        }
+      })
+      iRequest.param.json = JSON.stringify(arr);
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.selectCounpon = result.data
+            }
           }
         )
       );
@@ -355,58 +396,7 @@ export default {
                   orderno: result.data.orderno
                 }
               });
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            console.log(error)
-          }
-        )
-      );
-    }, // 获取商品图片
-    getImgUrl(arr) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      arr.forEach(c => {
-        list.push({
-          sku: c.pdno,
-          spu: c.spu
-        });
-      });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, list) => {
-                _this.$set(
-                  arr[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    arr[index].pdno +
-                    "-200x200.jpg" +
-                    "?" +
-                    new Date().getSeconds()
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          },
-          function error(error) {
-            console.log(error)
           }
         )
       );
@@ -416,7 +406,6 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          debugger
           let _this = this;
           let iRequest = new inf.IRequest();
           iRequest.cls = "MyDrugStoreInfoModule";
@@ -438,7 +427,7 @@ export default {
                   _this.queryMyConsignee()
                   _this.visible = false
                 }else {
-                  _this.$message.error(result.message)
+                  
                 }
               }
             )
@@ -477,6 +466,7 @@ export default {
           item.isChecked = false
         }
       })
+      this.couponCalculate()
     }
   }
 };

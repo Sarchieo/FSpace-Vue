@@ -202,44 +202,35 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 
-  .yuan_img {
-    position: relative;
-    /*background-image: url("http://image.sougewang.com/paimai/auction/806fcd9087753254d0727f635bd50faa.jpg");*/
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-
-    .yidong {
-      /*width: 100px;*/
-      /*height: 50px;*/
-      background: rgba(0, 0, 0, .5);
-      position: absolute;
-    }
-  }
-
+ .yuan_img {
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  .yidong {
+       comment__-3: 3;
+  background: rgba(0, 0, 0, .5);
+  position: absolute;
+}
+} 
   .big_img {
-    /*width: 900px;*/
-    /*height: 600px;*/
     position: absolute;
-    /*background-image: url("http://image.sougewang.com/paimai/auction/806fcd9087753254d0727f635bd50faa.jpg");*/
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
   }
 
-  .big_box{
-    float: right;
-  }
+.big_box {
+  float: right;
+}
+.big_img_box {
+  background: white;
+  position: relative;
+  overflow: hidden;
+  opacity: 1;
+  z-index: 1000;
+}
 
-  .big_img_box {
-    /*width: 300px;*/
-    /*height: 200px;*/
-    background: white;
-    position: relative;
-    overflow: hidden;
-    opacity: 1;
-    z-index: 1000;
-  }
 </style>

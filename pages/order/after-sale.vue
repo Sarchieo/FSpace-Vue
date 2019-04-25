@@ -22,57 +22,18 @@
           </ul>
           <ul class="goods-lists">
             <li class="goods-lists-li">
-              <div class="first-div">
-                <a-checkbox  @change="onChange" class="pick-input"></a-checkbox>
+              <div class="first-div" v-for="(item,index) in goodsArr" :key="index">
+                <a-checkbox  @change="onChange" v-model="item.checked"  class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
-                <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" class="after-pic"/>
+                <img v-lazy="item.imgURl" class="after-pic"/>
                 <div class="goods-info">
-                  <p class="goods-name">汇仁牌肾宝片</p>
-                  <p class="goods-guige">1000片/盒</p>
-                  <p class="manufactor">长沙麓谷汇仁制药有限公司</p>
+                  <p class="goods-name">{{item.pname}}</p>
+                  <p class="goods-guige">{{item.pspec}}</p>
+                  <p class="manufactor">{{item.manun}}</p>
                 </div>
-                <div class="old-price">￥ 900</div>
-                <div class="count">1</div>
-                <div class="new-price">900</div>       
-              </div>
-              <div class="first-div">
-                <a-checkbox  @change="onChange" class="pick-input"></a-checkbox>
-                <!-- <input type="radio" class="pick-input"> -->
-                <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" class="after-pic"/>
-                <div class="goods-info">
-                  <p class="goods-name">汇仁牌肾宝片</p>
-                  <p class="goods-guige">1000片/盒</p>
-                  <p class="manufactor">长沙麓谷汇仁制药有限公司</p>
-                </div>
-                <div class="old-price">￥ 900</div>
-                <div class="count">1</div>
-                <div class="new-price">900</div>       
-              </div>
-              <div class="first-div">
-                <a-checkbox  @change="onChange" class="pick-input"></a-checkbox>
-                <!-- <input type="radio" class="pick-input"> -->
-                <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" class="after-pic"/>
-                <div class="goods-info">
-                  <p class="goods-name">汇仁牌肾宝片</p>
-                  <p class="goods-guige">1000片/盒</p>
-                  <p class="manufactor">长沙麓谷汇仁制药有限公司</p>
-                </div>
-                <div class="old-price">￥ 900</div>
-                <div class="count">1</div>
-                <div class="new-price">900</div>       
-              </div>
-              <div class="first-div">
-                <a-checkbox  @change="onChange" class="pick-input"></a-checkbox>
-                <!-- <input type="radio" class="pick-input"> -->
-                <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" class="after-pic"/>
-                <div class="goods-info">
-                  <p class="goods-name">汇仁牌肾宝片</p>
-                  <p class="goods-guige">1000片/盒</p>
-                  <p class="manufactor">长沙麓谷汇仁制药有限公司</p>
-                </div>
-                <div class="old-price">￥ 900</div>
-                <div class="count">1</div>
-                <div class="new-price">900</div>       
+                <div class="old-price">{{item.pdprice}}</div>
+                <div class="count">{{item.pnum}}</div>
+                <div class="new-price">{{item.payamt}}</div>
               </div>
             </li>
           </ul>
@@ -105,23 +66,55 @@ export default {
     },
   data() {
     return {
+        goodsArr: [],
+        orderno: 0,
+        checked: false
     };
   },
+
   mounted() {
+      this.orderno =  this.$route.query.orderno;
+      this.goodsArr = JSON.parse(sessionStorage.getItem('afterSaleGoods'));
+      this.fsGeneralMethods.addImages(this, this.goodsArr, 'pdno', 'spu')
+      console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr))
   },
   methods: {
     onChange() {
       // 单选
       console.log(1)
     },
-    checkAll() {
+    checkAll(e) {
       // 全选
-      console.log(2)
+        this.goodsArr.forEach((item) => {
+            if(item.status != 1) {
+                item.checked = e.target.checked
+            }
+        })
     },
     // 跳转填写原因
     toReason() {
+        let arr = this.goodsArr.map((value) => {
+            if (value.checked === 1)  {
+                return {
+                    pname: value.pname,
+                    pspec: value.pspec,
+                    manun: value.manun,
+                    checked: 0,
+                    pdprice: value.pdprice,
+                    pnum: value.pnum,
+                    payamt: value.payamt,
+                    pdno: value.pdno,
+                    orderno: value.orderno,
+                    compid: value.compid
+                };
+            }
+        })
+      sessionStorage.setItem('fillOrderReason', JSON.stringify(arr));
       this.$router.push({
-        path: '/order/reason'
+        path: '/order/reason',
+          query: {
+              orderno: this.orderno,
+          }
       })
     }
   }
@@ -242,7 +235,7 @@ export default {
 }
 .goods-lists-li{
   height: auto;
- 
+
 }
 .old-price {
  .position(absolute,0px,484px);

@@ -95,11 +95,7 @@ export default {
           if (result.code === 200) {
             _this.postList = result.data;
             _this.total = result.total
-            console.log(444);
-            console.log(_this.selectedList)
-            _this.getImgUrl(_this.postList);
-          } else {
-            _this.$message.error(result.message);
+            _this.fsGeneralMethods.addImages(_this, _this.postList, 'sku', 'spu')
           }
         })
       );

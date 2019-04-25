@@ -180,9 +180,9 @@ export default {
               if(result && result.map && result.map.index >= 3) {
                 _this.isCaptcha = true
                 _this.getCaptcha()
-                _this.$message.error(result.message);
+                ;
               } else {
-                _this.$message.error(result.message);
+                ;
               }
             }
           },function error(error) {
@@ -194,7 +194,6 @@ export default {
     },
     // 获取详情
     getBasicInfo() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
@@ -205,7 +204,6 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
           if (result.code === 200) {
             
             _this.$store.dispatch("setUser", {

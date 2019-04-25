@@ -85,7 +85,7 @@ export default {
             console.log(_this.collecList)
             console.log('查询收藏成功')
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -115,15 +115,12 @@ export default {
             _this.queryCollec();
             _this.$message.success(result.message);
             console.log('取消收藏成功')
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
     },
        // 加入采购单
     addCart(item) {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -142,12 +139,7 @@ export default {
           function result(result) {
           if (result.code === 200) {
             _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
-        },
-        function error(e) {
-          _this.$message.error(e);
         })
       );
     },

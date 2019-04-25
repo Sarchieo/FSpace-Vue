@@ -40,7 +40,7 @@
             <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
               <div class="goods-pic">
                 <img
-                  v-lazy="item.imgURl"
+                  v-lazy="items.imgURl"
                 >
                 <p class="goods-text">{{items.pname}}</p>
                 <p class="guige">规格：{{items.pspec}}</p>
@@ -67,13 +67,12 @@
               <p class="button-p" v-if="item.ostatus === 0"><a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button></p>
               <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
               <!-- v-if="item.ostatus === 3" -->
-              <p @click="afterApply()">申请售后</p>
-
+              <p @click="afterApply(item)">申请售后</p>
               <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
               <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
               <p v-if="item.ostatus !== 0">再次购买</p>
-              <p>补开发票</p>
+              <p v-if="item.ostatus === 3">补开发票</p>
             </div>
             <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
               <p>订单取消成功后将无法恢复</p>
@@ -95,10 +94,9 @@
         <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
-          <p @click="patchInvo(item)">补开发票</p>
           <!-- <p @click="saleAfter()">申请售后</p> -->
-           
-         
+
+
         </div>
         <a-modal
           title="选择售后类型"
@@ -121,7 +119,7 @@
               <p> <input type="radio" id="radio1" name="radio1" :value="2"/></a-checkbox></p>
             </div>
           </div>
-          
+
         </a-modal>
         <!-- <input type="radio" id="radio1" name="radio1" />
           <input type="radio" id="radio2" name="radio1" /> -->
@@ -148,6 +146,7 @@ export default {
   data() {
     return {
       isApply: false,
+        goodsArr:[],
       visible: false,
       currentIndex: 1,
       total: 0,
@@ -166,17 +165,39 @@ export default {
     onChange(val) {
       console.log(val)
     },
-    afterApply() {
-      this.isApply = true
+    afterApply(item) {
+      this.isApply = true;
+        this.goodsArr = item.goods;
+        this.orderno = item.orderno
+        // console.log("goods--- " +  JSON.stringify(item.goods))
     },
     pickCancel() {
       this.isApply = false
     },
-    pickOK() {
-      this.$router.push({
-        path: '/order/after-sale'
-      })
-    },
+     pickOK() {
+         let arr = this.goodsArr.map((value) => {
+             return {
+                 pname: value.pname,
+                 pspec: value.pspec,
+                 manun: value.manun,
+                 checked: 0,
+                 pdprice: value.pdprice,
+                 pnum: value.pnum,
+                 payamt: value.payamt,
+                 pdno: value.pdno,
+                 orderno: value.orderno,
+                 compid: value.compid,
+                 spu:value.spu
+             };
+         })
+        sessionStorage.setItem('afterSaleGoods', JSON.stringify(arr));
+        this.$router.push({
+            path: '/order/after-sale',
+            query: {
+                orderno: this.orderno,
+            }
+        })
+     },
     // 查询订单列表
     queryOrderList() {
       let _this = this;
@@ -196,58 +217,11 @@ export default {
             _this.orderList = result.data;
             _this.total = result.total
             _this.currentIndex = result.pageNo
-            _this.orderList.forEach(element => {
-              _this.getImgUrl(element.goods)
+            _this.orderList.forEach((item) => {
+              _this.fsGeneralMethods.addImages(_this, item.goods, 'pdno', 'spu')
             });
-          } else {
-            _this.$message.error(result.message);
           }
         })
-      );
-    },
-     // 获取商品图片
-    async getImgUrl(arr) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      // arr.forEach(c => {
-      //   list.push({
-      //     sku: ,
-      //     spu: 
-      //   });
-      // });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, list) => {
-                _this.$set(
-                  arr[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    arr[index].sku +
-                    "-200x200.jpg"
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          },
-          function error(error) {
-            console.log(error)
-          }
-        )
       );
     },
     showDeleteConfirm() {
@@ -291,7 +265,7 @@ export default {
         path: "/user/evaluate",
         query: {
           orderno: value.orderno,
-          goods: JSON.stringify(value.goods) 
+          goods: JSON.stringify(value.goods)
         }
       });
       window.open(routeData.href, '_blank');
@@ -349,7 +323,7 @@ export default {
                 _this.visible = false;
                 _this.queryOrderList()
               } else {
-                _this.$message.error(result.message);
+                ;
               }
           })
       );
@@ -365,16 +339,6 @@ export default {
     },
     saleAfter() {
       this.visible = true
-    },
-    // 跳转至补开发票
-    patchInvo(item) {
-      debugger
-      this.$router.push({
-        path: '/order/patch-invo',
-        query: {
-          item: item
-        }
-      })
     }
   }
 };
@@ -464,7 +428,7 @@ export default {
         padding-top: 14px;
         padding-left: 10px;
         img{
-          float: left;        
+          float: left;
           width: 80px;
           height: 80px;
           margin-right: 5px;
