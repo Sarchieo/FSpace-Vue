@@ -125,7 +125,8 @@ export default {
   margin: 0;
 }
 .crumbs {
-  .p-size(50px, 50px, 14px, left, 130px, #999999);
+  .p-size(50px, 50px, 14px, left, 235px, #999999);
+  margin-top: 20px;
 }
 .cart-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);

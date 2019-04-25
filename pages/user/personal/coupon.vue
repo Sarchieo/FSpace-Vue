@@ -5,18 +5,20 @@
         <div class="haved-coupon" >
           <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
             <div class="discount" v-if="item.brulecode === 2110">
-              <p class="discount-count">{{ item.rulename }} <span class="term">有效期:{{item.startdate}}至{{item.enddate}}</span></p>
+              <p class="discount-count">{{ item.rulename }}</p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
-              <!-- <p>有效期:{{item.startdate}}至{{item.enddate}}</p> -->
+              <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
             </div>
             <div class="discount" v-if="item.brulecode === 2120">
-              <p class="discount-count margin-bottom35">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span>包邮 </p>
+              <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
             </div>
             <div class="discount" v-if="item.brulecode === 2130">
-              <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-count">{{ item.rulename }}</p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span>折 </p>
+              <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
             </div>
              <!-- <img class="state-pic" src="../../../assets/img/already.png" alt=""> -->
@@ -63,18 +65,21 @@
       <div class="condition-price-box">
         <div class="condition-price"  v-for="(item, index) in couponPub" :key="index" @click="revCoupon(item)">
           <div class="discount" v-if="item.brulecode === 2130">
-            <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+            <p class="discount-count">{{ item.rulename }}</p>
             <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span>折 </p>
+            <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
             <!-- <p>有效期 {{ item.validday }} 天</p> -->
           </div>
           <div class="discount"  v-if="item.brulecode === 2110">
-            <p class="discount-count">{{ item.rulename }}  <span class="term">有效期 {{ item.validday }} 天</span></p>
+            <p class="discount-count">{{ item.rulename }} </p>
             <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
+            <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
             <!-- <p>有效期 {{ item.validday }} 天</p> -->
           </div>
           <div class="discount" v-if="item.brulecode === 2120">
-            <p class="discount-count margin-bottom35">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+            <p class="discount-count margin-bottom35">{{ item.rulename }} </p>
             <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span>包邮 </p>
+            <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
           </div>
           <img class="right-img" src="../../../assets/img/receive.png" alt="">
         </div>
@@ -120,6 +125,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.revCouponList = result.data
+            console.log(_this.revCouponList)
           } else {
             _this.$message.error(result.message);
           }
@@ -194,6 +200,9 @@ export default {
 <style lang="less" scoped>
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
+.validity{
+  .p-size(20px, 20px, 14px, left, 13px, #666666);
+}
 .term{
   float: right;
   margin-right: 20px;
@@ -235,8 +244,10 @@ export default {
       }
       .discount-count {
         .container-size(inline-block, 245px, 50px, 0, 0px);
-        .p-size(40px, 40px, 20px, left, 13px, #ffffff);
+        .p-size(40px, 40px, 20px, center, 0px, #ffffff);
         margin-bottom: 10px;
+        background: #666666;
+
       }
       .discount-str {
         .position(absolute, 12px, 3px);
@@ -293,7 +304,7 @@ export default {
         }
         .discount-count {
         .container-size(inline-block, 245px, 50px, 0, 0px);
-        .p-size(40px, 40px, 20px, left, 13px, #ffffff);
+        .p-size(40px, 40px, 20px, center, 0px, #ffffff);
         margin-bottom: 10px;
         background: #666666;
       }
