@@ -25,10 +25,10 @@
             </div>
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
-                <a-checkbox :disabled="item.status == 1" @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
+                <a-checkbox :disabled="item.status == 1 || item.status == 2" @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
                 <img v-lazy="item.imgURl">
-                <p class="goods-name">{{item.ptitle}}</p>
+                <p class="goods-name" @click="toDetail(item)">{{item.ptitle}}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
                 <p class="icon" v-if="item.rule.length > 0">
@@ -41,8 +41,8 @@
                 <p class="btn-p">
                   <button :disabled="item.status == 1" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :disabled="item.status == 1" :min="1" :max="item.inventory" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
-                  <button :disabled="item.status == 1" @click="addCount(index,item)">+</button>
+                  <a-input-number :disabled="item.status == 1 || item.status == 2" :min="1" :max="item.inventory" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <button :disabled="item.status == 1 || item.status == 2" @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
                 <p class="new-price">￥{{ parseFloat(item.pdprice * item.num).toFixed(2) }}</p>
@@ -93,7 +93,7 @@
                 >
                   <a-icon type="right-circle"/>
                 </div>
-                <div v-for="(item,index) in likeList" :key="index" style="padding-left: 6.5%;" @click="toDetail()">
+                <div v-for="(item,index) in likeList" :key="index" style="padding-left: 6.5%;" @click="toDetail(item)">
                   <a-card
                     hoverable
                     class="meal-card"
@@ -181,14 +181,9 @@ export default {
                 })
                 _this.getImgUrl(_this.cartList)
               }
-            } else {
-              _this.$message.error(result.message);
             }
-        },
-        function error(error) {
-          _this.$message.error('无法连接服务器或服务器返回异常, 请稍后重试');
-        })
-      );
+        }
+      ))
     },
     queryCheckShopCartList() {
       let _this = this;
@@ -212,21 +207,15 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            
-          if (result.code === 200) {
-            _this.cartList = result.data
-            _this.cartList.forEach((item) => {
-              if(item.checked) {
-                _this.amt = item.amt
-              }
-            })
-          } else {
-            _this.$message.error(result.message);
-          }
-        },
-        function error(e) {
-          _this.$message.error(e);
-        })
+            if (result.code === 200) {
+              _this.cartList = result.data
+              _this.cartList.forEach((item) => {
+                if(item.checked) {
+                  _this.amt = item.amt
+                }
+              })
+            }
+          })
       );
     },
     // 现在是单条删除
@@ -249,21 +238,22 @@ export default {
           if (result.code === 200) {
             _this.$message.success('购物车移除成功~')
             _this.cartList.splice(index, 1)
-            _this.queryCheckShopCartList()
-          } else {
-            _this.$message.error(result.message);
+            if(_this.cartList.length > 0) 
+              _this.queryCheckShopCartList()
           }
-        },
-        function error(e) {
-          _this.$message.error(e);
         })
       );
     },
     // 购物车选中商品
-    toDetail() {
-      this.$router.push({
-        path:'/product/detail'
-      })
+    toDetail(item) {
+      let routeData = this.$router.resolve({
+        path:'/product/detail',
+        query: {
+          sku: item.pdno,
+          spu: item.spu
+        }
+      });
+      window.open(routeData.href, "_blank");
     },
     // 全选
     checkAll(e) {
@@ -292,7 +282,8 @@ export default {
             compid: this.storeInfo.comp.storeId,
             checked: 1,
             unqid: item.unqid,
-            conpno: 0
+            conpno: 0,
+            areano: this.storeInfo.comp.addressCode
           })
         }
       })
@@ -323,21 +314,9 @@ export default {
                 orderType: 0
               }
             });
-          } else {
-            _this.$message.error(result.message);
           }
-        },
-        function error(e) {
-          _this.loading = false
-          _this.$message.error(e);
-        })
-      );
-      // setTimeout(() => {
-      //   this.loading = false
-      //   // this.$router.push({
-      //   //   path: "order/pay"
-      //   // });
-      // },3000)
+        }
+      ));
     },
     addCount(index, item) {
       let _this = this
@@ -390,7 +369,7 @@ export default {
             _this.likeList = result.data
             _this.getImgUrl(_this.likeList)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -415,8 +394,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -458,13 +435,9 @@ export default {
                     new Date().getSeconds()
                 );
               });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
             }
           },
-          function error(error) {
-            console.log(error)
-          }
+          
         )
       );
     }

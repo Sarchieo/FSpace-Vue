@@ -137,8 +137,6 @@ export default {
             console.log(_this.goodsList)
             _this.getImgUrl(_this.goodsList.list);
             _this.secondKill(_this.stringToDate(_this.goodsList.now || '2019-4-13 16:10:20') ,_this.goodsList.edate)
-          } else {
-            _this.$message.error(result.message);
           }
         },function(error) {
           console.log(error)
@@ -188,9 +186,6 @@ export default {
             } else {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }
-          },
-          function error(error) {
-            console.log(error)
           }
         )
       );

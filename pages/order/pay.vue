@@ -97,12 +97,7 @@ export default {
               _this.stringToDate(result.data.now),
                 result.data.otime
               );
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            console.log(error)
           }
         )
       );
@@ -133,12 +128,7 @@ export default {
                   orderno: _this.orderno
                 }
               })
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            console.log(error)
           }
         )
       );

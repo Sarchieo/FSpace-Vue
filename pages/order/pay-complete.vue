@@ -164,12 +164,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.info = result.data
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            console.log(error)
           }
         )
       );

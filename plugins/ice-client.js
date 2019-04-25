@@ -42,7 +42,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
         console.log('模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + '>结果:' + result)
         let success = JSON.parse(result)
         if(success.code === -2 && context.$route.name !== 'user-login') {
-          context.$message.error('开发环境提示: <触发登录失效处理> 可能是由于当前账号在别处登录 or 后台异常 系统将在10s后跳转登录页面', 10);
+          context.$message.error('开发环境提示: <触发登录失效处理> 可能是由于当前账号在别处登录 or 后台异常', 10);
           context.$message.error('开发环境提示: 模块名<'+ _IRequest.cls + '>  方法名:<' + _IRequest.method + '>原因:' + success.message, 10);
           context.$store
             .dispatch("setLogout", { context: context })
@@ -52,12 +52,17 @@ function refcallback(context, moduleName,_IRequest, callback) {
                 context.$router.push({
                   path: "/user/login"
                 });
-              }, 10000);
+              }, 2);
             })
             .catch(err => {
               console.log(err);
             });
           return
+        } else if(success.code === -3){
+          
+          context.$message.error('开发环境提示: 模块名<' + _IRequest.cls + '>方法名:<' + _IRequest.method + '> 错误', 10);
+          context.$message.error('原因: <' + success.message +  '>' + success.data, 10);
+          callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else {
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         }
@@ -65,7 +70,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
     )
     .exception(
       function (e) {
-        
+        context.$message.error('开发环境提示: 模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + ' > 调用失败: ' + e, 10);
         callback.onCallback(CALLBACK_ACTION.ERROR, e);
         process.exit(1);
       }

@@ -229,11 +229,10 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
           if (result.code === 200) {
             _this.logistixs = result.data
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -270,7 +269,7 @@ export default {
               break
             }
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -299,7 +298,7 @@ export default {
                 _this.visible = false;
                 _this.queryOrderDetail()
               } else {
-                _this.$message.error(result.message);
+                ;
               }
           })
       );

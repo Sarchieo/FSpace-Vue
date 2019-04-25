@@ -109,9 +109,6 @@ export default {
                 if (result.code === 200) {
                   _this.$message.success(result.message)
                   _this.$emit('handleCancel')
-                } else {
-                  // 文件地址获取失败 .
-                  _this.$message.error(result.message)
                 }
               },
               function error(error) {

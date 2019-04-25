@@ -220,7 +220,7 @@ export default {
               _this.getImgUrl(element.goods)
             });
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -264,9 +264,7 @@ export default {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }
           },
-          function error(error) {
-            console.log(error)
-          }
+          
         )
       );
     },
@@ -369,7 +367,7 @@ export default {
                 _this.visible = false;
                 _this.queryOrderList()
               } else {
-                _this.$message.error(result.message);
+                ;
               }
           })
       );

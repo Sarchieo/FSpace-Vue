@@ -229,12 +229,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.setArea(_this.cascaderData, result.data, 0)
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
@@ -278,9 +273,6 @@ export default {
                 }
               });
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
@@ -355,7 +347,7 @@ export default {
               _this.getAncestors(result.data.comp.addressCode)
             }
           } else {
-            _this.$message.error(result.message)
+            
           }
         })
       );
@@ -420,8 +412,6 @@ export default {
               xhr.setRequestHeader("specify-path", result.data.companyFilePath);
               xhr.setRequestHeader("ergodic-sub", "false");
               xhr.send(null);
-          } else {
-            _this.$message.error("文件地址获取失败, 请稍后重试");
           }
         })
       );
@@ -461,7 +451,7 @@ export default {
                   )
                 });
               } else {
-                _this.$message.error(result.message);
+                ;
               }
             })
           );
@@ -495,9 +485,6 @@ export default {
               });
               _this.$set(targetOption, 'children', arr)
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
@@ -525,9 +512,6 @@ export default {
                 };
               });
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );

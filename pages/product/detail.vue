@@ -20,7 +20,7 @@
             <div class="goods-big-pic">
               <!-- <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom> -->
               <!-- <img v-lazy="imgUrl" slot="cover"> -->
-              <f-space-pic-zoom :imgUrl="imgUrl" />
+              <f-space-pic-zoom v-if="isShowPic" :imgUrl="imgUrl" />
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
               <p v-if="this.isShowCollec === false">
                 <span @click="addCollec()">
@@ -55,7 +55,7 @@
                   <span>折</span>
                 </p>
                 <a-progress
-                  v-if="rulecode === 1113 || 1133"
+                  v-if="rulecode === 1113 || rulecode === 1133"
                   :percent="percentAge"
                   style="width: 295px;height: 8px;margin-left: 20px;"
                   :showInfo="false"
@@ -408,6 +408,7 @@ export default {
         m: 0,
         s: 0
       },
+      isShowPic: false,
       hotList: [],
       isShowCollec: false,
       imgUrl: "",
@@ -482,6 +483,9 @@ export default {
     this.$nextTick(function() {
       this.getGoodsApprise();
     });
+    this.$nextTick(() => {
+      this.isShowPic = true;
+    });
   },
   methods: {
     pageNumber(pageNumber) {
@@ -509,15 +513,9 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              console.log("asdasd--- " + JSON.stringify(result.data));
               _this.appriseArr = result.data;
               _this.total = result.total;
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            console.log(error);
           }
         )
       );
@@ -558,10 +556,8 @@ export default {
                 _this.unqid = _this.activitiesBySKU[0].unqid
                 _this.beforeSecKill();
               }
+              _this.queryActiveType(_this.activitiesBySKU[0].unqid);
             }
-            _this.queryActiveType(_this.activitiesBySKU[0].unqid);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -588,12 +584,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.$message.success(result.message);
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
@@ -617,12 +608,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.unqid2 = result.data;
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
@@ -648,6 +634,9 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.$route.path.replace();
+              result.data.forEach((item) => {
+                item.actcode = _this.unqid
+              })
               sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
               _this.$router.push({
                 name: "order-placeOrder",
@@ -656,12 +645,7 @@ export default {
                   orderType: 1
                 }
               });
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
@@ -684,12 +668,7 @@ export default {
             if (result.code === 200) {
               _this.$message.success(result.message);
               _this.queryCouponPub();
-            } else {
-              _this.$message.error(result.message);
-            }
-          },
-          function error(e) {
-            _this.$message.error(e);
+            } 
           }
         )
       );
@@ -715,12 +694,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.couponPub = result.data;
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
@@ -738,7 +712,8 @@ export default {
         "orderServer" +
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(function result(result) {
+        new this.$iceCallback(
+          function result(result) {
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
@@ -750,8 +725,6 @@ export default {
               // 设置最大库存
               _this.maximum = _this.discount.limits;
             }
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -778,8 +751,6 @@ export default {
             _this.getImgUrls(_this.hotList);
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -815,22 +786,17 @@ export default {
                     ? _this.prodDetail.store
                     : _this.prodDetail.limits;
               }
-            } else {
-              _this.$message.error("当前商品异常, 请稍后重试");
             }
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
     },
-    // 进详情页面获取足迹
+    // 上传足迹
     getFoot() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyFootprintModule";
       iRequest.method = "add";
-      console.log(this.storeInfo.comp.storeId);
       iRequest.param.json = JSON.stringify({
         sku: this.prodDetail.sku,
         compid: this.storeInfo.comp.storeId
@@ -838,15 +804,11 @@ export default {
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" +
-          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+          Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-          } else {
-            _this.$message.error(result.message);
-          }
-        })
+        new this.$iceCallback()
       );
     },
     // 添加收藏
@@ -870,8 +832,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.isCollec();
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -897,8 +857,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.isCollec();
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -916,13 +874,11 @@ export default {
       this.$refcallback(
         this,
         "orderServer" +
-          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.isShowCollec = result.data;
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -941,7 +897,8 @@ export default {
           compid: this.storeInfo.comp.storeId,
           checked: 1,
           unqid: 0,
-          conpno: 0
+          conpno: 0,
+          areano: this.storeInfo.comp.addressCode
         }
       ];
       iRequest.param.json = JSON.stringify(arr);
@@ -964,13 +921,7 @@ export default {
                   orderType: 0
                 }
               });
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            _this.loading = false;
-            _this.$message.error("无法连接服务器或服务器返回异常, 请稍后重试");
           }
         )
       );
@@ -1133,6 +1084,9 @@ export default {
       });
       window.open(routeData.href, "_blank");
     }
+  },
+  beforeDestroy() {
+    this.isShowPic = false;
   }
 };
 </script>
@@ -1365,7 +1319,7 @@ li {
   color: #ffffff;
 }
 .price-server {
-  min-height: 129px;
+  /* min-height: 129px; */
   height: auto;
   /* background: rgb(246, 246, 246); */
 }

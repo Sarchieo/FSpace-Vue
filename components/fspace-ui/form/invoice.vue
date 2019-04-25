@@ -119,8 +119,6 @@ export default {
                 if(result.code === 200) {
                   _this.$message.success(result.message)
                   _this.$emit('handleSuccess', values)
-                }else {
-                  _this.$message.error(result.message)
                 }
               }
             ));
