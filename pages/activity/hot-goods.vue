@@ -72,52 +72,9 @@ export default {
           if (result.code === 200) {
             _this.hotGoodsList = result.data
             _this.total = result.total
-            _this.getImgUrl(_this.hotGoodsList)
+            _this.fsGeneralMethods.addImgages(_this, _this.hotGoodsList, 'sku', 'spu')
           }
         })
-      );
-    },
-    async getImgUrl(arr) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      arr.forEach(c => {
-        list.push({
-          sku: c.sku,
-          spu: c.spu
-        });
-      });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, list) => {
-                _this.$set(
-                  arr[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    arr[index].sku +
-                    "-200x200.jpg" +
-                    "?" +
-                    new Date().getSeconds()
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          }
-        )
       );
     },
     onChangePage(pageNumber) {

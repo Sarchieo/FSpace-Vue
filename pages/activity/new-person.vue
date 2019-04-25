@@ -114,7 +114,7 @@ export default {
             _this.newPersonList = result.data
             _this.newPersonID = result.data.actcode
             _this.total = result.total
-            _this.getImgUrl(_this.newPersonList.list)
+            _this.fsGeneralMethods.addImgages(_this, _this.newPersonList.list, 'sku', 'spu')
           }
         })
       );

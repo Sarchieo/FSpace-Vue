@@ -203,55 +203,10 @@ export default {
             _this.total = result.total
             _this.currentIndex = result.pageNo
             _this.orderList.forEach(element => {
-              _this.getImgUrl(element.goods)
+              _this.fsGeneralMethods.addImgages(_this, element.goods, 'sku', 'spu')
             });
-          } else {
-            ;
           }
         })
-      );
-    },
-     // 获取商品图片
-    async getImgUrl(arr) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      // arr.forEach(c => {
-      //   list.push({
-      //     sku: ,
-      //     spu:
-      //   });
-      // });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, list) => {
-                _this.$set(
-                  arr[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    arr[index].sku +
-                    "-200x200.jpg"
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          },
-          
-        )
       );
     },
     showDeleteConfirm() {

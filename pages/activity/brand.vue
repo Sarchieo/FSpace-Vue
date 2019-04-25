@@ -127,7 +127,7 @@ export default {
             _this.brandList = result.data;
             _this.total = result.total
             _this.currentIndex = result.pageNo
-            _this.getImgUrl(_this.brandList);
+            _this.fsGeneralMethods.addImgages(_this, _this.brandList, 'sku', 'spu')
           }
         })
       );

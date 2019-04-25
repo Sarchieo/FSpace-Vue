@@ -179,7 +179,7 @@ export default {
                 _this.cartList.forEach((item) => {
                   item.checked ? false : true
                 })
-                _this.getImgUrl(_this.cartList)
+                _this.fsGeneralMethods.addImgages(_this, _this.cartList, 'pdno', 'spu')
               }
             }
         }
@@ -367,9 +367,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.likeList = result.data
-            _this.getImgUrl(_this.likeList)
-          } else {
-            ;
+            _this.fsGeneralMethods.addImgages(_this, _this.likeList, 'sku', 'spu')
           }
         })
       );
@@ -396,49 +394,6 @@ export default {
             _this.$message.success(result.message);
           }
         })
-      );
-    },
-    // 获取商品图片
-    getImgUrl(arr) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      arr.forEach(c => {
-        list.push({
-          sku: c.pdno,
-          spu: c.spu
-        });
-      });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, list) => {
-                _this.$set(
-                  arr[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    arr[index].pdno +
-                    "-200x200.jpg" +
-                    "?" +
-                    new Date().getSeconds()
-                );
-              });
-            }
-          },
-          
-        )
       );
     }
   }

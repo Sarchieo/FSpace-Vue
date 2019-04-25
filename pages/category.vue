@@ -376,6 +376,7 @@ export default {
             if (result.code === 200) {
               _this.searchList = result.data;
               _this.getImgUrl();
+              
               if (_this.searchList.length === 0 || _this.searchList === null) {
                 _this.isGoods = true;
               } else {

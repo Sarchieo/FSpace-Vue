@@ -1,5 +1,4 @@
 import { initIce, IceCallback, refcallback, initIceLong } from './ice-client'
-import utils from './commom'
 
 (function () {
   initIce();
@@ -10,5 +9,4 @@ export default ({ app }, inject) => {
   inject('iceCallback', IceCallback)
   inject('refcallback', refcallback)
   inject('initIceLong', initIceLong)
-  inject('commom', utils)
 }

@@ -748,7 +748,8 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotList = result.data.slice(0, 5);
-            _this.getImgUrls(_this.hotList);
+            debugger
+            _this.fsGeneralMethods.addImgages(_this, _this.hotList, 'sku', 'spu')
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
           }
@@ -962,53 +963,6 @@ export default {
             }
           },
           function error(error) {}
-        )
-      );
-    },
-    // 获取商品图片
-    async getImgUrls(arr) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      arr.forEach(c => {
-        list.push({
-          sku: c.sku,
-          spu: c.spu
-        });
-      });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, list) => {
-                _this.$set(
-                  arr[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    arr[index].sku +
-                    "-200x200.jpg" +
-                    "?" +
-                    new Date().getSeconds()
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          },
-          function error(error) {
-            console.log(error);
-          }
         )
       );
     },

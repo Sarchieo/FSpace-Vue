@@ -362,7 +362,7 @@ export default {
                 _this.cartList.forEach(item => {
                   item.checked ? false : true;
                 });
-                _this.getImgUrl(_this.cartList);
+                _this.fsGeneralMethods.addImgages(_this, _this.cartList, 'pdno', 'spu')
               }
             }
           },
@@ -387,56 +387,8 @@ export default {
             // 设置登录
             _this.$store.dispatch("setUserState");
             localStorage.setItem("storeInfo", result.data);
-          } else {
           }
         })
-      );
-    },
-    // 获取商品图片
-    async getImgUrl(arr) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      arr.forEach(c => {
-        list.push({
-          sku: c.pdno,
-          spu: c.spu
-        });
-      });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, list) => {
-                _this.$set(
-                  arr[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    arr[index].pdno +
-                    "-200x200.jpg" +
-                    "?" +
-                    new Date().getSeconds()
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          },
-          function error(error) {
-            console.log(error);
-          }
-        )
       );
     },
     // 退出登录
