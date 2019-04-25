@@ -111,12 +111,12 @@
             <div class="retreat-left">
               <p><img src="../../../assets/img/u6490.png" alt="" class="retreat-p"></p>
               <p class="retreat-text">换货</p>
-              <p> <input type="radio" id="radio2" name="radio1" value="1"/></p>
+              <p> <input type="radio" id="radio2" name="radio1" :value="1"/></p>
             </div>
             <div class="retreat-right">
               <p><img src="../../../assets/img/u6507.png" alt="" class="retreat-p"></p>
               <p class="retreat-text">退货</p>
-              <p> <input type="radio" id="radio1" name="radio1" value="2"/></a-checkbox></p>
+              <p> <input type="radio" id="radio1" name="radio1" :value="2"/></a-checkbox></p>
             </div>
           </div>
           

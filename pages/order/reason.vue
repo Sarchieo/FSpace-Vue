@@ -28,32 +28,72 @@
                      </div>
                      <div class="reason-right">
                         <a-form-item
-                        label="Note"
+                        label="退货原因"
                         :label-col="{ span: 2 }"
                         :wrapper-col="{ span: 12 }"
                         >
-                            <a-select defaultValue="lucy" style="width: 120px" @change="handleChange">
+                            <a-select defaultValue="lucy" style="width: 200px;margin-bottom: 10px;" @change="handleChange">
                                 <a-select-option value="1">材质问题</a-select-option>
-                                <a-select-option value="2">1</a-select-option>
-                                <a-select-option value="3">2</a-select-option>
-                                <a-select-option value="4">3</a-select-option>
-                                <a-select-option value="5">4</a-select-option>
-                                <a-select-option value="6">5</a-select-option>
-                                <a-select-option value="7">6</a-select-option>
-                                <a-select-option value="8">7</a-select-option>
-                                <a-select-option value="9">8</a-select-option>
-                                <a-select-option value="10">9</a-select-option>
+                                <a-select-option value="2">商品有破损，污渍</a-select-option>
+                                <a-select-option value="3">商品质量问题</a-select-option>
+                                <a-select-option value="4">实物与描述不符</a-select-option>
+                                <a-select-option value="5">不喜欢/买错了</a-select-option>
+                                <a-select-option value="6">物流慢</a-select-option>
+                                <a-select-option value="7">商品发错</a-select-option>
+                                <a-select-option value="8">商品未收到</a-select-option>
+                                <a-select-option value="9">其他</a-select-option>
                             </a-select>
                         </a-form-item>
                           <a-form-item
                         label="原因描述"
                         :label-col="{ span: 2 }"
-                        :wrapper-col="{ span: 12 }"
+                        :wrapper-col="{ span: 16 }"
                         >
-                            <a-textarea placeholder="请描述您申请售后" :rows="5" v-model="content" class="evaluate-text" maxlength="300"/>
-                            <span class="float-right">/300</span>
+                        <a-textarea v-model="content" class="evaluate-text" maxlength="300" />
+                            <!-- <a-textarea v-model="content" class="evaluate-text" maxlength="300"/> -->
+                           
                         </a-form-item>
+                        <p class="limit">{{content.length}}/300</p>
+
+                        <!-- <a-upload
+                          style="display: inline-block;margin-top:10px;"
+                          action="//jsonplaceholder.typicode.com/posts/"
+                          listType="picture-card"
+                          :fileList="fileList"
+                          @preview="handlePreview"
+                          @change="handleChange"
+                        >
+                        
+                          <div>
+                            <a-icon type="plus" />
+                            <div class="ant-upload-text">上传照片,最多八张</div>
+                          </div>
+                        </a-upload>
+                         <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                            <img alt="example" style="width: 100%" :src="previewImage" />
+                          </a-modal> -->
+                           <p class="upload">上传相片</p>
+                           <a-upload
+                            style="position: relative;top: 0px;left: 10px;"
+                            action="//jsonplaceholder.typicode.com/posts/"
+                            listType="picture-card"
+                            :fileList="fileList"
+                            @preview="handlePreview"
+                            @change="handleChange"
+                          >
+                            <div v-if="fileList.length < 3">
+                              <a-icon type="plus" />
+                              <div class="ant-upload-text">最多三张</div>
+                            </div>
+                          </a-upload>
+                          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                            <img alt="example" style="width: 100%" :src="previewImage" />
+                          </a-modal>
                      </div>
+                 </div>
+                 <div class="submission-box">
+                   <a-button class="back-btn">返回</a-button>
+                   <a-button class="submission-btn">提交</a-button>
                  </div>
              </div>
           </div>
@@ -78,13 +118,25 @@ export default {
   data() {
     return {
         steps:0,
-        content: ''
+        content: '',
+        previewVisible: false,
+        previewImage: '',
+        fileList: [],
     };
   },
   mounted() {
   },
   methods: {
-   
+      handleCancel () {
+      this.previewVisible = false
+    },
+    handlePreview (file) {
+      this.previewImage = file.url || file.thumbUrl
+      this.previewVisible = true
+    },
+    handleChange ({ fileList }) {
+      this.fileList = fileList
+    }
   }
 };
 </script>
@@ -153,10 +205,38 @@ export default {
       .reason-right{
            .container-size(inline-block, 900px, 350px, 30px 0px 0px 30px, 0px);
           float: right;
-          border: 1px solid #e0e0e0;
       }
   }
-  .ant-input{
-      border-rudius: 0px!important;
+  .submission-box{
+    .container-size(block, 1190px, 90px, 0 auto, 0px);
+    padding: 22px 37%;
+    button{
+      .button-size(150px,45px,45px,16px,0px,5px);
+    }
+    .submission-btn{
+      .button-color(1px solid #e0e0e0,#ed3025,#ffffff);
+    }
   }
+  .ant-input{
+    border-radius:0px!important;
+    -moz-border-radius:0px!important;
+    -webkit-border-radius:0px!important;
+  }
+  .evaluate-text{
+    width: 500px;
+    height: 150px;
+    border: 1px solid #e0e0e0;
+  }
+  .ant-form-item{
+    margin-bottom: 5px;
+  }
+  .limit{
+    width: 577px;
+    text-align: right;
+  }
+  .upload{
+    .p-size(30px, 30px, 13px, left,10px, #333333);
+    margin-bottom: 5px;
+  }
+
 </style>
