@@ -599,7 +599,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.teamBuyList = result.data.list
             _this.teamByID = result.data.actcode
-            _this.fsGeneralMethods.addImgages(_this, _this.teamBuyList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.teamBuyList, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
           } else {
             ;
@@ -626,7 +626,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.secondList = result.data.list
             _this.secondID = result.data.actcode
-            _this.fsGeneralMethods.addImgages(_this, _this.secondList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.secondList, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
           } else {
             ;
@@ -653,7 +653,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.brandList = result.data.list
             _this.brandID = result.data.actcode
-            _this.fsGeneralMethods.addImgages(_this, _this.brandList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.brandList, 'sku', 'spu')
           }
         })
       );
@@ -677,7 +677,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.postList = result.data.list
             _this.postID = result.data.actcode
-            _this.fsGeneralMethods.addImgages(_this, _this.postList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.postList, 'sku', 'spu')
           } else {
             ;
           }
@@ -728,7 +728,7 @@ export default {
             result.data.list = result.data.list.slice(0, 5)
             _this.newPersonList = result.data.list
             _this.newPersonID = result.data.actcode
-            _this.fsGeneralMethods.addImgages(_this, _this.newPersonList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.newPersonList, 'sku', 'spu')
           } else {
             ;
           }
@@ -758,7 +758,7 @@ export default {
             })
             _this.limitedID = result.data.actcode
             _this.secondKill(_this.stringToDate(result.data.now), result.data.edate)
-            _this.fsGeneralMethods.addImgages(_this, _this.limitedList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.limitedList, 'sku', 'spu')
           }
         })
       );
@@ -781,7 +781,7 @@ export default {
           if (result.code === 200) {
             _this.newGoodsList = result.data.slice(0, 6);
             _this.newGoodsID = result.data.actcode
-            _this.fsGeneralMethods.addImgages(_this, _this.newGoodsList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.newGoodsList, 'sku', 'spu')
           }
         })
       );
@@ -803,7 +803,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.selectedList = result.data.slice(0, 6);
-            _this.fsGeneralMethods.addImgages(_this, _this.selectedList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.selectedList, 'sku', 'spu')
             _this.selectedID = result.data.actcode
           } else {
             ;
@@ -832,7 +832,7 @@ export default {
             _this.hotGoodsList.forEach((item,index) => {
                item.top = '/_nuxt/assets/img/top' + (index+1) + '.png'
             })
-            _this.fsGeneralMethods.addImgages(_this, _this.hotGoodsList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.hotGoodsList, 'sku', 'spu')
           }
         })
       );

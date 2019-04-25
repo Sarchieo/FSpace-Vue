@@ -748,7 +748,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotList = result.data.slice(0, 5);
-            _this.fsGeneralMethods.addImgages(_this, _this.hotList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.hotList, 'sku', 'spu')
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
           }

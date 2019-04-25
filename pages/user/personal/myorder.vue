@@ -217,7 +217,7 @@ export default {
             _this.total = result.total
             _this.currentIndex = result.pageNo
             _this.orderList.forEach((item) => {
-              _this.fsGeneralMethods.addImgages(_this, item.goods, 'pdno', 'spu')
+              _this.fsGeneralMethods.addImages(_this, item.goods, 'pdno', 'spu')
             });
           }
         })

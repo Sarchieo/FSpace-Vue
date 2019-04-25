@@ -362,7 +362,7 @@ export default {
                 _this.cartList.forEach(item => {
                   item.checked ? false : true;
                 });
-                _this.fsGeneralMethods.addImgages(_this, _this.cartList, 'pdno', 'spu')
+                _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
               }
             }
           },

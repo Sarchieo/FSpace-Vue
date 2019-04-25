@@ -11,7 +11,7 @@ var fsGeneralMethods = {
        * @param {*} spuName spu字段名称
        * @param {*} imageType 图片尺寸
        */
-      addImgages(context, arr, skuName, spuName, imageType) {
+      addImages(context, arr, skuName, spuName, imageType) {
         if(!arr && arr.length === 0) {
           return
         }

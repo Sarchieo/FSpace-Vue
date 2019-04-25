@@ -102,7 +102,7 @@ export default {
             _this.secondList = result.data
             _this.secondID = result.data.actcode
             _this.total = result.total
-            _this.fsGeneralMethods.addImgages(_this, _this.secondList.list, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.secondList.list, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(_this.secondList.now), _this.secondList.edate)
           }
         })

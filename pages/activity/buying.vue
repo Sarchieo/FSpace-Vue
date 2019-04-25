@@ -117,7 +117,7 @@ export default {
             _this.teamBuyList = result.data;
             _this.pagination =  _this.teamBuyList.list
             _this.total  = result.total
-            _this.fsGeneralMethods.addImgages(_this, _this.teamBuyList.list, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.teamBuyList.list, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(_this.teamBuyList.now) ,_this.teamBuyList.edate)
           }
         })
