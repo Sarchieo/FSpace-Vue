@@ -1,0 +1,242 @@
+<template>
+  <div>
+     <a-layout>
+      <f-space-header type="home"></f-space-header>
+      <a-layout-content>
+          <div>
+             <div class="step-right">
+                <a-steps class="setps-box" :current="steps">
+                    <a-step title="买家申请换货" >
+                    
+                    </a-step>
+                    <a-step title="卖家处理换货">
+                    
+                    </a-step>
+                    <a-step title="换货完成">
+                    
+                    </a-step>
+                </a-steps>
+             </div>
+             <div class="reason-box">
+                 <p class="title">退货原因</p>
+                 
+                 <div class="reason-content">
+                     <div class="reason-left">
+                         <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"/>
+                         <p>汇仁牌肾宝片 200片/瓶</p>
+                         <p>￥ 38</p>
+                     </div>
+                     <div class="reason-right">
+                        <a-form-item
+                        label="退货原因"
+                        :label-col="{ span: 2 }"
+                        :wrapper-col="{ span: 12 }"
+                        >
+                            <a-select defaultValue="lucy" style="width: 200px;margin-bottom: 10px;" @change="handleChange">
+                                <a-select-option value="1">材质问题</a-select-option>
+                                <a-select-option value="2">商品有破损，污渍</a-select-option>
+                                <a-select-option value="3">商品质量问题</a-select-option>
+                                <a-select-option value="4">实物与描述不符</a-select-option>
+                                <a-select-option value="5">不喜欢/买错了</a-select-option>
+                                <a-select-option value="6">物流慢</a-select-option>
+                                <a-select-option value="7">商品发错</a-select-option>
+                                <a-select-option value="8">商品未收到</a-select-option>
+                                <a-select-option value="9">其他</a-select-option>
+                            </a-select>
+                        </a-form-item>
+                          <a-form-item
+                        label="原因描述"
+                        :label-col="{ span: 2 }"
+                        :wrapper-col="{ span: 16 }"
+                        >
+                        <a-textarea v-model="content" class="evaluate-text" maxlength="300" />
+                            <!-- <a-textarea v-model="content" class="evaluate-text" maxlength="300"/> -->
+                           
+                        </a-form-item>
+                        <p class="limit">{{content.length}}/300</p>
+
+                        <!-- <a-upload
+                          style="display: inline-block;margin-top:10px;"
+                          action="//jsonplaceholder.typicode.com/posts/"
+                          listType="picture-card"
+                          :fileList="fileList"
+                          @preview="handlePreview"
+                          @change="handleChange"
+                        >
+                        
+                          <div>
+                            <a-icon type="plus" />
+                            <div class="ant-upload-text">上传照片,最多八张</div>
+                          </div>
+                        </a-upload>
+                         <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                            <img alt="example" style="width: 100%" :src="previewImage" />
+                          </a-modal> -->
+                           <p class="upload">上传相片</p>
+                           <a-upload
+                            style="position: relative;top: 0px;left: 10px;"
+                            action="//jsonplaceholder.typicode.com/posts/"
+                            listType="picture-card"
+                            :fileList="fileList"
+                            @preview="handlePreview"
+                            @change="handleChange"
+                          >
+                            <div v-if="fileList.length < 3">
+                              <a-icon type="plus" />
+                              <div class="ant-upload-text">最多三张</div>
+                            </div>
+                          </a-upload>
+                          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                            <img alt="example" style="width: 100%" :src="previewImage" />
+                          </a-modal>
+                     </div>
+                 </div>
+                 <div class="submission-box">
+                   <a-button class="back-btn">返回</a-button>
+                   <a-button class="submission-btn">提交</a-button>
+                 </div>
+             </div>
+          </div>
+      </a-layout-content>
+      <f-space-footer></f-space-footer>
+    </a-layout>
+  </div>
+</template>
+<script>
+import FSpaceHeader from "../../components/fspace-ui/header/header";
+import FSpaceFooter from "../../components/fspace-ui/footer";
+export default {
+  components: {
+    FSpaceHeader,
+    FSpaceFooter
+  },
+    computed: {
+        storeInfo() {
+            return this.$store.state.user;
+        }
+    },
+  data() {
+    return {
+        steps:0,
+        content: '',
+        previewVisible: false,
+        previewImage: '',
+        fileList: [],
+    };
+  },
+  mounted() {
+  },
+  methods: {
+      handleCancel () {
+      this.previewVisible = false
+    },
+    handlePreview (file) {
+      this.previewImage = file.url || file.thumbUrl
+      this.previewVisible = true
+    },
+    handleChange ({ fileList }) {
+      this.fileList = fileList
+    }
+  }
+};
+</script>
+<style lang="less" scoped>
+@import "../../components/fspace-ui/container/index.less";
+@import "../../components/fspace-ui/button/index.less";
+  #components-layout-demo-basic .ant-layout-footer {
+  /* background: deeppink; */
+  color: #ffffff;
+}
+.ant-layout-content{
+  background: #ffffff;
+}
+#components-layout-demo-basic .ant-layout-footer {
+  /* height: 175px; */
+  /* line-height: 1.5; */
+  color: #000000;
+}
+#components-layout-demo-basic .ant-layout-sider {
+  width: 30px !important;
+  background: #000000;
+}
+#components-layout-demo-basic .ant-layout-content {
+  background: rgb(255, 255, 255);
+  /* min-height: 1000px; */
+  color: #000000;
+}
+#components-layout-demo-basic > .ant-layout {
+  /* margin-bottom: 48px; */
+}
+#components-layout-demo-basic > .ant-layout:last-child {
+  margin: 0;
+}
+  .step-right {
+    .container-size(block, 879px, 75px, 0 auto, 0px);
+    margin-top: 40px;
+    padding: 0px 20px;
+    .setps-box {
+    //   .position(relative, -120px, 0px);
+    }
+  }
+  .reason-box{
+      .container-size(block, 1190px, 550px, 0 auto, 0px);
+      margin-bottom: 20px;
+  }
+  .title{
+      .p-size(50px, 50px, 18px, left, 20px, #333333);
+      background: #f2f2f2;
+  }
+  .reason-content{
+      .container-size(inline-block, 1190px, 405px, 0, 0px);
+      border: 1px solid #f2f2f2;
+      .reason-left{
+           .container-size(inline-block, 200px, 260px, 30px 0px 0px 30px, 0px);
+          float: left;
+        //   background: black;
+          img{
+              width: 180px;
+              height: 180px;
+              margin-bottom: 10px;
+          }
+          p{
+             .p-size(30px, 30px, 13px, left, 0px, #333333);
+          }
+      }
+      .reason-right{
+           .container-size(inline-block, 900px, 350px, 30px 0px 0px 30px, 0px);
+          float: right;
+      }
+  }
+  .submission-box{
+    .container-size(block, 1190px, 90px, 0 auto, 0px);
+    padding: 22px 37%;
+    button{
+      .button-size(150px,45px,45px,16px,0px,5px);
+    }
+    .submission-btn{
+      .button-color(1px solid #e0e0e0,#ed3025,#ffffff);
+    }
+  }
+  .ant-input{
+    border-radius:0px!important;
+    -moz-border-radius:0px!important;
+    -webkit-border-radius:0px!important;
+  }
+  .evaluate-text{
+    width: 500px;
+    height: 150px;
+    border: 1px solid #e0e0e0;
+  }
+  .ant-form-item{
+    margin-bottom: 5px;
+  }
+  .limit{
+    width: 577px;
+    text-align: right;
+  }
+  .upload{
+    .p-size(30px, 30px, 13px, left,10px, #333333);
+    margin-bottom: 5px;
+  }
+
+</style>
