@@ -115,8 +115,6 @@ export default {
             _this.newPersonID = result.data.actcode
             _this.total = result.total
             _this.getImgUrl(_this.newPersonList.list)
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

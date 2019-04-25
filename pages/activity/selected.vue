@@ -139,16 +139,11 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
+            if (result.code === 200) {
+              _this.$message.success(result.message);
+            }
           }
-        },
-        function error(e) {
-          _this.$message.error(e);
-        })
-      );
+        ));
     },
     // 为你精选数据
     getSelects() {
@@ -169,8 +164,6 @@ export default {
             _this.selectedList = result.data;
             _this.total = result.total;
             _this.getImgUrl(_this.selectedList);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-tabs defaultActiveKey="1" @change="callback">
-      <a-tab-pane tab="可使用" key="1">
+      <a-tab-pane tab="可使用" key="0">
         <div class="haved-coupon" >
           <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
             <div class="discount" v-if="item.brulecode === 2110">
@@ -24,37 +24,67 @@
           </div> 
         </div>
       </a-tab-pane>
-      <a-tab-pane tab="已使用" key="2" forceRender>
+      <a-tab-pane tab="已使用" key="1" forceRender>
         <div class="haved-coupon">
-          <div class="condition-price">
+          <!-- <div class="condition-price">
             <div class="discount">
               <p class="discount-count">减现券</p>
                <p>满800减50</p>
               <p>满1600减100</p>
               <p>最多减200</p>
-              <!-- <span class="discount-count">30</span>
-              <span class="discount-str">￥</span>
-              <span class="satisfy">满600元可用</span> -->
-              <!-- <p>全场折扣券</p> -->
               <p>2019-03-27至2019-04-20可用</p>
               <img class="state-pic" src="../../../assets/img/already.png" alt="">
             </div>
-          </div>
+          </div> -->
+          <div class="condition-price" v-for="(item, index) in usedCouponList" :key="index">
+            <div class="discount" v-if="item.brulecode === 2110">
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期:{{item.startdate}}至{{item.enddate}}</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
+              <!-- <p>有效期:{{item.startdate}}至{{item.enddate}}</p> -->
+              <!-- <p>有效期 {{ item.validday }} 天</p> -->
+            </div>
+            <div class="discount" v-if="item.brulecode === 2120">
+              <p class="discount-count margin-bottom35">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span>包邮 </p>
+            </div>
+            <div class="discount" v-if="item.brulecode === 2130">
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span>折 </p>
+              <!-- <p>有效期 {{ item.validday }} 天</p> -->
+            </div>
+            <img class="state-pic" src="../../../assets/img/already.png" alt="">
+          </div> 
         </div>
       </a-tab-pane>
-      <a-tab-pane tab="已失效" key="3">
+      <a-tab-pane tab="已失效" key="2">
         <div class="haved-coupon">
-          <div class="condition-price">
+          <!-- <div class="condition-price">
             <div class="discount">
               <p class="discount-count margin-bottom35">包邮券</p>
               <p class="margin-bottom35">满600元即送包邮券</p>
-              <!-- <span class="discount-str">￥</span> -->
-              <!-- <span class="satisfy">满600元即送包邮券</span> -->
-              <!-- <p>全场折扣券</p> -->
               <p>2019-03-27至2019-04-20可用</p>
                <img class="state-pic" src="../../../assets/img/Invalid.png" alt="">
             </div>
-          </div>
+          </div> -->
+           <div class="condition-price" v-for="(item, index) in invalidCouponList" :key="index">
+            <div class="discount" v-if="item.brulecode === 2110">
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期:{{item.startdate}}至{{item.enddate}}</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
+              <!-- <p>有效期:{{item.startdate}}至{{item.enddate}}</p> -->
+              <!-- <p>有效期 {{ item.validday }} 天</p> -->
+            </div>
+            <div class="discount" v-if="item.brulecode === 2120">
+              <p class="discount-count margin-bottom35">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span>包邮 </p>
+            </div>
+            <div class="discount" v-if="item.brulecode === 2130">
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span>折 </p>
+              <!-- <p>有效期 {{ item.validday }} 天</p> -->
+            </div>
+             <!-- <img class="state-pic" src="../../../assets/img/already.png" alt=""> -->
+            <img class="state-pic" src="../../../assets/img/Invalid.png" alt="">
+          </div> 
         </div>
       </a-tab-pane>
     </a-tabs>
@@ -87,7 +117,10 @@ export default {
   data() {
     return {
       couponPub: [],
-      revCouponList: []
+      revCouponList: [],
+      usedCouponList: [],
+      invalidCouponList: [],
+      type: 0
     };
   },
   computed: {
@@ -106,9 +139,10 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";
       iRequest.method = "queryRevCouponList";
+      this.type = ctype
       iRequest.param.json = JSON.stringify({
         compid: _this.storeInfo.comp.storeId,
-        type: ctype,
+        type: ctype, // 0 可使用 1 已使用 2 已失效
         pageSize: 5,
         pageNo: 1
       })
@@ -119,9 +153,19 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.revCouponList = result.data
-          } else {
-            _this.$message.error(result.message);
+              if(result.data.length > 0) {
+                switch(ctype) {
+                case 0:
+                _this.revCouponList = result.data
+                break;
+                case 1:
+                _this.usedCouponList = result.data
+                break;
+                case 2:
+                _this.invalidCouponList = result.data
+                break;
+              }
+            }
           }
         })
       );
@@ -134,7 +178,7 @@ export default {
       iRequest.method = "queryCouponPub";
        iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
-        gcode: -1, // sku
+        gcode: -1, 
         compid: _this.storeInfo.comp.storeId, // 企业id
         pageSize: 5,
         pageNo: 1
@@ -147,12 +191,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.couponPub = result.data
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
@@ -173,20 +212,15 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.$message.success(result.message);
-              _this.queryRevCouponList(0)
+              _this.queryRevCouponList(_this.type)
               _this.queryCouponPub()
-            } else {
-              _this.$message.error(result.message);
             }
-          },
-          function error(e) {
-            _this.$message.error(e);
           }
         )
       );
     },
     callback(key) {
-      console.log(key);
+      this.queryRevCouponList(Number(key) )
     }
   }
 };

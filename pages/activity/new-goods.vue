@@ -94,8 +94,6 @@ export default {
             _this.newGoodsList = result.data;
             _this.total = result.total;
             _this.getImgUrl(_this.newGoodsList);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

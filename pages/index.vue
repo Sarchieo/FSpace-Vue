@@ -146,32 +146,32 @@
                 查看全部
                 <a-icon type="right"/>
               </a>
-              <h5 class="discount-num">
+              <!-- <h5 class="discount-num">
                 <span>10.0</span>
                 <span>9.9</span>
                 <span>9.8</span>
                 <span>9.7</span>
                 <span>9.6</span>
                 <span>折</span>
-              </h5>
+              </h5> -->
               <!-- <a-tooltip title="3 done / 3 in progress / 4 to do">
                  <a-progress :percent="60" :successPercent="30" style="position: absolute;top: 18px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/>
               </a-tooltip> -->
-              <a-progress strokeLinecap="square" :percent="75" strokeColor="#ed3025" style="position: absolute;top: 28px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/>
+              <!-- <a-progress strokeLinecap="square" :percent="75" strokeColor="#ed3025" style="position: absolute;top: 28px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/> -->
               <!-- <a-progress
                   :percent="20"
                   style="position: absolute;top: 18px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"
                   :strokeColor="black"
                   status="exception"
                 /> -->
-              <h5 class="person-num">
+              <!-- <h5 class="person-num">
                 <span>2</span>
                 <span>5</span>
                 <span>10</span>
                 <span>30</span>
                 <span>50</span>
                 <span>人</span>
-              </h5>
+              </h5> -->
             </div>
             <div class="onek-shoping">
               <ul>
@@ -577,7 +577,7 @@ export default {
               }
             })
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -604,7 +604,7 @@ export default {
             _this.getImgUrl(_this.teamBuyList)
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -631,7 +631,7 @@ export default {
             _this.getImgUrl(_this.secondList)
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -657,7 +657,7 @@ export default {
             _this.brandID = result.data.actcode
             _this.getImgUrl(_this.brandList)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -683,7 +683,7 @@ export default {
             _this.postID = result.data.actcode
             _this.getImgUrl(_this.postList)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -708,7 +708,7 @@ export default {
     //         _this.famousId = result.data.actcode
     //         _this.getImgUrl(_this.famousList.list)
     //       } else {
-    //         _this.$message.error(result.message);
+    //         ;
     //       }
     //     })
     //   );
@@ -734,7 +734,7 @@ export default {
             _this.newPersonID = result.data.actcode
             _this.getImgUrl(_this.newPersonList)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -765,7 +765,7 @@ export default {
             _this.getImgUrl(_this.limitedList)
             _this.getTimeDiff(result.data.edate)
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -790,7 +790,7 @@ export default {
             _this.newGoodsID = result.data.actcode
             _this.getImgUrl(_this.newGoodsList);
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -815,7 +815,7 @@ export default {
             _this.getImgUrl(_this.selectedList);
             _this.selectedID = result.data.actcode
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -843,7 +843,7 @@ export default {
             })
             _this.getImgUrl(_this.hotGoodsList);
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
@@ -887,9 +887,7 @@ export default {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }
           },
-          function error(error) {
-            console.log(error)
-          }
+          
         )
       );
     },
@@ -1425,24 +1423,24 @@ li {
             }
           }
           .goods-name{
-            .p-size(25px,25px,16px,left,10px,#333333);
+            .p-size(25px,25px,14px,left,10px,#333333);
             width: 100%;
              overflow: hidden;
               text-overflow:ellipsis;
               white-space: nowrap;
           }
           .goods-manu{
-             .p-size(25px,25px,14px,left,10px,#999999);
+             .p-size(25px,25px,13px,left,10px,#999999);
              width: 100%;
               overflow: hidden;
               text-overflow:ellipsis;
               white-space: nowrap;
           }
           .goods-state{
-            .p-size(25px,25px,14px,left,10px,#999999);
+            .p-size(25px,25px,13px,left,10px,#999999);
           }
           .goods-btn{
-            .p-size(50px,50px,14px,left,10px,#999999);
+            .p-size(50px,50px,13px,left,10px,#999999);
             border: 1px solid #ed3025;
             button{
               float: right;
@@ -1455,7 +1453,7 @@ li {
             }
           }
           .goods-success{
-            .p-size(27px,27px,14px,left,10px,#999999);
+            .p-size(27px,27px,13px,left,10px,#999999);
           }
         }
         .onek-pic {
@@ -1690,9 +1688,12 @@ li {
 }
 
 .onek-img {
-  width: 206px;
+  display: block;
+  width: 135px;
   height: 132px;
-  margin: 8.5px;
+  margin: 0 auto;
+  margin-bottom:  9px;
+  margin-top:  9px;
 }
 .top-img{
   position: absolute;

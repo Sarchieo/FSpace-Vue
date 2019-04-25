@@ -198,7 +198,6 @@ export default {
   methods: {
     // 加入采购单
     addCart(items) {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -217,12 +216,7 @@ export default {
           function result(result) {
           if (result.code === 200) {
             _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
-        },
-        function error(e) {
-          _this.$message.error(e);
         })
       );
     },
@@ -253,14 +247,13 @@ export default {
             console.log(result.data)
             _this.footList = result.data;
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );
     },
     // 删除足迹
     delFoot(sku) {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       let arr = [sku]
@@ -276,7 +269,7 @@ export default {
             _this.getFootList();
             _this.$message.success(result.message);
           } else {
-            _this.$message.error(result.message);
+            ;
           }
         })
       );

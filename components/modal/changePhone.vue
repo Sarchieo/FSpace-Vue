@@ -145,7 +145,6 @@ export default {
     },
     handleSubmitOld(e) {
       e.preventDefault();
-      debugger;
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
@@ -165,8 +164,6 @@ export default {
             // 回到登录页面
             _this.$emit(handleSussece);
             _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -208,7 +205,6 @@ export default {
     },
     // 获取手机号的短信验证码
     getAuthCode() {
-      debugger;
       this.sendAuthCodeText = "请稍后";
       this.sendAuthCodeLoading = true;
       // 发送验证码
@@ -216,7 +212,6 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "LoginRegistrationModule";
       iRequest.method = "obtainVerificationCode";
-      debugger;
       iRequest.param.json = JSON.stringify({
         type: 2,
         phone: this.oldPhone
@@ -241,8 +236,6 @@ export default {
                 clearInterval(auth_timetimer);
               }
             }, 1000);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -311,7 +304,7 @@ export default {
     //               // _this.$emit("handleCancel");
     //             } else {
     //               // 文件地址获取失败 .
-    //               _this.$message.error(result.message);
+    //               ;
     //             }
     //           },
     //           function error(error) {
@@ -352,7 +345,7 @@ export default {
     //               _this.$emit("handleCancel");
     //             } else {
     //               // 文件地址获取失败 .
-    //               _this.$message.error(result.message);
+    //               ;
     //             }
     //           },
     //           function error(error) {

@@ -366,8 +366,8 @@ export default {
               }
             }
           },
-          function error(e) {
-            _this.$message.error("无法连接服务器或服务器返回异常, 请稍后重试");
+           {
+           
           }
         )
       );

@@ -98,8 +98,6 @@ export default {
             console.log(444);
             console.log(_this.selectedList)
             _this.getImgUrl(_this.postList);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

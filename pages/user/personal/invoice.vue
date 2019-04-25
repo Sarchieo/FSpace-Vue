@@ -51,7 +51,7 @@ export default {
             if(result.code === 200) {
               _this.invoice = result.data[0]
             }else {
-             _this.$message.error(result.message)
+             
             }
           }
         )

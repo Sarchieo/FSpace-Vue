@@ -128,8 +128,6 @@ export default {
             _this.total = result.total
             _this.currentIndex = result.pageNo
             _this.getImgUrl(_this.brandList);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

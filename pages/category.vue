@@ -222,16 +222,11 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
-          }
-        },
-        function error(e) {
-          _this.$message.error(e);
-        })
-      );
+              if (result.code === 200) {
+                  _this.$message.success(result.message);
+              }
+          })
+        );
     },
     // 收藏
     addCollec(item) {
@@ -253,8 +248,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -299,9 +292,6 @@ export default {
             } else {
               _this.$message.error("文件地址获取失败, 请稍后重试");
             }
-          },
-          function error(error) {
-            console.log(error)
           }
         )
       );
@@ -353,9 +343,6 @@ export default {
                 });
               });
             }
-          },
-          function error(error) {
-            console.log(error)
           }
         )
       );
@@ -396,9 +383,7 @@ export default {
               }
             }
           },
-          function error(error) {
-            console.log(error)
-          }
+          
         )
       );
     },

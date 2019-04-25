@@ -104,8 +104,6 @@ export default {
             _this.total = result.total
             _this.getImgUrl(_this.secondList.list)
             _this.secondKills(_this.stringToDate(_this.secondList.now), _this.secondList.edate)
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

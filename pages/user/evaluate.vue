@@ -147,12 +147,7 @@ export default {
                       if (result.code === 200) {
                           //评价成功
                           
-                      } else {
-                          _this.$message.error(result.message);
                       }
-                  },
-                  function error(e) {
-                      console.log(error)
                   }
               )
           );

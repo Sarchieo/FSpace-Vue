@@ -237,7 +237,7 @@ export default {
                 }
               }, 1000);
             }else {
-              _this.$message.error(result.message);
+              ;
             }
           }
         )
@@ -285,7 +285,7 @@ export default {
                 path: '/user/login'
               })
             }else {
-              _this.$message.error(result.message);
+              ;
             }
           }
         )
