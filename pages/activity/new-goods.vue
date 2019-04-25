@@ -93,7 +93,7 @@ export default {
           if (result.code === 200) {
             _this.newGoodsList = result.data;
             _this.total = result.total;
-            _this.fsGeneralMethods.addImgages(_this, _this.newGoodsList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.newGoodsList, 'sku', 'spu')
           }
         })
       );

@@ -179,7 +179,7 @@ export default {
                 _this.cartList.forEach((item) => {
                   item.checked ? false : true
                 })
-                _this.fsGeneralMethods.addImgages(_this, _this.cartList, 'pdno', 'spu')
+                _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
               }
             }
         }
@@ -367,7 +367,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.likeList = result.data
-            _this.fsGeneralMethods.addImgages(_this, _this.likeList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.likeList, 'sku', 'spu')
           }
         })
       );
