@@ -28,7 +28,6 @@ var fsGeneralMethods = {
             spu: c[spuName]
           });
         });
-        debugger
         iRequest.param.json = JSON.stringify({
           list: list
         });
@@ -38,7 +37,7 @@ var fsGeneralMethods = {
           iRequest,
           new context.$iceCallback(
             function result(result) {
-              if (result.code === 200) {s
+              if (result.code === 200) {
                 result.data.goodsFilePathList.forEach((c, index, list) => {
                   _this.$set(
                     arr[index],
