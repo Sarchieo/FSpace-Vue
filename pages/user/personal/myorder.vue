@@ -67,7 +67,7 @@
               <p class="button-p" v-if="item.ostatus === 0"><a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button></p>
               <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
               <!-- v-if="item.ostatus === 3" -->
-              <p @click="afterApply()">申请售后</p>
+              <p @click="afterApply(item)">申请售后</p>
               <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
               <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
@@ -95,8 +95,8 @@
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
           <!-- <p @click="saleAfter()">申请售后</p> -->
-           
-         
+
+
         </div>
         <a-modal
           title="选择售后类型"
@@ -119,7 +119,7 @@
               <p> <input type="radio" id="radio1" name="radio1" value="2"/></a-checkbox></p>
             </div>
           </div>
-          
+
         </a-modal>
         <!-- <input type="radio" id="radio1" name="radio1" />
           <input type="radio" id="radio2" name="radio1" /> -->
@@ -146,6 +146,7 @@ export default {
   data() {
     return {
       isApply: false,
+        goodsArr:[],
       visible: false,
       currentIndex: 1,
       total: 0,
@@ -164,17 +165,24 @@ export default {
     onChange(val) {
       console.log(val)
     },
-    afterApply() {
-      this.isApply = true
+    afterApply(item) {
+      this.isApply = true;
+        this.goodsArr = item.goods;
+        this.orderno = item.orderno
+        // console.log("goods--- " +  JSON.stringify(item.goods))
     },
     pickCancel() {
       this.isApply = false
     },
-    pickOK() {
-      this.$router.push({
-        path: '/order/after-sale'
-      })
-    },
+     pickOK() {
+        sessionStorage.setItem('afterSaleGoods', JSON.stringify(this.goodsArr));
+        this.$router.push({
+            path: '/order/after-sale',
+            query: {
+                orderno: this.orderno,
+            }
+        })
+     },
     // 查询订单列表
     queryOrderList() {
       let _this = this;
@@ -214,7 +222,7 @@ export default {
       // arr.forEach(c => {
       //   list.push({
       //     sku: ,
-      //     spu: 
+      //     spu:
       //   });
       // });
       iRequest.param.json = JSON.stringify({
@@ -289,7 +297,7 @@ export default {
         path: "/user/evaluate",
         query: {
           orderno: value.orderno,
-          goods: JSON.stringify(value.goods) 
+          goods: JSON.stringify(value.goods)
         }
       });
       window.open(routeData.href, '_blank');
@@ -452,7 +460,7 @@ export default {
         padding-top: 14px;
         padding-left: 10px;
         img{
-          float: left;        
+          float: left;
           width: 80px;
           height: 80px;
           margin-right: 5px;
