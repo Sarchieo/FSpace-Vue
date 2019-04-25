@@ -68,11 +68,12 @@
               <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
               <!-- v-if="item.ostatus === 3" -->
               <p @click="afterApply()">申请售后</p>
+
               <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
               <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
               <p v-if="item.ostatus !== 0">再次购买</p>
-              <p v-if="item.ostatus === 3">补开发票</p>
+              <p>补开发票</p>
             </div>
             <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
               <p>订单取消成功后将无法恢复</p>
@@ -94,6 +95,7 @@
         <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
+          <p @click="patchInvo(item)">补开发票</p>
           <!-- <p @click="saleAfter()">申请售后</p> -->
            
          
@@ -363,6 +365,16 @@ export default {
     },
     saleAfter() {
       this.visible = true
+    },
+    // 跳转至补开发票
+    patchInvo(item) {
+      debugger
+      this.$router.push({
+        path: '/order/patch-invo',
+        query: {
+          item: item
+        }
+      })
     }
   }
 };

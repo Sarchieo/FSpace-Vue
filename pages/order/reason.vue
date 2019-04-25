@@ -4,7 +4,7 @@
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
           <div>
-             <div class="step-right">
+             <!-- <div class="step-right">
                 <a-steps class="setps-box" :current="steps">
                     <a-step title="买家申请换货" >
                     
@@ -16,7 +16,7 @@
                     
                     </a-step>
                 </a-steps>
-             </div>
+             </div> -->
              <div class="reason-box">
                  <p class="title">退货原因</p>
                  
@@ -181,6 +181,7 @@ export default {
   .reason-box{
       .container-size(block, 1190px, 550px, 0 auto, 0px);
       margin-bottom: 20px;
+      margin-top: 20px;
   }
   .title{
       .p-size(50px, 50px, 18px, left, 20px, #333333);

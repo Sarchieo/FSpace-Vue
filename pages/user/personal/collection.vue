@@ -19,11 +19,11 @@
           />
           <a-icon type="delete" class="close-coll" @click.stop="delCollec(item.sku)"/>
           <!-- {{item.info.prodname}} -->
-          <p class="surplus text-Center top185">{{item.info.prodname}}</p>
+          <p class="surplus text-Center top185">{{item.info.brandName}}</p>
           <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
           <p class="validity">有效期{{item.info.prodsdate}}-{{item.info.prodedate}}</p>
           <!-- {{item.info.vatp}} -->
-          <p class="card-price top165">￥{{item.info.vatp}} </p>
+          <p class="card-price top165">￥{{item.prize}} </p>
 
           <!-- 规格 -->
           <!-- {{item.info.spec}} -->
