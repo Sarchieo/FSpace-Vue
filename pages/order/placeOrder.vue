@@ -242,7 +242,7 @@ export default {
     // 获取优惠券信息
     this.queryActCouponList()
     // 加载图片
-    _this.fsGeneralMethods.addImgages(_this, this.cartList, 'pdno', 'spu')
+    this.fsGeneralMethods.addImgages(this, this.cartList, 'pdno', 'spu')
     // 获取联系人信息
     this.queryMyConsignee()
     // 获取金额

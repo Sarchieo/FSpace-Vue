@@ -40,7 +40,7 @@
             <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
               <div class="goods-pic">
                 <img
-                  v-lazy="item.imgURl"
+                  v-lazy="items.imgURl"
                 >
                 <p class="goods-text">{{items.pname}}</p>
                 <p class="guige">规格：{{items.pspec}}</p>
@@ -216,8 +216,8 @@ export default {
             _this.orderList = result.data;
             _this.total = result.total
             _this.currentIndex = result.pageNo
-            _this.orderList.forEach(element => {
-              _this.fsGeneralMethods.addImgages(_this, element.goods, 'sku', 'spu')
+            _this.orderList.forEach((item) => {
+              _this.fsGeneralMethods.addImgages(_this, item.goods, 'pdno', 'spu')
             });
           }
         })
