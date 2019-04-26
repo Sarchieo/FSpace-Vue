@@ -497,18 +497,17 @@ export default {
     getGoodsApprise() {
       const _this = this;
       const iRequest = new inf.IRequest();
-      iRequest.cls = "OrderOptModule";
+      iRequest.cls = "ProdModule";
       iRequest.method = "getGoodsApprise";
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
         sku: this.sku
       });
-      iRequest.param.token = localStorage.getItem("identification");
+      // iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" +
-          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        "goodsServer",
         iRequest,
         new this.$iceCallback(
           function result(result) {
@@ -668,7 +667,7 @@ export default {
             if (result.code === 200) {
               _this.$message.success(result.message);
               _this.queryCouponPub();
-            } 
+            }
           }
         )
       );
