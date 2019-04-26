@@ -93,7 +93,7 @@
             <img class="card-img" v-lazy="item.imgURl" slot="cover">
             <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus === 1 || item.rulestatus === 2 || item.rulestatus === 4　||　item.rulestatus === 2048　||　item.rulestatus === 4096" alt="" slot="cover">
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64　||　item.rulestatus === 128 || item.rulestatus === 256 || item.rulestatus === 512||　item.rulestatus === 1024" alt="" slot="cover">
-            <p class="surplus text-Center top185">{{item.brandName}}</p>
+            <p class="surplus text-Center top185">{{item.brandName + item.prodname}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
             <p class="card-price top165" v-if="item.actprod && userStatus">
               ￥{{item.vatp}}
@@ -706,6 +706,9 @@ li {
   text-align: left;
   text-indent: 20px;
   color: #333333;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .card-img {
   .position(absolute, 15px, 45px);

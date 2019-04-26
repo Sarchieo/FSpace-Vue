@@ -449,7 +449,6 @@ export default {
       console.log(1);
     },
     onChange(item, index) {
-        // console.log("item -- " + JSON.stringify(item))
       if(item.isChecked) {
         this.unqid =  item.unqid
         this.couponCode = item.coupno

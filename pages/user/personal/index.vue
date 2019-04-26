@@ -44,8 +44,8 @@
           <a-icon type="profile"/>
           <span>{{ authenticationMessage }}</span>
         </p>
-        <div v-if="isRelated">
-          <h2 class="certificate-title" v-if="isRelated">药店资质</h2>
+        <div v-if="authenticationStatus > 64">
+          <h2 class="certificate-title">药店资质</h2>
           <a-form-item
             v-bind="formItemLayout"
             class="upload"
@@ -159,6 +159,7 @@ export default {
       businessImg: "",
       GSPImg: "",
       DrugImg: "",
+      authenticationStatus: 0,
       authenticationMessage: "",
       areaMax: 2, // 2+1 级
       headers: {
@@ -337,10 +338,10 @@ export default {
               context: _this,
               user: result.data
             });
+            _this.authenticationStatus = result.data.comp.authenticationStatus
             _this.code = []
             _this.getFilePathPrev();
             _this.authenticationMessage = result.data.comp.authenticationMessage;
-            _this.isRelated = result.data.isRelated;
             _this.isEditor = !_this.isRelated
             // 获取地区数据
             if(result.data.comp.addressCode) {
@@ -359,7 +360,7 @@ export default {
       iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
-        compid: this.$store.state.user.storeId
+        compid: this.$store.state.user.comp.storeId
       })
       this.$refcallback(
         this,
@@ -403,6 +404,7 @@ export default {
                         status: 'done',
                         url: result.data.downPrev + result.data.companyFilePath + data[i] + "?" + new Date().getSeconds(),
                       })
+                    
                       _this.uploadList[i].url = result.data.downPrev + result.data.companyFilePath + data[i] + "?" + new Date().getSeconds()
                     }
                   }
@@ -421,6 +423,16 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           let _this = this;
+          let flag = true
+          let message = ''
+          _this.uploadList.forEach((item) => {
+            item.fileList.length === 0 ? flag = false : flag = true
+            message = item.message
+          })
+          if(!flag && _this.authenticationStatus > 64) {
+            _this.$message.error('请提交药店资质图片')
+            return 
+          }
           let iRequest = new inf.IRequest();
           iRequest.cls = "StoreManageModule";
           iRequest.method = "updateStoreInfo";
@@ -450,8 +462,6 @@ export default {
                     </div>
                   )
                 });
-              } else {
-                ;
               }
             })
           );

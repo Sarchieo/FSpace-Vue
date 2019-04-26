@@ -92,7 +92,7 @@
                     <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
-                    <p class="surplus top185">{{item.brandName}}</p>
+                    <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165" v-if="userStatus">￥{{item.vatp}}</p>
                     <p class="card-price top165" v-else>￥登录后可见</p>
@@ -202,8 +202,8 @@
           <div class="brand-hall" v-if="item.unqid === 16 && postList.length > 4">
             <p class="brand-hall-title">
               包邮专区
-              <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
-              </a>
+              <!-- <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
+              </a> -->
             </p>
             <div class="brand-div">
               <ul class="brand-right hot-width">
@@ -211,7 +211,7 @@
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
-                    <p class="surplus top185">{{item.brandName}}</p>
+                    <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165" v-if="userStatus">￥{{item.vatp}} </p>
                      <p class="card-price top165" v-else>￥登录后可见 </p>
@@ -236,7 +236,7 @@
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
-                    <p class="surplus top185">{{item.brandName}}</p>
+                    <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165" v-if="userStatus">￥{{item.vatp}}</p>
                     <p class="card-price top165" v-else>￥登录后可见</p>
@@ -311,7 +311,7 @@
                 <li v-for="(item,index) in brandList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
-                    <p class="surplus top185">{{item.brandName}}</p>
+                    <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
                     <p class="card-price top165" v-if="userStatus">￥{{item.vatp}} </p>
                     <p class="card-price top165" else>￥登录后可见 </p>
@@ -372,16 +372,12 @@
                         ￥登录后可见
                       </p>
                       <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
-                      <p class="brand-text">{{items.brandName}}</p>
                     </div>
                   </a-card>
                 </li>
               </ul>
             </div>
           </div>
-
-
-
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -1122,6 +1118,9 @@ li {
   .position(absolute, 168px, 0px);
   text-indent: 20px;
   color: #333333;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
   span {
     float: right;
     margin-right: 20px;
@@ -1183,6 +1182,9 @@ li {
   padding: 0 10px 0 20px;
   font-size: 16px;
   color: #333333;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .brand-text {
   text-indent: 20px;

@@ -23,7 +23,8 @@
                 <p class="goods-name">{{item.prodname}} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                <p class="goods-price">限时价￥{{item.vatp}}元</p>
+                <p class="goods-price" v-if="userStatus">限时价￥{{item.vatp}}元</p>
+                <p class="goods-price" v-else>￥登录后可见</p>
                 <button @click="toDetails(item)">查看详情</button>
               </a-card>
             </div>
@@ -47,6 +48,11 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    userStatus() {
+      return this.$store.state.userStatus;
+    }
+  },
   data() {
     return {
       total: 0,
@@ -56,7 +62,8 @@ export default {
         color: "#c40000",
         background: "black"
       },
-      newGoodsList: []
+      newGoodsList: [],
+      keyword: ''
     };
   },
   mounted() {
@@ -80,10 +87,12 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
-      iRequest.method = "getNewMallFloor";
+      iRequest.method = "newProdSearch";
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
+      iRequest.param.json = JSON.stringify({
+        keyword: this.keyword,
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
@@ -93,6 +102,7 @@ export default {
           if (result.code === 200) {
             _this.newGoodsList = result.data;
             _this.total = result.total;
+            _this.currentIndex = result.pageNo
             _this.fsGeneralMethods.addImages(_this, _this.newGoodsList, 'sku', 'spu')
           }
         })

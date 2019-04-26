@@ -34,7 +34,7 @@
               </a-tooltip>
               <a-tooltip>
                 <template slot="title">删除</template>
-                <a-icon type="delete" @click="showDeleteConfirm()"/>
+                <a-icon type="delete" @click="showDeleteConfirm(item)"/>
               </a-tooltip>
             </p>
             <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
@@ -59,7 +59,7 @@
                 <p class="freight">(含运费{{items.freight}}元)</p>
               </div>
               <div class="state">
-                <p class="sucess" v-if="item.ostatus === 2 || item.ostatus === -2">申请售后</p>
+                <p class="sucess" v-if="item.ostatus == 2">申请售后</p>
                 <p class="sucess">{{statusText(item.ostatus)}}</p>
               </div>
             </div>
@@ -109,15 +109,15 @@
           @cancel="pickCancel"
         >
             <div class="retreat">
-            <div class="retreat-left">
+            <div class="retreat-left" @click="changeType('1')">
               <p><img src="../../../assets/img/u6490.png" alt="" class="retreat-p"></p>
               <p class="retreat-text">仅退款</p>
-              <p> <input type="radio" id="radio2" name="radio1" :value="1"/></p>
+              <p> <input type="radio" v-model="asType" id="radio2" name="radio1" :value="1"/></p>
             </div>
-            <div class="retreat-right">
+            <div class="retreat-right" @click="changeType('2')">
               <p><img src="../../../assets/img/u6507.png" alt="" class="retreat-p"></p>
-              <p class="retreat-text">退货退款</p>
-              <p> <input type="radio" id="radio1" name="radio1" :value="2"/></p>
+              <p class="retreat-text" >退货退款</p>
+              <p> <input type="radio" v-model="asType" id="radio1" name="radio1" :value="2"/></p>
             </div>
           </div>
 
@@ -146,6 +146,7 @@ export default {
   },
   data() {
     return {
+        asType: '1',
       isApply: false,
         goodsArr:[],
       visible: false,
@@ -159,6 +160,9 @@ export default {
     this.queryOrderList()
   },
   methods: {
+      changeType(val){
+          this.asType = val
+      },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
       this.queryOrderList()
@@ -181,7 +185,7 @@ export default {
                  pname: value.pname,
                  pspec: value.pspec,
                  manun: value.manun,
-                 checked: 0,
+                 checked: false,
                  pdprice: value.pdprice,
                  pnum: value.pnum,
                  payamt: value.payamt,
@@ -196,6 +200,7 @@ export default {
             path: '/order/after-sale',
             query: {
                 orderno: this.orderno,
+                asType: this.asType
             }
         })
      },
@@ -225,7 +230,8 @@ export default {
         })
       );
     },
-    showDeleteConfirm() {
+    showDeleteConfirm(item) {
+      let _this = this;
       this.$confirm({
         title: "您确定要删除此订单?",
         content: "删除后，您将不能查询到该订单的信息！",
@@ -233,10 +239,10 @@ export default {
         okType: "danger",
         cancelText: "取消",
         onOk() {
-          console.log("OK");
+            _this.deleteOrder(item)
         },
         onCancel() {
-          console.log("Cancel");
+
         }
       });
     },
@@ -288,6 +294,7 @@ export default {
         break;
         case -1:
         text = '退货申请'
+        break;
         case -2:
         text = '退货中'
         break;
@@ -303,6 +310,32 @@ export default {
     isShowCancel() {
       this.visible = true
     },
+      // 删除订单
+      deleteOrder(item) {
+          debugger
+          let _this = this;
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "OrderOptModule";
+          iRequest.method = "deleteOrder";
+          iRequest.param.token = localStorage.getItem("identification");
+          iRequest.param.json = JSON.stringify({
+              orderno: item.orderno,
+              cusno: item.cusno
+          });
+          this.$refcallback(
+              this,
+              "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+              iRequest,
+              new this.$iceCallback(function result(result) {
+                  if (result.code === 200) {
+                      _this.visible = false;
+                      _this.$message.success(result.data)
+                      _this.queryOrderList()
+                  } else {
+                  }
+              })
+          );
+      },
     // 取消订单
     cancelOrder(item) {
       let _this = this;
@@ -314,7 +347,7 @@ export default {
           orderno: item.orderno,
           cusno: item.cusno
       });
-      console.log("json--- " + iRequest.param.json )
+      // console.log("json--- " + iRequest.param.json )
       this.$refcallback(
         this,
           "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),

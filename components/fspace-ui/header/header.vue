@@ -104,18 +104,18 @@
               </div>
             </div>
             <p class="spike" v-show="isShowHeader">
-              <a href>新人专享</a>
-              <span>|</span>
-              <a href>秒杀</a>
+              <!-- <a href="javascript:;" @click="toNewPerson()">新人专享</a>
+              <span>|</span> -->
+              <!-- <a href>秒杀</a>
               <span>|</span>
               <a href>一块购</a>
-              <span>|</span>
+              <span>|</span> -->
             </p>
             <div class="nav-box" v-show="isShowHeader">
               <a href class="goods-type">商品分类</a>
-              <a href>新人专享</a>
-              <a href>新品上线</a>
-              <a href>热销商品</a>
+              <a href="javascript:;"  @click="toNewPerson()">新人专享</a>
+              <a href="javascript:;"  @click="toNewGoods()">新品上线</a>
+              <a href="javascript:;"  @click="toHotGoods()">热销商品</a>
               <a href="javascript:;" @click="toBrand()">品牌专区</a>
               <!-- <a href>全部商品</a> -->
             </div>
@@ -400,6 +400,25 @@ export default {
         path: "/user/integral"
       });
       window.open(routeData.href, "_blank");
+    },
+    toNewGoods() {
+      this.$router.push({
+        path: "/activity/new-goods"
+      });
+    },
+    // 新人专享
+    toNewPerson() {
+      this.$router.push({
+        path: '/activity/new-person'
+      })
+    },
+    toHotGoods() {
+      this.$router.push({
+        path: "/activity/hot-goods",
+        query: {
+          actcode: this.hotGoodsID
+        }
+      });
     }
   }
 };

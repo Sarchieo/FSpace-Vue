@@ -12,7 +12,7 @@ var fsGeneralMethods = {
        * @param {*} imageType 图片尺寸
        */
       addImages(context, arr, skuName, spuName, imageType) {
-        if(!arr && arr.length === 0) {
+        if(!arr || arr.length === 0) {
           return
         }
         imageType = imageType || '200x200'
