@@ -59,7 +59,7 @@
                 <p class="freight">(含运费{{items.freight}}元)</p>
               </div>
               <div class="state">
-                <p class="sucess" v-if="item.ostatus === 2 || item.ostatus === -2">申请售后</p>
+                <p class="sucess" v-if="item.ostatus == 2">申请售后</p>
                 <p class="sucess">{{statusText(item.ostatus)}}</p>
               </div>
             </div>
@@ -294,6 +294,7 @@ export default {
         break;
         case -1:
         text = '退货申请'
+        break;
         case -2:
         text = '退货中'
         break;
