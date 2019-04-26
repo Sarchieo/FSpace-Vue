@@ -19,8 +19,8 @@
           </div>-->
           <div class="limited-goods">
             <p class="search-p">
-              <input type="text" placeholder="在结果中搜索">
-              <button>搜索</button>
+              <input v-model="keyword" type="text" placeholder="在结果中搜索">
+              <button @click="getBrand()">搜索</button>
             </p>
             <div class="goods-box" v-for="(item,index) in brandList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
@@ -28,14 +28,17 @@
                   收藏
                   <a-icon type="star"/>
                 </span>
-                <img v-lazy="item.src" alt class="goods-pic">
-                <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                <img v-lazy="item.imgURl" alt class="goods-pic">
+                <p class="validity">有效期{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                <p class="goods-price">
+                <p class="goods-price" v-if="userStatus">
                   ￥{{item.vatp}}元
                   <del>原价￥{{item.rrp}}元</del>
+                </p>
+                <p class="goods-price" v-else>
+                  ￥登录后可见
                 </p>
                 <p class="package">
                   <span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span>
@@ -74,6 +77,11 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    userStatus() {
+      return this.$store.state.userStatus;
+    }
+  },
   data() {
     return {
       count: 1,
@@ -85,7 +93,8 @@ export default {
         color: "#c40000",
         background: "black"
       },
-      brandList: []
+      brandList: [],
+      keyword: ''
     };
   },
   mounted() {
@@ -96,25 +105,29 @@ export default {
     callback(key) {
       console.log(key);
     },
-    toDetails() {
+    toDetails(item) {
       this.$router.push({
-        path: "/product/detail"
+        path: "/product/detail",
+        query: {
+          sku: item.sku,
+          spu: item.spu,
+        }
       });
     },
     onChangePage(pageNumber) {
-    this.currentIndex = pageNumber
-    this.getBrand()
+      this.currentIndex = pageNumber
+      this.getBrand()
     },
     // 品牌专区数据请求
     getBrand() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
-      iRequest.method = "getBrandMallFloor";
+      iRequest.method = "brandMallSearch";
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
-        keyword: "",
+        keyword: this.keyword,
         actcode: this.actcode
       });
       iRequest.param.token = localStorage.getItem("identification");

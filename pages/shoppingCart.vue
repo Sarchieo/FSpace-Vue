@@ -283,7 +283,7 @@ export default {
             checked: 1,
             unqid: item.unqid,
             conpno: 0,
-            areano: this.storeInfo.comp.addressCode
+            areano: this.storeInfo.comp.addressCode[this.storeInfo.comp.addressCode -1]
           })
         }
       })

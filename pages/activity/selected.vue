@@ -33,9 +33,12 @@
                 <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                <p class="goods-price">
+                <p class="goods-price" v-if="userStatus">
                   ￥{{item.vatp}}元
                   <del>原价￥{{item.rrp}}元</del>
+                </p>
+                <p class="goods-price" v-else>
+                  ￥登录后可见
                 </p>
                 <p class="package">
                   <span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span>
@@ -72,6 +75,11 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    userStatus() {
+      return this.$store.state.userStatus;
+    }
+  },
   data() {
     return {
       count: 1,
@@ -83,7 +91,8 @@ export default {
         color: "#c40000",
         background: "black"
       },
-      selectedList: []
+      selectedList: [],
+      keyword: ''
     };
   },
   computed: {
@@ -92,15 +101,6 @@ export default {
     },
     userStatus() {
       return this.$store.state.userStatus
-    },
-    keyword: {
-      get() {
-        return this.$store.state.keyword;
-      },
-      set(newValue) {
-        this.$store.commit("KEY_WORD", newValue);
-        return this.$store.state.keyword;
-      }
     }
   },
   mounted() {
@@ -150,10 +150,12 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
-      iRequest.method = "getChooseForYouMallFloor";
+      iRequest.method = "chooseForYouSearch";
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
+      iRequest.param.json = JSON.stringify({
+        keyword: this.keyword,
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
@@ -163,6 +165,7 @@ export default {
           if (result.code === 200) {
             _this.selectedList = result.data;
             _this.total = result.total;
+            _this.currentIndex = result.pageNo
             _this.fsGeneralMethods.addImages(_this, _this.selectedList, 'sku', 'spu')
           }
         })

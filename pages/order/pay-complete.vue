@@ -200,11 +200,14 @@ export default {
         path: "/"
       });
     },
-    toGoodsDetail() {
-      var routeData = this.$router.resolve({
-        path: "/product/detail"
+    toGoodsDetail(item) {
+     this.$router.push({
+        path: "/product/detail",
+        query: {
+          sku: item.sku,
+          spu: item.spu
+        }
       });
-      window.open(routeData.href, "_blank");
     }
   }
 };
