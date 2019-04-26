@@ -83,7 +83,7 @@
                 <a-icon type="calendar"/>我的消息
               </a-menu-item>
               <a-menu-item key="/user/personal/service" class="left-menu">
-                <a-icon type="calendar"/>售后服务
+                <a-icon type="calendar"/>售后记录
               </a-menu-item>
             </a-menu>
           </div>

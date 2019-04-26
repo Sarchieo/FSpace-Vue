@@ -213,7 +213,7 @@ export default {
       iRequest.cls = "LoginRegistrationModule";
       iRequest.method = "obtainVerificationCode";
       iRequest.param.json = JSON.stringify({
-        type: 2,
+        type: 3,
         phone: this.oldPhone
       });
       iRequest.param.token = localStorage.getItem("identification");

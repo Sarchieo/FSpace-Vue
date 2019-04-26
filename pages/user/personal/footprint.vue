@@ -15,7 +15,7 @@
             <a-icon type="delete" class="del-foot" @click="delFoot(items.sku)"/>
             <p class="surplus text-Center top185">{{items.brandName}} {{items.popname}}</p>
             <p class="validity">有效期至{{items.prodedate}}</p>
-            <p class="card-price top165">￥{{items.vatp}}</p>
+            <p class="card-price top165">￥{{items.vatp/100}}</p>
             <p class="specifications">{{items.spec}}</p>
             <p class="manufacturer">{{items.manuName}}</p>
             <p class="add-card">
@@ -240,6 +240,7 @@ export default {
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {

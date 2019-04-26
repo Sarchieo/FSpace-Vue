@@ -157,8 +157,7 @@ export default {
         phone: values.phone,
         password: md5(values.password),
         verification: values.verification ? values.verification : '',
-        key: this.captchaKey,
-        isSave: true
+        key: this.captchaKey
       })
       iRequest.param.token = localStorage.getItem("identification")
       this.$refcallback(

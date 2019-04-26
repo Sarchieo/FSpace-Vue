@@ -1,50 +1,51 @@
 <template>
   <div>
-     <a-layout>
+    <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
-         <a-breadcrumb separator=">" class="crumbs">
+        <a-breadcrumb separator=">" class="crumbs">
           <a-breadcrumb-item>首页</a-breadcrumb-item>
           <a-breadcrumb-item>我的订单</a-breadcrumb-item>
           <a-breadcrumb-item>申请售后</a-breadcrumb-item>
         </a-breadcrumb>
         <div class="after-box">
-        <p class="title">请选择退货药品</p>
+          <p class="title">请选择退货药品</p>
           <div class="cart-box">
-          <ul class="table-header">
-            <li class="whole">
-              <a-checkbox @change="checkAll">全选</a-checkbox>
-            </li>
-            <li class="width40">商品信息</li>
-            <li class="width20">单价</li>
-            <li class="width20">数量</li>
-            <li class="width20">实付</li>
-          </ul>
-          <ul class="goods-lists">
-            <li class="goods-lists-li">
-              <div class="first-div" v-for="(item,index) in goodsArr" :key="index">
-                <a-checkbox  @change="onChange" class="pick-input"></a-checkbox>
-                <!-- <input type="radio" class="pick-input"> -->
-                <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" class="after-pic"/>
-                <div class="goods-info">
-                  <p class="goods-name">{{item.pname}}</p>
-                  <p class="goods-guige">{{item.pspec}}</p>
-                  <p class="manufactor">{{item.manun}}</p>
+            <ul class="table-header">
+              <li class="whole">
+                <a-checkbox @change="checkAll">全选</a-checkbox>
+              </li>
+              <li class="width40">商品信息</li>
+              <li class="width20">单价</li>
+              <li class="width20">数量</li>
+              <li class="width20">实付</li>
+            </ul>
+            <ul class="goods-lists">
+              <li class="goods-lists-li">
+                <div class="first-div" v-for="(item,index) in goodsArr" :key="index">
+                  <a-checkbox @change="onChange" v-model="item.checked" class="pick-input"></a-checkbox>
+                  <!-- <input type="radio" class="pick-input"> -->
+                  <img v-lazy="item.imgURl" class="after-pic">
+                  <div class="goods-info">
+                    <p class="goods-name">{{item.pname}}</p>
+                    <p class="goods-guige">{{item.pspec}}</p>
+                    <p class="manufactor">{{item.manun}}</p>
+                  </div>
+                  <div class="old-price">{{item.pdprice}}</div>
+                  <div class="count">
+                    <a-button class="add-reduce" @click="reduce(item)">-</a-button>
+                    <!-- <span class="count-num">{{item.pnum}}</span> -->
+                    <a-input-number :min="1" :max="item.inventory" v-model="item.pnum" style="width: 60px;height:28px;line-height: 28px;" readonly="readonly"/>
+                    <a-button class="add-reduce" @click="addNum(item)" >+</a-button>
+                  </div>
+                  <div class="new-price">{{item.payamt}}</div>
                 </div>
-                <div class="old-price">{{item.pdprice}}</div>
-                <div class="count">{{item.pnum}}</div>
-                <div class="new-price">{{item.payamt}}</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="next-step">
-            <a-button
-              type="primary"
-              class="after-btn"
-              @click="toReason()"
-            >下一步</a-button>
-        </div>
+              </li>
+            </ul>
+          </div>
+          <div class="next-step">
+            <a-button v-if="isShowBtn" type="primary" class="after-btn" @click="toReason()">下一步</a-button>
+          </div>
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -59,37 +60,95 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
-    computed: {
-        storeInfo() {
-            return this.$store.state.user;
-        }
-    },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
   data() {
     return {
         goodsArr: [],
-        orderno: 0
+        orderno: 0,
+        asType: 0,
+        isShowBtn: false
     };
   },
 
   mounted() {
-      this.orderno =  this.$route.query.orderno;
-      this.goodsArr = JSON.parse(sessionStorage.getItem('afterSaleGoods'));
-      console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr))
+      this.asType = this.$route.query.asType;
+      this.orderno = this.$route.query.orderno;
+      this.goodsArr = JSON.parse(sessionStorage.getItem("afterSaleGoods"));
+      this.fsGeneralMethods.addImages(this, this.goodsArr, "pdno", "spu");
+      this.goodsArr.forEach((item) => {
+       item.inventory = item.pnum
+      })
+    // debugger
+    // console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr));
   },
   methods: {
-    onChange() {
-      // 单选
-      console.log(1)
+    reduce(item) {
+      if (item.pnum === 1) {
+        return false;
+      }
+      item.pnum-=1;
     },
-    checkAll() {
+    addNum(item) {
+
+      if(item.pnum >= item.inventory){
+        return false
+      } else {
+        item.pnum +=1;
+      }
+
+    },
+
+    onChange(val) {
+      // 单选
+        if (val.target.checked) {
+            this.isShowBtn = true
+        } else {
+            this.isShowBtn = false
+        }
+      console.log("val---- " + JSON.stringify(val));
+    },
+    checkAll(e) {
       // 全选
-      console.log(2)
+      this.goodsArr.forEach(item => {
+        if (item.status != 1) {
+          item.checked = e.target.checked;
+            if (item.checked) {
+                this.isShowBtn = true
+            } else {
+                this.isShowBtn = false
+            }
+        }
+      });
     },
     // 跳转填写原因
     toReason() {
+      let arr = this.goodsArr.map(value => {
+        if (value.checked) {
+          return {
+            pname: value.pname,
+            pspec: value.pspec,
+            manun: value.manun,
+            pdprice: value.pdprice,
+            pnum: value.pnum,
+            payamt: value.payamt,
+            pdno: value.pdno,
+            orderno: value.orderno,
+            compid: value.compid
+          };
+        }
+      });
+      sessionStorage.setItem("fillOrderReason", JSON.stringify(arr));
       this.$router.push({
-        path: '/order/reason'
-      })
+        path: "/order/reason",
+        query: {
+            orderno: this.orderno,
+            asType: this.asType
+        }
+      });
     }
   }
 };
@@ -97,11 +156,11 @@ export default {
 <style lang="less" scoped>
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
-  #components-layout-demo-basic .ant-layout-footer {
+#components-layout-demo-basic .ant-layout-footer {
   /* background: deeppink; */
   color: #ffffff;
 }
-.ant-layout-content{
+.ant-layout-content {
   background: #ffffff;
 }
 #components-layout-demo-basic .ant-layout-footer {
@@ -167,7 +226,7 @@ export default {
 .first-div {
   .position(relative, 0px, 0px);
   .container-size(inline-block, 1190px, 140px, 0, 0px);
-   border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
 }
 .first-div img {
   .container-size(inline-block, 95px, 95px, 0, 0px);
@@ -176,70 +235,83 @@ export default {
 .first-div p {
   .container-size(inline-block, 330px, 30px, 0, 0px);
   line-height: 30px;
-   overflow: hidden;
-   text-align: left;
- text-overflow:ellipsis;
- white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .first-div .pick-input {
   .position(absolute, 60px, 10px);
 }
-.title{
+.title {
   display: block;
   width: 1190px;
   margin: 0 auto;
   .p-size(50px, 50px, 16px, left, 0px, #333333);
 }
-.width40{
-  width: 400px!important;
+.width40 {
+  width: 400px !important;
 }
-.width20{
-  width: 230px!important;
+.width20 {
+  width: 230px !important;
 }
-.after-pic{
+.after-pic {
   width: 95px;
   height: 95px;
 }
-.goods-info{
-   .container-size(inline-block, 334px, 140px, 0, 0px);
-   .position(absolute, 0px, 150px);
-   width: 334px!important;
-   line-height: 0px!important;
-   padding: 18px 0px;
+.goods-info {
+  .container-size(inline-block, 334px, 140px, 0, 0px);
+  .position(absolute, 0px, 150px);
+  width: 334px !important;
+  line-height: 0px !important;
+  padding: 18px 0px;
 }
-.goods-lists-li{
+.goods-lists-li {
   height: auto;
-
 }
 .old-price {
- .position(absolute,0px,484px);
+  .position(absolute, 0px, 484px);
 }
-.count{
-  .position(absolute,0px,720px);
+.count {
+  .position(absolute, 0px, 720px);
+  .count-num {
+    display: inline-block;
+    width: 56px;
+    height: 30px;
+    line-height: 28px;
+    border: 1px solid #e0e0e0;
+  }
+  .add-reduce {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    padding-right: 23px;
+  }
 }
-.new-price{
-  .position(absolute,0px,955px);
+.new-price {
+  .position(absolute, 0px, 955px);
 }
-.first-div div{
-   width: 235px;
+.first-div div {
+  width: 235px;
   height: 140px;
   text-align: center;
   line-height: 140px;
   font-size: 16px;
   color: #333333;
 }
-.next-step{
+.next-step {
   .container-size(block, 1190px, 90px, 0 auto, 0px);
   background: #f2f2f2;
   margin-bottom: 20px;
-   .after-btn {
-     float: right;
+  .after-btn {
+    float: right;
     .button-size(150px, 45px, 45px, 16px, 0px, 5px);
     .button-color(1px solid transparent, #ed2f26, #ffffff);
     margin-top: 22px;
   }
 }
-.after-box{
+.after-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
 }
 </style>

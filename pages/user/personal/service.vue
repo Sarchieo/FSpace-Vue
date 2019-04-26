@@ -13,31 +13,34 @@
     </p>
 
     <ul class="service-ul">
-      <li v-for="(item,index) in serviceList" :key="index">
+      <li>
         <p class="list-title">
           售后类型：
-          <span>{{item.type}}</span>申请单号：
-          <span>{{item.num}}</span>申请时间：
-          <span>{{item.year}} {{item.date}}</span>
+          <span>退货</span>申请单号：
+          <span>12342342424569097</span>申请时间：
+          <span>2019-04-25 14:08:10</span>
         </p>
-        <div class="service-box" v-for="(items,index) in item.list" :key="index">
+        <div class="service-box">
           <div class="pic-box">
             <img
-            v-lazy="items.img"
+            v-lazy="'//img.alicdn.com/imgextra/i3/3570503317/O1CN011aNEDjGTe94g6ig_!!3570503317.jpg_80x80.jpg'"
               class="service-pic"
               alt
             >
-            <p class="name">{{items.name}}</p>
-            <p class="guige">{{items.guige}}</p>
+            <p class="name">盘龙云海排毒胶囊</p>
+            <p class="guige">20粒/盒</p>
           </div>
-          <div class="complete">
-            <p class="states">{{items.state}}</p>
-            <p class="price" v-if="items.price">完成退款：￥{{items.price}}</p>
-          </div>
-          <div class="see-detail">
-            <p class="detail-text">{{items.text}}</p>
-          </div>
+          
+        </div> 
+        <div class="complete">
+            正在退货中
+            <!-- 退款有？ -->
+            <!-- <p class="price" v-if="items.price">完成退款：￥{{items.price}}</p> -->
         </div>
+        <div class="see-detail" @click="seeDetail()">
+           查看详情
+        </div>
+         <div style="clear: both;"></div>
       </li>
     </ul>
   </div>
@@ -46,48 +49,16 @@
 export default {
   data() {
     return {
-      serviceList: [
-        {
-          type: "退款",
-          num: "20190326001",
-          year: "2019-03-26",
-          date: "14:22:30",
-          list: [
-            {
-              img:
-                "//img.alicdn.com/imgextra/i3/3570503317/O1CN011aNEDjGTe94g6ig_!!3570503317.jpg_80x80.jpg",
-              name: "盘龙云海排毒胶囊",
-              guige: "10粒/盒",
-              count: 1,
-              price: 330,
-              text: "查看详情",
-              state: "完成退款"
-            }
-          ]
-        },
-        {
-          type: "退货",
-          num: "20190326001",
-          year: "2019-03-26",
-          date: "14:22:30",
-          list: [
-            {
-              img:
-                "//img.alicdn.com/imgextra/i3/3570503317/O1CN011aNEDjGTe94g6ig_!!3570503317.jpg_80x80.jpg",
-              name: "盘龙云海排毒胶囊",
-              guige: "10粒/盒",
-              count: 1,
-              text: "查看详情",
-              state: "完成退货"
-            }
-          ]
-        }
-      ]
     };
   },
   methods: {
     handleChange(value) {
       console.log(`selected ${value}`);
+    },
+    seeDetail() {
+      this.$router.push({
+        path: '/order/reason-detail',
+      })
     }
   }
 };
@@ -118,60 +89,40 @@ export default {
   .p-size(80px, 80px, 14px, left, 20px, #333333);
 }
 .service-ul {
-  .container-size(block, 945px, 800px, 0 auto, 0px);
+  .container-size(block, 946px, 800px, 0 auto, 0px);
+  overflow: auto;
 }
 .service-ul li {
-  .container-size(block, 945px, 185px, 0, 0px);
+  .container-size(block, 945px, auto, 0, 0px);
+  min-height: 185px;
   margin-bottom: 20px;
   border: 1px solid #f2f2f2;
 }
 .service-box {
-  .container-size(block, 945px, 140px, 0, 0px);
-  .position(relative, 0px, 0px);
+  .container-size(block, 473px, 140px, 0, 0px);
+  float: left;
   .pic-box {
-    .position(relative, 0px, 0px);
-    .container-size(inline-block, 513px, 140px, 0, 0px);
+    float: left;
+    .container-size(inline-block, 472px, 140px, 0, 0px);
     border-right: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
     .name {
       .container-size(inline-block, 200px, 30px, 0, 0px);
-      .position(absolute, 40px, 130px);
+      .position(relative, 0px, 10px);
     }
     .guige {
       .container-size(inline-block, 200px, 30px, 0, 0px);
-      .position(absolute, 80px, 130px);
-    }
-  }
-  .complete {
-    .position(relative, 0px, 0px);
-    .container-size(inline-block, 235px, 140px, 0, 0px);
-    border-right: 1px solid #f2f2f2;
-    .states {
-      .container-size(inline-block, 235px, 30px, 0, 0px);
-      .position(absolute, 55px, 0px);
-      text-align: center;
-    }
-    .price {
-      .container-size(inline-block, 235px, 30px, 0, 0px);
-      .position(absolute, 80px, 0px);
-      text-align: center;
-    }
-  }
-  .see-detail {
-    .position(relative, 0px, 0px);
-    .container-size(inline-block, 180px, 140px, 0, 0px);
-    .detail-text {
-      .container-size(inline-block, 180px, 30px, 0, 0px);
-      .position(absolute, 55px, 0px);
-      text-align: center;
-      color: #3189f5;
-      cursor: pointer;
+      .position(relative, -45px,132px);
     }
   }
 }
 .service-pic {
-  .position(absolute, 23px, 22px);
+  // .position(absolute, 23px, 22px);
   width: 95px;
   height: 95px;
+  // vertical-align: middle;
+  margin-top:22px;
+  margin-left: 22px;
 }
 .list-title {
   .p-size(45px, 45px, 14px, left, 20px, #333333);
@@ -179,6 +130,29 @@ export default {
   span {
     margin-right: 50px;
   }
+}
+.complete {
+  display: inline-block;
+  width: 232px;
+  text-align: center;
+ margin-top: 55px;
+  .states {
+    .container-size(inline-block, 235px, 30px, 0, 0px);
+    // .position(absolute, 55px, 0px);
+    text-align: center;
+  }
+  .price {
+    .container-size(inline-block, 235px, 30px, 0, 0px);
+    .position(absolute, 80px, 0px);
+    text-align: center;
+  }
+}
+
+.see-detail {
+  display: inline-block;
+  width: 232px;
+  margin-top: 55px;
+  text-align: center;
 }
 </style>
 
