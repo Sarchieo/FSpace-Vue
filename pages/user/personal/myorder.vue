@@ -94,6 +94,7 @@
         <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
+          <p @click="toSuppInvo()">补开发票</p>
           <!-- <p @click="saleAfter()">申请售后</p> -->
 
 
@@ -110,13 +111,13 @@
             <div class="retreat">
             <div class="retreat-left">
               <p><img src="../../../assets/img/u6490.png" alt="" class="retreat-p"></p>
-              <p class="retreat-text">换货</p>
+              <p class="retreat-text">仅退款</p>
               <p> <input type="radio" id="radio2" name="radio1" :value="1"/></p>
             </div>
             <div class="retreat-right">
               <p><img src="../../../assets/img/u6507.png" alt="" class="retreat-p"></p>
-              <p class="retreat-text">退货</p>
-              <p> <input type="radio" id="radio1" name="radio1" :value="2"/></a-checkbox></p>
+              <p class="retreat-text">退货退款</p>
+              <p> <input type="radio" id="radio1" name="radio1" :value="2"/></p>
             </div>
           </div>
 
@@ -339,6 +340,11 @@ export default {
     },
     saleAfter() {
       this.visible = true
+    },
+    toSuppInvo() {
+      this.$router.push({
+        path: '/order/patch-invo'
+      })
     }
   }
 };
