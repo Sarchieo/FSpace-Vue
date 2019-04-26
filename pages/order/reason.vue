@@ -85,7 +85,7 @@
                         </div>
                         <div class="submission-box">
                             <a-button class="back-btn">返回</a-button>
-                            <a-button class="submission-btn">提交</a-button>
+                            <a-button class="submission-btn" @click="afterSaleApp">提交</a-button>
                         </div>
                     </div>
                 </div>
@@ -118,11 +118,13 @@
                 reprreason: [],
                 goodsArr: [],
                 orderno: 0,
-                reasonType: 70
+                reasonType: 70,
+                asType: 0
 
             };
         },
         mounted() {
+            this.asType = this.$route.query.asType;
             this.orderno = this.$route.query.orderno;
             this.goodsArr = JSON.parse(sessionStorage.getItem('fillOrderReason'));
             console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr))
@@ -143,7 +145,44 @@
                         function result(result) {
                             if (result.code === 200) {
                                 _this.reprreason = JSON.parse(result.data).reprreason
-                                console.log("dict---  " + JSON.stringify(_this.reprreason))
+                                // console.log("dict---  " + JSON.stringify(_this.reprreason))
+                            }
+                        }
+                    )
+                );
+            },
+            //提交售后
+            afterSaleApp() {
+                let _this = this
+                let iRequest = new inf.IRequest();
+                iRequest.cls = "OrderOptModule";
+                iRequest.method = "afterSaleApp";
+                iRequest.param.token = localStorage.getItem("identification");
+                let arr = this.goodsArr.map(value => {
+                        return {
+                            gstatus: 0,
+                            asnum: value.pnum,
+                            pdno: value.pdno,
+                            orderno: value.orderno,
+                            compid: value.compid,
+                            reason: this.reasonType,
+                            apdesc: this.content,
+                        };
+                });
+                iRequest.param.json = JSON.stringify({
+                    orderno: this.orderno,
+                    asAppArr: arr,
+                    asType: this.asType
+                });
+                this.$refcallback(
+                    this,
+                    "orderServer" +
+                    Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+                    iRequest,
+                    new this.$iceCallback(
+                        function result(result) {
+                            if (result.code === 200) {
+                                _this.$message.success(result.data);
                             }
                         }
                     )

@@ -33,10 +33,10 @@
                   </div>
                   <div class="old-price">{{item.pdprice}}</div>
                   <div class="count">
-                    <a-button class="add-reduce" @click="reduce(item)" v-if="item.pnum > 1">-</a-button>
+                    <a-button class="add-reduce" @click="reduce(item)">-</a-button>
                     <!-- <span class="count-num">{{item.pnum}}</span> -->
-                    <a-input-number :min="1" :max="item.inventory" v-model="item.pnum" style="width: 40px;height:28px;line-height: 28px;" readonly="readonly"/>
-                    <a-button class="add-reduce" @click="addNum(item)" v-if="item.pnum > 1">+</a-button>
+                    <a-input-number :min="1" :max="item.inventory" v-model="item.pnum" style="width: 60px;height:28px;line-height: 28px;" readonly="readonly"/>
+                    <a-button class="add-reduce" @click="addNum(item)" >+</a-button>
                   </div>
                   <div class="new-price">{{item.payamt}}</div>
                 </div>
@@ -44,7 +44,7 @@
             </ul>
           </div>
           <div class="next-step">
-            <a-button type="primary" class="after-btn" @click="toReason()">下一步</a-button>
+            <a-button v-if="isShowBtn" type="primary" class="after-btn" @click="toReason()">下一步</a-button>
           </div>
         </div>
       </a-layout-content>
@@ -67,21 +67,23 @@ export default {
   },
   data() {
     return {
-      goodsArr: [],
-      orderno: 0,
-      checked: false
+        goodsArr: [],
+        orderno: 0,
+        asType: 0,
+        isShowBtn: false
     };
   },
 
   mounted() {
-    this.orderno = this.$route.query.orderno;
-    this.goodsArr = JSON.parse(sessionStorage.getItem("afterSaleGoods"));
-    this.fsGeneralMethods.addImages(this, this.goodsArr, "pdno", "spu");
-    this.goodsArr.forEach((item) => {
-      item.inventory = item.pnum
-    })
-    debugger
-    console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr));
+      this.asType = this.$route.query.asType;
+      this.orderno = this.$route.query.orderno;
+      this.goodsArr = JSON.parse(sessionStorage.getItem("afterSaleGoods"));
+      this.fsGeneralMethods.addImages(this, this.goodsArr, "pdno", "spu");
+      this.goodsArr.forEach((item) => {
+       item.inventory = item.pnum
+      })
+    // debugger
+    // console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr));
   },
   methods: {
     reduce(item) {
@@ -91,35 +93,45 @@ export default {
       item.pnum-=1;
     },
     addNum(item) {
-      
+
       if(item.pnum >= item.inventory){
         return false
       } else {
         item.pnum +=1;
       }
-      
+
     },
-    onChange() {
+
+    onChange(val) {
       // 单选
-      console.log(1);
+        if (val.target.checked) {
+            this.isShowBtn = true
+        } else {
+            this.isShowBtn = false
+        }
+      console.log("val---- " + JSON.stringify(val));
     },
     checkAll(e) {
       // 全选
       this.goodsArr.forEach(item => {
         if (item.status != 1) {
           item.checked = e.target.checked;
+            if (item.checked) {
+                this.isShowBtn = true
+            } else {
+                this.isShowBtn = false
+            }
         }
       });
     },
     // 跳转填写原因
     toReason() {
       let arr = this.goodsArr.map(value => {
-        if (value.checked === 1) {
+        if (value.checked) {
           return {
             pname: value.pname,
             pspec: value.pspec,
             manun: value.manun,
-            checked: 0,
             pdprice: value.pdprice,
             pnum: value.pnum,
             payamt: value.payamt,
@@ -133,7 +145,8 @@ export default {
       this.$router.push({
         path: "/order/reason",
         query: {
-          orderno: this.orderno
+            orderno: this.orderno,
+            asType: this.asType
         }
       });
     }

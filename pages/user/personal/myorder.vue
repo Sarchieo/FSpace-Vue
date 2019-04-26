@@ -109,15 +109,15 @@
           @cancel="pickCancel"
         >
             <div class="retreat">
-            <div class="retreat-left">
+            <div class="retreat-left" @click="changeType('1')">
               <p><img src="../../../assets/img/u6490.png" alt="" class="retreat-p"></p>
               <p class="retreat-text">仅退款</p>
-              <p> <input type="radio" id="radio2" name="radio1" :value="1"/></p>
+              <p> <input type="radio" v-model="asType" id="radio2" name="radio1" :value="1"/></p>
             </div>
-            <div class="retreat-right">
+            <div class="retreat-right" @click="changeType('2')">
               <p><img src="../../../assets/img/u6507.png" alt="" class="retreat-p"></p>
-              <p class="retreat-text">退货退款</p>
-              <p> <input type="radio" id="radio1" name="radio1" :value="2"/></p>
+              <p class="retreat-text" >退货退款</p>
+              <p> <input type="radio" v-model="asType" id="radio1" name="radio1" :value="2"/></p>
             </div>
           </div>
 
@@ -146,6 +146,7 @@ export default {
   },
   data() {
     return {
+        asType: '1',
       isApply: false,
         goodsArr:[],
       visible: false,
@@ -159,6 +160,9 @@ export default {
     this.queryOrderList()
   },
   methods: {
+      changeType(val){
+          this.asType = val
+      },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
       this.queryOrderList()
@@ -181,7 +185,7 @@ export default {
                  pname: value.pname,
                  pspec: value.pspec,
                  manun: value.manun,
-                 checked: 0,
+                 checked: false,
                  pdprice: value.pdprice,
                  pnum: value.pnum,
                  payamt: value.payamt,
@@ -196,6 +200,7 @@ export default {
             path: '/order/after-sale',
             query: {
                 orderno: this.orderno,
+                asType: this.asType
             }
         })
      },
@@ -314,7 +319,7 @@ export default {
           orderno: item.orderno,
           cusno: item.cusno
       });
-      console.log("json--- " + iRequest.param.json )
+      // console.log("json--- " + iRequest.param.json )
       this.$refcallback(
         this,
           "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
