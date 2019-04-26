@@ -76,17 +76,20 @@
                 </p>
                 <p class="price" v-if="rulecode == 0">
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count" v-if="userStatus">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count" v-else>￥登录后可见</span>
                   <!-- <del>￥32</del> -->
                 </p>
                 <p class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ discount.killPrice }}</span>
+                  <span class="money-count" v-if="userStatus">￥{{ discount.killPrice }}</span>
+                  <span class="money-count" v-else>￥登录后可见</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
                 <p class="price" v-if="rulecode === 1133">
                   <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count" v-else>￥登录后可见</span>
                 </p>
                 <!-- 积分 -->
                 <!-- <p class="price">
@@ -377,9 +380,12 @@ export default {
   computed: {
     storeInfo() {
       return this.$store.state.user;
+    },
+    userStatus() {
+      return this.$store.state.userStatus;
     }
   },
-  middleware: "authenticated",
+  // middleware: "authenticated",
   data() {
     return {
       appriseArr: [], //评价列表
@@ -470,19 +476,21 @@ export default {
     this.spu = this.$route.query.spu;
     // 获取商品详情
     this.getProd();
-    // 获取优惠券
-    this.queryCouponPub();
     this.getImgUrl();
-    // 获取是否收藏
-    this.isCollec();
-    // 获取活动详情
-    this.getActivitiesBySKU();
-    // 获取热销数据
-    this.getProdDetailHotArea();
-    //获取评价信息
-    this.$nextTick(function() {
-      this.getGoodsApprise();
-    });
+    if(this.userStatus) {
+      // 获取优惠券
+      this.queryCouponPub();
+      // 获取是否收藏
+      this.isCollec();
+      // 获取活动详情
+      this.getActivitiesBySKU();
+      // 获取热销数据
+      this.getProdDetailHotArea();
+      //获取评价信息
+      this.$nextTick(function() {
+        this.getGoodsApprise();
+      });
+    }
     this.$nextTick(() => {
       this.isShowPic = true;
     });
@@ -564,6 +572,12 @@ export default {
     },
     // 加入采购单
     addCart() {
+      if (!this.userStatus) {
+        this.$router.push({
+          path: '/user/login'
+        })
+        return
+      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -717,7 +731,7 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
-              // 设置秒杀倒计时
+              // 设置倒计时
               _this.secondKill(
                 _this.stringToDate(_this.discount.currentDate),
                 _this.discount.endTime
@@ -770,8 +784,10 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             if (result.data) {
+              if(_this.userStatus) {
+                _this.getFoot();
+              }
               _this.prodDetail = result.data;
-              _this.getFoot();
               _this.details = JSON.parse(_this.prodDetail.detail);
               if (_this.rulecode === 0) {
                 _this.maximum = _this.prodDetail.store;
@@ -885,6 +901,12 @@ export default {
     },
     // 下单
     placeOrder() {
+      if (!this.userStatus) {
+        this.$router.push({
+          path: '/user/login'
+        })
+        return
+      }
       this.loading = true;
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -931,7 +953,6 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "FileInfoModule";
       iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
       this.sku = this.$route.query.sku;
       this.spu = this.$route.query.spu;
       iRequest.param.json = JSON.stringify({

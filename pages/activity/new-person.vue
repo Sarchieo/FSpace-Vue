@@ -25,9 +25,12 @@
                 <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                <p class="goods-price">
+                <p class="goods-price" v-if="userStatus">
                   ￥{{item.vatp}}元
                   <del>原价￥{{item.rrp}}元</del>
+                </p>
+                <p class="goods-price" v-else>
+                  ￥登录后可见
                 </p>
                 <p class="package">
                   <span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span>
@@ -66,6 +69,11 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
+  computed: {
+    userStatus() {
+      return this.$store.state.userStatus;
+    }
+  },
   data() {
     return {
       count: 1,
@@ -88,9 +96,13 @@ export default {
     callback(key) {
       console.log(key);
     },
-    toDetails() {
+    toDetails(item) {
       this.$router.push({
-        path: "/product/detail"
+        path: "/product/detail",
+        query: {
+          sku: item.sku,
+          spu: item.spu
+        }
       });
     },
     // 新人专享活动页面数据请求

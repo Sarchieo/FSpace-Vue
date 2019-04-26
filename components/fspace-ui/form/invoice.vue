@@ -29,7 +29,7 @@
           placeholder="专票要求的公司电话"
           v-decorator="[
             'tel',
-            {rules: [{ required: true, message: '请填写注册电话' }]}
+             {rules: [{ required: true, validator: validatePhone}]}
           ]"
         />
       </a-form-item>
@@ -42,7 +42,7 @@
           placeholder="xx银行xx支行"
           v-decorator="[
             'bankers',
-            {rules: [{ required: true, message: '请填写开户银行' }]}
+            {rules: [{ required: true, validator: validatebankers}]}
           ]"
         />
       </a-form-item>
@@ -53,9 +53,10 @@
       >
         <a-input
           placeholder="开户许可证或法人的私人账户"
+          type="number"
           v-decorator="[
             'account',
-            {rules: [{ required: true, message: '请填写银行账号：' }]}
+            {rules: [{ required: true, validator: validateAccount}]}
           ]"
         />
       </a-form-item>
@@ -87,12 +88,38 @@ export default {
     }
   },
   methods: {
+    validatebankers(rule, value, callback) {
+      const form = this.form;
+      if (value && value.length < 100) {
+        callback();
+      } else {
+        callback("开户银行名称有误");
+      }
+    },
+    validateAccount(rule, value, callback) {
+      const form = this.form;
+      if (value && value.length > 9 && value.length < 30) {
+        callback();
+      } else {
+        callback("请输入正确的银行账号");
+      }
+    },
     validateTaxID(rule, value, callback) {
       const form = this.form;
       if (value && value.length === 15 || value.length === 18 || value.length === 20) {
         callback();
       } else {
         callback("请输入正确的纳税人识别号");
+      }
+    },
+    validatePhone(rule, value, callback) {
+      let _this = this;
+      const form = this.form;
+      if (value && value.length === 11) {
+        callback()
+      } else {
+        this.sendAuthCode = false
+        callback('请输入手机正确的手机号码');
       }
     },
     handleSubmit (e) {

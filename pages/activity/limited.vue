@@ -63,11 +63,14 @@
                     status="exception"
                   />
                   <p class="goods-surplus">还剩{{item.surplusstock}}{{item.unitName}}</p>
-                  <p class="goods-price">
+                  <p class="goods-price" v-if="userStatus">
                     限时价￥{{item.actprize}}元
                     <del>  原价￥{{item.mp}}元</del>
                   </p>
-                  <button @click="toDetails()">立即抢购</button>
+                  <p class="goods-price" v-else>
+                    ￥登录后可见
+                  </p>
+                  <button @click="toDetails(item)">立即抢购</button>
                 </div>
 
               </a-tab-pane>
@@ -88,6 +91,11 @@ export default {
   components: {
     FSpaceHeader,
     FSpaceFooter
+  },
+  computed: {
+    userStatus() {
+      return this.$store.state.userStatus;
+    }
   },
   data() {
     return {
@@ -134,6 +142,7 @@ export default {
             _this.goodsList.list.forEach((item) => {
               item.percentage = 100 - item.buynum/item.surplusstock*100
             })
+            debugger
             _this.fsGeneralMethods.addImages(_this, _this.goodsList.list, 'sku', 'spu')
             _this.secondKill(_this.stringToDate(_this.goodsList.now || '2019-4-13 16:10:20') ,_this.goodsList.edate)
           }
@@ -145,6 +154,19 @@ export default {
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
       this.getAllDiscount();
+    },
+    stringToDate(str){
+      var tempStrs = str.split(" ");
+      var dateStrs = tempStrs[0].split("-");
+      var year = parseInt(dateStrs[0], 10);
+      var month = parseInt(dateStrs[1], 10) - 1;
+      var day = parseInt(dateStrs[2], 10);
+      var timeStrs = tempStrs[1].split(":");
+      var hour = parseInt(timeStrs [0], 10);
+      var minute = parseInt(timeStrs[1], 10);
+      var second = parseInt(timeStrs[2], 10);
+      var date = new Date(year, month, day, hour, minute, second);
+      return date;
     },
     // 设置倒计时
     secondKill(date,eDate) {
@@ -170,8 +192,8 @@ export default {
           clearInterval(timer);
         }
         }, 1000);
-        if (deltaTime >= 0) {
-          console.log(deltaTime)
+        if (times >= 0) {
+          console.log(times)
         } else {
           console.log('活动结束')
         }
@@ -180,9 +202,13 @@ export default {
     callback(key) {
       console.log(key);
     },
-    toDetails() {
+    toDetails(item) {
       this.$router.push({
-        path: "/product/detail"
+        path: "/product/detail",
+        query: {
+          sku: item.sku,
+          spu: item.spu,
+        }
       });
     }
   }

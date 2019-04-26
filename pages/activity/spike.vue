@@ -16,7 +16,7 @@
           </div>
           <div class="limited-goods">
             <div class="goods-box" v-for="(item,index) in secondList.list" :key="index">
-              <a-card hoverable class="card" @click="toDetail(item)">
+              <a-card hoverable class="card" @click="toDetails(item)">
                 <img v-lazy="item.imgURl" alt class="goods-pic">
                 <p class="goods-name">{{item.prodname}} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
@@ -24,9 +24,12 @@
                   {{item.startnum}}{{item.unitName}}起拼/
                   <span>{{item.surplusstock}}</span>{{item.unitName}}成团
                 </p> -->
-                <p class="goods-price">
+                <p class="goods-price" v-if="userStatus">
                   限时价￥{{item.actprize}}元
                   <del>￥{{item.mp}}元</del>
+                </p>
+                <p class="goods-price" v-else>
+                  ￥登录后可见
                 </p>
                 <p class="go-imme">
                    <span class="sur-time">还剩</span>
@@ -53,6 +56,11 @@ export default {
   components: {
     FSpaceHeader,
     FSpaceFooter
+  },
+  computed: {
+    userStatus() {
+      return this.$store.state.userStatus;
+    }
   },
   data() {
     return {
@@ -178,9 +186,13 @@ export default {
     callback(key) {
       console.log(key);
     },
-    toDetails() {
+    toDetails(item) {
       this.$router.push({
-        path: "/product/detail"
+        path: "/product/detail",
+        query: {
+          sku: item.sku,
+          spu: item.spu
+        }
       });
     }
   }
