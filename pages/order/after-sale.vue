@@ -126,21 +126,23 @@ export default {
     },
     // 跳转填写原因
     toReason() {
-      let arr = this.goodsArr.map(value => {
-        if (value.checked) {
-          return {
-            pname: value.pname,
-            pspec: value.pspec,
-            manun: value.manun,
-            pdprice: value.pdprice,
-            pnum: value.pnum,
-            payamt: value.payamt,
-            pdno: value.pdno,
-            orderno: value.orderno,
-            compid: value.compid
-          };
+        let arr = []
+        for (let i = 0; i < this.goodsArr.length; i++) {
+            if (this.goodsArr[i].checked) {
+                arr.push({
+                    pname: this.goodsArr[i].pname,
+                    pspec: this.goodsArr[i].pspec,
+                    manun: this.goodsArr[i].manun,
+                    pdprice: this.goodsArr[i].pdprice,
+                    pnum: this.goodsArr[i].pnum,
+                    payamt: this.goodsArr[i].payamt,
+                    pdno: this.goodsArr[i].pdno,
+                    orderno: this.goodsArr[i].orderno,
+                    compid: this.goodsArr[i].compid
+                })
+            }
         }
-      });
+      console.log("fillOrderReason--- " + JSON.stringify(arr))
       sessionStorage.setItem("fillOrderReason", JSON.stringify(arr));
       this.$router.push({
         path: "/order/reason",
