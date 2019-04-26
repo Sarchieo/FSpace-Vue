@@ -34,7 +34,7 @@
               </a-tooltip>
               <a-tooltip>
                 <template slot="title">删除</template>
-                <a-icon type="delete" @click="showDeleteConfirm()"/>
+                <a-icon type="delete" @click="showDeleteConfirm(item)"/>
               </a-tooltip>
             </p>
             <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
@@ -230,7 +230,8 @@ export default {
         })
       );
     },
-    showDeleteConfirm() {
+    showDeleteConfirm(item) {
+      let _this = this;
       this.$confirm({
         title: "您确定要删除此订单?",
         content: "删除后，您将不能查询到该订单的信息！",
@@ -238,10 +239,10 @@ export default {
         okType: "danger",
         cancelText: "取消",
         onOk() {
-          console.log("OK");
+            _this.deleteOrder(item)
         },
         onCancel() {
-          console.log("Cancel");
+
         }
       });
     },
@@ -308,6 +309,32 @@ export default {
     isShowCancel() {
       this.visible = true
     },
+      // 删除订单
+      deleteOrder(item) {
+          debugger
+          let _this = this;
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "OrderOptModule";
+          iRequest.method = "deleteOrder";
+          iRequest.param.token = localStorage.getItem("identification");
+          iRequest.param.json = JSON.stringify({
+              orderno: item.orderno,
+              cusno: item.cusno
+          });
+          this.$refcallback(
+              this,
+              "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+              iRequest,
+              new this.$iceCallback(function result(result) {
+                  if (result.code === 200) {
+                      _this.visible = false;
+                      _this.$message.success(result.data)
+                      _this.queryOrderList()
+                  } else {
+                  }
+              })
+          );
+      },
     // 取消订单
     cancelOrder(item) {
       let _this = this;

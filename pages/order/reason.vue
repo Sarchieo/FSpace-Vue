@@ -166,7 +166,7 @@
                             compid: value.compid,
                             reason: this.reasonType,
                             apdesc: this.content,
-                            asType: this.asType
+                            astype: this.asType
                         };
                 });
                 iRequest.param.json = JSON.stringify({
