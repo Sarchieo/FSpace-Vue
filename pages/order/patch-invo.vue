@@ -18,14 +18,15 @@
               <a-step title="完成"></a-step>
             </a-steps>
           </div>
-          <div class="reason-box">
+          <!-- 第一步 -->
+          <div class="reason-box" v-if="steps === 0">
             <p class="reason-p">补开原因</p>
             <div class="reason-right">
               <a-form-item label="补开原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
                 <a-select
                   v-model="reasonType"
                   style="width: 200px;margin-bottom: 10px;"
-                  @change="handleChange"
+                  @change="handleChangePatch"
                 >
                   <a-select-option v-for="i in reprreason" :key="i.value">{{i.label}}</a-select-option>
                 </a-select>
@@ -33,10 +34,10 @@
               <a-form-item label="原因描述" :label-col="{ span: 2 }" :wrapper-col="{ span: 16 }">
                 <a-textarea v-model="content" class="evaluate-text" maxlength="300"/>
               </a-form-item>
-              <!-- <p class="limit">{{content.length}}/300</p>
+              <p class="limit">{{content.length}}/300</p>
+
               <p class="upload">上传相片</p>
               <a-upload
-                style="position: relative;top: 0px;left: 10px;"
                 action="//jsonplaceholder.typicode.com/posts/"
                 listType="picture-card"
                 :fileList="fileList"
@@ -50,8 +51,178 @@
               </a-upload>
               <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
                 <img alt="example" style="width: 100%" :src="previewImage">
-              </a-modal>-->
+              </a-modal>
+              <div class="submission-box">
+                <a-button class="back-btn" @click="backOne()">返回</a-button>
+                <a-button class="submission-btn" @click="stetOne()">下一步</a-button>
+              </div>
             </div>
+          </div>
+          <!-- 第二步 -->
+          <div class="reason-box height600" v-if="steps === 1">
+            <p class="reason-p">填写发票信息</p>
+            <a-tabs defaultActiveKey="1" @change="callback">
+              <a-tab-pane tab="普通发票" key="1">
+                 <div class="two-box">
+              <a-form :form="form" @submit="handleSubmit">
+                <p class="comp-name-address">
+                  <span>公司名称：</span>
+                  {{ storeInfo.comp.storeName }}
+                </p>
+                <p class="comp-name-address">
+                  <span>公司注册地址：</span>
+                  {{ storeInfo.comp.address }}
+                </p>
+                <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-input
+                    placeholder="纳税人识别号或社会信用代码"
+                    v-decorator="[
+                      'taxpayer',
+                      {rules: [{ required: true, validator: validateTaxID}]}
+                    ]"
+                  />
+                </a-form-item>
+                <a-form-item label="开户银行：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-input
+                    placeholder="xx银行xx支行"
+                    v-decorator="[
+                      'bankers',
+                      {rules: [{ required: true, message: '请填写开户银行' }]}
+                    ]"
+                  />
+                </a-form-item>
+                <a-form-item label="银行账号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-input
+                    placeholder="开户许可证或法人的私人账户"
+                    v-decorator="[
+                      'account',
+                      {rules: [{ required: true, message: '请填写银行账号：' }]}
+                    ]"
+                  />
+                </a-form-item>
+                <!-- <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
+                <a-button class="back-btn" @click="backTwo()">返回</a-button>
+                <a-button class="submit-btn" html-type="submit">下一步</a-button>
+                </a-form-item>-->
+               
+              </a-form>
+            </div>
+              </a-tab-pane>
+              <a-tab-pane tab="增值税专用发票" key="2">
+                 <div class="two-box">
+              <a-form :form="form" @submit="handleSubmit">
+                <p class="comp-name-address">
+                  <span>公司名称：</span>
+                  {{ storeInfo.comp.storeName }}
+                </p>
+                <p class="comp-name-address">
+                  <span>公司注册地址：</span>
+                  {{ storeInfo.comp.address }}
+                </p>
+                <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-input
+                    placeholder="纳税人识别号或社会信用代码"
+                    v-decorator="[
+                      'taxpayer',
+                      {rules: [{ required: true, validator: validateTaxID}]}
+                    ]"
+                  />
+                </a-form-item>
+
+                <a-form-item label="注册电话：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-input
+                    placeholder="专票要求的公司电话"
+                    v-decorator="[
+                      'tel',
+                      {rules: [{ required: true, message: '请填写注册电话' }]}
+                    ]"
+                            />
+                </a-form-item>
+                <a-form-item label="开户银行：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-input
+                    placeholder="xx银行xx支行"
+                    v-decorator="[
+                      'bankers',
+                      {rules: [{ required: true, message: '请填写开户银行' }]}
+                    ]"
+                    />
+                </a-form-item>
+                <a-form-item label="银行账号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-input
+                    placeholder="开户许可证或法人的私人账户"
+                    v-decorator="[
+                      'account',
+                      {rules: [{ required: true, message: '请填写银行账号：' }]}
+                    ]"
+                  />
+                </a-form-item>
+                <!-- <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
+                <a-button class="back-btn" @click="backTwo()">返回</a-button>
+                <a-button class="submit-btn" html-type="submit">下一步</a-button>
+                </a-form-item>-->
+               
+              </a-form>
+            </div>
+              </a-tab-pane>
+            </a-tabs>
+             <div class="submission-box">
+                  <a-button class="back-btn" @click="backTwo()">返回</a-button>
+                  <a-button class="submission-btn" @click="stepTwo()">下一步</a-button>
+              </div>
+          </div>
+          <!-- 第三步 -->
+          <div class="reason-box" v-if="steps === 2">
+            <p class="reason-p">填写邮寄信息</p>
+            <div class="mail-box">
+              <p class="title">取件地址</p>
+              <p class="mail-p">
+                <span class="mail-title">收件人： </span>
+                <span>亮亮</span>
+              </p>
+              <p class="mail-p">
+                <span class="mail-title">联系方式: </span>
+                <span>18373270790</span>
+              </p>
+              <p class="mail-p">
+                <span class="mail-title">收货门店: </span>
+                <span>宁乡市汤惟丰沃达老百姓健康药房</span>
+              </p>
+              <p class="mail-p">
+                <span class="mail-title">门店地址: </span>
+                <span>湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号</span>
+              </p>
+              <p class="freight">
+                <span>运费：</span>
+                <span class="price">￥10</span>
+              </p>
+              <p class="text">*运费根据门店地址的里程计算，系统自动生成运费。</p>
+              <div class="submission-box">
+                <a-button class="back-btn" @click="backThree()">返回</a-button>
+                <a-button class="submission-btn" @click="stetThree()">提交</a-button>
+              </div>
+            </div>
+          </div>
+          <!-- 第四步 -->
+          <div class="reason-box" v-if="steps === 3">
+            <p class="reason-p">发票详情</p>
+            <p>商家正在审核并制票，请耐心等待</p>
+            <table>
+              <thead>订单号: 2142343554</thead>
+              <tbody>
+                <tr>
+                  <td>发票类型</td>
+                  <td>普通发票</td>
+                </tr>
+                <tr>
+                  <td>发票内容</td>
+                  <td>商品明细</td>
+                </tr>
+                <tr>
+                  <td>发票抬头</td>
+                  <td>湖南空间折叠互联网科技有限公司</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </a-layout-content>
@@ -74,14 +245,107 @@ export default {
   },
   data() {
     return {
+      content: "",
       steps: 0,
-      reasonType: 1
+      reasonType: 1,
+      previewVisible: false,
+      previewImage: "",
+      fileList: [],
+      oneStep: true,
+      twoStep: false,
+      form: this.$form.createForm(this)
     };
   },
   mounted() {},
   methods: {
-    handleChange(value) {
+    handleChangePatch(value) {
       this.reasonType = value;
+    },
+    handleCancel() {
+      this.previewVisible = false;
+    },
+    handlePreview(file) {
+      this.previewImage = file.url || file.thumbUrl;
+      this.previewVisible = true;
+    },
+    handleChange({ fileList }) {
+      this.fileList = fileList;
+    },
+    stetOne() {
+      if (this.content === "") {
+        this.$message.error("请填写原因");
+        return false;
+      } else if (this.fileList.length === 0) {
+        this.$message.error("请上传照片");
+        return false;
+      }
+      this.steps = 1;
+    },
+    backOne() {
+      this.$router.push({
+        path: "/user/personal/myorder"
+      });
+    },
+    stepTwo() {
+      this.steps = 2;
+    },
+    backTwo() {
+      this.steps = 0;
+    },
+    stetThree() {
+      this.steps = 3;
+    },
+    backThree() {
+       this.steps = 1;
+    },
+    validateTaxID(rule, value, callback) {
+      const form = this.form;
+      if (
+        (value && value.length === 15) ||
+        value.length === 18 ||
+        value.length === 20
+      ) {
+        callback();
+      } else {
+        callback("请输入正确的纳税人识别号");
+      }
+    },
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          let _this = this;
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "MyInvoiceModule";
+          iRequest.method = "saveInvoice";
+          iRequest.param.json = JSON.stringify({
+            taxpayer: values.taxpayer,
+            bankers: values.bankers,
+            account: values.account,
+            tel: values.tel
+          });
+          iRequest.param.token = localStorage.getItem("identification");
+          this.$refcallback(
+            this,
+            "userServer",
+            iRequest,
+            new this.$iceCallback(function result(result) {
+              if (result.code === 200) {
+                _this.$message.success(result.message);
+                _this.$emit("handleSuccess", values);
+              }
+            })
+          );
+        }
+      });
+    }
+  },
+  watch: {
+    values: {
+      handler: function(newVal, oldVal) {
+        this.form.setFieldsValue(newVal);
+      },
+      deep: true
     }
   }
 };
@@ -127,8 +391,9 @@ export default {
     margin-top: 14px;
   }
   .reason-box {
-    .container-size(block, 1190px, 550px, 0 auto, 0px);
+    .container-size(block, 1190px, 570px, 0 auto, 0px);
     border: 1px solid #f2f2f2;
+    margin-bottom: 40px;
     .reason-p {
       .p-size(50px, 50px, 16px, left, 20px, #999999);
       background: #f2f2f2;
@@ -141,6 +406,14 @@ export default {
         height: 150px;
         border: 1px solid #e0e0e0;
       }
+      .limit {
+        .position(relative, -20px, 0px);
+        width: 743px;
+        text-align: right;
+      }
+      .upload {
+        .p-size(30px, 30px, 16px, left, 25px, #999999);
+      }
     }
   }
 }
@@ -148,5 +421,96 @@ export default {
   border-radius: 0px !important;
   -moz-border-radius: 0px !important;
   -webkit-border-radius: 0px !important;
+}
+
+.submission-box {
+  .container-size(block, 1190px, 90px, 0 auto, 0px);
+  padding: 22px 37%;
+
+  button {
+    .button-size(150px, 45px, 45px, 16px, 0px, 5px);
+  }
+
+  .submission-btn {
+    .button-color(1px solid #e0e0e0, #ed3025, #ffffff);
+  }
+}
+//邮寄信息
+.mail-box {
+  .container-size(block, 1190px, 418px, 0 auto, 0px);
+  padding-left: 20px;
+  .title{
+    .p-size(60px,60px, 18px, left, 0px, #333333);
+  }
+  .mail-p{
+    .p-size(40px,40px, 16px, left, 0px, #333333);
+    .mail-title{
+      display: inline-block;
+      color: #999999;
+    }
+  }
+  .freight{
+    .p-size(40px,40px, 16px, left, 0px, #333333);
+    margin-top:50px;
+    margin-bottom: 20px;
+    .price{
+      font-weight: bold;
+      color: #ed3025;
+    }
+  }
+  .text{
+    .p-size(30px,30px, 14px, left, 0px, #999999);
+  }
+}
+.comp-name-address {
+  .p-size(50px, 50px, 15px, left, 0px, #bfbfbf);
+  margin-left: 140px;
+  span {
+    display: inline-block;
+    width: 108px;
+    height: 50px;
+    text-align: right;
+    margin-right: 5px;
+    font-size: 14px;
+    color: #333333;
+  }
+}
+.two-box {
+  padding-top: 50px;
+}
+.height600{
+  height: 600px!important;
+}
+table{
+   .container-size(block, 800px, 205px, 0 auto, 0px);
+   border: 1px solid #e0e0e0;
+   border-collapse: collapse;
+   margin-top: 50px;
+  
+}
+thead{
+  display: inline-block;
+  width: 800px;
+  height: 50px;
+  line-height: 50px;
+  text-indent: 10px;
+  border: 1px solid #e0e0e0;
+  border-collapse: collapse;
+}
+tr{
+  display: inline-block;
+  width: 800px;
+  height: 50px;
+  line-height: 50px;
+  border: 1px solid #e0e0e0;
+  border-collapse: collapse;
+  td{
+    display: inline-block;
+    width: 395px;
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid #e0e0e0;
+    border-collapse: collapse;
+  }
 }
 </style>
