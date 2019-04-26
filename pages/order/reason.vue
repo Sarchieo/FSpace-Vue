@@ -120,7 +120,6 @@
                 orderno: 0,
                 reasonType: 70,
                 asType: 0
-
             };
         },
         mounted() {
@@ -167,6 +166,7 @@
                             compid: value.compid,
                             reason: this.reasonType,
                             apdesc: this.content,
+                            asType: this.asType
                         };
                 });
                 iRequest.param.json = JSON.stringify({
