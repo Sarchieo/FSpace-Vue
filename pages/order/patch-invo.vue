@@ -28,7 +28,7 @@
                   style="width: 200px;margin-bottom: 10px;"
                   @change="handleChangePatch"
                 >
-                  <a-select-option v-for="i in reprreason" :key="i.value">{{i.label}}</a-select-option>
+                  <a-select-option v-for="i in mireason" :key="i.value">{{i.label}}</a-select-option>
                 </a-select>
               </a-form-item>
               <a-form-item label="原因描述" :label-col="{ span: 2 }" :wrapper-col="{ span: 16 }">
@@ -104,7 +104,7 @@
                 <a-button class="back-btn" @click="backTwo()">返回</a-button>
                 <a-button class="submit-btn" html-type="submit">下一步</a-button>
                 </a-form-item>-->
-               
+
               </a-form>
             </div>
               </a-tab-pane>
@@ -160,7 +160,7 @@
                 <a-button class="back-btn" @click="backTwo()">返回</a-button>
                 <a-button class="submit-btn" html-type="submit">下一步</a-button>
                 </a-form-item>-->
-               
+
               </a-form>
             </div>
               </a-tab-pane>
@@ -177,19 +177,19 @@
               <p class="title">取件地址</p>
               <p class="mail-p">
                 <span class="mail-title">收件人： </span>
-                <span>亮亮</span>
+                <span>{{}}</span>
               </p>
               <p class="mail-p">
                 <span class="mail-title">联系方式: </span>
-                <span>18373270790</span>
+                <span>{{}}</span>
               </p>
               <p class="mail-p">
                 <span class="mail-title">收货门店: </span>
-                <span>宁乡市汤惟丰沃达老百姓健康药房</span>
+                <span>{{comp.storeName}}</span>
               </p>
               <p class="mail-p">
                 <span class="mail-title">门店地址: </span>
-                <span>湖南省宁乡市玉潭街道合安社区兆基君城A区22栋112号</span>
+                <span>{{comp.address}}</span>
               </p>
               <p class="freight">
                 <span>运费：</span>
@@ -245,19 +245,117 @@ export default {
   },
   data() {
     return {
+      orderno: 0,
+      comp:{},
+      consignee: '',
+      contact: '',
       content: "",
       steps: 0,
-      reasonType: 1,
+      reasonType: 79,
       previewVisible: false,
       previewImage: "",
       fileList: [],
       oneStep: true,
       twoStep: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      mireason: [],
+      invoice: {}
     };
   },
-  mounted() {},
+  mounted() {
+      this.orderno = this.$route.query.orderno;
+      this.comp = this.storeInfo.comp
+      this.queryDictList()
+      this.queryMyConsignee()
+
+  },
   methods: {
+      queryMyConsignee() {
+          let _this = this;
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "MyDrugStoreInfoModule";
+          iRequest.method = "queryMyConsignee";
+          iRequest.param.json = JSON.stringify({
+              compid: _this.storeInfo.comp.storeId
+          })
+          iRequest.param.token = localStorage.getItem("identification")
+          this.$refcallback(
+              this,
+              "userServer",
+              iRequest,
+              new this.$iceCallback(
+                  function result(result) {
+                      if(result.code === 200) {
+                          if(result.data && result.data.length > 0) {
+                              _this.receiverList = result.data
+                              _this.consignee = _this.receiverList[0].contactname
+                              _this.contact = _this.receiverList[0].contactphone
+                          } else {
+                              _this.visible = true
+                          }
+                      }else {
+                          _this.visible = true
+                      }
+                  }
+              )
+          );
+      },
+      //提交售后
+      afterSaleApp() {
+          let _this = this
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "OrderOptModule";
+          iRequest.method = "afterSaleApp";
+          iRequest.param.token = localStorage.getItem("identification");
+          this.invoice = {
+
+          };
+          let arr = [{
+              gstatus: 0,
+              orderno: this.orderno,
+              compid: this.storeInfo.comp.storeId,
+              reason: this.reasonType,
+              invoice: this.invoice,
+              apdesc: this.content,
+              astype: 3
+          }];
+          iRequest.param.json = JSON.stringify({
+              orderno: this.orderno,
+              asAppArr: arr,
+              asType: this.asType
+          });
+          this.$refcallback(
+              this,
+              "orderServer" +
+              Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+              iRequest,
+              new this.$iceCallback(
+                  function result(result) {
+                      if (result.code === 200) {
+                          _this.$message.success(result.data);
+                      }
+                  }
+              )
+          );
+      },
+      queryDictList() {
+          let _this = this
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "CommonModule";
+          iRequest.method = "getDicts";
+          this.$refcallback(
+              this,
+              "globalServer",
+              iRequest,
+              new this.$iceCallback(
+                  function result(result) {
+                      if (result.code === 200) {
+                          _this.mireason = JSON.parse(result.data).mireason
+                      }
+                  }
+              )
+          );
+      },
     handleChangePatch(value) {
       this.reasonType = value;
     },
@@ -486,7 +584,7 @@ table{
    border: 1px solid #e0e0e0;
    border-collapse: collapse;
    margin-top: 50px;
-  
+
 }
 thead{
   display: inline-block;

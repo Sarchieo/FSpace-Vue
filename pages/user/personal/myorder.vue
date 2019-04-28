@@ -72,7 +72,7 @@
               <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
               <p v-if="item.ostatus !== 0">再次购买</p>
-              <p v-if="item.ostatus === 3" @click="toSuppInvo()">补开发票</p>
+              <p @click="toSuppInvo(item)">补开发票</p>
             </div>
             <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
               <p>订单取消成功后将无法恢复</p>
@@ -94,7 +94,7 @@
         <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>
           <p class="text">没有查询到订单！</p>
-          <p @click="toSuppInvo()">补开发票</p>
+          <!--<p @click="toSuppInvo(item)">补开发票</p>-->
           <!-- <p @click="saleAfter()">申请售后</p> -->
 
 
@@ -159,8 +159,8 @@ export default {
     };
   },
   mounted() {
-    this.$store.commit(types.SELECTED_KEYS, '/user/personal/myorder')
-    this.queryOrderList()
+      this.$store.commit(types.SELECTED_KEYS, '/user/personal/myorder')
+      this.queryOrderList()
   },
   methods: {
     changeType(val){
@@ -377,9 +377,12 @@ export default {
     saleAfter() {
       this.visible = true
     },
-    toSuppInvo() {
+    toSuppInvo(item) {
       this.$router.push({
-        path: '/order/patch-invo'
+        path: '/order/patch-invo',
+          query: {
+              orderno: item.orderno
+          }
       })
     }
   }
