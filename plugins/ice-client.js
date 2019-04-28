@@ -69,6 +69,10 @@ function refcallback(context, moduleName,_IRequest, callback) {
         } else {
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         }
+        // 接口不失败情况下调用 消息上线
+        if(success.flag) {
+          // 
+        }
       }
     )
     .exception(

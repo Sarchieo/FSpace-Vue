@@ -35,6 +35,7 @@
   </div>
 </template>
 <script>
+import * as types from '../../../store/mutation-types'
 export default {
   computed: {
     storeInfo() {
@@ -194,6 +195,7 @@ export default {
   mounted() {
     // this.delFoot();
     this.getFootList();
+    this.$store.commit(types.SELECTED_KEYS, '/user/personal/footprint')
   },
   methods: {
     // 加入采购单

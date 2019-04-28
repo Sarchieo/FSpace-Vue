@@ -12,6 +12,9 @@ const mutations = {
   },
   [types.KEY_WORD] (state, keyword) {
     state.keyword = keyword
+  },
+  [types.SELECTED_KEYS] (state, selectedKeys) {
+    state.selectedKeys = selectedKeys
   }
 }
 export default mutations

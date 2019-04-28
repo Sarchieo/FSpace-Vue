@@ -70,6 +70,7 @@
    </div>
 </template>
 <script>
+import * as types from '../../../store/mutation-types'
 const columns = [{
   title: '收货人电话',
   dataIndex: 'contactname',
@@ -110,6 +111,7 @@ export default {
   },
   mounted() {
     this.queryMyConsignee()
+    this.$store.commit(types.SELECTED_KEYS, '/user/personal/receiver')
   },
   methods: {
     queryMyConsignee() {

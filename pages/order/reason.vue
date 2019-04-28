@@ -66,17 +66,22 @@
                                   </a-modal> -->
                                 <p class="upload">上传相片</p>
                                 <a-upload
-                                        style="position: relative;top: 0px;left: 10px;"
-                                        action="//jsonplaceholder.typicode.com/posts/"
-                                        listType="picture-card"
-                                        :fileList="fileList"
-                                        @preview="handlePreview"
-                                        @change="handleChange"
+                                  :fileList="fileList"
+                                  listType="picture-card"
+                                  class="avatar-uploader"
+                                  :headers="headers"
+                                  :showUploadList="showUpload"
+                                  :action="uploadInfo.upUrl"
+                                  :beforeUpload="beforeUpload"
+                                  :supportServerRender="true"
+                                  :remove="remove"
+                                  @change="handleChangeUpload"
+                                  @preview="handlePreview"
                                 >
-                                    <div v-if="fileList.length < 3">
-                                        <a-icon type="plus"/>
-                                        <div class="ant-upload-text">最多三张</div>
-                                    </div>
+                                  <div v-if="fileList.length < 3">
+                                    <a-icon :type="loading ? 'loading' : 'plus'"/>
+                                    <div class="ant-upload-text">商品图片</div>
+                                  </div>
                                 </a-upload>
                                 <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
                                     <img alt="example" style="width: 100%" :src="previewImage"/>
@@ -95,112 +100,174 @@
     </div>
 </template>
 <script>
-    import FSpaceHeader from "../../components/fspace-ui/header/header";
-    import FSpaceFooter from "../../components/fspace-ui/footer";
+import FSpaceHeader from "../../components/fspace-ui/header/header";
+import FSpaceFooter from "../../components/fspace-ui/footer";
 
-    export default {
-        components: {
-            FSpaceHeader,
-            FSpaceFooter
+export default {
+  components: {
+      FSpaceHeader,
+      FSpaceFooter
+  },
+  computed: {
+      storeInfo() {
+          return this.$store.state.user;
+      }
+  },
+  data() {
+    return {
+        showUpload: {
+          showPreviewIcon: true,
+          showRemoveIcon: true
         },
-        computed: {
-            storeInfo() {
-                return this.$store.state.user;
-            }
+        loading: false,
+        uploadInfo: {},
+        steps: 0,
+        content: '',
+        previewVisible: false,
+        previewImage: '',
+        fileList: [],
+        reprreason: [],
+        goodsArr: [],
+        orderno: 0,
+        reasonType: 70,
+        asType: 0,
+        headers: {
+          "specify-path": "",
+          "specify-filename": ""
         },
-        data() {
-            return {
-                steps: 0,
-                content: '',
-                previewVisible: false,
-                previewImage: '',
-                fileList: [],
-                reprreason: [],
-                goodsArr: [],
-                orderno: 0,
-                reasonType: 70,
-                asType: 0
-            };
-        },
-        mounted() {
-            this.asType = this.$route.query.asType;
-            this.orderno = this.$route.query.orderno;
-            this.goodsArr = JSON.parse(sessionStorage.getItem('fillOrderReason'));
-            console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr))
-            // 获取字典
-            this.queryDictList()
-        },
-        methods: {
-            queryDictList() {
-                let _this = this
-                let iRequest = new inf.IRequest();
-                iRequest.cls = "CommonModule";
-                iRequest.method = "getDicts";
-                this.$refcallback(
-                    this,
-                    "globalServer",
-                    iRequest,
-                    new this.$iceCallback(
-                        function result(result) {
-                            if (result.code === 200) {
-                                _this.reprreason = JSON.parse(result.data).reprreason
-                                // console.log("dict---  " + JSON.stringify(_this.reprreason))
-                            }
-                        }
-                    )
-                );
-            },
-            //提交售后
-            afterSaleApp() {
-                let _this = this
-                let iRequest = new inf.IRequest();
-                iRequest.cls = "OrderOptModule";
-                iRequest.method = "afterSaleApp";
-                iRequest.param.token = localStorage.getItem("identification");
-                let arr = this.goodsArr.map(value => {
-                        return {
-                            gstatus: 0,
-                            asnum: value.pnum,
-                            pdno: value.pdno,
-                            orderno: value.orderno,
-                            compid: value.compid,
-                            reason: this.reasonType,
-                            apdesc: this.content,
-                            astype: this.asType
-                        };
-                });
-                iRequest.param.json = JSON.stringify({
-                    orderno: this.orderno,
-                    asAppArr: arr,
-                    asType: this.asType
-                });
-                this.$refcallback(
-                    this,
-                    "orderServer" +
-                    Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
-                    iRequest,
-                    new this.$iceCallback(
-                        function result(result) {
-                            if (result.code === 200) {
-                                _this.$message.success(result.data);
-                            }
-                        }
-                    )
-                );
-            },
-            handleCancel() {
-                this.previewVisible = false
-            },
-            handlePreview(file) {
-                this.previewImage = file.url || file.thumbUrl
-                this.previewVisible = true
-            },
-            handleChange(value) {
-                this.reasonType = value
-                // console.log("value-- " + this.reasonType)
-            }
-        }
     };
+  },
+  mounted() {
+    this.asType = this.$route.query.asType;
+    this.orderno = this.$route.query.orderno;
+    this.goodsArr = JSON.parse(sessionStorage.getItem('fillOrderReason'));
+    console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr))
+    // 获取字典
+    this.queryDictList()
+    this.getFilePathPrev()
+  },
+  methods: {
+      queryDictList() {
+          let _this = this
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "CommonModule";
+          iRequest.method = "getDicts";
+          this.$refcallback(
+              this,
+              "globalServer",
+              iRequest,
+              new this.$iceCallback(
+                  function result(result) {
+                      if (result.code === 200) {
+                          _this.reprreason = JSON.parse(result.data).reprreason
+                          // console.log("dict---  " + JSON.stringify(_this.reprreason))
+                      }
+                  }
+              )
+          );
+      },
+      //提交售后
+      afterSaleApp() {
+          let _this = this
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "OrderOptModule";
+          iRequest.method = "afterSaleApp";
+          iRequest.param.token = localStorage.getItem("identification");
+          let arr = this.goodsArr.map(value => {
+                  return {
+                      gstatus: 0,
+                      asnum: value.pnum,
+                      pdno: value.pdno,
+                      orderno: value.orderno,
+                      compid: value.compid,
+                      reason: this.reasonType,
+                      apdesc: this.content,
+                      astype: this.asType
+                  };
+          });
+          iRequest.param.json = JSON.stringify({
+              orderno: this.orderno,
+              asAppArr: arr,
+              asType: this.asType
+          });
+          this.$refcallback(
+              this,
+              "orderServer" +
+              Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+              iRequest,
+              new this.$iceCallback(
+                  function result(result) {
+                      if (result.code === 200) {
+                          _this.$message.success(result.data);
+                      }
+                  }
+              )
+          );
+      },
+      getFilePathPrev() {
+        let _this = this;
+        let iRequest = new inf.IRequest();
+        iRequest.cls = "FileInfoModule";
+        iRequest.method = "fileServerInfo";
+        iRequest.param.token = localStorage.getItem("identification");
+        iRequest.param.json = JSON.stringify({
+          orderid: this.orderno,
+          compid: this.storeInfo.comp.storeId
+        });
+        this.$refcallback(
+          this,
+          "globalServer",
+          iRequest,
+          new this.$iceCallback(
+            function result(result) {
+              if (result.code === 200) {
+                _this.uploadInfo = result.data;
+                debugger
+                _this.headers["specify-filename"] = _this.fileList.length + ".jpg";
+                _this.headers["specify-path"] = _this.uploadInfo.orderFilePath;
+                _this.headers["tailor-list"] = "200x200,400x400,600x600";
+              } else {
+                _this.$message.error("文件地址获取失败, 请稍后重试");
+              }
+            },
+            function error(error) {
+              debugger;
+            }
+          )
+        );
+      },
+      beforeUpload(file) {
+        const isJPG = file.type
+        if (isJPG !== 'image/jpeg' &&  isJPG !== 'image/png') {
+          this.$message.error('图片支持只jpg，png两种格式。!')
+          return false
+        }
+        const isLt2M = file.size / 1024 / 1024 < 5
+        if (!isLt2M) {
+          this.$message.error('图片大小不能超过5M!')
+        }
+        return isJPG && isLt2M
+      },
+      remove(file) {
+        this.fileList = [];
+      },
+      handleChange(value) {
+        this.reasonType = value
+      },
+      handleCancel() {
+          this.previewVisible = false
+      },
+      handlePreview(file) {
+          this.previewImage = file.url || file.thumbUrl
+          this.previewVisible = true
+      },
+      handleChangeUpload({ file, fileList, event }) {
+
+          this.fileList = fileList;
+          // console.log("value-- " + this.reasonType)
+      }
+  }
+};
 </script>
 <style lang="less" scoped>
     @import "../../components/fspace-ui/container/index.less";

@@ -12,6 +12,7 @@
 </template>
 <script>
 import FSpaceFormInvoice from '../../../components/fspace-ui/form/invoice';
+import * as types from '../../../store/mutation-types'
 export default {
   components: {
     FSpaceFormInvoice
@@ -34,6 +35,7 @@ export default {
   },
   mounted() {
     this.getInvoice()
+    this.$store.commit(types.SELECTED_KEYS, '/user/personal/invoice')
   },
   methods: {
     getInvoice(){

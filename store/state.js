@@ -2,5 +2,6 @@ export default {
   user: {},
   areas: {},
   userStatus: false,
-  keyword: ''
+  keyword: '',
+  selectedKeys: ''
 }
