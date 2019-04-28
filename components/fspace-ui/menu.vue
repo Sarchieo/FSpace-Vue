@@ -138,7 +138,7 @@ export default {
 }
 .sider-menu-li i {
   float: right;
-  margin-top: 15px;
+  margin-top: 20px;
   margin-right: 5px;
   color: #999999;
 }

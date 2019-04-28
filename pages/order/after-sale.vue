@@ -17,7 +17,8 @@
               </li>
               <li class="width40">商品信息</li>
               <li class="width20">单价</li>
-              <li class="width20">数量</li>
+              <li class="width20">购买数量</li>
+              <li class="width20">退货数量</li>
               <li class="width20">实付</li>
             </ul>
             <ul class="goods-lists">
@@ -31,14 +32,17 @@
                     <p class="goods-guige">{{item.pspec}}</p>
                     <p class="manufactor">{{item.manun}}</p>
                   </div>
-                  <div class="old-price">{{item.pdprice}}</div>
+                  <div class="old-price">￥{{item.pdprice}}元</div>
+                  <div class="shoping-num">
+                    <span>{{item.pnum}}</span>
+                  </div>
                   <div class="count">
                     <a-button class="add-reduce" @click="reduce(item)">-</a-button>
                     <!-- <span class="count-num">{{item.pnum}}</span> -->
-                    <a-input-number :min="1" :max="item.inventory" v-model="item.pnum" style="width: 60px;height:28px;line-height: 28px;" readonly="readonly"/>
+                    <a-input-number :min="1" :max="item.inventory" v-model="item.pnum" style="position: relative;top: 1px;left:0px;width: 60px;height:30px;line-height: 28px;" readonly="readonly"/>
                     <a-button class="add-reduce" @click="addNum(item)" >+</a-button>
                   </div>
-                  <div class="new-price">{{item.payamt}}</div>
+                  <div class="new-price">￥{{item.payamt}}元</div>
                 </div>
               </li>
             </ul>
@@ -252,10 +256,10 @@ export default {
   .p-size(50px, 50px, 16px, left, 0px, #333333);
 }
 .width40 {
-  width: 400px !important;
+  width: 405px !important;
 }
 .width20 {
-  width: 230px !important;
+  width: 176px !important;
 }
 .after-pic {
   width: 95px;
@@ -275,7 +279,7 @@ export default {
   .position(absolute, 0px, 484px);
 }
 .count {
-  .position(absolute, 0px, 720px);
+  .position(absolute, 0px, 836px);
   .count-num {
     display: inline-block;
     width: 56px;
@@ -291,11 +295,14 @@ export default {
     padding-right: 23px;
   }
 }
+.shoping-num{
+   .position(absolute, 0px, 660px);
+}
 .new-price {
-  .position(absolute, 0px, 955px);
+  .position(absolute, 0px, 1012px);
 }
 .first-div div {
-  width: 235px;
+  width: 176px;
   height: 140px;
   text-align: center;
   line-height: 140px;
@@ -316,4 +323,11 @@ export default {
 .after-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
 }
+.table-header li{
+  float: left;
+}
+  .ant-input{
+     border: 1px solid #e0e0e0;
+     border-radius: 0px!important;
+   }
 </style>
