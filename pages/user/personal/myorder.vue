@@ -59,7 +59,7 @@
                 <p class="freight">(含运费{{items.freight}}元)</p>
               </div>
               <div class="state">
-                <p class="sucess" v-if="item.ostatus == 2">申请售后</p>
+                <p class="sucess" v-if="item.ostatus == 3">申请售后</p>
                 <p class="sucess">{{statusText(item.ostatus)}}</p>
               </div>
             </div>
@@ -67,16 +67,16 @@
               <p class="button-p" v-if="item.ostatus === 0"><a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button></p>
               <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
               <!-- v-if="item.ostatus === 3" -->
-              <p @click="afterApply(item)">申请售后</p>
+              <p @click="afterApply(item)" v-if="item.ostatus == 3 ">申请售后</p>
               <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate"><a>评论</a></p>
               <p class="canle-order" v-if="item.ostatus === 0 || item.ostatus === 1" @click="isShowCancel()">取消订单</p>
               <p class="detail" @click="toDetails(item)">订单详情</p>
-              <p v-if="item.ostatus !== 0">再次购买</p>
+              <p v-if="item.ostatus == 3">再次购买</p>
               <p @click="toSuppInvo(item)">补开发票</p>
             </div>
             <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
               <p>订单取消成功后将无法恢复</p>
-              <p>优惠券可能不再返还，支付优惠也将一并取消</p>
+              <p>优惠券不再返还，支付优惠也将一并取消</p>
               <div>
                 <a-radio-group defaultValue="a" size="large">
                   <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
@@ -89,7 +89,7 @@
               </div>
             </a-modal>
           </li>
-           <a-pagination  v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
+          <a-pagination  v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
         </ul>
         <div class="no-data" v-if="this.orderList.length === 0">
           <p class="icon"><a-icon type="exclamation" /></p>

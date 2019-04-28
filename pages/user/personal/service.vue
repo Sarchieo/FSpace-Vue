@@ -3,65 +3,138 @@
     <p class="service-title">售后记录</p>
     <p class="search-text">
       <span>售后类型：</span>
-      <a-select defaultValue="1" style="width: 200px" @change="handleChange">
-        <a-select-option value="1">全部</a-select-option>
-        <a-select-option value="2">退货</a-select-option>
-        <a-select-option value="3">换货</a-select-option>
+      <a-select defaultValue="" style="width: 200px" @change="handleChange">
+        <a-select-option value="">全部</a-select-option>
+        <a-select-option :value="1">仅退款</a-select-option>
+        <a-select-option :value="2">开发票</a-select-option>
+         <a-select-option :value="3">物流跟踪</a-select-option>
       </a-select>
       <button class="search-btn">搜索</button>
-      <input type="text" placeholder="请输入订单号/商品名称搜索" class="search-input">
+      <input v-model="arr[0]" type="text" placeholder="请输入订单号" class="search-input">
     </p>
 
     <ul class="service-ul">
-      <li>
+      <li v-for="(item, index) in list" :key="index">
         <p class="list-title">
           售后类型：
-          <span>退货</span>申请单号：
-          <span>12342342424569097</span>申请时间：
-          <span>2019-04-25 14:08:10</span>
+          <span>{{ item.astype | asTypeFormat }}</span>申请单号：
+          <span>{{ item.asno }}</span>申请时间：
+          <span>{{ item.apdata + item.aptime}}</span>
         </p>
         <div class="service-box">
           <div class="pic-box">
             <img
-            v-lazy="'//img.alicdn.com/imgextra/i3/3570503317/O1CN011aNEDjGTe94g6ig_!!3570503317.jpg_80x80.jpg'"
-              class="service-pic"
-              alt
-            >
-            <p class="name">盘龙云海排毒胶囊</p>
-            <p class="guige">20粒/盒</p>
+              v-lazy="item.imgURl"
+                class="service-pic"
+                alt
+              >
+            <p class="name">{{ item.prodname }}</p>
+            <p class="guige">{{ item.spec }}</p>
           </div>
           
         </div> 
         <div class="complete">
-            正在退货中
+            {{ item.astype | asTypeFormat }}
             <!-- 退款有？ -->
             <!-- <p class="price" v-if="items.price">完成退款：￥{{items.price}}</p> -->
         </div>
-        <div class="see-detail" @click="seeDetail()">
+        <div class="see-detail" @click="seeDetail(item)">
            查看详情
         </div>
          <div style="clear: both;"></div>
       </li>
+      <a-pagination  v-if="this.list.length !== 0 " @change="onChangePage" :total="total"/>
     </ul>
+    <div class="no-data" v-if="this.list.length === 0">
+      <p class="icon"><a-icon type="exclamation" /></p>
+      <p class="text">没有查询到订单！</p>
+        <!--<p @click="toSuppInvo(item)">补开发票</p>-->
+        <!-- <p @click="saleAfter()">申请售后</p> -->
+    </div>
   </div>
 </template>
 <script>
 import * as types from '../../../store/mutation-types'
 export default {
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
   data() {
     return {
+      arr: ['','','','','','','','','','',''], // 订单号 , 商品码, ? ,企业id, 售后类型 , ??????
+      list: [],
+      currentIndex: 1,
+      total: 0
     };
+  },
+  filters: {
+   asTypeFormat(val) {
+     let text = ''
+     switch(val) {
+       case 0:
+       text = '退款退货'
+       break
+       case 1:
+       text = '仅退款'
+       break
+       case 2:
+       text = '开发票'
+       break
+       case 3:
+       text = '物流跟踪'
+       break
+     }
+    return text;
+   }
   },
   mounted() {
     this.$store.commit(types.SELECTED_KEYS, '/user/personal/service')
+    this.queryAsapp()
   },
   methods: {
-    handleChange(value) {
-      console.log(`selected ${value}`);
+    queryAsapp() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderInfoModule";
+      iRequest.method = "queryAsapp";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.arrays = this.arr
+      iRequest.param.pageIndex = this.currentIndex;
+      iRequest.param.pageNumber = 10;
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.list = result.data
+            _this.fsGeneralMethods.addImages(_this, _this.list, 'pdno', 'spu')
+            _this.total = result.total
+            _this.currentIndex = result.pageNo
+          } else {
+            _this.$message.error(result.data);
+          }
+        })
+      );
     },
-    seeDetail() {
+    handleChange(value) {
+      this.arr[4] = value
+      this.queryAsapp()
+    },
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.currentIndex = 1
+      this.queryAsapp()
+    },
+    seeDetail(item) {
       this.$router.push({
         path: '/order/reason-detail',
+        query: {
+          detail: JSON.stringify(item)
+        }
       })
     }
   }
@@ -157,6 +230,17 @@ export default {
   width: 232px;
   margin-top: 55px;
   text-align: center;
+}
+// 采购单无数据显示 内容
+.no-data{
+  .container-size(block, 1190px, 120px, 0 auto 20px auto, 0px);
+  .no-icon{
+    .p-size(50px,50px,50px,center,0px,#333333);
+    margin-bottom: 20px;
+  }
+  .no-text{
+     .p-size(50px,50px,30px,center,0px,#333333);
+  }
 }
 </style>
 

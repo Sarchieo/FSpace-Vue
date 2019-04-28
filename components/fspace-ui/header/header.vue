@@ -365,9 +365,6 @@ export default {
                 _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
               }
             }
-          },
-           {
-           
           }
         )
       );

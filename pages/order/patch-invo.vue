@@ -37,8 +37,8 @@
               </a-form-item>
               <p class="limit">{{content.length}}/300</p>
 
-              <p class="upload">上传相片</p>
-              <a-upload
+              <!-- <p class="upload">上传相片</p> -->
+              <!-- <a-upload
                 action="//jsonplaceholder.typicode.com/posts/"
                 listType="picture-card"
                 :fileList="fileList"
@@ -49,7 +49,7 @@
                   <a-icon type="plus"/>
                   <div class="ant-upload-text">最多三张</div>
                 </div>
-              </a-upload>
+              </a-upload> -->
               <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
                 <img alt="example" style="width: 100%" :src="previewImage">
               </a-modal>
