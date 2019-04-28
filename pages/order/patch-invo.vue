@@ -15,6 +15,7 @@
               <a-step title="发票补开原因"></a-step>
               <a-step title="填定发票信息"></a-step>
               <a-step title="选择邮寄地址"></a-step>
+              <a-step title="支付邮费"></a-step>
               <a-step title="完成"></a-step>
             </a-steps>
           </div>
@@ -54,7 +55,7 @@
               </a-modal>
               <div class="submission-box">
                 <a-button class="back-btn" @click="backOne()">返回</a-button>
-                <a-button class="submission-btn" @click="stetOne()">下一步</a-button>
+                <a-button class="submission-btn" @click="setStep(1)">下一步</a-button>
               </div>
             </div>
           </div>
@@ -166,8 +167,8 @@
               </a-tab-pane>
             </a-tabs>
              <div class="submission-box">
-                  <a-button class="back-btn" @click="backTwo()">返回</a-button>
-                  <a-button class="submission-btn" @click="stepTwo()">下一步</a-button>
+                  <a-button class="back-btn" @click="back(0)">返回</a-button>
+                  <a-button class="submission-btn" @click="setStep(2)">下一步</a-button>
               </div>
           </div>
           <!-- 第三步 -->
@@ -197,13 +198,28 @@
               </p>
               <p class="text">*运费根据门店地址的里程计算，系统自动生成运费。</p>
               <div class="submission-box">
-                <a-button class="back-btn" @click="backThree()">返回</a-button>
-                <a-button class="submission-btn" @click="stetThree()">提交</a-button>
+                <a-button class="back-btn" @click="back(1)">返回</a-button>
+                <a-button class="submission-btn" @click="setStep(3)">提交</a-button>
               </div>
             </div>
           </div>
           <!-- 第四步 -->
           <div class="reason-box" v-if="steps === 3">
+            <div class="payment-header">
+              第三方支付
+            </div>
+            <div class="qr-code">
+                <p class="scan">
+                    扫一扫付款
+                </p>
+                <p class="pay-num">
+                    人民币：{{ payamt }}元
+                </p>
+                <img :src="url" alt="" class="payment-pic">
+            </div>
+          </div>
+          <!-- 第五步 -->
+          <div class="reason-box" v-if="steps === 4">
             <p class="reason-p">发票详情</p>
             <p>商家正在审核并制票，请耐心等待</p>
             <table>
@@ -245,18 +261,24 @@ export default {
   },
   data() {
     return {
+      reprreason: [],
       content: "",
       steps: 0,
       reasonType: 1,
       previewVisible: false,
       previewImage: "",
       fileList: [],
+      url: '',
+      payamt: '',
       oneStep: true,
       twoStep: false,
       form: this.$form.createForm(this)
     };
   },
-  mounted() {},
+  mounted() {
+    // 支付结果监听
+    this.payResult()
+  },
   methods: {
     handleChangePatch(value) {
       this.reasonType = value;
@@ -271,32 +293,20 @@ export default {
     handleChange({ fileList }) {
       this.fileList = fileList;
     },
-    stetOne() {
-      if (this.content === "") {
-        this.$message.error("请填写原因");
-        return false;
-      } else if (this.fileList.length === 0) {
-        this.$message.error("请上传照片");
-        return false;
+    setStep(index) {
+      if(index === 3) {
+        this.prePay()
+        return
       }
-      this.steps = 1;
+      this.steps = index;
+    },
+    back(index) {
+      this.steps = index;
     },
     backOne() {
       this.$router.push({
         path: "/user/personal/myorder"
       });
-    },
-    stepTwo() {
-      this.steps = 2;
-    },
-    backTwo() {
-      this.steps = 0;
-    },
-    stetThree() {
-      this.steps = 3;
-    },
-    backThree() {
-       this.steps = 1;
     },
     validateTaxID(rule, value, callback) {
       const form = this.form;
@@ -339,6 +349,52 @@ export default {
         }
       });
     }
+  },
+  prePay() {
+    const _this = this;
+    const iRequest = new inf.IRequest();
+    iRequest.cls = "PayModule";
+    iRequest.method = "preFeePay";
+    iRequest.param.json = JSON.stringify({
+      orderno: this.orderno,
+      compid: this.storeInfo.comp.storeId,
+      paytype: "alipay",
+      afsano: '' //  这是啥?
+    });
+    iRequest.param.token = localStorage.getItem("identification")
+    this.$refcallback(
+      this,
+      "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+      iRequest,
+      new this.$iceCallback(
+        function result(result) {
+          if (result.code === 200) {
+            _this.steps = 3;
+            // _this.url 支付二维码图片
+            // _this.payamt 支付金额
+          } else {
+            _this.$message.error(result.message)
+          }
+        }
+      )
+    );
+  },
+  payResult() {
+    let _this = this
+    let ice_callback = new Ice.Class(inf.PushMessageClient, {
+      receive: function(message, current) {
+        debugger
+        let result = JSON.parse(message)
+        // event tradeStatus 需要跟蒋文广确认
+        if(result.event == 1 && result.body.tradeStatus == 1) {
+          _this.steps = 4
+          // 支付结果页面数据
+        } else {
+          _this.$message.error('订单支付异常, 请稍后重试')
+        }
+      }
+    })
+    this.$initIceLong('orderServer', this.storeInfo.comp.storeId, new ice_callback());
   },
   watch: {
     values: {
@@ -512,5 +568,47 @@ tr{
     border: 1px solid #e0e0e0;
     border-collapse: collapse;
   }
+}
+.payment-header{
+  .container-size(block,100%,100px,0,0px);
+  text-align: center;
+  line-height: 100px;
+  font-size: 20px;
+  color: #333333;
+  font-weight: bold;
+}
+.qr-code{
+    .container-size(block,1000px,500px,0 auto,0px);
+    padding: 70px 350px;
+    border:1px solid #e0e0e0;
+    margin-bottom: 20px;
+    .scan{
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+    .pay-num{
+        .p-size(50px, 50px, 18px, center, 0px, #ed2f26);
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+    .payment-pic{
+         .container-size(block,220px,220px,0 auto,0px);
+    }
+    .p-btn{
+  width: 100%;
+  padding: 0px 20%;
+  button{
+    border-radius: 3px;
+   -moz-border-radius:3px;
+   -webkit-border-radius:3px;
+  }
+  .cancel-btn{
+  float: left;
+  border: none;
+  background: #999999;
+  color: #333333;
+}
+}
 }
 </style>

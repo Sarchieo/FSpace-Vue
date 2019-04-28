@@ -25,15 +25,16 @@
             </div>
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
-                <a-checkbox :disabled="item.status == 1 || item.status == 2" @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
+                <a-checkbox :disabled="item.status == 1 || item.status == 2 || item.status == 3" @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
                 <img v-lazy="item.imgURl">
                 <p class="goods-name" @click="toDetail(item)">{{item.ptitle}}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
                 <p class="icon" v-if="item.rule.length > 0">
-                  <a-tag color="#999999" v-if="item.status === 1">秒杀商品无法从购物车购买</a-tag>
-                  <a-tag color="#999999" v-if="item.status === 2">当前商品库存不足</a-tag>
+                  <a-tag color="#999999" v-if="item.status == 1">秒杀商品无法从购物车购买</a-tag>
+                  <a-tag color="#999999" v-if="item.status == 2">当前商品已下架</a-tag>
+                  <a-tag color="#999999" v-if="item.status == 3">商品库存不足</a-tag>
                   <a-tag color="red" v-for="(item, index) in item.rule" :key="index">{{ item.rulename  }}</a-tag>
                 </p>
                 <p class="old-price">￥ {{item.pdprice}}</p>
@@ -41,8 +42,8 @@
                 <p class="btn-p">
                   <button :disabled="item.status == 1" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :disabled="item.status == 1 || item.status == 2" :min="1" :max="item.inventory" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
-                  <button :disabled="item.status == 1 || item.status == 2" @click="addCount(index,item)">+</button>
+                  <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.inventory" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <button :disabled="item.status == 1 || item.status == 2 || item.status == 3" @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
                 <p class="new-price">￥{{ parseFloat(item.pdprice * item.num).toFixed(2) }}</p>
