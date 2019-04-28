@@ -72,8 +72,8 @@
                 <a-button :loading="loading" class="login-btn" html-type="submit">登录</a-button>
               </a-form-item>
             </a-form>
-            <p class="to-register">还没有账号？立即去
-              <nuxt-link to="/user/register">注册</nuxt-link>
+            <p class="to-register"> <span class="forget" @click="toForget()">忘记密码</span> <span class="register">还没有账号？立即去
+              <nuxt-link to="/user/register">注册</nuxt-link></span>
             </p>
           </div>
         <!-- </div> -->
@@ -255,6 +255,11 @@ export default {
       } else {
         callback("请输入正确的密码");
       }
+    },
+    toForget() {
+      this.$router.push({
+        path: '/user/forget-pwd'
+      })
     }
   }
 };
@@ -274,6 +279,7 @@ export default {
 .login-input {
   float: right;
   .container-size(inline-block, 450px, 450px, 0 auto, 5px);
+  margin-right: 100px;
   background: #ffffff;
   padding: 20px 10px;
 }
@@ -298,5 +304,13 @@ export default {
 }
 .to-register {
   text-align: center;
+}
+.forget{
+  float: left;
+  margin-left: 10px;
+}
+.forget:hover{
+  cursor: pointer;
+  color: #ed3025;
 }
 </style>
