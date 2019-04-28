@@ -783,10 +783,10 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             if (result.data) {
+              _this.prodDetail = result.data;
               if(_this.userStatus) {
                 _this.getFoot();
               }
-              _this.prodDetail = result.data;
               _this.details = JSON.parse(_this.prodDetail.detail);
               if (_this.rulecode === 0) {
                 _this.maximum = _this.prodDetail.store;
