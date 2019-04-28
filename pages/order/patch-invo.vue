@@ -62,7 +62,7 @@
           <!-- 第二步 -->
           <div class="reason-box height600" v-if="steps === 1">
             <p class="reason-p">填写发票信息</p>
-            <a-tabs defaultActiveKey="1" @change="callback">
+            <a-tabs v-model="invoiceType" defaultActiveKey="1" @change="changeType">
               <a-tab-pane tab="普通发票" key="1">
                  <div class="two-box">
               <a-form :form="form" @submit="handleSubmit">
@@ -75,7 +75,7 @@
                   {{ storeInfo.comp.address }}
                 </p>
                 <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input
+                  <a-input v-model="taxpayer"
                     placeholder="纳税人识别号或社会信用代码"
                     v-decorator="[
                       'taxpayer',
@@ -84,7 +84,7 @@
                   />
                 </a-form-item>
                 <a-form-item label="开户银行：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input
+                  <a-input v-model="bankers"
                     placeholder="xx银行xx支行"
                     v-decorator="[
                       'bankers',
@@ -93,7 +93,7 @@
                   />
                 </a-form-item>
                 <a-form-item label="银行账号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input
+                  <a-input v-model="account"
                     placeholder="开户许可证或法人的私人账户"
                     v-decorator="[
                       'account',
@@ -121,7 +121,7 @@
                   {{ storeInfo.comp.address }}
                 </p>
                 <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input
+                  <a-input v-model="taxpayer"
                     placeholder="纳税人识别号或社会信用代码"
                     v-decorator="[
                       'taxpayer',
@@ -131,7 +131,7 @@
                 </a-form-item>
 
                 <a-form-item label="注册电话：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input
+                  <a-input v-model="tel"
                     placeholder="专票要求的公司电话"
                     v-decorator="[
                       'tel',
@@ -140,7 +140,7 @@
                             />
                 </a-form-item>
                 <a-form-item label="开户银行：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input
+                  <a-input v-model="bankers"
                     placeholder="xx银行xx支行"
                     v-decorator="[
                       'bankers',
@@ -149,7 +149,7 @@
                     />
                 </a-form-item>
                 <a-form-item label="银行账号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input
+                  <a-input v-model="account"
                     placeholder="开户许可证或法人的私人账户"
                     v-decorator="[
                       'account',
@@ -178,11 +178,11 @@
               <p class="title">取件地址</p>
               <p class="mail-p">
                 <span class="mail-title">收件人： </span>
-                <span>{{}}</span>
+                <span>{{consignee}}</span>
               </p>
               <p class="mail-p">
                 <span class="mail-title">联系方式: </span>
-                <span>{{}}</span>
+                <span>{{contact}}</span>
               </p>
               <p class="mail-p">
                 <span class="mail-title">收货门店: </span>
@@ -199,7 +199,7 @@
               <p class="text">*运费根据门店地址的里程计算，系统自动生成运费。</p>
               <div class="submission-box">
                 <a-button class="back-btn" @click="back(1)">返回</a-button>
-                <a-button class="submission-btn" @click="setStep(3)">提交</a-button>
+                <a-button class="submission-btn" @click="afterSaleApp">提交</a-button>
               </div>
             </div>
           </div>
@@ -223,11 +223,11 @@
             <p class="reason-p">发票详情</p>
             <p>商家正在审核并制票，请耐心等待</p>
             <table>
-              <thead>订单号: 2142343554</thead>
+              <thead>订单号: {{orderno}}</thead>
               <tbody>
                 <tr>
-                  <td>发票类型</td>
-                  <td>普通发票</td>
+                  <td>发票类型 </td>
+                  <td>{{invoiceStr}}</td>
                 </tr>
                 <tr>
                   <td>发票内容</td>
@@ -269,15 +269,23 @@ export default {
             content: "",
             steps: 0,
             reasonType: 79,
+            asType: 0,
             previewVisible: false,
             previewImage: "",
             fileList: [],
             url: '',
             payamt: '',
+            afsano: 0,//售后单号
             oneStep: true,
             twoStep: false,
             form: this.$form.createForm(this),
             mireason: [],
+            invoiceType: '1',
+            invoiceStr: '普通发票',
+            bankers: "",//开户行
+            account: "",//开户行账号
+            taxpayer: "",//纳税人识别号
+            tel: "",//注册电话
             invoice: {}
         };
     },
@@ -286,20 +294,21 @@ export default {
         this.comp = this.storeInfo.comp
         this.queryDictList()
         this.queryMyConsignee()
+        this.showFeePayInfo()
         // 支付结果监听
         this.payResult()
     },
     methods: {
-        prePay() {
+        //运费
+        showFeePayInfo() {
             const _this = this;
             const iRequest = new inf.IRequest();
             iRequest.cls = "PayModule";
-            iRequest.method = "preFeePay";
+            iRequest.method = "showFeePayInfo";
             iRequest.param.json = JSON.stringify({
                 orderno: this.orderno,
                 compid: this.storeInfo.comp.storeId,
                 paytype: "alipay",
-                afsano: '' //  这是啥?
             });
             iRequest.param.token = localStorage.getItem("identification")
             this.$refcallback(
@@ -309,9 +318,43 @@ export default {
                 new this.$iceCallback(
                     function result(result) {
                         if (result.code === 200) {
+                            _this.payamt = result.data.payamt
+                        } else {
+                            _this.$message.error(result.message)
+                        }
+                    }
+                )
+            );
+        },
+        changeType(val) {
+           if (this.invoiceType == 1) {
+               this.invoiceStr = '普通发票'
+           } else {
+               this.invoiceStr = '增值税专用发票'
+           }
+        },
+        prePay() {
+            const _this = this;
+            const iRequest = new inf.IRequest();
+            iRequest.cls = "PayModule";
+            iRequest.method = "preFeePay";
+            iRequest.param.json = JSON.stringify({
+                orderno: this.orderno,
+                compid: this.storeInfo.comp.storeId,
+                paytype: "alipay",
+                afsano: this.afsano //  这是啥?
+            });
+            iRequest.param.token = localStorage.getItem("identification")
+            this.$refcallback(
+                this,
+                "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+                iRequest,
+                new this.$iceCallback(
+                    function result(result) {
+                        if (result.code === 200) {
+                            console.log("url --- " + JSON.stringify(result.data))
+                            _this.url = result.data
                             _this.steps = 3;
-                            // _this.url 支付二维码图片
-                            // _this.payamt 支付金额
                         } else {
                             _this.$message.error(result.message)
                         }
@@ -329,6 +372,7 @@ export default {
                     if (result.event == 1 && result.body.tradeStatus == 1) {
                         _this.steps = 4
                         // 支付结果页面数据
+
                     } else {
                         _this.$message.error('订单支付异常, 请稍后重试')
                     }
@@ -373,21 +417,42 @@ export default {
             iRequest.cls = "OrderOptModule";
             iRequest.method = "afterSaleApp";
             iRequest.param.token = localStorage.getItem("identification");
-            this.invoice = {};
+            if (this.invoiceType == 1) {
+                this.asType = 3
+            } else {
+                this.asType = 4
+            }
+            this.invoice = {
+                invoiceInfo: {
+                    compName: this.comp.storeName,
+                    address: this.comp.address,
+                    bankers: this.bankers,//开户行
+                    account: this.account,//开户行账号
+                    taxpayer: this.taxpayer,//纳税人识别号
+                    tel: this.tel,//注册电话
+                },
+                address:{
+                    consignee: this.consignee,
+                    contact: this.contact,
+                    compName: this.comp.storeName,
+                    address: this.comp.address
+                }
+            };
             let arr = [{
                 gstatus: 0,
                 orderno: this.orderno,
                 compid: this.storeInfo.comp.storeId,
                 reason: this.reasonType,
-                invoice: this.invoice,
+                invoice: JSON.stringify(this.invoice),
                 apdesc: this.content,
-                astype: 3
+                astype: this.asType
             }];
             iRequest.param.json = JSON.stringify({
                 orderno: this.orderno,
                 asAppArr: arr,
                 asType: this.asType
             });
+            console.log("json-- " +  iRequest.param.json )
             this.$refcallback(
                 this,
                 "orderServer" +
@@ -396,8 +461,16 @@ export default {
                 new this.$iceCallback(
                     function result(result) {
                         if (result.code === 200) {
-                            _this.$message.success(result.data);
+                            _this.afsano = result.data
+                            console.log("afsano--- " + _this.afsano)
+                            _this.setStep(3)
+                            // _this.$message.success(result.data);
+                        } else {
+                            console.log("result--- " + JSON.stringify(result))
                         }
+                    },
+                    function error(error) {
+                        debugger;
                     }
                 )
             );
