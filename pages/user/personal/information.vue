@@ -14,9 +14,13 @@
   </div>
 </template>
 <script>
+import * as types from '../../../store/mutation-types'
 export default {
     data() {
         return {}
+    },
+    mounted() {
+      this.$store.commit(types.SELECTED_KEYS, '/user/personal/information')
     }
 }
 </script>

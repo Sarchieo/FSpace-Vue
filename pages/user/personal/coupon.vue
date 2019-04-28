@@ -118,6 +118,7 @@
   </div>
 </template>
 <script>
+import * as types from '../../../store/mutation-types'
 export default {
   data() {
     return {
@@ -136,6 +137,7 @@ export default {
   mounted() {
     this.queryRevCouponList(0)
     this.queryCouponPub()
+    this.$store.commit(types.SELECTED_KEYS, '/user/personal/coupon')
   },
   methods: {
     // 获取我的优惠券

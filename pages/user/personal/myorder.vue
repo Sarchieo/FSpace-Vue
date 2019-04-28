@@ -128,6 +128,8 @@
 </template>
 <script>
 import FSpaceOrder from "../../../components/table/order";
+import * as types from '../../../store/mutation-types'
+
 const renderContent = (value, row, index) => {
   const obj = {
     children: value,
@@ -146,9 +148,9 @@ export default {
   },
   data() {
     return {
-        asType: '1',
+      asType: '1',
       isApply: false,
-        goodsArr:[],
+      goodsArr:[],
       visible: false,
       currentIndex: 1,
       total: 0,
@@ -157,12 +159,13 @@ export default {
     };
   },
   mounted() {
+    this.$store.commit(types.SELECTED_KEYS, '/user/personal/myorder')
     this.queryOrderList()
   },
   methods: {
-      changeType(val){
-          this.asType = val
-      },
+    changeType(val){
+        this.asType = val
+    },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
       this.queryOrderList()

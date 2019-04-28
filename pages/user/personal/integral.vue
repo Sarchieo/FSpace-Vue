@@ -16,6 +16,7 @@
   </div>
 </template>
 <script>
+import * as types from '../../../store/mutation-types'
 const columns = [
   {
     title: "日期",

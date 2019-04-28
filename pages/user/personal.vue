@@ -50,7 +50,7 @@
         <div class="content">
           <div class="left">
             <a-menu
-              :selectedKeys="[defaultSelectedKeys]"
+              :selectedKeys="[selectedKeys]"
               style="width: 194px;height:1017px;"
               mode="vertical"
               @click="handleClick"
@@ -108,17 +108,15 @@ export default {
   computed: {
     storeInfo() {
       return this.$store.state.user;
+    },
+    selectedKeys() {
+      return this.$store.state.selectedKeys;
     }
   },
   // middleware: "authenticated",
   data() {
     return {
-      defaultSelectedKeys: '/user/personal'
     };
-  },
-  mounted() {
-    this.defaultSelectedKeys = this.$route.path
-    // this.initData();
   },
   methods: {
     getBasicInfo() {

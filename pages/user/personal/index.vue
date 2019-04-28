@@ -109,6 +109,7 @@
 <script>
 import FSpaceModalPwd from "../../../components/modal/changePwd";
 import FSpaceModalPhone from "../../../components/modal/changePhone";
+import * as types from '../../../store/mutation-types'
 
 export default {
   components: { FSpaceModalPwd, FSpaceModalPhone },
@@ -213,6 +214,7 @@ export default {
     // });
     this.getBasicInfo();
     this.getNodes();
+    this.$store.commit(types.SELECTED_KEYS, '/user/personal')
   },
   methods: {
     getAncestors(code) {
