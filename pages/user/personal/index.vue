@@ -212,7 +212,6 @@ export default {
     //   address: "",
     //   addressCode: ""
     // });
-    this.countCompInfo();
     this.getBasicInfo();
     this.getNodes();
     this.$store.commit(types.SELECTED_KEYS, '/user/personal')
@@ -349,26 +348,6 @@ export default {
             if(result.data.comp.addressCode) {
               _this.getAncestors(result.data.comp.addressCode)
             }
-          }
-        })
-      );
-    },
-    /** 统计信息 */
-    countCompInfo() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "OrderInfoModule";
-      iRequest.method = "countCompInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-          debugger
-          if (result.code === 200) {
-           
           }
         })
       );

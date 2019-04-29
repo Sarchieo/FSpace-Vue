@@ -164,7 +164,7 @@ export default {
   },
   methods: {
     changeType(val){
-        this.asType = val
+      this.asType = val
     },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
@@ -175,8 +175,8 @@ export default {
     },
     afterApply(item) {
       this.isApply = true;
-        this.goodsArr = item.goods;
-        this.orderno = item.orderno
+      this.goodsArr = item.goods;
+      this.orderno = item.orderno
         // console.log("goods--- " +  JSON.stringify(item.goods))
     },
     pickCancel() {

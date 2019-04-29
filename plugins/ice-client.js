@@ -71,7 +71,12 @@ function refcallback(context, moduleName,_IRequest, callback) {
         }
         // 接口不失败情况下调用 消息上线
         if(success.flag) {
-          // 
+          let ice_callback = new Ice.Class(inf.PushMessageClient, {
+            receive: function(message, current) {
+              console.log(message)
+            }
+          })
+          context.$initIceLong('orderServer', context.storeInfo.comp.storeId, new ice_callback());
         }
       }
     )

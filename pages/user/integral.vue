@@ -18,7 +18,7 @@
               <img src="../../assets/img/jifen-signed.png" alt>
               <!-- 未签到图片 -->
               <img src="../../assets/img/jifen-unsigned.png" alt>
-              <!-- dates日期 --> 
+              <!-- dates日期 -->
               <span v-for="(items,index) in item.dates" :key="index">{{items}}</span>
             </div>
             <!-- <div>
@@ -49,7 +49,7 @@
           <p class="img-btn">
             <img src="../../assets/img/jifen-imme.png" alt @click="signIn()">
           </p>
-          
+
           <!-- <p class="moon-data"> <span>4.23</span><span>4.24</span><span>4.25</span><span>4.26</span><span>4.27</span><span>4.28</span><span>4.29</span></p> -->
           <!-- <div class="coupon-box">
             <div class="coupon-card">
@@ -64,7 +64,7 @@
             </div>
           </div> -->
         </div>
-        
+
       </div>
       <f-space-footer></f-space-footer>
     </a-layout>
@@ -154,7 +154,7 @@ export default {
       iRequest.cls = "MemberModule";
       iRequest.method = "getMember";
       iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.comp.storeId 
+        compid: this.storeInfo.comp.storeId
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -162,7 +162,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) { 
+          if (result.code === 200) {
             _this.integralNumber = result.data.accupoints
             _this.$message.success(result.message);
           } else {
