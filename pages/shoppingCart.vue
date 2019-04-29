@@ -506,7 +506,7 @@ li {
   .position(absolute, 20px, 60px);
 }
 .first-div p {
-  .container-size(inline-block, 400px, 32px, 0, 0px);
+  .container-size(inline-block, 200px, 32px, 0, 0px);
   line-height: 32px;
   font-size: 14px;
    overflow: hidden;
@@ -536,6 +536,7 @@ li {
   .position(absolute, 100px, 180px);
   .p-size(20px, 20px, 14px, left, 0px, #999999);
   height: 30px !important;
+  width: 250px!important;
 }
 .goods-count {
   .container-size(inline-block, 20px, 20px, 0, 0px);
