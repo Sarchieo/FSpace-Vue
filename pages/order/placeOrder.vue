@@ -34,7 +34,7 @@
               <span>收货门店：</span>{{ this.storeInfo.comp.storeName }}
             </p>
             <p class="address-info">
-              <span>收货地址：</span>{{ this.storeInfo.comp.address }}
+              <span>收货地址：</span>{{ storeInfo.comp.addressCodeStr + this.storeInfo.comp.address }}
             </p>
           </div>
         </div>

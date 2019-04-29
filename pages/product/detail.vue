@@ -340,7 +340,7 @@
               </a-tabs>
             </div>
             <!-- 热销推荐 -->
-            <div class="hot-recommend">
+            <div class="hot-recommend" v-if="hotList.length > 0">
               <p class="hot-recommend-title">热销推荐</p>
               <div class="recommend-box">
                 <ul class="recommend-ul">

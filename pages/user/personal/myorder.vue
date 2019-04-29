@@ -217,6 +217,7 @@ export default {
       iRequest.param.arrays = [this.ostatus];
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
+      debugger
       this.$refcallback(
         this,
         "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
