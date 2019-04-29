@@ -9,17 +9,17 @@
             <!-- accupoints -->
             <span class="inte-total">当前累计积分：{{integralNumber}}</span>
             <!-- times -->
-            <span class="keep-text">{{signNumber}}</span>
+            <span class="keep-text">{{ signDays.times }}</span>
           </p>
           <!-- 根据签到状态循环不同图片 -->
           <div class="sign-pic">
-            <div v-for="(item,index) in signDays" :key="index">
+            <div v-for="(item,index) in signDays.dates.reverse()" :key="index">
               <!-- 已签到图片 -->
-              <img src="../../assets/img/jifen-signed.png" alt>
+              <img v-if="item.status == 1" src="../../assets/img/jifen-signed.png" alt>
               <!-- 未签到图片 -->
-              <img src="../../assets/img/jifen-unsigned.png" alt>
+              <img v-else src="../../assets/img/jifen-unsigned.png" alt>
               <!-- dates日期 -->
-              <span v-for="(items,index) in item.dates" :key="index">{{items}}</span>
+              <span >{{item.date}}</span>
             </div>
             <!-- <div>
               <img src="../../assets/img/jifen-signed.png" alt>
@@ -72,7 +72,7 @@
 </template>
 <script>
 import FSpaceHeader from "../../components/fspace-ui/header/header";
-import FSpaceFooter from "../../components/fspace-ui/footer";
+import FSpaceFooter from "../../components/fspace-ui/footer"; 
 export default {
   components: {
     FSpaceHeader,
@@ -88,7 +88,7 @@ export default {
       userIntergral: [],
       signNumber: 0, // 连续签到天数
       integralNumber: 0, // 累积积分
-      signDays: [] // 日期数组
+      signDays: JSON.parse('{"times":5,"dates":[{"date":"0429","status":"1"},{"date":"0428","status":"1"},{"date":"0427","status":"1"},{"date":"0426","status":"1"},{"date":"0425","status":"1"},{"date":"0424","status":"0"},{"date":"0423","status":"0"}]}'), // 日期数组
     };
   },
   mounted() {
@@ -115,7 +115,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.userIntergral = result.data;
-            _this.$message.success(result.message);
+            _this.getIntegralNum()
           } else {
             _this.$message.error(result.message);
           }
@@ -123,8 +123,7 @@ export default {
       );
     },
     // 获取签到天数以及日期。
- getIntegralNum() {
-   debugger
+    getIntegralNum() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "IntegralModule";
@@ -138,11 +137,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.signNumber = result.data.times
-            _this.signDays = result.data
-            // console.log(_this.signDays)
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
+            _this.signDays = result.data.flex-lg-row-reverse
           }
         })
       );
@@ -164,9 +159,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.integralNumber = result.data.accupoints
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

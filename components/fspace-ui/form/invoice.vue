@@ -5,7 +5,7 @@
     @submit="handleSubmit"
     >
     <p class="comp-name-address"><span>公司名称：</span>{{ storeInfo.comp.storeName }}</p>
-    <p class="comp-name-address"><span>公司注册地址：</span>{{ storeInfo.comp.address }}</p>
+    <p class="comp-name-address"><span>公司注册地址：</span>{{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}</p>
     <a-form-item
         label="纳税人识别号："
         :label-col="{ span: 5 }"

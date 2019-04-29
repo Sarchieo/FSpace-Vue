@@ -72,7 +72,7 @@
                 </p>
                 <p class="comp-name-address">
                   <span>公司注册地址：</span>
-                  {{ storeInfo.comp.address }}
+                  {{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}
                 </p>
                 <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
                   <a-input v-model="taxpayer"
@@ -118,7 +118,7 @@
                 </p>
                 <p class="comp-name-address">
                   <span>公司注册地址：</span>
-                  {{ storeInfo.comp.address }}
+                  {{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}
                 </p>
                 <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
                   <a-input v-model="taxpayer"

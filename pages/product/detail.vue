@@ -74,19 +74,19 @@
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
                 </p>
-                <p class="price" v-if="rulecode == 0">
-                  <span class="price-title">价格</span>
-                  <span class="money-count" v-if="userStatus">￥{{ prodDetail.vatp }}</span>
-                  <span class="money-count" v-else>￥登录后可见</span>
-                  <!-- <del>￥32</del> -->
-                </p>
+                
                 <p class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
                   <span class="money-count" v-if="userStatus">￥{{ discount.killPrice }}</span>
                   <span class="money-count" v-else>￥登录后可见</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
-                <p class="price" v-if="rulecode === 1133">
+                <!-- <p class="price" v-else-if="rulecode === 1133">
+                  <span class="price-title">价格</span>
+                  <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count" v-else>￥登录后可见</span>
+                </p> -->
+                <p class="price" v-else>
                   <span class="price-title">价格</span>
                   <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
                   <span class="money-count" v-else>￥登录后可见</span>
@@ -340,7 +340,7 @@
               </a-tabs>
             </div>
             <!-- 热销推荐 -->
-            <div class="hot-recommend">
+            <div class="hot-recommend" v-if="hotList.length > 0">
               <p class="hot-recommend-title">热销推荐</p>
               <div class="recommend-box">
                 <ul class="recommend-ul">
