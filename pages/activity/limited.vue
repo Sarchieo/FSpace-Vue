@@ -142,7 +142,7 @@ export default {
             _this.goodsList.list.forEach((item) => {
               item.percentage = 100 - item.buynum/item.surplusstock*100
             })
-            debugger
+            
             _this.fsGeneralMethods.addImages(_this, _this.goodsList.list, 'sku', 'spu')
             _this.secondKill(_this.stringToDate(_this.goodsList.now || '2019-4-13 16:10:20') ,_this.goodsList.edate)
           }

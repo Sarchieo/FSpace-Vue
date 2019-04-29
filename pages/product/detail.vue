@@ -147,7 +147,7 @@
                   <button @click="addCount()">+</button>
                 </p>
                 <p class="cart">
-                  <!-- <input type="text" readonly="readonly" v-model="count" class="goods-count"> -->
+                  <!-- <input type="text" readonly="readofnly" v-model="count" class="goods-count"> -->
                   <!-- <button class="addition width22" @click="addCount()">+</button> -->
                   <!-- <button class="reduce width22">-</button> -->
                   <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->

@@ -366,7 +366,7 @@ export default {
             let _this = this
             let ice_callback = new Ice.Class(inf.PushMessageClient, {
                 receive: function (message, current) {
-                    debugger
+                    
                     let result = JSON.parse(message)
                     // event tradeStatus 需要跟蒋文广确认
                     if (result.event == 1 && result.body.tradeStatus == 1) {
@@ -470,7 +470,7 @@ export default {
                         }
                     },
                     function error(error) {
-                        debugger;
+                        ;
                     }
                 )
             );

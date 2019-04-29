@@ -232,7 +232,7 @@ export default {
             }
           },
           function error(error) {
-            debugger;
+            ;
           }
         )
       );
@@ -279,7 +279,7 @@ export default {
       console.log(12121)
     },
     showFoot(key) {
-        debugger
+        
         var foot = this.$refs['foot']
         console.log(foot)
     }
