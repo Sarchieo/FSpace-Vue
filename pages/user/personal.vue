@@ -26,24 +26,24 @@
           <div class="right">
             <!-- <p class="right-title">优惠信息</p> -->
             <p>
-              <span>优惠券</span>3张
+              <span>优惠券</span>{{ countList[0] }}
             </p>
             <p>
-              <span>积分</span>268
+              <span>积分</span>{{ countList[1] }}
             </p>
           </div>
           <div class="order-info">
             <!-- <p class="order-title">订单信息</p> -->
             <p>
-              <span>待付款</span>3张
-              <span class="left65">待评价</span> 7单
+              <span>待付款</span>{{ countList[2] }}张
+              <span class="left65">待评价</span> {{ countList[5] }}单
             </p>
             <p>
-              <span>待发货</span>5单
-              <span class="left65">退货</span> 1单
+              <span>待发货</span>{{ countList[3] }}单
+              <span class="left65">退货</span> {{ countList[6] }}单
             </p>
             <p>
-              <span>待收货</span>9单
+              <span>待收货</span>{{ countList[4]  }}单
             </p>
           </div>
         </div>
@@ -116,36 +116,37 @@ export default {
   // middleware: "authenticated",
   data() {
     return {
+      countList: [0, 0, 0, 0, 0, 0, 0]
     };
   },
+  mounted() {
+    this.countCompInfo()
+  },
   methods: {
-    getBasicInfo() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "getStoreSession";
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "userServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.$store.dispatch("setUser", {
-              context: _this,
-              user: result.data
-            });
-            _this.authenticationMessage = result.data.authenticationMessage;
-          } else {
-          }
-        })
-      );
-    },
     handleClick(e) {
       this.$router.push({
         path: e.key
       });
       console.log("click ", e);
+    },
+     /** 统计信息 */
+    countCompInfo() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderInfoModule";
+      iRequest.method = "countCompInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.countList = result.data
+          }
+        })
+      );
     }
   }
 };

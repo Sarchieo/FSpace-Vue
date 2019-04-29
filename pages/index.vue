@@ -597,8 +597,6 @@ export default {
             _this.teamByID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.teamBuyList, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
-          } else {
-            ;
           }
         })
       );
@@ -624,8 +622,6 @@ export default {
             _this.secondID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.secondList, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
-          } else {
-            ;
           }
         })
       );
@@ -674,8 +670,6 @@ export default {
             _this.postList = result.data.list
             _this.postID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.postList, 'sku', 'spu')
-          } else {
-            ;
           }
         })
       );
@@ -799,8 +793,6 @@ export default {
             _this.selectedList = result.data.slice(0, 6);
             _this.fsGeneralMethods.addImages(_this, _this.selectedList, 'sku', 'spu')
             _this.selectedID = result.data.actcode
-          } else {
-            ;
           }
         })
       );
@@ -1039,7 +1031,6 @@ export default {
   }
 };
 </script>
-
 <style scoped lang="less">
 @import "../components/fspace-ui/container/index.less";
 @import "../components/fspace-ui/button/index.less";

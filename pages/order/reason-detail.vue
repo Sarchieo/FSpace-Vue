@@ -18,22 +18,19 @@
         <div>
           <div class="step-box">
             <div class="step-left">
-              <p class="order-num">申请单号：3245677</p>
+              <p class="order-num">申请单号：{{ detail.asno }}</p>
               <!-- 显示药品列表相对应的订单状态 -->
-              <p class="pay-success">完成退货</p>
-              <p class="pay-success">完成换货</p>
-              
-
+              <p class="pay-success" v-if="detail.gstatus == -1">拒绝</p>
+              <p class="pay-success" v-if="detail.gstatus == 0">未审核</p>
               <!-- <p class="pay-success">补票中</p>
               <p class="pay-success">退货中</p>
                -->
-
-              <p><a-button class="cancelApply">取消申请</a-button></p>
+              <p><a-button class="cancelApply" v-if="detail.gstatus == 1">审核通过</a-button></p>
               <!-- <p class="pay-success">完成</p> -->
             </div>
             <div class="line"></div>
             <!-- 订单状态 -->
-            <div class="step-right">
+            <!-- <div class="step-right">
               <a-steps class="setps-box" :current="steps">
                 <a-step title="提交申请" >
                   <a-icon type="profile" slot="icon"/>
@@ -47,21 +44,14 @@
                 <a-step title="平台收货">
                   <a-icon type="solution" slot="icon"/>
                 </a-step>
-                <!-- 换货显示 -->
-                <!-- <a-step title="平台发货">
-                  <a-icon type="solution" slot="icon"/>
-                </a-step>
-                <a-step title="用户收货">
-                  <a-icon type="solution" slot="icon"/>
-                </a-step> -->
 
                 <a-step title="完成">
                   <a-icon type="check-square" slot="icon"/>
                 </a-step>
               </a-steps>
-            </div>
+            </div> -->
           </div>
-          <div class="logistics-box-info">
+          <!-- <div class="logistics-box-info">
               <p class="speed">退货进度</p>
               <div class="logi">
                   <a-steps direction="vertical" :current="1">
@@ -70,18 +60,16 @@
                     <a-step title="到长沙" description="" />
                   </a-steps>
               </div>
-          </div>
+          </div> -->
           <div class="consignee-info">
             <p class="speed progress">售后信息</p>
-            <p class="consi-p"><span class="title">售后类型：</span><span class="content">换货</span> <span class="title">申请时间：</span> <span class="content">2019-04-09</span></p>
-            <p class="consi-p"><span class="title">申请单号：</span><span class="content">1397869032</span> <span class="title">联系人：</span> <span class="content">亮叔</span></p>
-            <p class="consi-p"><span class="title">订单号：</span><span class="content">454332112</span> <span class="title">手机号：</span> <span class="content">18888888888</span></p>
+            <p class="consi-p"><span class="title">售后类型：</span><span class="content"> {{ detail.astype | asTypeFormat }}</span> <span class="title">申请时间：</span> <span class="content">{{ detail.apdata }}</span></p>
+            <p class="consi-p"><span class="title">申请单号：</span><span class="content">{{ detail.asno }}</span> <span class="title">联系人：</span> <span class="content">{{ storeInfo.comp.storeName }}</span></p>
+            <p class="consi-p"><span class="title">订单号：</span><span class="content">{{ detail.orderno }}</span> <span class="title">手机号：</span> <span class="content">{{ storeInfo.phone }}</span></p>
           </div>
           <p class="goods-title">
             <span class="width40">药品信息</span>
-            <span class="width15">单价</span>
             <span class="width15">数量</span>
-            <span class="width15">小计</span>
             <span class="width15">实付</span>
           </p>
           <div class="goods-list-box">
@@ -97,52 +85,30 @@
                   <td class="pic-box widths40">
                     <div>
                       <img
-                        src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+                        v-lazy="imgUrl"
                         alt
                       >
-                    <span class="goods-name">肾宝片</span>
-                      <span>100片/瓶</span>
-                      <span>汇仁制药有限公司</span>
-                      
+                    <span class="goods-name">{{ detail.brandname }}</span>
+                      <span>{{ detail.spec }}</span>
+                      <span>{{ detail.manuname }}</span>
                     </div>
                   </td>
-                  <td class="price widths15 td-center padding-left5">￥100</td>
                   <td class="count widths15 td-center padding-left5">1</td>
-                  <td class="subtotal widths15 td-center padding-left10">￥100</td>
-                
-                </tr>
-                <tr class="goods-list">
-                  <td class="pic-box widths40">
-                    <div>
-                      <img
-                        src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-                        alt
-                      >
-                    <span class="goods-name">肾宝片</span>
-                      <span>100片/瓶</span>
-                      <span>汇仁制药有限公司</span>
-                      
-                    </div>
-                  </td>
-                  <td class="price widths15 td-center padding-left5">￥100</td>
-                  <td class="count widths15 td-center padding-left5">1</td>
-                  <td class="subtotal widths15 td-center padding-left10">￥100</td>
-                
+                  <!-- <td class="subtotal widths15 td-center padding-left10">￥100</td> -->
                 </tr>
             
-                <div class="total td-center padding-left15">￥100</div>
+                <div class="total td-center padding-left15">￥{{ detail.refamt }}</div>
               </tbody>
               <tfoot class="t-footer" ref="foot">
-                    
-                        <p class="ant-dropdown-link"> 换货原因 </p>
-                        <p class="dropdown-p">原因：质量问题</p>
-                        <p class="dropdown-p">描述：包装破损，潮湿</p>
-                        <p class="dropdown-p">图片：</p>
-                        <div>
-                            <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" alt="" class="question-pic">
-                            <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" alt="" class="question-pic">
-                            <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" alt="" class="question-pic">
-                        </div>
+                <p class="ant-dropdown-link"> 换货原因 </p>
+                <p class="dropdown-p">原因：{{ detail.reasonName }}</p>
+                <p class="dropdown-p">描述：{{ detail.apdesc }}</p>
+                <p class="dropdown-p">图片：</p>
+                <div>
+                    <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic">
+                    <!-- <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" alt="" class="question-pic">
+                    <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" alt="" class="question-pic"> -->
+                </div>
               </tfoot>
             </table>
           </div>
@@ -180,15 +146,134 @@ export default {
       return this.$store.state.user;
     }
   },
+  filters: {
+   asTypeFormat(val) {
+     let text = ''
+     switch(val) {
+       case 0:
+       text = '退款退货'
+       break
+       case 1:
+       text = '仅退款'
+       break
+       case 2:
+       text = '开发票'
+       break
+       case 3:
+       text = '物流跟踪'
+       break
+     }
+    return text;
+   }
+  },
   data() {
     return {
+      arr: ['','','','','','','','','','',''],
       steps: 0,
       visible: false,
+      detail: '',
+      imgUrl: '',
+      fileList: []
     };
   },
   mounted() {
-  },
+    this.detail = JSON.parse(this.$route.query.detail)
+    this.getImgUrl()
+    this.getFilePathPrev()
+  },  
   methods: {
+     // 获取售后图片
+    getFilePathPrev() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.json = JSON.stringify({
+        orderid: this.detail.orderno,
+        compid: this.storeInfo.comp.storeId
+      });
+       this.$refcallback(
+         this,
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.uploadInfo = result.data;
+               // 获取默认图片
+              var path = result.data.ergodicUrl;
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                  var data = xhr.responseText;
+                  data = JSON.parse(data).data.sort();
+                  if (data.length > 0) {
+                    _this.fileList.push({
+                      uid: 0,
+                      name: data[3],
+                      status: "done",
+                      url:
+                        result.data.downPrev +
+                        result.data.orderFilePath +
+                        data[3] +
+                        "?" +
+                        new Date().getSeconds()
+                    });
+                  }
+                }
+              };
+              xhr.open("POST", path, true);
+              xhr.setRequestHeader("specify-path", result.data.orderFilePath);
+              xhr.setRequestHeader("ergodic-sub", "false");
+              xhr.send(null);
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {
+            debugger;
+          }
+        )
+      );
+    },
+    // 获取商品图片
+    getImgUrl() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.json = JSON.stringify({
+        list: [
+          {
+            sku: this.detail.pdno,
+            spu: this.detail.spu
+          }
+        ]
+      });
+      this.$refcallback(
+        this,
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.imgUrl =
+                result.data.downPrev +
+                result.data.goodsFilePathList +
+                "/" +
+                _this.detail.pdno +
+                ".jpg" +
+                "?" +
+                new Date().getSeconds();
+            } else {
+              _this.$message.error("文件地址获取失败, 请稍后重试");
+            }
+          },
+          function error(error) {}
+        )
+      );
+    },
     // 取消订单
     hideModal() {
       console.log(12121)
@@ -540,5 +625,10 @@ export default {
 }
 .dropdown-p{
      .p-size(40px, 40px, 16px, left, 0px, #333333);
+}
+.reason-pic{
+  display: inline-block;
+  width: 100px;
+  height: 100px;
 }
 </style>
