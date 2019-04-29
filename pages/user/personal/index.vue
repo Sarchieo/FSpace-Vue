@@ -212,7 +212,6 @@ export default {
     //   address: "",
     //   addressCode: ""
     // });
-    this.countCompInfo();
     this.getBasicInfo();
     this.getNodes();
     this.$store.commit(types.SELECTED_KEYS, '/user/personal')
