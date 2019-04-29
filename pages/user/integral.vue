@@ -9,11 +9,11 @@
             <!-- accupoints -->
             <span class="inte-total">当前累计积分：{{integralNumber}}</span>
             <!-- times -->
-            <span class="keep-text">{{signDays.times}}</span>
+            <span class="keep-text">{{ signDays.times }}</span>
           </p>
           <!-- 根据签到状态循环不同图片 -->
           <div class="sign-pic">
-            <div v-for="(item,index) in signDays.dates" :key="index">
+            <div v-for="(item,index) in signDays.dates.reverse()" :key="index">
               <!-- 已签到图片 -->
               <img v-if="item.status == 1" src="../../assets/img/jifen-signed.png" alt>
               <!-- 未签到图片 -->
@@ -137,10 +137,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.signNumber = result.data.times
-            _this.signDays = result.data
-          } else {
-            debugger
-            _this.$message.error(result.message);
+            _this.signDays = result.data.flex-lg-row-reverse
           }
         })
       );
@@ -162,9 +159,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.integralNumber = result.data.accupoints
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
