@@ -936,7 +936,7 @@ export default {
               _this.$route.path.replace();
               if (_this.unqid > 0) {
                   result.data.forEach((item) => {
-                    item.actcode = _this.unqid
+                    item.actcode = [_this.unqid]
                   })
                 }
               sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
