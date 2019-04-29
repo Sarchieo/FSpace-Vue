@@ -363,7 +363,7 @@ export default {
           pdno: value.pdno,
           pnum: value.num,
           pdprice: value.pdprice,
-          actcode: value.actcode
+          actcode: JSON.stringify(value.actcode)
         }
       })
       iRequest.param.json = JSON.stringify({
@@ -375,7 +375,7 @@ export default {
           busno: 536862720,//自营暂时写死
           consignee: this.consignee,
           contact: this.contact,
-          rvaddno: this.storeInfo.comp.addressCode,
+          rvaddno: this.storeInfo.comp.addressCode[this.storeInfo.comp.addressCode.length-1],
           address: this.storeInfo.comp.address
         },
         goodsArr: goodsArr,
@@ -427,7 +427,7 @@ export default {
                   _this.queryMyConsignee()
                   _this.visible = false
                 }else {
-                  
+
                 }
               }
             )
