@@ -16,7 +16,7 @@
             </p>
             <p>
               <a-icon type="environment"/>
-              {{ storeInfo.comp.address }}
+              {{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}
             </p>
             <p>
               <a-icon type="mobile"/>

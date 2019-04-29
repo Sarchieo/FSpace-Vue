@@ -340,7 +340,7 @@
               </a-tabs>
             </div>
             <!-- 热销推荐 -->
-            <div class="hot-recommend">
+            <div class="hot-recommend" v-if="hotList.length > 0">
               <p class="hot-recommend-title">热销推荐</p>
               <div class="recommend-box">
                 <ul class="recommend-ul">
@@ -559,11 +559,11 @@ export default {
             _this.activitiesBySKU = result.data;
             if (_this.activitiesBySKU.length > 0) {
               _this.rulecode = _this.activitiesBySKU[0].brulecode;
+              _this.unqid = _this.activitiesBySKU[0].unqid
               if(_this.rulecode === 1113) {
-                _this.unqid = _this.activitiesBySKU[0].unqid
                 _this.beforeSecKill();
               }
-              _this.queryActiveType(_this.activitiesBySKU[0].unqid);
+                _this.queryActiveType(_this.activitiesBySKU[0].unqid);
             }
           }
         })
@@ -648,7 +648,7 @@ export default {
             if (result.code === 200) {
               _this.$route.path.replace();
               result.data.forEach((item) => {
-                item.actcode = _this.unqid
+                  item.actcode = _this.unqid
               })
               sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
               _this.$router.push({
@@ -934,6 +934,11 @@ export default {
             _this.loading = false;
             if (result.code === 200) {
               _this.$route.path.replace();
+              if (_this.unqid > 0) {
+                  result.data.forEach((item) => {
+                    item.actcode = _this.unqid
+                  })
+                }
               sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
               _this.$router.push({
                 name: "order-placeOrder",
