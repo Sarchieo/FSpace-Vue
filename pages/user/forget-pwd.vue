@@ -1,14 +1,20 @@
 <template>
-    <a-form :form="form" @submit="updataPwd" v-show="!isShowNewPhone">
-      <!-- <a-form-item v-bind="formItemLayout" label="手机号" has-feedback>
+  <div>
+    <a-layout>
+      <f-space-header type="register"></f-space-header>
+      <div class="register-box">
+        <div class="forget-box">
+          <p class="forget-p">找回密码</p>
+           <a-form :form="form" @submit="updataPwd" v-show="!isShowNewPhone">
+          <!-- <a-form-item v-bind="formItemLayout" label="手机号" has-feedback>
         <a-input v-model="oldPhone" id="validating"></a-input>
-      </a-form-item> -->
-       <a-row :gutter="8">
-          <a-col :span="24">
+          </a-form-item>-->
+          <a-row :gutter="8">
+            <a-col :span="24">
               <a-form-item v-bind="formItemLayout" label="手机号码">
-               <a-input
-               v-model="oldPhone"
-                v-decorator="[
+                <a-input
+                  v-model="oldPhone"
+                  v-decorator="[
                   'phone',
                   {
                     rules: [{
@@ -16,37 +22,37 @@
                     }],
                   }
                 ]"
-                type="text"
-                placeholder="请输入手机号码"
-              />
+                  type="text"
+                  placeholder="请输入手机号码"
+                />
               </a-form-item>
             </a-col>
           </a-row>
-        <a-row :gutter="8">
-          <a-col :span="24">
-          <a-form-item v-bind="formItemLayout" label="短信验证码">
-            <a-input
-              v-model="verification"
-              v-decorator="[
+          <a-row :gutter="8">
+            <a-col :span="24">
+              <a-form-item v-bind="formItemLayout" label="短信验证码">
+                <a-input
+                  v-model="verification"
+                  v-decorator="[
                 'smsCode',
                 {rules: [{ required: true, message: '请填写短信验证码', min:6 }]}
               ]"
-            />
-            <a-button
-              :disabled="sendAuthCode"
-              class="captcha"
-              :loading="sendAuthCodeLoading"
-              @click="getAuthCode()"
-            >{{sendAuthCodeText}}</a-button>
-          </a-form-item>
-          </a-col>
+                />
+                <a-button
+                  :disabled="sendAuthCode"
+                  class="captcha"
+                  :loading="sendAuthCodeLoading"
+                  @click="getAuthCode()"
+                >{{sendAuthCodeText}}</a-button>
+              </a-form-item>
+            </a-col>
           </a-row>
           <a-row :gutter="8">
-          <a-col :span="24">
+            <a-col :span="24">
               <a-form-item v-bind="formItemLayout" label="新登录密码" has-feedback>
-               <a-input
-               v-model="newPwd"
-                v-decorator="[
+                <a-input
+                  v-model="newPwd"
+                  v-decorator="[
                   'password',
                   {
                     rules: [{
@@ -54,25 +60,36 @@
                     }],
                   }
                 ]"
-                type="password"
-                placeholder="请输入密码"
-              />
+                  type="password"
+                  placeholder="请输入密码"
+                />
               </a-form-item>
             </a-col>
           </a-row>
-      
-      <a-form-item v-bind="tailFormItemLayout">
-        <a-button type="primary" html-type="submit" class="register-btn" block>确定</a-button>
-      </a-form-item>
-    </a-form>
-  
+
+          <a-form-item v-bind="tailFormItemLayout">
+            <a-button type="primary" html-type="submit" class="register-btn" block>确定</a-button>
+          </a-form-item>
+        </a-form>
+        </div>
+       
+      </div>
+      <f-space-footer></f-space-footer>
+    </a-layout>
+  </div>
 </template>
 <script>
+import FSpaceHeader from "../../components/fspace-ui/header/header";
+import FSpaceFooter from "../../components/fspace-ui/footer";
 export default {
+  components: {
+    FSpaceHeader,
+    FSpaceFooter
+  },
   data() {
     return {
       isPhone: false,
-      newPwd: '',
+      newPwd: "",
       isDisabled: true,
       oldPhone: "",
       newPhone: "",
@@ -106,12 +123,10 @@ export default {
       form: this.$form.createForm(this)
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
-
     updataPwd(e) {
-        debugger
+      debugger;
       e.preventDefault();
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -129,19 +144,19 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-               _this.$message.success(result.message);
-                 setTimeout(() => {
-                  _this.$router.push({
-                    path: "/user/login"
-                  });
-                }, 2000);
+            _this.$message.success(result.message);
+            setTimeout(() => {
+              _this.$router.push({
+                path: "/user/login"
+              });
+            }, 2000);
           }
         })
       );
     },
-        validatePwd(rule, value, callback) {
+    validatePwd(rule, value, callback) {
       const form = this.form;
-      if (value && value.length > 5 && value.length <=19) {
+      if (value && value.length > 5 && value.length <= 19) {
         callback();
       } else {
         callback("请输入正确的密码, 要求6-18位大小写字母数字加字符组合");
@@ -155,17 +170,15 @@ export default {
     validatePhone(rule, value, callback) {
       let _this = this;
       const form = this.form;
-      if(!(/^1[34578]\d{9}$/.test(value))){
-           
+      if (!/^1[34578]\d{9}$/.test(value)) {
         callback("请输入手机正确的手机号码");
       } else {
-          this.sendAuthCode = false;
+        this.sendAuthCode = false;
       }
-       
     },
     // 获取手机号的短信验证码
     getAuthCode() {
-        debugger
+      debugger;
       this.sendAuthCodeText = "请稍后";
       this.sendAuthCodeLoading = true;
       // 发送验证码
@@ -184,7 +197,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-              debugger
+            debugger;
             _this.auth_time = 60;
             _this.$message.success("短信发送成功");
             let auth_timetimer = setInterval(() => {
@@ -217,11 +230,13 @@ export default {
       //     }
       //   }, 1000);
       // },1500)
-    },
+    }
   }
 };
 </script>
-<style scoped lang="less">
+<style lang="less" scoped>
+@import "../../components/fspace-ui/container/index.less";
+@import "../../components/fspace-ui/button/index.less";
 .ant-input {
   width: 200px !important;
   border: 1px solid #e0e0e0 !important;
@@ -242,5 +257,16 @@ export default {
   // margin-top: 10px;
   margin-left: 4px;
 }
+.register-box {
+  .container-size(block, 1190px, 734px, 20px auto, 0px);
+  background: #ffffff;
+  padding-top: 8%;
+}
+.forget-box{
+  .container-size(block, 600px, 600px, 0 auto, 0px);
+}
+.forget-p{
+  .p-size(50px, 50px, 18px, center,0px, #333333);
+  font-weight: bold;
+}
 </style>
-
