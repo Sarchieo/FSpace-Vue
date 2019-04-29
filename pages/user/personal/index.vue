@@ -353,26 +353,6 @@ export default {
         })
       );
     },
-    /** 统计信息 */
-    countCompInfo() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "OrderInfoModule";
-      iRequest.method = "countCompInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-          debugger
-          if (result.code === 200) {
-           
-          }
-        })
-      );
-    },
     getFilePathPrev() {
       let _this = this;
       let iRequest = new inf.IRequest();
