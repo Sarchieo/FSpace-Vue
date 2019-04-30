@@ -43,6 +43,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
         console.log('模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + '>结果:' + result)
         let success = JSON.parse(result)
         if(success.code === -2 && context.$route.name !== 'user-login') {
+          
           context.$message.error('开发环境提示: <触发登录失效处理> 可能是由于当前账号在别处登录 or 后台异常', 10);
           context.$message.error('开发环境提示: 模块名<'+ _IRequest.cls + '>  方法名:<' + _IRequest.method + '>原因:' + success.message, 10);
           context.$store
