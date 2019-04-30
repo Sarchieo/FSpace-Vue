@@ -21,7 +21,7 @@
             :loadData="loadData" 
             placeholder="请选择省市区" 
             v-decorator="[
-              'addressCode',
+              ' ',
               {rules: [{ required: true, message: '请选择省市区' }]}
             ]"
           />
@@ -123,12 +123,13 @@ export default {
     storeInfo(val) {
       if (val.comp.addressCode) {
         let code = val.comp.addressCode.toString();
-        val.comp.addressCode = [
+        val.comp.aCode = [
           code.substr(0, 2) + "0000",
           code.substr(0, 4) + "00",
           code
         ].map(Number);
       }
+      debugger
       this.form.setFieldsValue(val.comp);
     }
   },
@@ -231,6 +232,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+              debugger
               _this.setArea(_this.cascaderData, result.data, 0)
             }
           }
@@ -267,9 +269,10 @@ export default {
                     _this.$set(value, 'children', arr)
                     _this.setArea(value.children, data, index)
                   }else {
+                    
                     _this.code.push(data[data.length -1].areac)
                     _this.form.setFieldsValue({
-                      addressCode: _this.code
+                      aCode: _this.code
                     })
                   }
                 }
@@ -437,7 +440,7 @@ export default {
           iRequest.param.token = localStorage.getItem("identification");
           iRequest.param.json = JSON.stringify({
             storeName: values.storeName,
-            addressCode: values.addressCode[values.addressCode.length - 1],
+            addressCode: values.aCode[values.aCode.length - 1],
             address: values.address,
             longitude: 0,
             latitude: 0

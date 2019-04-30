@@ -98,7 +98,7 @@ export default {
     },
     validateAccount(rule, value, callback) {
       const form = this.form;
-      if (value && value.length > 9 && value.length < 30) {
+      if (value && value.length > 8 && value.length < 31) {
         callback();
       } else {
         callback("请输入正确的银行账号");

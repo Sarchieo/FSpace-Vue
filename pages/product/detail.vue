@@ -74,19 +74,19 @@
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
                 </p>
-                <p class="price" v-if="rulecode == 0">
-                  <span class="price-title">价格</span>
-                  <span class="money-count" v-if="userStatus">￥{{ prodDetail.vatp }}</span>
-                  <span class="money-count" v-else>￥登录后可见</span>
-                  <!-- <del>￥32</del> -->
-                </p>
+                
                 <p class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
                   <span class="money-count" v-if="userStatus">￥{{ discount.killPrice }}</span>
                   <span class="money-count" v-else>￥登录后可见</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
-                <p class="price" v-if="rulecode === 1133">
+                <!-- <p class="price" v-else-if="rulecode === 1133">
+                  <span class="price-title">价格</span>
+                  <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count" v-else>￥登录后可见</span>
+                </p> -->
+                <p class="price" v-else>
                   <span class="price-title">价格</span>
                   <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
                   <span class="money-count" v-else>￥登录后可见</span>
@@ -147,7 +147,7 @@
                   <button @click="addCount()">+</button>
                 </p>
                 <p class="cart">
-                  <!-- <input type="text" readonly="readonly" v-model="count" class="goods-count"> -->
+                  <!-- <input type="text" readonly="readofnly" v-model="count" class="goods-count"> -->
                   <!-- <button class="addition width22" @click="addCount()">+</button> -->
                   <!-- <button class="reduce width22">-</button> -->
                   <!-- <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number> -->
@@ -911,6 +911,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "querySettShopCartList";
+      debugger
       let arr = [
         {
           pdno: this.prodDetail.sku,
@@ -936,7 +937,7 @@ export default {
               _this.$route.path.replace();
               if (_this.unqid > 0) {
                   result.data.forEach((item) => {
-                    item.actcode = _this.unqid
+                    item.actcode = [_this.unqid]
                   })
                 }
               sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));

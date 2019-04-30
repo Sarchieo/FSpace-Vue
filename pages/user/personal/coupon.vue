@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-tabs defaultActiveKey="1" @change="callback">
+    <a-tabs defaultActiveKey="0" @change="callback">
       <a-tab-pane tab="可使用" key="0">
         <div class="haved-coupon" >
           <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">

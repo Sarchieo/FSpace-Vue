@@ -60,11 +60,12 @@ function refcallback(context, moduleName,_IRequest, callback) {
             });
           return
         } else if(success.code === -3){
-          context.$message.error('开发环境提示: 模块名<' + _IRequest.cls + '>方法名:<' + _IRequest.method + '> 错误', 10);
-          context.$message.error('原因: <' + success.message +  '>', 10);
-          callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
+          context.$router.push({
+            path: '/user/personal'
+          })
+          context.$message.error(success.message, 3);
+          // callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else if (success.code === -1){
-          context.$message.error(success.message);
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else {
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);

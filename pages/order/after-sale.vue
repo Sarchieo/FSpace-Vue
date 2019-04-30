@@ -86,7 +86,7 @@ export default {
       this.goodsArr.forEach((item) => {
        item.inventory = item.pnum
       })
-    // debugger
+    // 
     // console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr));
   },
   methods: {

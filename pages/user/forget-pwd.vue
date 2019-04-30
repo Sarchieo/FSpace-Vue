@@ -126,7 +126,7 @@ export default {
   mounted() {},
   methods: {
     updataPwd(e) {
-      debugger;
+      ;
       e.preventDefault();
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -178,7 +178,7 @@ export default {
     },
     // 获取手机号的短信验证码
     getAuthCode() {
-      debugger;
+      ;
       this.sendAuthCodeText = "请稍后";
       this.sendAuthCodeLoading = true;
       // 发送验证码
@@ -197,7 +197,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            debugger;
+            ;
             _this.auth_time = 60;
             _this.$message.success("短信发送成功");
             let auth_timetimer = setInterval(() => {

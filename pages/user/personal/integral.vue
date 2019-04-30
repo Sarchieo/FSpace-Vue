@@ -204,7 +204,7 @@ export default {
   methods: {
     // 获取积分列表
     getIntegralList() {
-      debugger
+      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "IntegralModule";

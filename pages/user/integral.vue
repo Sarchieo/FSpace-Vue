@@ -9,7 +9,7 @@
             <!-- accupoints -->
             <span class="inte-total">当前累计积分：{{integralNumber}}</span>
             <!-- times -->
-            <span class="keep-text">{{signDays.times}}</span>
+            <span class="keep-text">{{ signDays.times }}</span>
           </p>
           <!-- 根据签到状态循环不同图片 -->
           <div class="sign-pic">
@@ -88,7 +88,7 @@ export default {
       userIntergral: [],
       signNumber: 0, // 连续签到天数
       integralNumber: 0, // 累积积分
-      signDays: JSON.parse('{"times":5,"dates":[{"date":"0429","status":"1"},{"date":"0428","status":"1"},{"date":"0427","status":"1"},{"date":"0426","status":"1"},{"date":"0425","status":"1"},{"date":"0424","status":"0"},{"date":"0423","status":"0"}]}'), // 日期数组
+      signDays: [], // 日期数组
     };
   },
   mounted() {
@@ -134,13 +134,12 @@ export default {
         this,
         "orderServer"+ Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(function result(result) {
+        new this.$iceCallback(
+          function result(result) {
           if (result.code === 200) {
             _this.signNumber = result.data.times
+            result.data.dates = result.data.dates.reverse()
             _this.signDays = result.data
-          } else {
-            debugger
-            _this.$message.error(result.message);
           }
         })
       );
@@ -162,9 +161,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.integralNumber = result.data.accupoints
-            _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
