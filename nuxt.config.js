@@ -17,7 +17,7 @@ module.exports = {
     ],
     script: [
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Ice.js' },
-      { src: 'https://www.onekdrug.com/iceInterfaces.js' }
+      { src: 'http://114.116.149.145/iceInterfaces.js' }
     ]
   },
 
