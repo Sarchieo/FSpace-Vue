@@ -20,12 +20,20 @@
               <span>一块医药</span>
             </div>
             <div class="no-data" v-if="cartList.length === 0">
-              <p class="no-icon"><a-icon type="exclamation"/></p>
+              <p class="no-icon">
+                <a-icon type="exclamation"/>
+              </p>
               <p class="no-text">你的采购单空空如也！</p>
             </div>
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
-                <a-checkbox :disabled="item.status == 1 || item.status == 2 || item.status == 3" @change="onChange" :value="item" v-model="item.checked" class="pick-input"></a-checkbox>
+                <a-checkbox
+                  :disabled="item.status == 1 || item.status == 2 || item.status == 3"
+                  @change="onChange"
+                  :value="item"
+                  v-model="item.checked"
+                  class="pick-input"
+                ></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
                 <img v-lazy="item.imgURl">
                 <p class="goods-name" @click="toDetail(item)">{{item.ptitle}}</p>
@@ -35,28 +43,52 @@
                   <a-tag color="#999999" v-if="item.status == 1">秒杀商品无法从购物车购买</a-tag>
                   <a-tag color="#999999" v-if="item.status == 2">当前商品已下架</a-tag>
                   <a-tag color="#999999" v-if="item.status == 3">商品库存不足</a-tag>
-                  <a-tag color="red" v-for="(item, index) in item.rule" :key="index">{{ item.rulename  }}</a-tag>
+                  <a-tag
+                    color="red"
+                    v-for="(item, index) in item.rule"
+                    :key="index"
+                  >{{ item.rulename }}</a-tag>
                 </p>
                 <p class="old-price">￥ {{item.pdprice}}</p>
                 <p class="validity">有效期：{{item.vperiod}}</p>
                 <p class="btn-p">
                   <button :disabled="item.status == 1" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.inventory" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
-                  <button :disabled="item.status == 1 || item.status == 2 || item.status == 3" @click="addCount(index,item)">+</button>
+                  <a-input-number
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3"
+                    :min="1"
+                    :max="item.inventory"
+                    v-model="item.num"
+                    style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;"
+                    readonly="readonly"
+                  />
+                  <button
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3"
+                    @click="addCount(index,item)"
+                  >+</button>
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
                 <p class="new-price">￥{{ parseFloat(item.pdprice * item.num).toFixed(2) }}</p>
                 <p class="omit" v-if="item.discount != 0">为您节省￥{{item.discount}}</p>
                 <!-- <p class="move">移入收藏夹</p> -->
-                
-                 <a-popconfirm title="商品加入收藏夹?" @confirm="addCollec(item)" okText="确定" cancelText="取消">
+
+                <a-popconfirm
+                  title="商品加入收藏夹?"
+                  @confirm="addCollec(item)"
+                  okText="确定"
+                  cancelText="取消"
+                >
                   <!-- <p class="del-goods">删除</p> -->
                   <a-tag color="#f50" class="move">添加收藏夹</a-tag>
                 </a-popconfirm>
-                
+
                 <!-- <p class="del-goods" @click="removeList(index)">删除</p> -->
-                <a-popconfirm title="您确认要移除当前商品吗?" @confirm="removeCartList(item, index)" okText="确定" cancelText="取消">
+                <a-popconfirm
+                  title="您确认要移除当前商品吗?"
+                  @confirm="removeCartList(item, index)"
+                  okText="确定"
+                  cancelText="取消"
+                >
                   <!-- <p class="del-goods">删除</p> -->
                   <a-tag color="gray" class="del-goods">移出购物车</a-tag>
                 </a-popconfirm>
@@ -74,39 +106,25 @@
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
           </div>
-          <div class="guess" v-if="likeList.length > 0">
+          <div class="guess" v-if="likeList.length >= 5">
             <p class="title">猜你喜欢</p>
             <div class="carousel">
-              <a-carousel arrows>
+              <div class="like-box">
                 <div
-                  slot="prevArrow"
-                  slot-scope="props"
-                  class="custom-slick-arrow"
-                  style="left: 10px;zIndex: 1;margin-right: 5px;"
+                  v-for="(item,index) in likeList"
+                  :key="index"
+                  style="display: inline-block;"
+                  @click="toDetail(item)"
                 >
-                  <a-icon type="left-circle"/>
-                </div>
-                <div
-                  slot="nextArrow"
-                  slot-scope="props"
-                  class="custom-slick-arrow"
-                  style="right: 10px"
-                >
-                  <a-icon type="right-circle"/>
-                </div>
-                <div v-for="(item,index) in likeList" :key="index" style="padding-left: 6.5%;" @click="toDetail(item)">
-                  <a-card
-                    hoverable
-                    class="meal-card"
-                    v-for="(items,index) in item.list"
-                    :key="index"
-                  >
-                    <img v-lazy="items.imgURl" slot="cover">
-                    <p class="meal-price">${{items.mp}}</p>
-                    <p class="meal-name">{{items.prodname}}</p>
+                  <a-card hoverable class="meal-card">
+                    <img v-lazy="item.imgURl" slot="cover">
+                    <div slot="cover">
+                      <p class="meal-price">${{item.mp}}</p>
+                      <p class="meal-name">{{item.prodname}}</p>
+                    </div>
                   </a-card>
                 </div>
-              </a-carousel>
+              </div>
             </div>
           </div>
         </div>
@@ -123,13 +141,13 @@ export default {
     FSpaceHeader,
     FSpaceFooter
   },
-  middleware: 'authenticated',
+  middleware: "authenticated",
   data() {
     return {
       isSubmit: false,
       amt: 0,
       loading: false,
-      maximum: 1,// 最大库存
+      maximum: 1, // 最大库存
       timeoutflag: null,
       checked: false,
       discount: 100,
@@ -147,16 +165,16 @@ export default {
     total: function() {
       let total = 0;
       this.cartList.forEach(item => {
-        if(item.checked) {
-          total +=  parseFloat(item.pdprice * item.num);
+        if (item.checked) {
+          total += parseFloat(item.pdprice * item.num);
         }
       });
       return total.toFixed(2);
     }
   },
   mounted() {
-    this.getShoppingCartList()
-    this.guessYouLikeArea()
+    this.getShoppingCartList();
+    this.guessYouLikeArea();
   },
   methods: {
     getShoppingCartList() {
@@ -166,32 +184,37 @@ export default {
       iRequest.method = "queryUnCheckShopCartList";
       iRequest.param.json = JSON.stringify({
         compid: this.storeInfo.comp.storeId
-      })
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              if(result.data) {
-                _this.cartList = result.data
-                _this.cartList.forEach((item) => {
-                  item.checked ? false : true
-                })
-                _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
-              }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            if (result.data) {
+              _this.cartList = result.data;
+              _this.cartList.forEach(item => {
+                item.checked ? false : true;
+              });
+              _this.fsGeneralMethods.addImages(
+                _this,
+                _this.cartList,
+                "pdno",
+                "spu"
+              );
             }
-        }
-      ))
+          }
+        })
+      );
     },
     queryCheckShopCartList() {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "queryCheckShopCartList";
-      let arr = _this.cartList.map((value) => {
+      let arr = _this.cartList.map(value => {
         return {
           compid: _this.storeInfo.comp.storeId,
           pdno: value.pdno,
@@ -199,24 +222,24 @@ export default {
           checked: value.checked ? 1 : 0,
           unqid: value.unqid
         };
-      })
-      iRequest.param.json = JSON.stringify(arr)
+      });
+      iRequest.param.json = JSON.stringify(arr);
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.cartList = result.data
-              _this.cartList.forEach((item) => {
-                if(item.checked) {
-                  _this.amt = item.amt
-                }
-              })
-            }
-          })
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.cartList = result.data;
+            _this.cartList.forEach(item => {
+              if (item.checked) {
+                _this.amt = item.amt;
+              }
+            });
+          }
+        })
       );
     },
     // 现在是单条删除
@@ -228,19 +251,18 @@ export default {
       iRequest.param.json = JSON.stringify({
         compid: _this.storeInfo.comp.storeId,
         ids: item.unqid
-      })
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
+        new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.$message.success('购物车移除成功~')
-            _this.cartList.splice(index, 1)
-            if(_this.cartList.length > 0) 
-              _this.queryCheckShopCartList()
+            _this.$message.success("购物车移除成功~");
+            _this.cartList.splice(index, 1);
+            if (_this.cartList.length > 0) _this.queryCheckShopCartList();
           }
         })
       );
@@ -248,7 +270,7 @@ export default {
     // 购物车选中商品
     toDetail(item) {
       let routeData = this.$router.resolve({
-        path:'/product/detail',
+        path: "/product/detail",
         query: {
           sku: item.pdno,
           spu: item.spu
@@ -258,25 +280,25 @@ export default {
     },
     // 全选
     checkAll(e) {
-      this.cartList.forEach((item) => {
-        if(item.status != 1) {
-          item.checked = e.target.checked
+      this.cartList.forEach(item => {
+        if (item.status != 1) {
+          item.checked = e.target.checked;
         }
-      })
-      this.queryCheckShopCartList()
+      });
+      this.queryCheckShopCartList();
     },
     onChange(e) {
-      this.queryCheckShopCartList()
+      this.queryCheckShopCartList();
     },
     inputChange(index, item) {
-      console.log(item)
+      console.log(item);
     },
     toPlaceOrder() {
-      this.loading = true
+      this.loading = true;
       // 获取sku id
-      let arr = []
-       this.cartList.forEach((item) => {
-        if(item.checked) {
+      let arr = [];
+      this.cartList.forEach(item => {
+        if (item.checked) {
           arr.push({
             pdno: item.pdno,
             pnum: item.num,
@@ -285,29 +307,32 @@ export default {
             unqid: item.unqid,
             conpno: 0,
             areano: this.storeInfo.comp.addressCode
-          })
+          });
         }
-      })
-      if(arr.length === 0) {
-        this.$message.error('请选择要购买的药品～')
-        this.loading = false
-        return
+      });
+      if (arr.length === 0) {
+        this.$message.error("请选择要购买的药品～");
+        this.loading = false;
+        return;
       }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "querySettShopCartList";
-      iRequest.param.json = JSON.stringify(arr)
+      iRequest.param.json = JSON.stringify(arr);
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-          _this.loading = false
+        new this.$iceCallback(function result(result) {
+          _this.loading = false;
           if (result.code === 200) {
-            sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
+            sessionStorage.setItem(
+              "placeOrderList",
+              JSON.stringify(result.data)
+            );
             _this.$router.push({
               name: "order-placeOrder",
               query: {
@@ -316,41 +341,43 @@ export default {
               }
             });
           }
-        }
-      ));
+        })
+      );
     },
     addCount(index, item) {
-      let _this = this
+      let _this = this;
       // 限购数量
-      if(item.num >= item.inventory) {
-        _this.$message.warning(item.ptitle + '限购' + item.inventory + '件')
-        return
+      if (item.num >= item.inventory) {
+        _this.$message.warning(item.ptitle + "限购" + item.inventory + "件");
+        return;
       }
-      item.checked = true
+      item.checked = true;
       item.num += 1;
 
-      if(this.timeoutflag != null){
+      if (this.timeoutflag != null) {
         clearTimeout(this.timeoutflag);
       }
-      this.timeoutflag = setTimeout(function(){
-        _this.queryCheckShopCartList()
-      },1000);
+      this.timeoutflag = setTimeout(function() {
+        _this.queryCheckShopCartList();
+      }, 1000);
     },
     reduceCount(index, item) {
       if (item.num === 1) {
         return false;
       }
-      let _this = this
-      item.num--
-      item.checked = true
-      if(this.timeoutflag != null){
+      let _this = this;
+      item.num--;
+      item.checked = true;
+      if (this.timeoutflag != null) {
         clearTimeout(this.timeoutflag);
       }
-      this.timeoutflag = setTimeout(function(){
-        _this.queryCheckShopCartList()
-      },1000);
+      this.timeoutflag = setTimeout(function() {
+        _this.queryCheckShopCartList();
+      }, 1000);
     },
+    // 猜你喜欢
     guessYouLikeArea() {
+      debugger;
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
@@ -358,8 +385,8 @@ export default {
       iRequest.param.pageIndex = 1;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
-        keyword: ''
-      })
+        keyword: ""
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
@@ -367,8 +394,16 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.likeList = result.data
-            _this.fsGeneralMethods.addImages(_this, _this.likeList, 'sku', 'spu')
+            if(result.data.length > 5) {
+              _this.likeList = result.data.slice(0, 5);
+            }
+            console.log(_this.likeList);
+            _this.fsGeneralMethods.addImages(
+              _this,
+              _this.likeList,
+              "sku",
+              "spu"
+            );
           }
         })
       );
@@ -388,7 +423,8 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -448,15 +484,18 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.meal-card:hover{
+  box-shadow: 0px 0px 30px 10px #e0e0e0;
+}
 // 采购单无数据显示 内容
-.no-data{
+.no-data {
   .container-size(block, 1190px, 120px, 0 auto 20px auto, 0px);
-  .no-icon{
-    .p-size(50px,50px,50px,center,0px,#333333);
+  .no-icon {
+    .p-size(50px, 50px, 50px, center, 0px, #333333);
     margin-bottom: 20px;
   }
-  .no-text{
-     .p-size(50px,50px,30px,center,0px,#333333);
+  .no-text {
+    .p-size(50px, 50px, 30px, center, 0px, #333333);
   }
 }
 .cart-box {
@@ -509,8 +548,8 @@ li {
   .container-size(inline-block, 200px, 32px, 0, 0px);
   line-height: 32px;
   font-size: 14px;
-   overflow: hidden;
-  text-overflow:ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .first-div .pick-input {
@@ -523,12 +562,12 @@ li {
 .goods-guige {
   .position(absolute, 52px, 180px);
   .p-size(30px, 30px, 13px, left, 0px, #999999);
-  font-size: 13px!important;
+  font-size: 13px !important;
 }
 .manufactor {
   .position(absolute, 80px, 180px);
   .p-size(30px, 30px, 14px, left, 0px, #999999);
-  font-size: 13px!important;
+  font-size: 13px !important;
   height: auto !important;
   line-height: 14px !important;
 }
@@ -536,7 +575,7 @@ li {
   .position(absolute, 100px, 180px);
   .p-size(20px, 20px, 14px, left, 0px, #999999);
   height: 30px !important;
-  width: 250px!important;
+  width: 250px !important;
 }
 .goods-count {
   .container-size(inline-block, 20px, 20px, 0, 0px);
@@ -554,7 +593,7 @@ li {
 .validity {
   .position(absolute, 32px, 180px);
   text-align: left;
-  font-size: 13px!important;
+  font-size: 13px !important;
   color: #999999;
 }
 .goods-count {
@@ -579,7 +618,7 @@ li {
   border: 1px solid #e0e0e0;
   background: #ffffff;
 }
-.btn-p input{
+.btn-p input {
   height: 30px;
 }
 .new-price {
@@ -601,7 +640,7 @@ li {
   text-align: center;
 }
 .whole-pick {
-  .container-size(inline-block, 1190px, 70px, 0, 0px);
+  .container-size(inline-block, 1190px, 72px, 0, 0px);
   background: #f2f2f2;
   line-height: 70px;
   padding-left: 20px;
@@ -620,40 +659,51 @@ li {
 // 猜你喜欢
 .guess {
   .container-size(block, 1190px, 360px, 0 auto, 0px);
-  border: 1px solid #F6F6F6;
+  border: 1px solid #f2f2f2;
   margin-top: 20px;
-  .title{
+  .title {
     .p-size(50px, 50px, 18px, left, 20px, #666666);
-    background: #f6f6f6;
+    background: #f2f2f2;
   }
 }
 
 .meal-card {
   display: inline-block;
-  width: 200px!important;
-  height: 280px!important;
-  margin-right: 10px;
+  width: 210px !important;
+  height: 280px !important;
+  margin-right: 12px;
+  margin-left: 11px;
 }
 .meal-card img {
-  width: 198px;
-  height: 180px;
+  width: 135px;
+  height: 123px;
+  margin-top: 32px;
+  margin-left: 32px;
 }
 .meal-price {
   text-align: left;
+  text-indent: 20px;
+  margin-top: 35px;
   font-weight: bold;
   color: rgb(245, 47, 62);
 }
 .meal-name {
   margin-top: 10px;
   text-align: left;
+  text-indent: 20px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
   color: #333333;
 }
 .carousel {
   width: 1190px;
   height: 310px;
   padding-top: 15px;
+  background: #f2f2f2;
 }
-.ant-carousel .slick-prev, .ant-carousel .slick-next{
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next {
   background-color: rgba(247, 37, 38, 0.5);
 }
 
@@ -683,12 +733,16 @@ li {
 .ant-carousel .slick-slide h3 {
   color: #fff;
 }
-.back-pink{
+.back-pink {
   background: #fdf4e9;
 }
-.goods-name:hover{
+.goods-name:hover {
   color: #ed2f26;
   cursor: pointer;
+}
+.like-box{
+  padding-left: 12px;
+  padding-right: 12px;
 }
 </style>
 

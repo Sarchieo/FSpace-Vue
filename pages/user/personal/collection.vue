@@ -19,7 +19,7 @@
           />
           <a-icon type="delete" class="close-coll" @click.stop="delCollec(item.sku)"/>
           <!-- {{item.info.prodname}} -->
-          <p class="surplus text-Center top185">{{item.info.brandName}}</p>
+          <p class="surplus text-Center top185">{{item.info.popname}}</p>
           <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
           <p class="validity">有效期{{item.info.prodsdate}}-{{item.info.prodedate}}</p>
           <!-- {{item.info.vatp}} -->
@@ -188,6 +188,9 @@ export default {
   .position(absolute,245px,0px);
   width: 225px;
   text-indent: 20px;
+   overflow: hidden;
+ text-overflow:ellipsis;
+ white-space: nowrap;
   color: #333333;
 }
 .close-coll{

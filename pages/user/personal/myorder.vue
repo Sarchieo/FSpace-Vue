@@ -58,7 +58,6 @@
               <p class="freight">(含运费{{items.freight}}元)</p>
             </div>
             <div class="state">
-              <p class="sucess" v-if="item.ostatus == 3">申请售后</p>
               <p class="sucess">{{statusText(item.ostatus)}}</p>
             </div>
           </div>
@@ -81,8 +80,8 @@
             @click="isShowCancel()"
           >取消订单</p>
           <p class="detail" @click="toDetails(item)">订单详情</p>
-          <p v-if="item.ostatus == 3">再次购买</p>
-          <p @click="toSuppInvo(item)">补开发票</p>
+          <p v-if="item.ostatus == 3" class="align">再次购买</p>
+          <p @click="toSuppInvo(item)" class="supplement">补开发票</p>
         </div>
         <div style="clear: both;"></div>
       </li>
@@ -418,6 +417,18 @@ export default {
 .order-box-li:hover {
   border: 1px solid #e0e0e0;
 }
+.supplement:hover{
+  cursor: pointer;
+  color: #ed3025;
+}
+.align:hover{
+  cursor: pointer;
+  color: #ed3025;
+}
+.share:hover{
+  cursor: pointer;
+  color: #ed3025;
+}
 .width33 {
   // .position(relative, 0px, 0px);
   float: left;
@@ -589,10 +600,6 @@ export default {
           text-align: center;
           color: #3189f5;
         }
-        .detail:hover {
-          cursor: pointer;
-          color: #ed3025;
-        }
       }
     }
   }
@@ -655,9 +662,16 @@ export default {
 .price-p {
   color: #ed3025 !important;
 }
+.sucess:hover{
+  cursor: pointer;
+}
 .retreat div:hover {
   cursor: pointer;
   border: 1px solid #ed3025;
+}
+.detail:hover {
+  cursor: pointer;
+  color: #ed3025;
 }
 .retreat-text {
   margin-bottom: 3px;
