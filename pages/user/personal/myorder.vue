@@ -37,7 +37,8 @@
                 <a-icon type="delete" @click="showDeleteConfirm(item)"/>
               </a-tooltip>
             </p>
-            <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
+            <div style="float:left;overflow: hidden;">
+               <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
               <div class="goods-pic">
                 <img
                   v-lazy="items.imgURl"
@@ -63,6 +64,8 @@
                 <p class="sucess">{{statusText(item.ostatus)}}</p>
               </div>
             </div>
+            </div>
+           
             <div class="operation">
               <p class="button-p" v-if="item.ostatus === 0"><a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button></p>
               <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
@@ -74,20 +77,7 @@
               <p v-if="item.ostatus == 3">再次购买</p>
               <p @click="toSuppInvo(item)">补开发票</p>
             </div>
-            <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
-              <p>订单取消成功后将无法恢复</p>
-              <p>优惠券不再返还，支付优惠也将一并取消</p>
-              <div>
-                <a-radio-group defaultValue="a" size="large">
-                  <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
-                  <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
-                  <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
-                  <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
-                  <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
-                  <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
-                </a-radio-group>
-              </div>
-            </a-modal>
+            <div style="clear: both;"></div>
           </li>
           <a-pagination  v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
         </ul>
@@ -122,6 +112,20 @@
           </div>
 
         </a-modal>
+        <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
+              <p>订单取消成功后将无法恢复</p>
+              <p>优惠券不再返还，支付优惠也将一并取消</p>
+              <div>
+                <a-radio-group defaultValue="a" size="large">
+                  <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
+                  <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
+                  <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
+                  <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
+                  <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
+                  <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
+                </a-radio-group>
+              </div>
+            </a-modal>
         <!-- <input type="radio" id="radio1" name="radio1" />
           <input type="radio" id="radio2" name="radio1" /> -->
   </div>
@@ -462,8 +466,11 @@ export default {
       }
     }
     .goods-box {
-      .container-size(inline-block, 820px, 108px, 0 auto, 0px);
-      border-bottom: 1px solid #e0e0e0;
+      // .container-size(inline-block, 820px, 108px, 0 auto, 0px);
+      width: 820px;
+      height: 108px;
+      margin: 0px;
+      border-top: 1px solid #f2f2f2;
       div {
         display: inline-block;
         height: 108px;
@@ -550,7 +557,8 @@ export default {
         min-height: 108px;
         height: auto;
         padding-top: 42px;
-        border-left: 1px solid #e0e0e0;
+        border-left: 1px solid #f2f2f2;
+        border-right: 1px solid #f2f2f2;
         .sucess {
           // .position(absolute, 28px, 0px);
           width: 100%;
@@ -664,11 +672,12 @@ export default {
 }
 .operation {
   float: right;
+  overflow: hidden;
   width: 123px;
-  min-height: 108px;
-  height: auto;
-  border-bottom: 1px solid #e0e0e0;
-  border-left: 1px solid #e0e0e0;
+  // height: 108px;
+  // height: auto;
+  // border-bottom: 1px solid #e0e0e0;
+  border-top: 1px solid #f2f2f2;
   padding-top: 10px;
   p{
     text-align: center;
