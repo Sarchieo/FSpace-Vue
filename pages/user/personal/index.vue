@@ -21,7 +21,7 @@
             :loadData="loadData" 
             placeholder="请选择省市区" 
             v-decorator="[
-              ' ',
+              'aCode',
               {rules: [{ required: true, message: '请选择省市区' }]}
             ]"
           />
@@ -129,7 +129,6 @@ export default {
           code
         ].map(Number);
       }
-      debugger
       this.form.setFieldsValue(val.comp);
     }
   },
@@ -163,7 +162,7 @@ export default {
       DrugImg: "",
       authenticationStatus: 0,
       authenticationMessage: "",
-      areaMax: 2, // 2+1 级
+      areaMax: 2,
       headers: {
         "specify-path": "",
         "specify-filename": ""
@@ -232,7 +231,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              debugger
               _this.setArea(_this.cascaderData, result.data, 0)
             }
           }
@@ -269,8 +267,6 @@ export default {
                     _this.$set(value, 'children', arr)
                     _this.setArea(value.children, data, index)
                   }else {
-                    
-                    _this.code.push(data[data.length -1].areac)
                     _this.form.setFieldsValue({
                       aCode: _this.code
                     })

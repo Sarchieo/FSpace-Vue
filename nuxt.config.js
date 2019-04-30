@@ -17,7 +17,7 @@ module.exports = {
     ],
     script: [
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Ice.js' },
-      { src: 'http://114.116.149.145:9999/iceInterfaces.js' }
+      { src: 'https://www.onekdrug.com/iceInterfaces.js' }
     ]
   },
 
@@ -43,7 +43,8 @@ module.exports = {
     { src: '~/plugins/element-ui', ssr: true },
     { src: '~/plugins/fs-plugin.js', ssr: false },
     { src: '~/plugins/fingerprint2.js', ssr: false },
-    { src: '~/plugins/commom.js', ssr: false }
+    { src: '~/plugins/commom.js', ssr: false },
+    { src: '~/plugins/clipboard2.js', ssr: false }
   ],
   /*
   ** Nuxt.js modules

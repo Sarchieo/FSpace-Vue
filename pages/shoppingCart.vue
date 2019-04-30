@@ -66,6 +66,8 @@
                     :disabled="item.status == 1 || item.status == 2 || item.status == 3"
                     @click="addCount(index,item)"
                   >+</button>
+                  <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.maximum" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <button :disabled="item.status == 1 || item.status == 2 || item.status == 3" @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
                 <p class="new-price">￥{{ parseFloat(item.pdprice * item.num).toFixed(2) }}</p>
@@ -101,7 +103,7 @@
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
               <span>活动优惠：￥{{amt}}</span>
-              <span class="total-price" v-if="total > 0">应付总金额：￥{{total - amt}}</span>
+              <span class="total-price" v-if="total > 0">应付总金额：￥{{(total - amt).toFixed(2)}}</span>
               <span class="total-price" v-if="total == 0">应付总金额：￥{{total}}</span>
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
@@ -124,7 +126,19 @@
                     </div>
                   </a-card>
                 </div>
-              </div>
+                <div v-for="(item,index) in likeList" :key="index" style="padding-left: 6.5%;" @click="toDetail(item)">
+                  <a-card
+                    hoverable
+                    class="meal-card"
+                    v-for="(items,index) in item.list"
+                    :key="index"
+                  >
+                    <img v-lazy="items.imgURl" slot="cover">
+                    <p class="meal-price">${{items.mp}}</p>
+                    <p class="meal-name">{{items.prodname}}</p>
+                  </a-card>
+                </div>
+              </a-carousel>
             </div>
           </div>
         </div>
@@ -204,6 +218,17 @@ export default {
                 "pdno",
                 "spu"
               );
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              if(result.data) {
+                _this.cartList = result.data
+                _this.cartList.forEach((item) => {
+                  item.checked ? false : true,
+                  item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
+                })
+                _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
+              }
             }
           }
         })
@@ -240,6 +265,18 @@ export default {
             });
           }
         })
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.cartList = result.data
+              _this.cartList.forEach((item) => {
+                 item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
+                if(item.checked) {
+                  _this.amt = item.amt
+                }
+              })
+            }
+          })
       );
     },
     // 现在是单条删除
@@ -347,9 +384,9 @@ export default {
     addCount(index, item) {
       let _this = this;
       // 限购数量
-      if (item.num >= item.inventory) {
-        _this.$message.warning(item.ptitle + "限购" + item.inventory + "件");
-        return;
+      if(item.num >= item.maximum) {
+        _this.$message.warning(item.ptitle + '限购' + item.maximum + '件')
+        return
       }
       item.checked = true;
       item.num += 1;
@@ -377,7 +414,6 @@ export default {
     },
     // 猜你喜欢
     guessYouLikeArea() {
-      debugger;
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";

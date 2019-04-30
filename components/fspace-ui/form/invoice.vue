@@ -113,18 +113,17 @@ export default {
       }
     },
     validatePhone(rule, value, callback) {
-      let _this = this;
       const form = this.form;
       if (value && value.length === 11) {
         callback()
       } else {
-        this.sendAuthCode = false
         callback('请输入手机正确的手机号码');
       }
     },
     handleSubmit (e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
+        debugger
         if (!err) {
           let _this = this;
           let iRequest = new inf.IRequest();

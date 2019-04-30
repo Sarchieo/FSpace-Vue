@@ -15,9 +15,9 @@
                   <img v-lazy="item.imgURl" alt="" class="goods-pic">
                   <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
                   <p class="goods-surplus">{{item.manuName}}</p>
-                  <p class="goods-limit">还剩<span>{{item.surplusstock}}</span>盒</p>
+                  <p class="goods-limit">还剩<span>{{item.store}}</span>盒</p>
                   <p class="goods-price" v-if="userStatus">单价￥{{item.mp}}元 </p>
-                  <p class="goods-price" v-else="userStatus">￥登录后可见 </p>
+                  <p class="goods-price" v-else>￥登录后可见 </p>
                   <button @click="toDetail(item)">查看详情</button>
                 </a-card>
               </div>
@@ -168,8 +168,8 @@ export default {
 .goods-name {
   .position(absolute,187px,0px);
   width: 100%;
-   text-indent: 10px;
-  font-size: 16px;
+  text-indent: 10px;
+  font-size: 14px;
 }
 .goods-adv {
   .position(absolute,50px,250px);

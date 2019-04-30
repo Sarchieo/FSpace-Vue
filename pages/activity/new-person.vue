@@ -85,7 +85,8 @@ export default {
         color: "#c40000",
         background: "black"
       },
-      selectedList: []
+      selectedList: [],
+      keyword: ''
     };
   },
   mounted() {
@@ -111,22 +112,23 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
-      iRequest.method = "getNewMemberMallFloor";
+      iRequest.method = "newMemberSearch";
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
+      iRequest.param.json = JSON.stringify({
+        keyword: this.keyword
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data.list) {
-            result.data.list = result.data.list.slice(0, 5)
+          if (result.code === 200 && result.data) {
             _this.newPersonList = result.data
             _this.newPersonID = result.data.actcode
             _this.total = result.total
-            _this.fsGeneralMethods.addImages(_this, _this.newPersonList.list, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(_this, _this.newPersonList, 'sku', 'spu')
           }
         })
       );

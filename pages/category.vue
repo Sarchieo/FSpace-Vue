@@ -91,12 +91,12 @@
         <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item)">
           <a-card hoverable class="card">
             <img class="card-img" v-lazy="item.imgURl" slot="cover">
-            <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus === 1 || item.rulestatus === 2 || item.rulestatus === 4　||　item.rulestatus === 2048　||　item.rulestatus === 4096" alt="" slot="cover">
-            <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64　||　item.rulestatus === 128 || item.rulestatus === 256 || item.rulestatus === 512||　item.rulestatus === 1024" alt="" slot="cover">
+            <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus === 1 || item.rulestatus === 2 || item.rulestatus === 4" alt="" slot="cover">
+            <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName + item.prodname}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
             <p class="card-price top165" v-if="item.actprod && userStatus">
-              ￥{{item.vatp}}
+              ￥{{item.minprize }} ~  {{item.maxprize}}
               <del>￥{{item.vatp}}</del>
             </p>
             <p class="card-price top165" v-if="!item.actprod && userStatus">
@@ -252,50 +252,6 @@ export default {
         })
       );
     },
-    getImgUrl() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "FileInfoModule";
-      iRequest.method = "fileServerInfo";
-      iRequest.param.token = localStorage.getItem("identification");
-      let list = [];
-      _this.searchList.forEach(c => {
-        list.push({
-          sku: c.sku,
-          spu: c.spu
-        });
-      });
-      iRequest.param.json = JSON.stringify({
-        list: list
-      });
-
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              result.data.goodsFilePathList.forEach((c, index, arr) => {
-                _this.$set(
-                  _this.searchList[index],
-                  "imgURl",
-                  result.data.downPrev +
-                    c +
-                    "/" +
-                    _this.searchList[index].sku +
-                    "-200x200.jpg" +
-                    "?" +
-                    new Date().getSeconds()
-                );
-              });
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
-            }
-          }
-        )
-      );
-    },
     // 药品厂商规格品牌
     getConditionByFullTextSearch() {
       let _this = this;
@@ -375,8 +331,8 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
-              _this.getImgUrl();
-              
+              _this.fsGeneralMethods.addImages(_this,_this.searchList, 'sku', 'spu' );
+
               if (_this.searchList.length === 0 || _this.searchList === null) {
                 _this.isGoods = true;
               } else {

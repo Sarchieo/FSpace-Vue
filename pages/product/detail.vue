@@ -30,9 +30,14 @@
               <!-- 已收藏的class为collection -->
               <p v-if="this.isShowCollec === true">
                 <span @click="delCollec()">
-                  <a-icon type="star"/>取消收藏
+                  <a-icon type="star" class="collection"/>取消收藏
                 </span>
               </p>
+               <p>
+                <span v-clipboard:copy="shareURl" v-clipboard:success="onShare">
+                  <a-icon type="share-alt" class="collection"/> 分享
+                </span>
+               </p>
             </div>
             <div class="goods-info">
               <p class="goods-name">{{ prodDetail.prodname }}</p>
@@ -95,14 +100,14 @@
                 <!-- <p class="price">
                   <span>购买得50积分</span>
                 </p>-->
-                <p class="price indent">
+                <!-- <p class="price indent">
                   <a-icon type="check-circle"/>
                   <span>30天无忧退换货</span>
                   <a-icon type="check-circle"/>
                   <span>48小时快速退款</span>
                   <a-icon type="check-circle"/>
                   <span>满88元免邮费</span>
-                </p>
+                </p> -->
               </div>
               <div class="manufacturer">
                 <p class="packing">
@@ -368,7 +373,7 @@ import moment from "moment";
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
-import FSpacePicZoom from "../../components/fspace-ui/piczoom"
+import FSpacePicZoom from "../../components/fspace-ui/piczoom";
 
 export default {
   components: {
@@ -388,6 +393,7 @@ export default {
   // middleware: "authenticated",
   data() {
     return {
+      shareURl: '',
       appriseArr: [], //评价列表
       evaluateVal: 0, // 药店评价商品的分数
       currentIndex: 1, // 第几页
@@ -472,6 +478,7 @@ export default {
     };
   },
   mounted() {
+    this.shareURl = window.location.href;
     this.sku = this.$route.query.sku;
     this.spu = this.$route.query.spu;
     // 获取商品详情
@@ -557,13 +564,15 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
+            // 如果存在活动 取库存与活动库存最小值
+            // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
               _this.rulecode = _this.activitiesBySKU[0].brulecode;
               _this.unqid = _this.activitiesBySKU[0].unqid
               if(_this.rulecode === 1113) {
                 _this.beforeSecKill();
               }
-                _this.queryActiveType(_this.activitiesBySKU[0].unqid);
+              _this.queryActiveType(_this.activitiesBySKU[0].unqid);
             }
           }
         })
@@ -788,19 +797,19 @@ export default {
                 _this.getFoot();
               }
               _this.details = JSON.parse(_this.prodDetail.detail);
-              if (_this.rulecode === 0) {
-                _this.maximum = _this.prodDetail.store;
-              } else if (_this.rulecode == 1113) {
-                _this.maximum =
-                  _this.prodDetail.limits > _this.prodDetail.store
-                    ? _this.prodDetail.store
-                    : _this.prodDetail.limits;
-              } else {
-                _this.maximum =
-                  _this.prodDetail.limits > _this.prodDetail.store
-                    ? _this.prodDetail.store
-                    : _this.prodDetail.limits;
-              }
+              // if (_this.rulecode === 0) {
+              //   _this.maximum = _this.prodDetail.store;
+              // } else if (_this.rulecode == 1113) {
+              //   _this.maximum =
+              //     _this.prodDetail.limits > _this.prodDetail.store
+              //       ? _this.prodDetail.store
+              //       : _this.prodDetail.limits;
+              // } else {
+              //   _this.maximum =
+              //     _this.prodDetail.limits > _this.prodDetail.store
+              //       ? _this.prodDetail.store
+              //       : _this.prodDetail.limits;
+              // }
             }
           }
         })
@@ -911,7 +920,6 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "querySettShopCartList";
-      debugger
       let arr = [
         {
           pdno: this.prodDetail.sku,
@@ -1035,6 +1043,10 @@ export default {
           _this.isSecondkill = false;
         }
       }
+    },
+    onShare(e) {
+      console.log(e)
+      this.$message.success('商品链接已复制至剪贴板')
     },
     like() {
       this.likes = 1;
@@ -1241,6 +1253,8 @@ li {
   text-align: left;
   font-size: 16px;
   color: #666666;
+  width: 80px;
+  float: left;
 }
 .goods-big-pic p span:hover {
   cursor: pointer;
