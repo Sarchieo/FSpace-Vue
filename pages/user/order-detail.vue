@@ -125,8 +125,7 @@
                   <td class="pic-box widths40">
                     <div>
                       <img
-                        src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-                        alt
+                        :src="items.imgURl"
                       >
                     <span class="goods-name">{{items.pname}}</span>
                       <span>{{items.pspec}}</span>
@@ -252,6 +251,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderDetail = result.data;
+            _this.fsGeneralMethods.addImages(_this, _this.orderDetail[0].goods, 'pdno', 'spu')
             switch(_this.orderDetail[0].ostatus) {
               case 0:
                 _this.steps = 0
@@ -268,8 +268,6 @@ export default {
                 _this.steps = 3
               break
             }
-          } else {
-            ;
           }
         })
       );
@@ -288,7 +286,6 @@ export default {
           orderno: this.orderDetail[0].orderno,
           cusno: this.orderDetail[0].cusno
       });
-      console.log("json-------- " +  iRequest.param.json)
       this.$refcallback(
         this,
           "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
@@ -297,8 +294,6 @@ export default {
               if (result.code === 200) {
                 _this.visible = false;
                 _this.queryOrderDetail()
-              } else {
-                ;
               }
           })
       );

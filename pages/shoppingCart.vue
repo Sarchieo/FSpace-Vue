@@ -42,7 +42,7 @@
                 <p class="btn-p">
                   <button :disabled="item.status == 1" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.inventory" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.maximum" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
                   <button :disabled="item.status == 1 || item.status == 2 || item.status == 3" @click="addCount(index,item)">+</button>
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
@@ -69,7 +69,7 @@
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
               <span>活动优惠：￥{{amt}}</span>
-              <span class="total-price" v-if="total > 0">应付总金额：￥{{total - amt}}</span>
+              <span class="total-price" v-if="total > 0">应付总金额：￥{{(total - amt).toFixed(2)}}</span>
               <span class="total-price" v-if="total == 0">应付总金额：￥{{total}}</span>
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
             </p>
@@ -129,7 +129,6 @@ export default {
       isSubmit: false,
       amt: 0,
       loading: false,
-      maximum: 1,// 最大库存
       timeoutflag: null,
       checked: false,
       discount: 100,
@@ -178,7 +177,8 @@ export default {
               if(result.data) {
                 _this.cartList = result.data
                 _this.cartList.forEach((item) => {
-                  item.checked ? false : true
+                  item.checked ? false : true,
+                  item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
                 })
                 _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
               }
@@ -211,6 +211,7 @@ export default {
             if (result.code === 200) {
               _this.cartList = result.data
               _this.cartList.forEach((item) => {
+                 item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
                 if(item.checked) {
                   _this.amt = item.amt
                 }
@@ -322,8 +323,8 @@ export default {
     addCount(index, item) {
       let _this = this
       // 限购数量
-      if(item.num >= item.inventory) {
-        _this.$message.warning(item.ptitle + '限购' + item.inventory + '件')
+      if(item.num >= item.maximum) {
+        _this.$message.warning(item.ptitle + '限购' + item.maximum + '件')
         return
       }
       item.checked = true

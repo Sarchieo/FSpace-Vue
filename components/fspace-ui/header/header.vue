@@ -92,7 +92,7 @@
                         <span>￥{{item.pdprice * item.num}}元</span>
                       </p>
                       <p class="cart-goods-count">{{item.spec}}</p>
-                      <a-icon type="close" class="del-cart-goods"/>
+                      <a-icon @click.stop="removeCartList(item, index)" type="close" class="del-cart-goods"/>
                     </a>
                   </li>
                 </ul>
@@ -112,7 +112,7 @@
               <span>|</span> -->
             </p>
             <div class="nav-box" v-show="isShowHeader">
-              <a href class="goods-type">商品分类</a>
+              <span href class="goods-type">商品分类</span>
               <a href="javascript:;"  @click="toNewPerson()">新人专享</a>
               <a href="javascript:;"  @click="toNewGoods()">新品上线</a>
               <a href="javascript:;"  @click="toHotGoods()">热销商品</a>
@@ -287,6 +287,31 @@ export default {
         nameBox.height = "141px";
         this.isShowHeader = true;
       }
+    },
+    removeCartList(item, index) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "clearShopCart";
+      iRequest.param.json = JSON.stringify({
+        compid: _this.storeInfo.comp.storeId,
+        ids: item.unqid
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.$message.success('购物车移除成功~')
+            _this.cartList.splice(index, 1)
+            if(_this.cartList.length > 0) 
+              _this.getShoppingCartList();
+          }
+        })
+      );
     },
     handleOk() {
       // 跳转企业中心页面
@@ -730,6 +755,9 @@ li {
   line-height: 40px;
   text-align: center;
   color: #ffffff;
+  a:hover {
+    color: #ffffff;
+  }
 }
 .nav-box a {
   display: inline-block;

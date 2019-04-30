@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- v-for="(item,index) in orderList" :key="index" -->
-    <a-tabs defaultActiveKey @change="callback">
-      <a-tab-pane tab="全部订单" key></a-tab-pane>
+     <!-- v-for="(item,index) in orderList" :key="index" -->
+    <a-tabs defaultActiveKey="" @change="callback">
+      <a-tab-pane tab="全部订单" key=""></a-tab-pane>
       <a-tab-pane tab="未付款" key="0"></a-tab-pane>
       <a-tab-pane tab="已付款" key="1"></a-tab-pane>
       <a-tab-pane tab="已发货" key="2"></a-tab-pane>
