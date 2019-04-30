@@ -25,7 +25,7 @@
       <ul class="evaluate-ui">
         <li v-for="(item,index) in appriseArr" :key="index">
           <div class="goods-pic">
-            <img src="https://img.ysbang.cn/uploads/sale/2015/09/03/55e7a30dc3f92.jpg" alt>
+            <img  v-lazy="item.imgURl">
             <p class="goods-name">{{item.pname}}</p>
             <p class="spec">{{item.pspec}}</p>
           </div>
@@ -111,7 +111,8 @@ export default {
   },
   mounted() {
       this.orderno = this.$route.query.orderno
-      this.goods = JSON.parse(this.$route.query.goods)
+      this.goods = JSON.parse(sessionStorage.getItem("evaluateGoods"));
+      // console.log("goods--- " + JSON.stringify(this.goods))
       for (let i = 0; i < this.goods.length; i++) {
           this.appriseArr.push({
               orderno:this.goods[i].orderno,
@@ -120,9 +121,11 @@ export default {
               logisticssrv: 5,
               content: "",
               compid: this.goods[i].compid,
-              sku: this.goods[i].pdno
+              sku: this.goods[i].pdno,
+              spu: this.goods[i].spu,
           })
       }
+      this.fsGeneralMethods.addImages(this, this.appriseArr, "sku", "spu");
   },
   methods: {
       //评价
@@ -146,7 +149,10 @@ export default {
                   function result(result) {
                       if (result.code === 200) {
                           //评价成功
-                          
+                          _this.$message.success(result.data)
+                          _this.$router.push({
+                              path: "/user/personal/myorder",
+                          });
                       }
                   }
               )

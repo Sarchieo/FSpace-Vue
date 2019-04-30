@@ -62,7 +62,7 @@
               <p class="sucess">{{statusText(item.ostatus)}}</p>
             </div>
           </div>
-          
+
         </div>
 
         <div class="operation">
@@ -294,11 +294,11 @@ export default {
       this.queryOrderList();
     },
     toEvaluate(value) {
+      sessionStorage.setItem("evaluateGoods", JSON.stringify(value.goods));
       var routeData = this.$router.resolve({
         path: "/user/evaluate",
         query: {
           orderno: value.orderno,
-          goods: JSON.stringify(value.goods)
         }
       });
       window.open(routeData.href, "_blank");
