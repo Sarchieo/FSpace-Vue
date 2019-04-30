@@ -121,7 +121,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data.list) {
             result.data.list = result.data.list.slice(0, 5)
             _this.newPersonList = result.data
             _this.newPersonID = result.data.actcode

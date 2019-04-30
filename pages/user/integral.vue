@@ -13,7 +13,7 @@
           </p>
           <!-- 根据签到状态循环不同图片 -->
           <div class="sign-pic">
-            <div v-for="(item,index) in signDays.dates.reverse()" :key="index">
+            <div v-for="(item,index) in signDays.dates" :key="index">
               <!-- 已签到图片 -->
               <img v-if="item.status == 1" src="../../assets/img/jifen-signed.png" alt>
               <!-- 未签到图片 -->
@@ -88,7 +88,7 @@ export default {
       userIntergral: [],
       signNumber: 0, // 连续签到天数
       integralNumber: 0, // 累积积分
-      signDays: JSON.parse('{"times":5,"dates":[{"date":"0429","status":"1"},{"date":"0428","status":"1"},{"date":"0427","status":"1"},{"date":"0426","status":"1"},{"date":"0425","status":"1"},{"date":"0424","status":"0"},{"date":"0423","status":"0"}]}'), // 日期数组
+      signDays: [], // 日期数组
     };
   },
   mounted() {
@@ -134,10 +134,12 @@ export default {
         this,
         "orderServer"+ Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(function result(result) {
+        new this.$iceCallback(
+          function result(result) {
           if (result.code === 200) {
             _this.signNumber = result.data.times
-            _this.signDays = result.data.flex-lg-row-reverse
+            result.data.dates = result.data.dates.reverse()
+            _this.signDays = result.data
           }
         })
       );

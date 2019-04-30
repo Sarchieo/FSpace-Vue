@@ -911,6 +911,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "querySettShopCartList";
+      debugger
       let arr = [
         {
           pdno: this.prodDetail.sku,

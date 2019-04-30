@@ -375,7 +375,7 @@ export default {
           busno: 536862720,//自营暂时写死
           consignee: this.consignee,
           contact: this.contact,
-          rvaddno: this.storeInfo.comp.addressCode[this.storeInfo.comp.addressCode.length-1],
+          rvaddno: this.storeInfo.comp.addressCode,
           address: this.storeInfo.comp.address
         },
         goodsArr: goodsArr,
