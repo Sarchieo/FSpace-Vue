@@ -112,6 +112,7 @@
             <p class="title">猜你喜欢</p>
             <div class="carousel">
               <div class="like-box">
+                 
                 <div
                   v-for="(item,index) in likeList"
                   :key="index"
@@ -138,7 +139,7 @@
                     <p class="meal-name">{{items.prodname}}</p>
                   </a-card>
                 </div>
-              </a-carousel>
+              </div> 
             </div>
           </div>
         </div>
@@ -209,30 +210,15 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.cartList = result.data;
-              _this.cartList.forEach(item => {
-                item.checked ? false : true;
-              });
-              _this.fsGeneralMethods.addImages(
-                _this,
-                _this.cartList,
-                "pdno",
-                "spu"
-              );
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              if(result.data) {
-                _this.cartList = result.data
-                _this.cartList.forEach((item) => {
-                  item.checked ? false : true,
-                  item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
-                })
-                _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
-              }
+              _this.cartList.forEach((item) => {
+                item.checked ? false : true,
+                item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
+              })
+              _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
             }
           }
-        })
-      );
+        }
+       ));
     },
     queryCheckShopCartList() {
       let _this = this;
@@ -258,25 +244,14 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.cartList = result.data;
-            _this.cartList.forEach(item => {
-              if (item.checked) {
-                _this.amt = item.amt;
-              }
-            });
-          }
-        })
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.cartList = result.data
-              _this.cartList.forEach((item) => {
+             _this.cartList.forEach((item) => {
                  item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
                 if(item.checked) {
                   _this.amt = item.amt
                 }
               })
-            }
-          })
+          }
+        })
       );
     },
     // 现在是单条删除
