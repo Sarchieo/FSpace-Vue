@@ -33,7 +33,7 @@
               <p class="pay-btn" v-if="item.ostatus === 3"><button>再次购买</button></p>
               <!-- 取消订单只在提交订单和付款成功状态才显示。药品出库后没有取消订单 -->
               <p class="cancel" @click="cancelOrder()"  v-if="item.ostatus === 1 || item.ostatus === 0">取消订单</p>
-           
+
             </div>
             <div class="line"></div>
             <!-- 订单状态 -->
@@ -89,13 +89,16 @@
                 <span>付款方式：</span>线上支付
               </p>
               <p>
-                <span>商品总额：</span>￥ {{item.payamt}}元
+                <span>商品总额：</span>￥ {{item.pdamt}}元
+              </p>
+              <p>
+                <span>运费金额：</span>￥ {{item.freight}}元
+              </p>
+              <p>
+                <span>优惠金额：</span>￥ {{item.distamt}}元
               </p>
               <p>
                 <span>应支付金额：</span>￥ {{item.payamt}}元
-              </p>
-              <p>
-                <span>运费金额：</span>￥ 0元
               </p>
             </div>
             <div class="line height220"></div>
@@ -147,14 +150,14 @@
               <tfoot class="t-footer">
                 <div class="pay-title">
                   <p>商品总额：</p>
-                  <p>优惠活动：</p>
                   <p>运费：</p>
+                  <p>优惠活动：</p>
                   <p class="red-size">应付总额：</p>
                 </div>
                 <div class="pay-count">
                   <p>￥{{item.pdamt}}</p>
-                  <p>￥{{item.distamt}}</p>
                   <p>￥{{item.freight}}</p>
+                  <p>￥{{item.distamt}}</p>
                   <p class="total-red">￥{{item.payamt}}</p>
                 </div>
               </tfoot>
@@ -209,7 +212,7 @@ export default {
     this.cusno = this.$route.query.cusno;
     this.queryOrderDetail();
     this.getLogisticsInfo();
-    // this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}').data 
+    // this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}').data
   },
   methods: {
     getLogisticsInfo() {
