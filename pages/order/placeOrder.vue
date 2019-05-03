@@ -267,8 +267,18 @@ export default {
             if(result.code === 200) {
               if(result.data && result.data.length > 0) {
                 _this.receiverList = result.data
-                _this.consignee = _this.receiverList[0].contactname
-                _this.contact = _this.receiverList[0].contactphone
+                let number = 0
+                for (let i = 0; i < _this.receiverList.length; i++) {
+                    if ((_this.receiverList[i].cstatus & 2) > 0) {
+                        _this.consignee = _this.receiverList[i].contactname
+                        _this.contact = _this.receiverList[i].contactphone
+                        number ++;
+                    }
+                }
+                if (number === 0) {
+                    _this.consignee = _this.receiverList[0].contactname
+                    _this.contact = _this.receiverList[0].contactphone
+                }
               } else {
                 _this.visible = true
               }

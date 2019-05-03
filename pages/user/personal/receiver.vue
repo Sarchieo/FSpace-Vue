@@ -162,7 +162,7 @@ export default {
               _this.$message.success(result.message)
               _this.queryMyConsignee()
             }else {
-              
+
             }
           }
         )
@@ -193,7 +193,7 @@ export default {
               _this.$message.success(result.message)
               _this.queryMyConsignee()
             }else {
-             
+
             }
           }
         )
@@ -232,7 +232,7 @@ export default {
                   _this.queryMyConsignee()
                   _this.$message.success(result.message)
                 }else {
-                  
+                    _this.$message.error(result.message)
                 }
               }
             )

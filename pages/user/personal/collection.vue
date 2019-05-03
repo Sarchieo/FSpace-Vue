@@ -12,11 +12,7 @@
           hoverable
           class="card"
         >
-          <img
-            class="card-img"
-            v-lazy="item.imgURl"
-            slot="cover"
-          />
+          <img class="card-img" v-lazy="item.imgURl" slot="cover"/>
           <a-icon type="delete" class="close-coll" @click.stop="delCollec(item.sku)"/>
           <!-- {{item.info.prodname}} -->
           <p class="surplus text-Center top185">{{item.info.prodname}}</p>
