@@ -112,9 +112,10 @@
           </div>
           <p class="goods-title">
             <span class="width40">药品信息</span>
-            <span class="width15">单价</span>
-            <span class="width15">数量</span>
-            <span class="width15">小计</span>
+            <span class="width10">单价</span>
+            <span class="width10">数量</span>
+            <span class="width10">优惠金额</span>
+            <span class="width10">小计</span>
           </p>
           <div class="goods-list-box">
             <table>
@@ -140,13 +141,14 @@
                   </td>
                   <td class="price widths15 td-center padding-left5">￥{{items.pdprice}}</td>
                   <td class="count widths15 td-center padding-left5">{{items.pnum}}</td>
-                  <td class="subtotal widths15 td-center padding-left10">￥{{items.pdamt}}</td>
+                  <td class="subtotal widths15 td-center padding-left10">￥{{items.distprice}}</td>
+                  <td class="subtotal widths15 td-center padding-left10">￥{{items.payamt}}</td>
                   <!-- <div style="clear: both;"></div> -->
                   <!-- <td class="total width15 td-center padding-left15">
                   ￥35
                   </td>-->
                 </tr>
-                <div class="total td-center padding-left15">￥{{item.pdamt}}</div>
+                <div class="total td-center padding-left15">￥{{item.payamt}}</div>
               </tbody>
               <tfoot class="t-footer">
                 <div class="pay-title">
@@ -373,7 +375,7 @@ export default {
   width: 44%;
 }
 .widths15 {
-  width: 18.5%;
+  width: 12.8%;
 }
 
 .width40 {
@@ -381,6 +383,12 @@ export default {
 }
 .width15 {
   width: 15%;
+}
+.width20 {
+  width: 20%;
+}
+.width10 {
+  width: 10.1%;
 }
 .height220 {
   height: 220px !important;
