@@ -22,7 +22,8 @@
               <!-- 显示药品列表相对应的订单状态 -->
               <p class="pay-success" v-if="item.ostatus === 0">提交订单</p>
               <p class="pay-success" v-if="item.ostatus === 2">等待收货</p>
-              <p class="pay-success" v-if="item.ostatus === 3">完成</p>
+              <p class="pay-success" v-if="item.ostatus === 3">已签收</p>
+              <p class="pay-success" v-if="item.ostatus === 4">已完成</p>
               <p class="pay-success" v-if="item.ostatus === -4">已取消</p>
               <p class="pay-success" v-if="item.ostatus === 1">付款成功</p>
               <!-- 付款按钮和提交订单一起显示 -->

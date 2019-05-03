@@ -315,6 +315,9 @@ export default {
         case 3:
           text = "已签收";
           break;
+        case 4:
+          text = "已完成";
+          break;
         case -1:
           text = "退货申请";
           break;

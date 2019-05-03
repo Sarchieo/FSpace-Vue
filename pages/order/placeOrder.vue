@@ -19,7 +19,7 @@
         <div class="receiving">
           <p class="receiving-address">收货地址</p>
            <p class="tips">
-              <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 8888-8888888
+              <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 0731-88159987
             </p>
           <div>
             <p class="address-info">
@@ -303,7 +303,8 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200 && result.data.length > 0) {
+
+            if (result.code === 200 && result.data !== undefined && result.data.length > 0) {
               result.data.forEach((item) => {
                 item.isChecked = false
               })
