@@ -102,7 +102,7 @@
                 </p>-->
                 <!-- <p class="price indent">
                   <a-icon type="check-circle"/>
-                  <span>30天无忧退换货</span>
+                  <span>30天无忧退退货</span>
                   <a-icon type="check-circle"/>
                   <span>48小时快速退款</span>
                   <a-icon type="check-circle"/>

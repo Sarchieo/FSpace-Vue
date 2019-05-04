@@ -6,21 +6,20 @@
         <div>
           <div class="step-right">
             <a-steps class="setps-box" :current="steps">
-              <a-step title="买家申请换货"></a-step>
-              <a-step title="卖家处理换货"></a-step>
-              <a-step title="换货完成"></a-step>
+              <a-step title="买家申请退货"></a-step>
+              <a-step title="卖家处理退货"></a-step>
+              <a-step title="退货完成"></a-step>
             </a-steps>
           </div>
           <div class="reason-box">
             <p class="title">退货原因</p>
-
             <div class="reason-content">
               <div class="reason-left">
                 <img
-                  src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
+                  :src="imgURl"
                 >
-                <p>汇仁牌肾宝片 200片/瓶</p>
-                <p>￥ 38</p>
+                <p>{{ pName + pspec }}</p>
+                <p>￥ {{ pdprice }}</p>
               </div>
               <div class="reason-right">
                 <a-form-item label="退货原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
@@ -120,6 +119,10 @@ export default {
       reprreason: [],
       goodsArr: [],
       orderno: 0,
+      imgURl: '',
+      pName: '',
+      pspec: '',
+      pdprice: '',
       reasonType: 70,
       asType: 0,
       headers: {
@@ -132,6 +135,10 @@ export default {
     this.asType = this.$route.query.asType;
     this.orderno = this.$route.query.orderno;
     this.goodsArr = JSON.parse(sessionStorage.getItem("fillOrderReason"));
+    this.imgURl = this.goodsArr[0].imgURl
+    this.pName = this.goodsArr[0].pname
+    this.pspec = this.goodsArr[0].pspec
+    this.pdprice = this.goodsArr[0].pdprice
     // 获取字典
     this.queryDictList();
     this.getFilePathPrev();
@@ -235,7 +242,11 @@ export default {
       return isJPG && isLt2M;
     },
     remove(file) {
-      this.fileList = [];
+      for(let i = 0; i< this.fileList.length; i++) {
+        if(this.fileList[i].uid === file.uid) {
+          this.fileList.splice(i,1);
+        }
+      }
     },
     handleChange(value) {
       this.reasonType = value;

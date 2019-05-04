@@ -131,6 +131,7 @@ export default {
     // 跳转填写原因
     toReason() {
         let arr = []
+        debugger
         for (let i = 0; i < this.goodsArr.length; i++) {
             if (this.goodsArr[i].checked) {
                 arr.push({
@@ -142,7 +143,8 @@ export default {
                     payamt: this.goodsArr[i].payamt,
                     pdno: this.goodsArr[i].pdno,
                     orderno: this.goodsArr[i].orderno,
-                    compid: this.goodsArr[i].compid
+                    compid: this.goodsArr[i].compid,
+                    imgURl: this.goodsArr[i].imgURl
                 })
             }
         }

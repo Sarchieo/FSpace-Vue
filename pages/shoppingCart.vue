@@ -66,8 +66,8 @@
                     :disabled="item.status == 1 || item.status == 2 || item.status == 3"
                     @click="addCount(index,item)"
                   >+</button>
-                  <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.maximum" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
-                  <button :disabled="item.status == 1 || item.status == 2 || item.status == 3" @click="addCount(index,item)">+</button>
+                  <!-- <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.maximum" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
+                  <button :disabled="item.status == 1 || item.status == 2 || item.status == 3" @click="addCount(index,item)">+</button> -->
                 </p>
                 <p class="limit" v-if="item.limitnum != 0">( 限购{{item.limitnum}} )</p>
                 <p class="new-price">￥{{ parseFloat(item.pdprice * item.num).toFixed(2) }}</p>
