@@ -355,9 +355,10 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.visible = false;
-            _this.$message.success(result.data);
+            _this.$message.success(result.message);
             _this.queryOrderList();
           } else {
+
           }
         })
       );
