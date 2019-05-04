@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="service-title">售后记录</p>
-    <p class="search-text">
+    <p class="search-text" v-if="this.list.length !== 0">
       <span>售后类型：</span>
       <a-select defaultValue="" style="width: 200px" @change="handleChange">
         <a-select-option value="">全部</a-select-option>
@@ -13,7 +13,7 @@
       <input v-model="arr[0]" type="text" placeholder="请输入订单号" class="search-input">
     </p>
 
-    <ul class="service-ul">
+    <ul class="service-ul" v-if="this.list.length !== 0">
       <li v-for="(item, index) in list" :key="index">
         <p class="list-title">
           售后类型：
@@ -233,13 +233,16 @@ export default {
 }
 // 采购单无数据显示 内容
 .no-data{
-  .container-size(block, 1190px, 120px, 0 auto 20px auto, 0px);
-  .no-icon{
+  .container-size(block, 985px, 120px, 0 auto 20px auto, 0px);
+  padding-top: 30px;
+  .icon{
+    width: 965px;
     .p-size(50px,50px,50px,center,0px,#333333);
     margin-bottom: 20px;
   }
-  .no-text{
-     .p-size(50px,50px,30px,center,0px,#333333);
+  .text{
+    width: 985px;
+     .p-size(50px,50px,20px,center,0px,#333333);
   }
 }
 </style>
