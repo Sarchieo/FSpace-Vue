@@ -29,7 +29,7 @@
               <!-- 付款按钮和提交订单一起显示 -->
               <p class="pay-btn" v-if="item.ostatus === 0"><button @click="toPay()">付款</button></p>
               <!-- 确认收货和等待收货一起显示 -->
-              <p class="pay-btn" v-if="item.ostatus === 2"><button>确认收货</button></p>
+              <!--<p class="pay-btn" v-if="item.ostatus === 2"><button>确认收货</button></p>-->
               <!-- 再次购买和已取消以及完成一起显示 -->
               <p class="pay-btn" v-if="item.ostatus === 3"><button>再次购买</button></p>
               <!-- 取消订单只在提交订单和付款成功状态才显示。药品出库后没有取消订单 -->

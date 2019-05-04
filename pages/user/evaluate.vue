@@ -149,7 +149,7 @@ export default {
                   function result(result) {
                       if (result.code === 200) {
                           //评价成功
-                          _this.$message.success(result.data)
+                          _this.$message.success(result.message)
                           _this.$router.push({
                               path: "/user/personal/myorder",
                           });
