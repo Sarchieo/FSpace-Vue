@@ -283,10 +283,15 @@ export default {
 }
 .goods-name {
   .position(absolute, 20px, 250px);
+  width: 320px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
   font-size: 20px;
 }
 .goods-adv {
   .position(absolute, 50px, 250px);
+  font-size: 16px;
 }
 .goods-surplus {
   .position(absolute, 80px,249px);

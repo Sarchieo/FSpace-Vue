@@ -44,11 +44,11 @@
               <p
                 class="rush-time"
                 v-if="rulecode == 1113 && isSecondkill"
-              >限时抢购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒</p>
+              >限时抢购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒 <span @click="toLimited()">更多抢购 ></span></p>
               <p
                 class="rush-time"
                 v-if="rulecode == 1133"
-              >一块购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒</p>
+              >一块购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒 <span @click="toBuying()">查看更多 ></span></p>
               <div class="price-server">
                 <p class="onek-person" v-if="rulecode == 1133">
                   <span>10.0</span>
@@ -1058,6 +1058,22 @@ export default {
       //   path: '/user/personal/coupon'
       // })
     },
+    toLimited() {
+      this.$router.push({
+        path: '/activity/limited',
+        query: {
+          actcode: this.unqid
+        }
+      })
+    },
+    toBuying() {
+      this.$router.push({
+        path: '/activity/buying',
+        query: {
+          actcode: this.unqid
+        }
+      })
+    },
     dislike() {
       this.likes = 0;
       this.dislikes = 1;
@@ -1310,6 +1326,15 @@ li {
   background: rgb(247, 37, 38);
   font-size: 20px;
   color: #ffffff;
+}
+.rush-time span{
+  float: right;
+  margin-right: 10px;
+  font-size: 14px;
+  color: #ffffff;
+}
+.rush-time span:hover{
+  cursor: pointer;
 }
 .price-server {
   /* min-height: 129px; */
