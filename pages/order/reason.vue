@@ -16,11 +16,9 @@
 
             <div class="reason-content">
               <div class="reason-left">
-                <img
-                  src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg"
-                >
-                <p>汇仁牌肾宝片 200片/瓶</p>
-                <p>￥ 38</p>
+                <img v-lazy="goodsObj.imgURl">
+                <p>{{goodsObj.pname}}</p>
+                <p>价格 ￥{{goodsObj.payamt}}元</p>
               </div>
               <div class="reason-right">
                 <a-form-item label="退货原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
@@ -125,13 +123,16 @@ export default {
       headers: {
         "specify-path": "",
         "specify-filename": ""
-      }
+      },
+        goodsObj:{},
     };
   },
   mounted() {
     this.asType = this.$route.query.asType;
     this.orderno = this.$route.query.orderno;
     this.goodsArr = JSON.parse(sessionStorage.getItem("fillOrderReason"));
+    this.fsGeneralMethods.addImages(this, this.goodsArr, "pdno", "spu");
+    this.goodsObj = this.goodsArr[0];
     // 获取字典
     this.queryDictList();
     this.getFilePathPrev();
@@ -185,7 +186,9 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.$message.success(result.data);
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
           }
         })
       );

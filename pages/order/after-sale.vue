@@ -86,7 +86,7 @@ export default {
       this.goodsArr.forEach((item) => {
        item.inventory = item.pnum
       })
-    // 
+    //
     // console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr));
   },
   methods: {
@@ -113,7 +113,6 @@ export default {
         } else {
             this.isShowBtn = false
         }
-      console.log("val---- " + JSON.stringify(val));
     },
     checkAll(e) {
       // 全选
@@ -142,11 +141,12 @@ export default {
                     payamt: this.goodsArr[i].payamt,
                     pdno: this.goodsArr[i].pdno,
                     orderno: this.goodsArr[i].orderno,
-                    compid: this.goodsArr[i].compid
+                    compid: this.goodsArr[i].compid,
+                    spu: this.goodsArr[i].spu
                 })
             }
         }
-      console.log("fillOrderReason--- " + JSON.stringify(arr))
+      // console.log("fillOrderReason--- " + JSON.stringify(arr))
       sessionStorage.setItem("fillOrderReason", JSON.stringify(arr));
       this.$router.push({
         path: "/order/reason",
