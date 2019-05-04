@@ -113,7 +113,6 @@ export default {
         } else {
             this.isShowBtn = false
         }
-      console.log("val---- " + JSON.stringify(val));
     },
     checkAll(e) {
       // 全选
@@ -131,7 +130,6 @@ export default {
     // 跳转填写原因
     toReason() {
         let arr = []
-        debugger
         for (let i = 0; i < this.goodsArr.length; i++) {
             if (this.goodsArr[i].checked) {
                 arr.push({
@@ -148,7 +146,7 @@ export default {
                 })
             }
         }
-      console.log("fillOrderReason--- " + JSON.stringify(arr))
+      // console.log("fillOrderReason--- " + JSON.stringify(arr))
       sessionStorage.setItem("fillOrderReason", JSON.stringify(arr));
       this.$router.push({
         path: "/order/reason",

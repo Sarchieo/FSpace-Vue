@@ -13,6 +13,7 @@
           </div>
           <div class="reason-box">
             <p class="title">退货原因</p>
+
             <div class="reason-content">
               <div class="reason-left">
                 <img
@@ -128,7 +129,8 @@ export default {
       headers: {
         "specify-path": "",
         "specify-filename": ""
-      }
+      },
+        goodsObj:{},
     };
   },
   mounted() {
@@ -192,7 +194,9 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.$message.success(result.data);
+            _this.$message.success(result.message);
+          } else {
+            _this.$message.error(result.message);
           }
         })
       );
