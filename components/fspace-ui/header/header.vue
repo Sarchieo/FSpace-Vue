@@ -129,11 +129,11 @@
         <div class="medicine-name-login">
           <img src="../../../assets/img/u49.png" alt>
         </div>
-        <div class="ant-layout-header-back">
+        <div class="ant-layout-header-back login-header-text">
           <nuxt-link to="/">
-            <a>返回首页</a>
+            <a class="back-index">返回首页</a>
           </nuxt-link>
-          <a>电商APP</a>
+          <a class="service-phone">客服电话：88159987</a>
         </div>
         <div class="divider"></div>
       </div>
@@ -810,5 +810,19 @@ li {
     height: 1px;
     background: #73a1f3;
   }
+}
+.back-index{
+  font-size: 16px;
+  color: #999999;
+}
+.service-phone{
+  font-size: 16px;
+  color: #3189f5!important;
+}
+.login-header{
+  width: 100%;
+}
+.login-header-text{
+  width: 290px!important;
 }
 </style>

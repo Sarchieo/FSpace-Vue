@@ -4,7 +4,7 @@
       <f-space-header type="register"></f-space-header>
       <div class="register-box">
         <div class="from-box">
-          <p>用户注册</p>
+          <!-- <p>用户注册</p> -->
           <a-form :form="form" @submit="handleSubmit">
             <a-form-item
               v-bind="formItemLayout"
@@ -297,19 +297,21 @@ export default {
 <style lang="less" scoped>
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
+
 .register-box {
   .container-size(block, 1190px, 734px, 20px auto, 0px);
   background: #ffffff;
 }
 .from-box {
   .container-size(block, 700px, 734px, 0 auto, 0px);
+  padding-top: 10%;
 }
 .from-box p {
   .p-size(50px, 50px, 18px, center,0px, #000000);
 }
 .ant-input {
   border: 1px solid rgb(238, 238, 238);
-  border-radius: 0;
+  border-radius: 0px!important;
 }
 .register-btn {
   .button-size(390px, 45px, 45px, 18px, 0px, 5px);
