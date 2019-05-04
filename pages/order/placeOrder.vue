@@ -111,7 +111,7 @@
                   <div class="coupon" v-if="item.brulecode === 2130">
                     <div class="coupon-num">
                       <p class="coupon-title">{{ item.rulename }}</p>
-                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </p>
+                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer}}折 </p>
                     </div>
                     <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                   </div>

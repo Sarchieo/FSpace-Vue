@@ -20,12 +20,14 @@
             <div class="step-left">
               <p class="order-num">申请单号：{{ detail.asno }}</p>
               <!-- 显示药品列表相对应的订单状态 -->
-              <p class="pay-success" v-if="detail.gstatus == -1">拒绝</p>
-              <p class="pay-success" v-if="detail.gstatus == 0">未审核</p>
+              <p class="pay-success" v-if="detail.ckstatus === -1">拒绝</p>
+              <p class="pay-success" v-if="detail.ckstatus === 0">未审核</p>
+              <p class="pay-success" v-if="detail.ckstatus === -2">取消售后</p>
               <!-- <p class="pay-success">补票中</p>
               <p class="pay-success">退货中</p>
                -->
-              <p><a-button class="cancelApply" v-if="detail.gstatus == 1">审核通过</a-button></p>
+               <p class="pay-success" v-if="detail.ckstatus === 1">审核通过</p>
+              <!-- <p><a-button class="cancelApply" v-if="detail.ckstatus === 1">审核通过</a-button></p> -->
               <!-- <p class="pay-success">完成</p> -->
             </div>
             <div class="line"></div>
@@ -69,6 +71,7 @@
           </div>
           <p class="goods-title">
             <span class="width40">药品信息</span>
+            <span class="width15">单价</span>
             <span class="width15">数量</span>
             <span class="width15">实付</span>
           </p>
@@ -93,7 +96,8 @@
                       <span>{{ detail.manuname }}</span>
                     </div>
                   </td>
-                  <td class="count widths15 td-center padding-left5">1</td>
+                  <td class="count widths15 td-center padding-left5">单价</td>
+                  <td class="count widths15 td-center padding-left5">数量</td>
                   <!-- <td class="subtotal widths15 td-center padding-left10">￥100</td> -->
                 </tr>
             
@@ -178,6 +182,7 @@ export default {
   },
   mounted() {
     this.detail = JSON.parse(this.$route.query.detail)
+    console.log(this.detail)
     this.getImgUrl()
     this.getFilePathPrev()
   },  
@@ -558,7 +563,7 @@ export default {
       }
     }
     .t-footer {
-      .container-size(block, 1190px, 250px, 0 auto, 0px);
+      .container-size(block, 1190px, 265px, 0 auto, 0px);
       padding-left: 20px;
       .pay-title {
         .container-size(inline-block, 992px, 210px, 0 auto, 0px);

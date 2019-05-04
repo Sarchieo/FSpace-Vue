@@ -148,7 +148,8 @@
                 <p class="btn-p">
                   <button @click="reduceCount()">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
-                  <a-input-number :min="1" :max="maximum" v-model="inventory" style="width: 70px;"/>
+                  <!-- <a-input-number :min="1" :max="maximum" v-model="inventory" style="width: 70px;padding: 0px;"/> -->
+                  <a-input-number :min="1" :max="maximum" v-model="inventory"/>
                   <button @click="addCount()">+</button>
                 </p>
                 <p class="cart">
@@ -1151,9 +1152,10 @@ li {
 .coupon-box {
   display: block;
   width: 1190px;
-  height: 296px;
+  height: auto;
   margin: 0 auto 40px auto;
   border: 1px solid #f2f2f2;
+  padding-bottom: 20px;
 }
 .coupon-title {
   height: 50px;
@@ -1173,7 +1175,7 @@ li {
 .coupon-content {
   display: inline-block;
   width: 1190px;
-  height: 246px;
+  height: auto;
 }
 .coupon-content img {
   width: 1190px;
@@ -1772,6 +1774,7 @@ li {
 }
 .btn-p button {
   width: 25px;
+  height: 31px;
   text-align: center;
   border: 1px solid #e0e0e0;
   background: #ffffff;
@@ -1866,5 +1869,8 @@ li {
   color: #ed3025;
   font-size: 18px;
   font-weight: bold;
+}
+.ant-input-number-input{
+  width: 75%!important;
 }
 </style>

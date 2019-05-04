@@ -68,7 +68,7 @@
           </p>
           <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
           <!-- v-if="item.ostatus === 3" -->
-          <p @click="afterApply(item)" v-if="item.ostatus == 3 ">申请售后</p>
+          <p @click="afterApply(item)" v-if="item.ostatus == 3">申请售后</p>
           <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate">
             <a>评论</a>
           </p>
@@ -79,7 +79,7 @@
           >取消订单</p>
           <p class="detail" @click="toDetails(item)">订单详情</p>
           <p v-if="item.ostatus == 3" class="align">再次购买</p>
-          <p @click="toSuppInvo(item)" class="supplement">补开发票</p>
+          <p @click="toSuppInvo(item)" class="supplement" v-if="item.ostatus == 3">补开发票</p>
         </div>
         <div style="clear: both;"></div>
       </li>

@@ -76,7 +76,7 @@
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
             </div>
             <div class="discount" v-if="item.brulecode === 2120">
-              <p class="discount-count margin-bottom35">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span>包邮 </p>
             </div>
             <div class="discount" v-if="item.brulecode === 2130">
@@ -97,19 +97,19 @@
           <div class="discount" v-if="item.brulecode === 2130">
             <p class="discount-count">{{ item.rulename }}</p>
             <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 打 <span>{{ j.offer/10}}</span>折 </p>
-            <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
+           <p class="validity">有效期:{{item.validday}}天</p>
             <!-- <p>有效期 {{ item.validday }} 天</p> -->
           </div>
           <div class="discount"  v-if="item.brulecode === 2110">
             <p class="discount-count">{{ item.rulename }} </p>
             <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
-            <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
+            <p class="validity">有效期:{{item.validday}}天</p>
             <!-- <p>有效期 {{ item.validday }} 天</p> -->
           </div>
           <div class="discount" v-if="item.brulecode === 2120">
-            <p class="discount-count margin-bottom35">{{ item.rulename }} </p>
+            <p class="discount-count">{{ item.rulename }} </p>
             <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span>包邮 </p>
-            <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
+            <p class="validity">有效期:{{item.validday}}天</p>
           </div>
           <img class="right-img" src="../../../assets/img/receive.png" alt="">
         </div>
@@ -150,7 +150,7 @@ export default {
       iRequest.param.json = JSON.stringify({
         compid: _this.storeInfo.comp.storeId,
         type: ctype, // 0 可使用 1 已使用 2 已失效
-        pageSize: 5,
+        pageSize: 100,
         pageNo: 1
       })
       iRequest.param.token = localStorage.getItem("identification");
@@ -179,6 +179,7 @@ export default {
     },
      // 获取待领取优惠券
     queryCouponPub() {
+      debugger
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
@@ -187,7 +188,7 @@ export default {
       iRequest.param.json = JSON.stringify({
         gcode: -1,
         compid: _this.storeInfo.comp.storeId, // 企业id
-        pageSize: 5,
+        pageSize: 100,
         pageNo: 1
       })
       this.$refcallback(
@@ -198,6 +199,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.couponPub = result.data
+              console.log(_this.couponPub)
             }
           }
         )
@@ -235,6 +237,9 @@ export default {
 <style lang="less" scoped>
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
+ .state-pic {
+        .position(relative, -58px, 176px);
+      }
 .validity{
   .p-size(20px, 20px, 14px, left, 13px, #666666);
 }
@@ -274,9 +279,7 @@ export default {
       // .position(relative, 0px, 0px);
       border: 1px solid #fdddc5;
       background: #fffbf3;
-      .state-pic {
-        .position(relative, -58px, 176px);
-      }
+     
       .discount-count {
         .container-size(inline-block, 245px, 50px, 0, 0px);
         .p-size(40px, 40px, 20px, center, 0px, #ffffff);
