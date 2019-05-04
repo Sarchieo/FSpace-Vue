@@ -19,7 +19,7 @@
         <div class="receiving">
           <p class="receiving-address">收货地址</p>
            <p class="tips">
-              <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 8888-8888888
+              <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 0731-88159987
             </p>
           <div>
             <p class="address-info">
@@ -267,8 +267,18 @@ export default {
             if(result.code === 200) {
               if(result.data && result.data.length > 0) {
                 _this.receiverList = result.data
-                _this.consignee = _this.receiverList[0].contactname
-                _this.contact = _this.receiverList[0].contactphone
+                let number = 0
+                for (let i = 0; i < _this.receiverList.length; i++) {
+                    if ((_this.receiverList[i].cstatus & 2) > 0) {
+                        _this.consignee = _this.receiverList[i].contactname
+                        _this.contact = _this.receiverList[i].contactphone
+                        number ++;
+                    }
+                }
+                if (number === 0) {
+                    _this.consignee = _this.receiverList[0].contactname
+                    _this.contact = _this.receiverList[0].contactphone
+                }
               } else {
                 _this.visible = true
               }
@@ -303,7 +313,8 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200 && result.data.length > 0) {
+
+            if (result.code === 200 && result.data !== undefined && result.data.length > 0) {
               result.data.forEach((item) => {
                 item.isChecked = false
               })
