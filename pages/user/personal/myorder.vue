@@ -358,7 +358,7 @@ export default {
             _this.$message.success(result.message);
             _this.queryOrderList();
           } else {
-
+              _this.$message.error(result.message);
           }
         })
       );
