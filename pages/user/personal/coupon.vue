@@ -179,7 +179,7 @@ export default {
     },
      // 获取待领取优惠券
     queryCouponPub() {
-      debugger
+      
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";

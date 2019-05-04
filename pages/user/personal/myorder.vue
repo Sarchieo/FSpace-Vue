@@ -12,6 +12,14 @@
       <a-tab-pane tab="已退货" key="-3"></a-tab-pane>
       <a-tab-pane tab="取消交易" key="-4"></a-tab-pane>
     </a-tabs>
+    <div>
+      <el-date-picker
+      v-model="year"
+      type="year"
+      placeholder="选择年">
+    </el-date-picker>
+    </div>
+    
     <p class="table-title">
       <span class="width33">药品</span>
       <span class="width13">单价</span>
@@ -170,7 +178,8 @@ export default {
       currentIndex: 1,
       total: 0,
       ostatus: "", // 订单状态
-      orderList: []
+      orderList: [],
+      year: ''
     };
   },
   mounted() {
@@ -229,7 +238,7 @@ export default {
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "queryOrders";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = [this.ostatus];
+      iRequest.param.arrays = [,this.ostatus];
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
 
@@ -721,5 +730,8 @@ export default {
   margin-right: 10px;
   margin-bottom: 10px;
   text-align: center;
+}
+.a {
+  width: 220px;
 }
 </style>

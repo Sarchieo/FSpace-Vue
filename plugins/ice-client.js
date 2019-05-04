@@ -40,7 +40,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
     )
     .then(
       function (result) {
-        debugger
+        
         console.log('模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + '>结果:' + result)
         let success = JSON.parse(result)
         if(success.code === -2 && context.$route.name !== 'user-login') {
