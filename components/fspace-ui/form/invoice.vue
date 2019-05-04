@@ -123,7 +123,7 @@ export default {
     handleSubmit (e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        debugger
+        
         if (!err) {
           let _this = this;
           let iRequest = new inf.IRequest();
