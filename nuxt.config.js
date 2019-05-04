@@ -31,6 +31,7 @@ module.exports = {
   */
   css: [
     'ant-design-vue/dist/antd.less',
+    'element-ui/lib/theme-chalk/index.css',
     'assets/main.css'
   ],
 

@@ -386,7 +386,7 @@
       <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
         <a>商品分类</a>
       </li>
-      <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
+      <!-- <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
         <a>限时抢购</a>
       </li>
       <li class="right-meun" :class="{'active': hotSells}" @click="hotSell()">
@@ -401,7 +401,7 @@
       <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
         <a-icon type="to-top"/>
         <a>回到顶部</a>
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>
@@ -465,7 +465,10 @@ export default {
       chooses: false,
       isShowBackTop: false,
       GUID: "",
-      list: []
+      list: [],
+      meunList: [
+
+      ]
     };
   },
   mounted() {
@@ -540,6 +543,7 @@ export default {
             _this.list = result.data;
             _this.list.map((value, index) => {
               switch(value.unqid) {
+                // 1新品专区 2热销专区 4秒杀专区 8一块购 16 包邮专区 32 新人专享 64中华名方 暂未提供接口 128 为你精选 256品牌专区 512限时抢购
                 case 1: // 新品专区
                 _this.getNewGoods();
                 break
