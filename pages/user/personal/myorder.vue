@@ -17,8 +17,8 @@
       <span class="width13">单价</span>
       <span class="width13">数量</span>
       <!-- <span class="width11">订单操作</span> -->
-      <span class="width13">实付款</span>
       <span class="width13">交易状态</span>
+      <span class="width13">实付款</span>
       <span class="width13">操作</span>
     </p>
     <ul class="order-box" v-if="this.orderList.length !== 0 ">
@@ -52,16 +52,14 @@
             <div class="pay count-div">
               <p>{{items.pnum}}</p>
             </div>
-
-            <div class="pay fact-div">
-              <p class="shiji">￥{{items.payamt}}</p>
-              <p class="freight">(含运费{{items.freight}}元)</p>
-            </div>
             <div class="state">
               <p class="sucess">{{statusText(item.ostatus)}}</p>
             </div>
+            <div class="pay fact-div">
+              <p class="shiji">￥{{item.payamt}}</p>
+              <p class="freight">(含运费{{item.freight}}元)</p>
+            </div>
           </div>
-
         </div>
 
         <div class="operation">
@@ -316,6 +314,9 @@ export default {
           break;
         case 3:
           text = "已签收";
+          break;
+        case 4:
+          text = "已完成";
           break;
         case -1:
           text = "退货申请";

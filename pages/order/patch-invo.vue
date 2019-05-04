@@ -192,11 +192,11 @@
                 <span class="mail-title">门店地址: </span>
                 <span>{{comp.address}}</span>
               </p>
-              <p class="freight">
-                <span>运费：</span>
-                <span class="price">￥10</span>
-              </p>
-              <p class="text">*运费根据门店地址的里程计算，系统自动生成运费。</p>
+              <!--<p class="freight">-->
+                <!--<span>运费：</span>-->
+                <!--<span class="price">￥10</span>-->
+              <!--</p>-->
+              <!--<p class="text">*运费根据门店地址的里程计算，系统自动生成运费。</p>-->
               <div class="submission-box">
                 <a-button class="back-btn" @click="back(1)">返回</a-button>
                 <a-button class="submission-btn" @click="afterSaleApp">提交</a-button>
@@ -366,7 +366,7 @@ export default {
             let _this = this
             let ice_callback = new Ice.Class(inf.PushMessageClient, {
                 receive: function (message, current) {
-                    
+
                     let result = JSON.parse(message)
                     // event tradeStatus 需要跟蒋文广确认
                     if (result.event == 1 && result.body.tradeStatus == 1) {
@@ -462,7 +462,7 @@ export default {
                     function result(result) {
                         if (result.code === 200) {
                             _this.afsano = result.data
-                            console.log("afsano--- " + _this.afsano)
+                            // console.log("afsano--- " + _this.afsano)
                             _this.setStep(3)
                             // _this.$message.success(result.data);
                         } else {
@@ -524,13 +524,13 @@ export default {
         validateTaxID(rule, value, callback) {
             const form = this.form;
             if (
-                (value && value.length === 15) ||
+                (value && value != "" && value.length === 15) ||
                 value.length === 18 ||
                 value.length === 20
             ) {
                 callback();
             } else {
-                callback("请输入正确的纳税人识别号");
+
             }
         },
         handleSubmit(e) {

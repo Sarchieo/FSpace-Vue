@@ -89,7 +89,7 @@ import md5 from 'md5'
 
 const formItemLayout = {
   labelCol: { span: 4 },
-  wrapperCol: { span: 18 }
+  wrapperCol: { span: 20 }
 };
 const formTailLayout = {
   labelCol: { span: 4 },
@@ -269,8 +269,10 @@ export default {
 @import "../../components/fspace-ui/button/index.less";
 
 .login-box {
-  .container-size(block, 100%, 560px, 0 auto);
+  .container-size(block, 100%, 578px, 0 auto);
   background: #fafafa;
+  background: url(../../assets/img/login-pic.png) no-repeat;
+  background-position: 100% 100%;
 }
 // .right-float {
 //   .container-size(block, 1190px, 400px, 0 auto);
@@ -278,19 +280,25 @@ export default {
 // }
 .login-input {
   float: right;
-  .container-size(inline-block, 450px, 450px, 0 auto, 5px);
-  margin-right: 100px;
+  .container-size(block, 390px, 400px, 0 auto, 5px);
+  margin-right: 355px;
+  margin-top: 90px;
   background: #ffffff;
-  padding: 20px 10px;
+  padding: 20px 0px;
+  padding-left: 10px;
+  padding-right: 20px;
 }
 .user-login {
   height: 50px;
   line-height: 50px;
   text-indent: 12px;
+  font-size: 16px;
+  font-weight: bold;
 }
 .login-btn {
-  .button-size(280px, 40px, 40px, 18px, 0px, 5px);
-  .button-color(1px solid transparent, rgb(237, 47, 38), #ffffff);
+  margin-right: 20px;
+  .button-size(252px, 50px, 50px, 16px, 0px, 5px);
+  .button-color(1px solid transparent, #317ff5, #ffffff);
 }
 .login-btn :hover {
   opacity: 0.8;
@@ -312,5 +320,10 @@ export default {
 .forget:hover{
   cursor: pointer;
   color: #ed3025;
+}
+.ant-input{
+  border-radius: 0px!important;
+  -moz-border-radius:0px!important;
+  -webkit-border-radius:0px!important;
 }
 </style>

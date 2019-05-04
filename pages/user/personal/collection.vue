@@ -12,14 +12,10 @@
           hoverable
           class="card"
         >
-          <img
-            class="card-img"
-            v-lazy="item.src"
-            slot="cover"
-          />
+          <img class="card-img" v-lazy="item.imgURl" slot="cover"/>
           <a-icon type="delete" class="close-coll" @click.stop="delCollec(item.sku)"/>
           <!-- {{item.info.prodname}} -->
-          <p class="surplus text-Center top185">{{item.info.popname}}</p>
+          <p class="surplus text-Center top185">{{item.info.prodname}}</p>
           <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
           <p class="validity">有效期{{item.info.prodsdate}}-{{item.info.prodedate}}</p>
           <!-- {{item.info.vatp}} -->
@@ -77,21 +73,22 @@ export default {
         "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          
-          console.log(result)
           if (result.code === 200) {
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
             _this.collecList = result.data;
-            console.log(_this.collecList)
-            console.log('查询收藏成功')
+              for (let i = 0; i < _this.collecList.length; i++) {
+                  _this.collecList[i].spu = _this.collecList[i].info.spu
+              }
+            _this.fsGeneralMethods.addImages(_this, _this.collecList, "sku", "spu");
+            // console.log('查询收藏成功')
           } else {
             ;
           }
         })
       );
     },
-    // 取消收藏 
+    // 取消收藏
      delCollec(sku) {
        console.log(sku)
       let _this = this;

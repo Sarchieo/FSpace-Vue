@@ -22,7 +22,8 @@
               <!-- 显示药品列表相对应的订单状态 -->
               <p class="pay-success" v-if="item.ostatus === 0">提交订单</p>
               <p class="pay-success" v-if="item.ostatus === 2">等待收货</p>
-              <p class="pay-success" v-if="item.ostatus === 3">完成</p>
+              <p class="pay-success" v-if="item.ostatus === 3">已签收</p>
+              <p class="pay-success" v-if="item.ostatus === 4">已完成</p>
               <p class="pay-success" v-if="item.ostatus === -4">已取消</p>
               <p class="pay-success" v-if="item.ostatus === 1">付款成功</p>
               <!-- 付款按钮和提交订单一起显示 -->
@@ -33,7 +34,7 @@
               <p class="pay-btn" v-if="item.ostatus === 3"><button>再次购买</button></p>
               <!-- 取消订单只在提交订单和付款成功状态才显示。药品出库后没有取消订单 -->
               <p class="cancel" @click="cancelOrder()"  v-if="item.ostatus === 1 || item.ostatus === 0">取消订单</p>
-           
+
             </div>
             <div class="line"></div>
             <!-- 订单状态 -->
@@ -89,13 +90,16 @@
                 <span>付款方式：</span>线上支付
               </p>
               <p>
-                <span>商品总额：</span>￥ {{item.payamt}}元
+                <span>商品总额：</span>￥ {{item.pdamt}}元
+              </p>
+              <p>
+                <span>运费金额：</span>￥ {{item.freight}}元
+              </p>
+              <p>
+                <span>优惠金额：</span>￥ {{item.distamt}}元
               </p>
               <p>
                 <span>应支付金额：</span>￥ {{item.payamt}}元
-              </p>
-              <p>
-                <span>运费金额：</span>￥ 0元
               </p>
             </div>
             <div class="line height220"></div>
@@ -108,9 +112,10 @@
           </div>
           <p class="goods-title">
             <span class="width40">药品信息</span>
-            <span class="width15">单价</span>
-            <span class="width15">数量</span>
-            <span class="width15">小计</span>
+            <span class="width10">单价</span>
+            <span class="width10">数量</span>
+            <span class="width10">优惠金额</span>
+            <span class="width10">小计</span>
           </p>
           <div class="goods-list-box">
             <table>
@@ -136,25 +141,26 @@
                   </td>
                   <td class="price widths15 td-center padding-left5">￥{{items.pdprice}}</td>
                   <td class="count widths15 td-center padding-left5">{{items.pnum}}</td>
-                  <td class="subtotal widths15 td-center padding-left10">￥{{items.pdamt}}</td>
+                  <td class="subtotal widths15 td-center padding-left10">￥{{items.distprice}}</td>
+                  <td class="subtotal widths15 td-center padding-left10">￥{{items.payamt}}</td>
                   <!-- <div style="clear: both;"></div> -->
                   <!-- <td class="total width15 td-center padding-left15">
                   ￥35
                   </td>-->
                 </tr>
-                <div class="total td-center padding-left15">￥{{item.pdamt}}</div>
+                <div class="total td-center padding-left15">￥{{item.payamt}}</div>
               </tbody>
               <tfoot class="t-footer">
                 <div class="pay-title">
                   <p>商品总额：</p>
-                  <p>优惠活动：</p>
                   <p>运费：</p>
+                  <p>优惠活动：</p>
                   <p class="red-size">应付总额：</p>
                 </div>
                 <div class="pay-count">
                   <p>￥{{item.pdamt}}</p>
-                  <p>￥{{item.distamt}}</p>
                   <p>￥{{item.freight}}</p>
+                  <p>￥{{item.distamt}}</p>
                   <p class="total-red">￥{{item.payamt}}</p>
                 </div>
               </tfoot>
@@ -209,7 +215,7 @@ export default {
     this.cusno = this.$route.query.cusno;
     this.queryOrderDetail();
     this.getLogisticsInfo();
-    // this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}').data 
+    // this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}').data
   },
   methods: {
     getLogisticsInfo() {
@@ -369,7 +375,7 @@ export default {
   width: 44%;
 }
 .widths15 {
-  width: 18.5%;
+  width: 12.8%;
 }
 
 .width40 {
@@ -377,6 +383,12 @@ export default {
 }
 .width15 {
   width: 15%;
+}
+.width20 {
+  width: 20%;
+}
+.width10 {
+  width: 10.1%;
 }
 .height220 {
   height: 220px !important;
