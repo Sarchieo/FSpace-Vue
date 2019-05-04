@@ -382,7 +382,7 @@
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
-    <!-- <ul class="sider-meun">
+    <ul class="sider-meun">
       <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
         <a>商品分类</a>
       </li>
@@ -402,7 +402,7 @@
         <a-icon type="to-top"/>
         <a>回到顶部</a>
       </li>
-    </ul> -->
+    </ul>
   </div>
 </template>
 <script>
@@ -469,7 +469,7 @@ export default {
     };
   },
   mounted() {
-    // window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
     // this.getNewPersonList();
     // this.getExemPostMallFloor();

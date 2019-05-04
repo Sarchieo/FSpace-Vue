@@ -153,7 +153,7 @@ export default {
         showRemoveIcon: false
       },
       fileList: [],
-      isEditor: true,
+      isEditor: false,
       companyFileDir: "",
       previewVisible: false,
       previewImage: "",
@@ -426,7 +426,8 @@ export default {
             item.fileList.length === 0 ? flag = false : flag = true
             message = item.message
           })
-          if(!flag && _this.authenticationStatus > 64) {
+          
+          if(!flag || _this.authenticationStatus > 64) {
             _this.$message.error('请提交药店资质图片')
             return 
           }

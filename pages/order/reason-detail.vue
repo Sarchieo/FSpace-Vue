@@ -104,7 +104,7 @@
                 <div class="total td-center padding-left15">￥{{ detail.refamt }}</div>
               </tbody>
               <tfoot class="t-footer" ref="foot">
-                <p class="ant-dropdown-link"> 换货原因 </p>
+                <p class="ant-dropdown-link"> 退货原因 </p>
                 <p class="dropdown-p">原因：{{ detail.reasonName }}</p>
                 <p class="dropdown-p">描述：{{ detail.apdesc }}</p>
                 <p class="dropdown-p">图片：</p>

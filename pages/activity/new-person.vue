@@ -20,7 +20,7 @@
                   收藏
                   <a-icon type="star"/>
                 </span>
-                <img v-lazy="item.src" alt class="goods-pic">
+                <img v-lazy="item.imgURl" alt class="goods-pic">
                 <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>

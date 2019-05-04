@@ -40,7 +40,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
     )
     .then(
       function (result) {
-        
+        debugger
         console.log('模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + '>结果:' + result)
         let success = JSON.parse(result)
         if(success.code === -2 && context.$route.name !== 'user-login') {
@@ -68,6 +68,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
           context.$message.error(success.message, 3);
           // callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else if (success.code === -1){
+          context.$message.error(success.message);
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else {
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);

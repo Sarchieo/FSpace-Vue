@@ -60,7 +60,7 @@
             </div>
           </div>
           <!-- 第二步 -->
-          <div class="reason-box height600" v-if="steps === 1">
+          <div class="reason-box" v-if="steps === 1">
             <p class="reason-p">填写发票信息</p>
             <a-tabs v-model="invoiceType" defaultActiveKey="1" @change="changeType">
               <a-tab-pane tab="普通发票" key="1">
@@ -161,15 +161,15 @@
                 <a-button class="back-btn" @click="backTwo()">返回</a-button>
                 <a-button class="submit-btn" html-type="submit">下一步</a-button>
                 </a-form-item>-->
-
+                <div class="submission-box">
+                  <a-button class="back-btn" @click="back(0)">返回</a-button>
+                  <a-button class="submission-btn" type="primary" html-type="submit">下一步</a-button>
+                </div>
               </a-form>
             </div>
               </a-tab-pane>
             </a-tabs>
-             <div class="submission-box">
-                  <a-button class="back-btn" @click="back(0)">返回</a-button>
-                  <a-button class="submission-btn" @click="setStep(2)">下一步</a-button>
-              </div>
+            
           </div>
           <!-- 第三步 -->
           <div class="reason-box" v-if="steps === 2">
@@ -507,11 +507,11 @@ export default {
             this.fileList = fileList;
         },
         setStep(index) {
-            if (index === 3) {
-                this.prePay()
-                return
-            }
-            this.steps = index;
+          if (index === 3) {
+              this.prePay()
+              return
+          }
+          this.steps = index;
         },
         back(index) {
             this.steps = index;
@@ -522,43 +522,22 @@ export default {
             });
         },
         validateTaxID(rule, value, callback) {
-            const form = this.form;
-            if (
-                (value && value != "" && value.length === 15) ||
-                value.length === 18 ||
-                value.length === 20
-            ) {
-                callback();
-            } else {
-
-            }
+          const form = this.form;
+          if (
+              (value && value != "" && value.length === 15) ||
+              value.length === 18 ||
+              value.length === 20
+          ) {
+            callback();
+          } else {
+            callback("请输入正确的纳税人识别号");
+          }
         },
         handleSubmit(e) {
             e.preventDefault();
             this.form.validateFields((err, values) => {
                 if (!err) {
-                    let _this = this;
-                    let iRequest = new inf.IRequest();
-                    iRequest.cls = "MyInvoiceModule";
-                    iRequest.method = "saveInvoice";
-                    iRequest.param.json = JSON.stringify({
-                        taxpayer: values.taxpayer,
-                        bankers: values.bankers,
-                        account: values.account,
-                        tel: values.tel
-                    });
-                    iRequest.param.token = localStorage.getItem("identification");
-                    this.$refcallback(
-                        this,
-                        "userServer",
-                        iRequest,
-                        new this.$iceCallback(function result(result) {
-                            if (result.code === 200) {
-                                _this.$message.success(result.message);
-                                _this.$emit("handleSuccess", values);
-                            }
-                        })
-                    );
+                  this.steps = 2;
                 }
             });
         }
@@ -640,11 +619,11 @@ export default {
     }
   }
 }
-.ant-input {
-  border-radius: 0px !important;
-  -moz-border-radius: 0px !important;
-  -webkit-border-radius: 0px !important;
-}
+// .ant-input {
+//   border-radius: 0px !important;
+//   -moz-border-radius: 0px !important;
+//   -webkit-border-radius: 0px !important;
+// }
 
 .submission-box {
   .container-size(block, 1190px, 90px, 0 auto, 0px);
