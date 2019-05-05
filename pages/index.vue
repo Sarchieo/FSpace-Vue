@@ -54,7 +54,7 @@
 
         <div v-for="(item,index) in list" :key="index">
           <!-- 新品专区 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 1 && newGoodsList.length > 4">
+          <div :ref="item.unqid" class="elaborate" v-if="item.unqid === 1 && newGoodsList.length > 4">
             <p class="elaborate-title">新品专区
                <a href="javascript:;" @click="toNewGoods()">
                 查看全部
@@ -79,7 +79,7 @@
             </ul>
           </div>
            <!-- 热销专区 -->
-          <div class="brand-hall" v-if="item.unqid === 2 && hotGoodsList.length > 4">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 2 && hotGoodsList.length > 4">
             <p class="brand-hall-title">
               热销专区
               <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
@@ -105,7 +105,7 @@
             </div>
           </div>
           <!-- 秒杀专区 -->
-          <div class="brand-hall height-auto" v-if="item.unqid === 4 && secondList.length > 4">
+          <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 4 && secondList.length > 4">
             <div class="brand-hall-title height80">
               秒杀专区
               <a href="javascript:;" @click="toSpike()" class="see-wholes">
@@ -139,7 +139,7 @@
             </div>
           </div>
            <!-- 一块购 -->
-          <div class="brand-hall height-auto" v-if="item.unqid === 8 && teamBuyList.length > 4">
+          <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 8 && teamBuyList.length > 4">
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
               <a href="javascript:;" @click="toBuying()" class="see-wholes">
@@ -199,7 +199,7 @@
             </div>
           </div>
           <!-- 包邮专区 -->
-          <div class="brand-hall" v-if="item.unqid === 16 && postList.length > 4">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 16 && postList.length > 4">
             <p class="brand-hall-title">
               包邮专区
               <!-- <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
@@ -224,7 +224,7 @@
             </div>
           </div>
            <!-- 新人专享 -->
-          <div class="brand-hall" v-if="item.unqid === 32 && newPersonList.length > 4">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 32 && newPersonList.length > 4">
             <p class="brand-hall-title">
               新人专享
               <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
@@ -276,7 +276,7 @@
             </div>
           </div>   -->
            <!-- 为你精选 -->
-          <div id="choice" class="elaborate" v-if="item.unqid === 128 && selectedList.length > 5">
+          <div :ref="item.unqid" class="elaborate" v-if="item.unqid === 128 && selectedList.length > 5">
             <p class="elaborate-title">为你精选
                <a href="javascript:;" @click="toSelected()">
                 查看全部
@@ -300,7 +300,7 @@
             </ul>
           </div>
            <!-- 品牌专区 -->
-          <div class="brand-hall" v-if="item.unqid === 256 && brandList.length > 4">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 256 && brandList.length > 4">
             <p class="brand-hall-title">
               品牌专区
               <a href="javascript:;" @click="toBrand()">查看全部<a-icon type="right"/>
@@ -324,7 +324,7 @@
             </div>
           </div>
           <!-- 限时抢购 -->
-          <div id="hot" class="brand-hall" v-if="item.unqid === 512 && limitedList.length > 3">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 512 && limitedList.length > 3">
             <p class="brand-hall-title">
              限时折扣
               <a class="all-hot" @click="toLimited()">
@@ -386,6 +386,9 @@
       <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
         <a>商品分类</a>
       </li>
+      <li class="right-meun" v-for="(item, index) in list" :class="{'active': ((scrollTop >= item.sHeight) && (scrollTop <= item.eHeight))    }"  :key="index" v-show="item.isShow" @click="limitedTime()">
+        <a>{{ item.fname }}</a>
+      </li>
       <!-- <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
         <a>限时抢购</a>
       </li>
@@ -434,6 +437,7 @@ export default {
         m: 0,
         s: 0
       },
+      scrollTop: 0,
       limitedID: 0,
       teamByID: 0,
       postID: 0,
@@ -467,7 +471,60 @@ export default {
       GUID: "",
       list: [],
       meunList: [
-
+        {
+          id: 1,
+          name: '新品专区',
+          sheight: 0,
+          eheight: 0
+        },
+        {
+          id: 2,
+          name: '热销专区',
+          sheight: 0,
+          eheight: 0
+        },
+        {
+          id: 4,
+          name: '秒杀专区',
+          sheight: 0,
+          eheight: 0
+        },
+         {
+          id: 8,
+          name: '一块购',
+          sheight: 0,
+          eheight: 0
+        },
+         {
+          id: 16,
+          name: '包邮专区',
+          sheight: 0,
+          eheight: 0
+        },
+         {
+          id: 32,
+          name: '新人专享',
+          sheight: 0,
+          eheight: 0
+        },
+         {
+          id: 64,
+          name: '中华名方',
+          sheight: 0,
+          eheight: 0
+        },
+         {
+          id: 128,
+          name: '为你精选',
+          sheight: 0,
+          eheight: 0
+        },
+         {
+          id: 512,
+          name: '限时抢购',
+          sheight: 0,
+          eheight: 0
+        }
       ]
     };
   },
@@ -480,49 +537,10 @@ export default {
   },
   methods: {
     handleScroll() {
-      var scrollTop =
+      this.scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-      // var toTop = this.$refs['toTop'].style
-      if (scrollTop > 0) {
-        this.isShowToTop = true;
-        this.isShowBackTop = true;
-      } else {
-        this.isShowToTop = false;
-        this.isShowBackTop = false;
-      }
-      if (scrollTop > 100 && scrollTop < 610) {
-        this.goodsTypes = true;
-        this.chooses = false;
-        this.freeShippings = false;
-        this.hotSells = false;
-        this.limitedTimes = false;
-      } else if (scrollTop > 620 && scrollTop < 970) {
-        this.limitedTimes = true;
-        this.goodsTypes = false;
-        this.freeShippings = false;
-        this.hotSells = false;
-        this.chooses = false;
-      } else if (scrollTop > 980 && scrollTop < 1330) {
-        this.hotSells = true;
-        this.limitedTimes = false;
-        this.goodsTypes = false;
-        this.freeShippings = false;
-        this.chooses = false;
-      } else if (scrollTop > 1340 && scrollTop < 1690) {
-        this.freeShippings = true;
-        this.hotSells = false;
-        this.limitedTimes = false;
-        this.goodsTypes = false;
-        this.chooses = false;
-      } else if (scrollTop > 1700) {
-        this.chooses = true;
-        this.freeShippings = false;
-        this.hotSells = false;
-        this.limitedTimes = false;
-        this.goodsTypes = false;
-      }
     },
     // 获取楼层显示状态
     async getMallFloorProd() {
@@ -543,7 +561,6 @@ export default {
             _this.list = result.data;
             _this.list.map((value, index) => {
               switch(value.unqid) {
-                // 1新品专区 2热销专区 4秒杀专区 8一块购 16 包邮专区 32 新人专享 64中华名方 暂未提供接口 128 为你精选 256品牌专区 512限时抢购
                 case 1: // 新品专区
                 _this.getNewGoods();
                 break
@@ -569,7 +586,6 @@ export default {
                 break
                 case 256: // 品牌专区
                 _this.getBrandMallFloor();
-                break
                 break
                 case 512:// 限时抢购
                 _this.getDiscountMallFloor();
@@ -601,6 +617,7 @@ export default {
             _this.teamByID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.teamBuyList, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
+            _this.setHeight()
           }
         })
       );
@@ -626,6 +643,7 @@ export default {
             _this.secondID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.secondList, 'sku', 'spu')
             _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
+            _this.setHeight()
           }
         })
       );
@@ -650,6 +668,7 @@ export default {
             _this.brandList = result.data.list
             _this.brandID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.brandList, 'sku', 'spu')
+            _this.setHeight()
           }
         })
       );
@@ -674,6 +693,7 @@ export default {
             _this.postList = result.data.list
             _this.postID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.postList, 'sku', 'spu')
+            _this.setHeight()
           }
         })
       );
@@ -723,6 +743,7 @@ export default {
             _this.newPersonList = result.data.list
             _this.newPersonID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.newPersonList, 'sku', 'spu')
+            _this.setHeight()
           }
         })
       );
@@ -751,12 +772,13 @@ export default {
             _this.limitedID = result.data.actcode
             _this.secondKill(_this.stringToDate(result.data.now), result.data.edate)
             _this.fsGeneralMethods.addImages(_this, _this.limitedList, 'sku', 'spu')
+            _this.setHeight()
           }
         })
       );
     },
     // 请求新品专区数据列表
-    async getNewGoods() {
+    async getNewGoods(item) {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
@@ -774,9 +796,28 @@ export default {
             _this.newGoodsList = result.data.slice(0, 6);
             _this.newGoodsID = result.data.actcode
             _this.fsGeneralMethods.addImages(_this, _this.newGoodsList, 'sku', 'spu')
+            _this.setHeight()
           }
         })
       );
+    },
+    setHeight() {
+      this.$nextTick(() => {
+        // debugger
+        // console.log(_this.$refs[1])
+        // 计算组件高度
+        this.list.forEach((item) => {
+          let div = this.$refs[item.unqid]
+          if(div) {
+            item.isShow = true
+            item.sHeight = div[0].offsetTop
+            item.eHeight = div[0].offsetTop + div[0].offsetHeight
+          } else {
+            item.isShow = false
+          }
+          
+        })
+      })
     },
     // 为你精选数据
     async getSelects() {
@@ -901,52 +942,6 @@ export default {
           console.log('活动结束')
         }
       }
-    },
-    goTotop() {
-      document.body.scrollTop = document.documentElement.scrollTop = 0;
-    },
-    goodsType() {
-      document.body.scrollTop = document.documentElement.scrollTop = 100;
-      this.goodsTypes = true;
-      this.chooses = false;
-      this.freeShippings = false;
-      this.hotSells = false;
-      this.limitedTimes = false;
-    },
-    limitedTime() {
-      document.body.scrollTop = document.documentElement.scrollTop = 620;
-      this.limitedTimes = true;
-      this.goodsTypes = false;
-      this.freeShippings = false;
-      this.hotSells = false;
-      this.chooses = false;
-    },
-    hotSell() {
-      document.body.scrollTop = document.documentElement.scrollTop = 980;
-      this.hotSells = true;
-      this.limitedTimes = false;
-      this.goodsTypes = false;
-      this.freeShippings = false;
-      this.chooses = false;
-    },
-    freeShipping() {
-      document.body.scrollTop = document.documentElement.scrollTop = 1340;
-      this.freeShippings = true;
-      this.hotSells = false;
-      this.limitedTimes = false;
-      this.goodsTypes = false;
-      this.chooses = false;
-    },
-    choose() {
-      document.body.scrollTop = document.documentElement.scrollTop = 1700;
-      this.chooses = true;
-      this.freeShippings = false;
-      this.hotSells = false;
-      this.limitedTimes = false;
-      this.goodsTypes = false;
-    },
-    goBackTop() {
-      document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     toDetail(item, actcode, status) {
       this.$router.push({
