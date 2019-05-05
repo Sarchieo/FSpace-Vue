@@ -386,25 +386,9 @@
       <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
         <a>商品分类</a>
       </li>
-      <li class="right-meun" v-for="(item, index) in list" :class="{'active': ((scrollTop >= item.sHeight) && (scrollTop <= item.eHeight))    }"  :key="index" v-show="item.isShow" @click="limitedTime()">
+      <li class="right-meun" v-for="(item, index) in list" :class="{'active': ((scrollTop >= item.sHeight) && (scrollTop <= item.eHeight))    }"  :key="index" v-show="item.isShow" @click="meauItemClick(item)">
         <a>{{ item.fname }}</a>
       </li>
-      <!-- <li class="right-meun" :class="{'active': limitedTimes}" @click="limitedTime()">
-        <a>限时抢购</a>
-      </li>
-      <li class="right-meun" :class="{'active': hotSells}" @click="hotSell()">
-        <a>热销专区</a>
-      </li>
-      <li class="right-meun" :class="{'active': freeShippings}" @click="freeShipping()">
-        <a>包邮专区</a>
-      </li>
-      <li class="right-meun" :class="{'active': chooses}" @click="choose()">
-        <a>为你精选</a>
-      </li>
-      <li class="right-meun to-top" v-show="isShowToTop" @click="goTotop()" ref="toTop">
-        <a-icon type="to-top"/>
-        <a>回到顶部</a>
-      </li> -->
     </ul>
   </div>
 </template>
@@ -463,7 +447,6 @@ export default {
         "//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg",
       isShowToTop: false,
       goodsTypes: false,
-      limitedTimes: false,
       hotSells: false,
       freeShippings: false,
       chooses: false,
@@ -803,20 +786,17 @@ export default {
     },
     setHeight() {
       this.$nextTick(() => {
-        // debugger
-        // console.log(_this.$refs[1])
-        // 计算组件高度
         this.list.forEach((item) => {
           let div = this.$refs[item.unqid]
           if(div) {
             item.isShow = true
-            item.sHeight = div[0].offsetTop
-            item.eHeight = div[0].offsetTop + div[0].offsetHeight
+            item.sHeight = div[0].offsetTop - div[0].offsetHeight
+            item.eHeight = div[0].offsetTop
           } else {
             item.isShow = false
-          }
-          
+          } 
         })
+        console.log(this.list)
       })
     },
     // 为你精选数据
@@ -838,6 +818,7 @@ export default {
             _this.selectedList = result.data.slice(0, 6);
             _this.fsGeneralMethods.addImages(_this, _this.selectedList, 'sku', 'spu')
             _this.selectedID = result.data.actcode
+            _this.setHeight()
           }
         })
       );
@@ -864,6 +845,7 @@ export default {
                item.top = '/_nuxt/assets/img/top' + (index+1) + '.png'
             })
             _this.fsGeneralMethods.addImages(_this, _this.hotGoodsList, 'sku', 'spu')
+            _this.setHeight()
           }
         })
       );
@@ -942,6 +924,9 @@ export default {
           console.log('活动结束')
         }
       }
+    },
+    meauItemClick(item) {
+      document.documentElement.scrollTop = item.sHeight;
     },
     toDetail(item, actcode, status) {
       this.$router.push({
