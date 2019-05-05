@@ -144,7 +144,7 @@ export default {
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
 .service-title {
-  .p-size(60px, 60px, 24px, left, 20px, #333333);
+  .p-size(60px, 60px, 16px, left, 20px, #333333);
   background: #f2f2f2;
 }
 .search-input {
