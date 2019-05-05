@@ -124,7 +124,7 @@ export default {
       pName: '',
       pspec: '',
       pdprice: '',
-      reasonType: 70,
+      reasonType: '',
       asType: 0,
       headers: {
         "specify-path": "",
@@ -165,6 +165,10 @@ export default {
     },
     //提交售后
     afterSaleApp() {
+        if (this.reasonType === '') {
+            this.$message.warning("请选择退款/退货原因")
+            return
+        }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "OrderOptModule";

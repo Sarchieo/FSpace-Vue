@@ -248,7 +248,7 @@ export default {
       reprreason: [],
       content: "",
       steps: 0,
-      reasonType: 79,
+      reasonType: '',
       asType: 0,
       previewVisible: false,
       previewImage: "",
@@ -476,6 +476,12 @@ export default {
       this.fileList = fileList;
     },
     setStep(index) {
+        if (index === 1) {
+            if (this.reasonType === '') {
+                this.$message.warning("请选择补开发票原因")
+                return
+            }
+        }
       if (index === 3) {
         this.prePay();
         return;
