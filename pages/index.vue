@@ -382,11 +382,11 @@
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
-    <ul class="sider-meun">
-      <li class="right-meun" :class="{'active': goodsTypes}" @click="goodsType()">
+    <ul class="sider-meun menu-cur-nav">
+      <li class="right-meun">
         <a>商品分类</a>
       </li>
-      <li class="right-meun" v-for="(item, index) in list" :class="{'active': ((scrollTop >= item.sHeight) && (scrollTop <= item.eHeight))    }"  :key="index" v-show="item.isShow" @click="meauItemClick(item)">
+      <li class="right-meun" v-for="(item, index) in list" :class="((scrollTop >= item.sHeight) && (scrollTop <= item.eHeight)) ? item.color : ''"  :key="index" v-show="item.isShow" @click="meauItemClick(item)">
         <a>{{ item.fname }}</a>
       </li>
     </ul>
@@ -445,70 +445,13 @@ export default {
       isShow: false,
       imgSrc:
         "//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg",
-      isShowToTop: false,
       goodsTypes: false,
       hotSells: false,
       freeShippings: false,
       chooses: false,
       isShowBackTop: false,
       GUID: "",
-      list: [],
-      meunList: [
-        {
-          id: 1,
-          name: '新品专区',
-          sheight: 0,
-          eheight: 0
-        },
-        {
-          id: 2,
-          name: '热销专区',
-          sheight: 0,
-          eheight: 0
-        },
-        {
-          id: 4,
-          name: '秒杀专区',
-          sheight: 0,
-          eheight: 0
-        },
-         {
-          id: 8,
-          name: '一块购',
-          sheight: 0,
-          eheight: 0
-        },
-         {
-          id: 16,
-          name: '包邮专区',
-          sheight: 0,
-          eheight: 0
-        },
-         {
-          id: 32,
-          name: '新人专享',
-          sheight: 0,
-          eheight: 0
-        },
-         {
-          id: 64,
-          name: '中华名方',
-          sheight: 0,
-          eheight: 0
-        },
-         {
-          id: 128,
-          name: '为你精选',
-          sheight: 0,
-          eheight: 0
-        },
-         {
-          id: 512,
-          name: '限时抢购',
-          sheight: 0,
-          eheight: 0
-        }
-      ]
+      list: []
     };
   },
   mounted() {
@@ -546,32 +489,41 @@ export default {
               switch(value.unqid) {
                 case 1: // 新品专区
                 _this.getNewGoods();
+                value.color = 'color-green'
                 break
                 case 2:// 热销专区
                 _this.getHotGoods();
+                value.color = 'color-beige'
                 break
                 case 4: // 秒杀专区
                 _this.getSeckillMallFloor();
+                value.color = 'color-blue'
                 break
                 case 8: // 一块购
                 _this.getTeamBuyMallFloor()
+                value.color = 'color-pink'
                 break
                 case 16: // 包邮专区
                 _this.getExemPostMallFloor();
+                value.color = 'color-blue'
                 break
                 case 32: // 新人专享
                 _this.getNewPersonList();
+                value.color = 'color-pink'
                 break
                 case 64: // 中华名方 暂未提供接口
                 break
                 case 128: // 为你精选
                 _this.getSelects();
+                value.color = 'color-green'
                 break
                 case 256: // 品牌专区
                 _this.getBrandMallFloor();
+                value.color = 'color-indigo'
                 break
                 case 512:// 限时抢购
                 _this.getDiscountMallFloor();
+                value.color = 'color-green'
                 break
               }
             })
@@ -792,6 +744,7 @@ export default {
             item.isShow = true
             item.sHeight = div[0].offsetTop - div[0].offsetHeight
             item.eHeight = div[0].offsetTop
+            
           } else {
             item.isShow = false
           } 
@@ -926,7 +879,7 @@ export default {
       }
     },
     meauItemClick(item) {
-      document.documentElement.scrollTop = item.sHeight;
+      document.documentElement.scrollTop = item.sHeight || 0;
     },
     toDetail(item, actcode, status) {
       this.$router.push({
@@ -1528,29 +1481,6 @@ li {
   line-height: 321px;
   text-align: center;
 }
-/* 右侧菜单栏 */
-.sider-meun {
-  position: fixed;
-  top: 300px;
-  right: 10px;
-  width: 85px;
-  height: 400px;
-  background: #f2f2f2;
-}
-.sider-meun .right-meun {
-  width: 85px;
-  height: 80px;
-  line-height: 80px;
-  text-align: center;
-  background: #ffffff;
-  color: #666;
-}
-.right-meun i {
-  display: block;
-  position: relative;
-  top: 7px;
-  font-size: 28px;
-}
 .to-top {
   height: 0px;
 }
@@ -1586,13 +1516,7 @@ li {
 .wrap-right {
   height: 420px;
 }
-.sider-meun .right-meun:hover {
-  background: rgb(255, 0, 54);
-  color: #ffffff;
-}
-.right-meun:hover a {
-  color: #ffffff;
-}
+
 /* ui框架样式 */
 .ant-input {
   width: 84% !important;
@@ -1661,5 +1585,66 @@ li {
 }
 .ant-progress-inner{
   background-color: #ffffff;
+}
+
+/* 右侧菜单栏 */
+.sider-meun {
+  position: fixed;
+  top: 300px;
+  right: 10px;
+  width: 85px;
+  height: 400px;
+  background: #f2f2f2;
+}
+.sider-meun .right-meun {
+  width: 85px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.right-meun a {
+  font-size: 14px;
+}
+
+
+.menu-cur-nav {
+  background-color: #ff0036 !important;
+}
+
+.menu-cur-nav .color-pink {
+  background-color: #EA5F8D !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
+.menu-cur-nav .color-blue {
+  background-color: #0AA6E8 !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
+.menu-cur-nav .color-green {
+  background-color: #64C333 !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
+.menu-cur-nav .color-beige {
+  background-color: #6B8E23 !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
+.menu-cur-nav .color-indigo {
+  background-color: #4B0082 !important;
+  a {
+    color: #ffffff !important;
+  }
 }
 </style>

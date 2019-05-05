@@ -40,7 +40,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/antd-ui',
+    { src: '~/plugins/antd-ui.js', ssr: true },
     { src: '~/plugins/vue-lazyload.js', ssr: true },
     { src: '~/plugins/element-ui', ssr: true },
     { src: '~/plugins/fs-plugin.js', ssr: false },
