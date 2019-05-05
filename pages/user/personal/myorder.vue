@@ -12,14 +12,6 @@
       <a-tab-pane tab="已退货" key="-3"></a-tab-pane>
       <a-tab-pane tab="取消交易" key="-4"></a-tab-pane>
     </a-tabs>
-    <div>
-      <el-date-picker
-      v-model="year"
-      type="year"
-      placeholder="选择年">
-    </el-date-picker>
-    </div>
-    
     <p class="table-title">
       <span class="width33">药品</span>
       <span class="width13">单价</span>
@@ -29,6 +21,13 @@
       <span class="width13">实付款</span>
       <span class="width13">操作</span>
     </p>
+    <div>
+      <el-date-picker
+      v-model="year"
+      type="year"
+      placeholder="选择年">
+    </el-date-picker>
+    </div>
     <ul class="order-box" v-if="this.orderList.length !== 0 ">
       <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
         <p class="order-info-text">
@@ -179,7 +178,7 @@ export default {
       total: 0,
       ostatus: "", // 订单状态
       orderList: [],
-      year: ''
+      year: '2019'
     };
   },
   mounted() {
@@ -238,7 +237,7 @@ export default {
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "queryOrders";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = [,this.ostatus];
+      iRequest.param.arrays = [this.year,this.ostatus];
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
 
@@ -511,6 +510,7 @@ export default {
       height: 108px;
       margin: 0px;
       border-top: 1px solid #f2f2f2;
+      border-right: 1px solid #f2f2f2;
       div {
         display: inline-block;
         height: 108px;
