@@ -23,7 +23,7 @@
           <div class="reason-box" v-if="steps === 0">
             <p class="reason-p">补开原因</p>
             <div class="reason-right">
-              <a-form-item label="补开原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
+              <!-- <a-form-item label="补开原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
                 <a-select
                   v-model="reasonType"
                   style="width: 200px;margin-bottom: 10px;"
@@ -34,7 +34,7 @@
               </a-form-item>
               <a-form-item label="原因描述" :label-col="{ span: 2 }" :wrapper-col="{ span: 16 }">
                 <a-textarea v-model="content" class="evaluate-text" maxlength="300"/>
-              </a-form-item>
+              </a-form-item> -->
               <p class="limit">{{content.length}}/300</p>
 
               <!-- <p class="upload">上传相片</p> -->
@@ -49,7 +49,7 @@
                   <a-icon type="plus"/>
                   <div class="ant-upload-text">最多三张</div>
                 </div>
-              </a-upload> -->
+              </a-upload>-->
               <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
                 <img alt="example" style="width: 100%" :src="previewImage">
               </a-modal>
@@ -63,65 +63,22 @@
           <div class="reason-box" v-if="steps === 1">
             <p class="reason-p">填写发票信息</p>
             <a-tabs v-model="invoiceType" defaultActiveKey="1" @change="changeType">
-              <a-tab-pane tab="普通发票" key="1">
-                 <div class="two-box">
+              <a-tab-pane tab="普通发票" key="1"></a-tab-pane>
+              <a-tab-pane tab="增值税专用发票" key="2"></a-tab-pane>
+            </a-tabs>
+            <div class="two-box">
+              <p class="comp-name-address">
+                <span>公司名称：</span>
+                {{ storeInfo.comp.storeName }}
+              </p>
+              <p class="comp-name-address">
+                <span>公司注册地址：</span>
+                {{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}
+              </p>
               <a-form :form="form" @submit="handleSubmit">
-                <p class="comp-name-address">
-                  <span>公司名称：</span>
-                  {{ storeInfo.comp.storeName }}
-                </p>
-                <p class="comp-name-address">
-                  <span>公司注册地址：</span>
-                  {{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}
-                </p>
                 <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-model="taxpayer"
-                    placeholder="纳税人识别号或社会信用代码"
-                    v-decorator="[
-                      'taxpayer',
-                      {rules: [{ required: true, validator: validateTaxID}]}
-                    ]"
-                  />
-                </a-form-item>
-                <a-form-item label="开户银行：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-model="bankers"
-                    placeholder="xx银行xx支行"
-                    v-decorator="[
-                      'bankers',
-                      {rules: [{ required: true, message: '请填写开户银行' }]}
-                    ]"
-                  />
-                </a-form-item>
-                <a-form-item label="银行账号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-model="account"
-                    placeholder="开户许可证或法人的私人账户"
-                    v-decorator="[
-                      'account',
-                      {rules: [{ required: true, message: '请填写银行账号：' }]}
-                    ]"
-                  />
-                </a-form-item>
-                <!-- <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
-                <a-button class="back-btn" @click="backTwo()">返回</a-button>
-                <a-button class="submit-btn" html-type="submit">下一步</a-button>
-                </a-form-item>-->
-
-              </a-form>
-            </div>
-              </a-tab-pane>
-              <a-tab-pane tab="增值税专用发票" key="2">
-                 <div class="two-box">
-              <a-form :form="form" @submit="handleSubmit">
-                <p class="comp-name-address">
-                  <span>公司名称：</span>
-                  {{ storeInfo.comp.storeName }}
-                </p>
-                <p class="comp-name-address">
-                  <span>公司注册地址：</span>
-                  {{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}
-                </p>
-                <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-model="taxpayer"
+                  <a-input
+                    v-model="taxpayer"
                     placeholder="纳税人识别号或社会信用代码"
                     v-decorator="[
                       'taxpayer',
@@ -130,26 +87,34 @@
                   />
                 </a-form-item>
 
-                <a-form-item label="注册电话：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-model="tel"
+                <a-form-item
+                  v-if="invoiceType != 1"
+                  label="注册电话："
+                  :label-col="{ span: 5 }"
+                  :wrapper-col="{ span: 12 }"
+                >
+                  <a-input
+                    v-model="tel"
                     placeholder="专票要求的公司电话"
                     v-decorator="[
                       'tel',
                       {rules: [{ required: true, message: '请填写注册电话' }]}
                     ]"
-                            />
+                  />
                 </a-form-item>
                 <a-form-item label="开户银行：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-model="bankers"
+                  <a-input
+                    v-model="bankers"
                     placeholder="xx银行xx支行"
                     v-decorator="[
                       'bankers',
                       {rules: [{ required: true, message: '请填写开户银行' }]}
                     ]"
-                    />
+                  />
                 </a-form-item>
                 <a-form-item label="银行账号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-model="account"
+                  <a-input
+                    v-model="account"
                     placeholder="开户许可证或法人的私人账户"
                     v-decorator="[
                       'account',
@@ -157,19 +122,12 @@
                     ]"
                   />
                 </a-form-item>
-                <!-- <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
-                <a-button class="back-btn" @click="backTwo()">返回</a-button>
-                <a-button class="submit-btn" html-type="submit">下一步</a-button>
-                </a-form-item>-->
                 <div class="submission-box">
                   <a-button class="back-btn" @click="back(0)">返回</a-button>
                   <a-button class="submission-btn" type="primary" html-type="submit">下一步</a-button>
                 </div>
               </a-form>
             </div>
-              </a-tab-pane>
-            </a-tabs>
-            
           </div>
           <!-- 第三步 -->
           <div class="reason-box" v-if="steps === 2">
@@ -177,24 +135,24 @@
             <div class="mail-box">
               <p class="title">取件地址</p>
               <p class="mail-p">
-                <span class="mail-title">收件人： </span>
+                <span class="mail-title">收件人：</span>
                 <span>{{consignee}}</span>
               </p>
               <p class="mail-p">
-                <span class="mail-title">联系方式: </span>
+                <span class="mail-title">联系方式:</span>
                 <span>{{contact}}</span>
               </p>
               <p class="mail-p">
-                <span class="mail-title">收货门店: </span>
+                <span class="mail-title">收货门店:</span>
                 <span>{{comp.storeName}}</span>
               </p>
               <p class="mail-p">
-                <span class="mail-title">门店地址: </span>
+                <span class="mail-title">门店地址:</span>
                 <span>{{comp.address}}</span>
               </p>
               <!--<p class="freight">-->
-                <!--<span>运费：</span>-->
-                <!--<span class="price">￥10</span>-->
+              <!--<span>运费：</span>-->
+              <!--<span class="price">￥10</span>-->
               <!--</p>-->
               <!--<p class="text">*运费根据门店地址的里程计算，系统自动生成运费。</p>-->
               <div class="submission-box">
@@ -205,17 +163,11 @@
           </div>
           <!-- 第四步 -->
           <div class="reason-box" v-if="steps === 3">
-            <div class="payment-header">
-              第三方支付
-            </div>
+            <div class="payment-header">第三方支付</div>
             <div class="qr-code">
-                <p class="scan">
-                    扫一扫付款
-                </p>
-                <p class="pay-num">
-                    人民币：{{ payamt }}元
-                </p>
-                <img :src="url" alt="" class="payment-pic">
+              <p class="scan">扫一扫付款</p>
+              <p class="pay-num">人民币：{{ payamt }}元</p>
+              <img :src="url" alt class="payment-pic">
             </div>
           </div>
           <!-- 第五步 -->
@@ -226,7 +178,7 @@
               <thead>订单号: {{orderno}}</thead>
               <tbody>
                 <tr>
-                  <td>发票类型 </td>
+                  <td>发票类型</td>
                   <td>{{invoiceStr}}</td>
                 </tr>
                 <tr>
@@ -250,304 +202,293 @@
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceFooter from "../../components/fspace-ui/footer";
 export default {
-    components: {
-        FSpaceHeader,
-        FSpaceFooter
-    },
-    computed: {
-        storeInfo() {
-            return this.$store.state.user;
-        }
-    },
-    data() {
-        return {
-            orderno: 0,
-            comp: {},
-            consignee: '',
-            contact: '',
-            reprreason: [],
-            content: "",
-            steps: 0,
-            reasonType: 79,
-            asType: 0,
-            previewVisible: false,
-            previewImage: "",
-            fileList: [],
-            url: '',
-            payamt: '',
-            afsano: 0,//售后单号
-            oneStep: true,
-            twoStep: false,
-            form: this.$form.createForm(this),
-            mireason: [],
-            invoiceType: '1',
-            invoiceStr: '普通发票',
-            bankers: "",//开户行
-            account: "",//开户行账号
-            taxpayer: "",//纳税人识别号
-            tel: "",//注册电话
-            invoice: {}
-        };
-    },
-    mounted() {
-        this.orderno = this.$route.query.orderno;
-        this.comp = this.storeInfo.comp
-        this.queryDictList()
-        this.queryMyConsignee()
-        this.showFeePayInfo()
-        // 支付结果监听
-        this.payResult()
-    },
-    methods: {
-        //运费
-        showFeePayInfo() {
-            const _this = this;
-            const iRequest = new inf.IRequest();
-            iRequest.cls = "PayModule";
-            iRequest.method = "showFeePayInfo";
-            iRequest.param.json = JSON.stringify({
-                orderno: this.orderno,
-                compid: this.storeInfo.comp.storeId,
-                paytype: "alipay",
-            });
-            iRequest.param.token = localStorage.getItem("identification")
-            this.$refcallback(
-                this,
-                "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
-                iRequest,
-                new this.$iceCallback(
-                    function result(result) {
-                        if (result.code === 200) {
-                            _this.payamt = result.data.payamt
-                        } else {
-                            _this.$message.error(result.message)
-                        }
-                    }
-                )
-            );
-        },
-        changeType(val) {
-           if (this.invoiceType == 1) {
-               this.invoiceStr = '普通发票'
-           } else {
-               this.invoiceStr = '增值税专用发票'
-           }
-        },
-        prePay() {
-            const _this = this;
-            const iRequest = new inf.IRequest();
-            iRequest.cls = "PayModule";
-            iRequest.method = "preFeePay";
-            iRequest.param.json = JSON.stringify({
-                orderno: this.orderno,
-                compid: this.storeInfo.comp.storeId,
-                paytype: "alipay",
-                afsano: this.afsano //  这是啥?
-            });
-            iRequest.param.token = localStorage.getItem("identification")
-            this.$refcallback(
-                this,
-                "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
-                iRequest,
-                new this.$iceCallback(
-                    function result(result) {
-                        if (result.code === 200) {
-                            console.log("url --- " + JSON.stringify(result.data))
-                            _this.url = result.data
-                            _this.steps = 3;
-                        } else {
-                            _this.$message.error(result.message)
-                        }
-                    }
-                )
-            );
-        },
-        payResult() {
-            let _this = this
-            let ice_callback = new Ice.Class(inf.PushMessageClient, {
-                receive: function (message, current) {
-
-                    let result = JSON.parse(message)
-                    // event tradeStatus 需要跟蒋文广确认
-                    if (result.event == 1 && result.body.tradeStatus == 1) {
-                        _this.steps = 4
-                        // 支付结果页面数据
-
-                    } else {
-                        _this.$message.error('订单支付异常, 请稍后重试')
-                    }
-                }
-            })
-            this.$initIceLong('orderServer', this.storeInfo.comp.storeId, new ice_callback());
-        },
-        queryMyConsignee() {
-            let _this = this;
-            let iRequest = new inf.IRequest();
-            iRequest.cls = "MyDrugStoreInfoModule";
-            iRequest.method = "queryMyConsignee";
-            iRequest.param.json = JSON.stringify({
-                compid: _this.storeInfo.comp.storeId
-            })
-            iRequest.param.token = localStorage.getItem("identification")
-            this.$refcallback(
-                this,
-                "userServer",
-                iRequest,
-                new this.$iceCallback(
-                    function result(result) {
-                        if (result.code === 200) {
-                            if (result.data && result.data.length > 0) {
-                                _this.receiverList = result.data
-                                _this.consignee = _this.receiverList[0].contactname
-                                _this.contact = _this.receiverList[0].contactphone
-                            } else {
-                                _this.visible = true
-                            }
-                        } else {
-                            _this.visible = true
-                        }
-                    }
-                )
-            );
-        },
-        //提交售后
-        afterSaleApp() {
-            let _this = this
-            let iRequest = new inf.IRequest();
-            iRequest.cls = "OrderOptModule";
-            iRequest.method = "afterSaleApp";
-            iRequest.param.token = localStorage.getItem("identification");
-            if (this.invoiceType == 1) {
-                this.asType = 3
-            } else {
-                this.asType = 4
-            }
-            this.invoice = {
-                invoiceInfo: {
-                    compName: this.comp.storeName,
-                    address: this.comp.address,
-                    bankers: this.bankers,//开户行
-                    account: this.account,//开户行账号
-                    taxpayer: this.taxpayer,//纳税人识别号
-                    tel: this.tel,//注册电话
-                },
-                address:{
-                    consignee: this.consignee,
-                    contact: this.contact,
-                    compName: this.comp.storeName,
-                    address: this.comp.address
-                }
-            };
-            let arr = [{
-                gstatus: 0,
-                orderno: this.orderno,
-                compid: this.storeInfo.comp.storeId,
-                reason: this.reasonType,
-                invoice: JSON.stringify(this.invoice),
-                apdesc: this.content,
-                astype: this.asType
-            }];
-            iRequest.param.json = JSON.stringify({
-                orderno: this.orderno,
-                asAppArr: arr,
-                asType: this.asType
-            });
-            console.log("json-- " +  iRequest.param.json )
-            this.$refcallback(
-                this,
-                "orderServer" +
-                Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
-                iRequest,
-                new this.$iceCallback(
-                    function result(result) {
-                        if (result.code === 200) {
-                            _this.afsano = result.data
-                            // console.log("afsano--- " + _this.afsano)
-                            _this.setStep(3)
-                            // _this.$message.success(result.data);
-                        } else {
-                            console.log("result--- " + JSON.stringify(result))
-                        }
-                    },
-                    function error(error) {
-                        ;
-                    }
-                )
-            );
-        },
-        queryDictList() {
-            let _this = this
-            let iRequest = new inf.IRequest();
-            iRequest.cls = "CommonModule";
-            iRequest.method = "getDicts";
-            this.$refcallback(
-                this,
-                "globalServer",
-                iRequest,
-                new this.$iceCallback(
-                    function result(result) {
-                        if (result.code === 200) {
-                            _this.mireason = JSON.parse(result.data).mireason
-                        }
-                    }
-                )
-            );
-        },
-        handleChangePatch(value) {
-            this.reasonType = value;
-        },
-        handleCancel() {
-            this.previewVisible = false;
-        },
-        handlePreview(file) {
-            this.previewImage = file.url || file.thumbUrl;
-            this.previewVisible = true;
-        },
-        handleChange({fileList}) {
-            this.fileList = fileList;
-        },
-        setStep(index) {
-          if (index === 3) {
-              this.prePay()
-              return
-          }
-          this.steps = index;
-        },
-        back(index) {
-            this.steps = index;
-        },
-        backOne() {
-            this.$router.push({
-                path: "/user/personal/myorder"
-            });
-        },
-        validateTaxID(rule, value, callback) {
-          const form = this.form;
-          if (
-              (value && value != "" && value.length === 15) ||
-              value.length === 18 ||
-              value.length === 20
-          ) {
-            callback();
+  components: {
+    FSpaceHeader,
+    FSpaceFooter
+  },
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    }
+  },
+  data() {
+    return {
+      orderno: 0,
+      comp: {},
+      consignee: "",
+      contact: "",
+      reprreason: [],
+      content: "",
+      steps: 0,
+      reasonType: 79,
+      asType: 0,
+      previewVisible: false,
+      previewImage: "",
+      fileList: [],
+      url: "",
+      payamt: "",
+      afsano: 0, //售后单号
+      oneStep: true,
+      twoStep: false,
+      mireason: [],
+      invoiceType: "1",
+      invoiceStr: "普通发票",
+      bankers: "", //开户行
+      account: "", //开户行账号
+      taxpayer: "", //纳税人识别号
+      tel: "", //注册电话
+      invoice: {}
+    };
+  },
+  mounted() {
+    this.form = this.$form.createForm(this)
+    this.orderno = this.$route.query.orderno;
+    this.comp = this.storeInfo.comp;
+    this.queryDictList();
+    this.queryMyConsignee();
+    this.showFeePayInfo();
+    // 支付结果监听
+    this.payResult();
+  },
+  methods: {
+    //运费
+    showFeePayInfo() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "showFeePayInfo";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.comp.storeId,
+        paytype: "alipay"
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.payamt = result.data.payamt;
           } else {
-            callback("请输入正确的纳税人识别号");
+            _this.$message.error(result.message);
           }
-        },
-        handleSubmit(e) {
-            e.preventDefault();
-            this.form.validateFields((err, values) => {
-                if (!err) {
-                  this.steps = 2;
-                }
-            });
-        }
+        })
+      );
     },
-  watch: {
-    values: {
-      handler: function(newVal, oldVal) {
-        this.form.setFieldsValue(newVal);
-      },
-      deep: true
+    changeType(val) {
+      if (this.invoiceType == 1) {
+        this.invoiceStr = "普通发票";
+      } else {
+        this.invoiceStr = "增值税专用发票";
+      }
+    },
+    prePay() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "preFeePay";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.comp.storeId,
+        paytype: "alipay",
+        afsano: this.afsano //  这是啥?
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            console.log("url --- " + JSON.stringify(result.data));
+            _this.url = result.data;
+            _this.steps = 3;
+          } else {
+            _this.$message.error(result.message);
+          }
+        })
+      );
+    },
+    payResult() {
+      let _this = this;
+      let ice_callback = new Ice.Class(inf.PushMessageClient, {
+        receive: function(message, current) {
+          let result = JSON.parse(message);
+          // event tradeStatus 需要跟蒋文广确认
+          if (result.event == 1 && result.body.tradeStatus == 1) {
+            _this.steps = 4;
+            // 支付结果页面数据
+          } else {
+            _this.$message.error("订单支付异常, 请稍后重试");
+          }
+        }
+      });
+      this.$initIceLong(
+        "orderServer",
+        this.storeInfo.comp.storeId,
+        new ice_callback()
+      );
+    },
+    queryMyConsignee() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyDrugStoreInfoModule";
+      iRequest.method = "queryMyConsignee";
+      iRequest.param.json = JSON.stringify({
+        compid: _this.storeInfo.comp.storeId
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            if (result.data && result.data.length > 0) {
+              _this.receiverList = result.data;
+              _this.consignee = _this.receiverList[0].contactname;
+              _this.contact = _this.receiverList[0].contactphone;
+            } else {
+              _this.visible = true;
+            }
+          } else {
+            _this.visible = true;
+          }
+        })
+      );
+    },
+    //提交售后
+    afterSaleApp() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderOptModule";
+      iRequest.method = "afterSaleApp";
+      iRequest.param.token = localStorage.getItem("identification");
+      if (this.invoiceType == 1) {
+        this.asType = 3;
+      } else {
+        this.asType = 4;
+      }
+      this.invoice = {
+        invoiceInfo: {
+          compName: this.comp.storeName,
+          address: this.comp.address,
+          bankers: this.bankers, //开户行
+          account: this.account, //开户行账号
+          taxpayer: this.taxpayer, //纳税人识别号
+          tel: this.tel //注册电话
+        },
+        address: {
+          consignee: this.consignee,
+          contact: this.contact,
+          compName: this.comp.storeName,
+          address: this.comp.address
+        }
+      };
+      let arr = [
+        {
+          gstatus: 0,
+          orderno: this.orderno,
+          compid: this.storeInfo.comp.storeId,
+          reason: this.reasonType,
+          invoice: JSON.stringify(this.invoice),
+          apdesc: this.content,
+          astype: this.asType
+        }
+      ];
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        asAppArr: arr,
+        asType: this.asType
+      });
+      console.log("json-- " + iRequest.param.json);
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.afsano = result.data;
+              // console.log("afsano--- " + _this.afsano)
+              _this.setStep(3);
+              // _this.$message.success(result.data);
+            } else {
+              console.log("result--- " + JSON.stringify(result));
+            }
+          },
+          function error(error) {}
+        )
+      );
+    },
+    queryDictList() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "CommonModule";
+      iRequest.method = "getDicts";
+      this.$refcallback(
+        this,
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.mireason = JSON.parse(result.data).mireason;
+          }
+        })
+      );
+    },
+    handleChangePatch(value) {
+      this.reasonType = value;
+    },
+    handleCancel() {
+      this.previewVisible = false;
+    },
+    handlePreview(file) {
+      this.previewImage = file.url || file.thumbUrl;
+      this.previewVisible = true;
+    },
+    handleChange({ fileList }) {
+      this.fileList = fileList;
+    },
+    setStep(index) {
+      if (index === 3) {
+        this.prePay();
+        return;
+      }
+      this.steps = index;
+    },
+    back(index) {
+      this.steps = index;
+    },
+    backOne() {
+      this.$router.push({
+        path: "/user/personal/myorder"
+      });
+    },
+    validateTaxID(rule, value, callback) {
+      const form = this.form;
+      if (
+        (value && value != "" && value.length === 15) ||
+        value.length === 18 ||
+        value.length === 20
+      ) {
+        callback();
+      } else {
+        callback("请输入正确的纳税人识别号");
+      }
+    },
+    handleSubmit(e) {
+      e.preventDefault();
+      debugger
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.steps = 2;
+        }
+      });
     }
   }
 };
@@ -641,27 +582,27 @@ export default {
 .mail-box {
   .container-size(block, 1190px, 418px, 0 auto, 0px);
   padding-left: 20px;
-  .title{
-    .p-size(60px,60px, 18px, left, 0px, #333333);
+  .title {
+    .p-size(60px, 60px, 18px, left, 0px, #333333);
   }
-  .mail-p{
-    .p-size(40px,40px, 16px, left, 0px, #333333);
-    .mail-title{
+  .mail-p {
+    .p-size(40px, 40px, 16px, left, 0px, #333333);
+    .mail-title {
       display: inline-block;
       color: #999999;
     }
   }
-  .freight{
-    .p-size(40px,40px, 16px, left, 0px, #333333);
-    margin-top:50px;
+  .freight {
+    .p-size(40px, 40px, 16px, left, 0px, #333333);
+    margin-top: 50px;
     margin-bottom: 20px;
-    .price{
+    .price {
       font-weight: bold;
       color: #ed3025;
     }
   }
-  .text{
-    .p-size(30px,30px, 14px, left, 0px, #999999);
+  .text {
+    .p-size(30px, 30px, 14px, left, 0px, #999999);
   }
 }
 .comp-name-address {
@@ -680,17 +621,16 @@ export default {
 .two-box {
   padding-top: 50px;
 }
-.height600{
-  height: 600px!important;
+.height600 {
+  height: 600px !important;
 }
-table{
-   .container-size(block, 800px, 205px, 0 auto, 0px);
-   border: 1px solid #e0e0e0;
-   border-collapse: collapse;
-   margin-top: 50px;
-
+table {
+  .container-size(block, 800px, 205px, 0 auto, 0px);
+  border: 1px solid #e0e0e0;
+  border-collapse: collapse;
+  margin-top: 50px;
 }
-thead{
+thead {
   display: inline-block;
   width: 800px;
   height: 50px;
@@ -699,14 +639,14 @@ thead{
   border: 1px solid #e0e0e0;
   border-collapse: collapse;
 }
-tr{
+tr {
   display: inline-block;
   width: 800px;
   height: 50px;
   line-height: 50px;
   border: 1px solid #e0e0e0;
   border-collapse: collapse;
-  td{
+  td {
     display: inline-block;
     width: 395px;
     height: 50px;
@@ -715,46 +655,46 @@ tr{
     border-collapse: collapse;
   }
 }
-.payment-header{
-  .container-size(block,100%,100px,0,0px);
+.payment-header {
+  .container-size(block, 100%, 100px, 0, 0px);
   text-align: center;
   line-height: 100px;
   font-size: 20px;
   color: #333333;
   font-weight: bold;
 }
-.qr-code{
-    .container-size(block,1000px,500px,0 auto,0px);
-    padding: 70px 350px;
-    border:1px solid #e0e0e0;
+.qr-code {
+  .container-size(block, 1000px, 500px, 0 auto, 0px);
+  padding: 70px 350px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+  .scan {
+    text-align: center;
     margin-bottom: 20px;
-    .scan{
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 16px;
-    }
-    .pay-num{
-        .p-size(50px, 50px, 18px, center, 0px, #ed2f26);
-        margin-bottom: 20px;
-        font-weight: bold;
-    }
-    .payment-pic{
-         .container-size(block,220px,220px,0 auto,0px);
-    }
-    .p-btn{
-  width: 100%;
-  padding: 0px 20%;
-  button{
-    border-radius: 3px;
-   -moz-border-radius:3px;
-   -webkit-border-radius:3px;
+    font-size: 16px;
   }
-  .cancel-btn{
-  float: left;
-  border: none;
-  background: #999999;
-  color: #333333;
-}
-}
+  .pay-num {
+    .p-size(50px, 50px, 18px, center, 0px, #ed2f26);
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  .payment-pic {
+    .container-size(block, 220px, 220px, 0 auto, 0px);
+  }
+  .p-btn {
+    width: 100%;
+    padding: 0px 20%;
+    button {
+      border-radius: 3px;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+    }
+    .cancel-btn {
+      float: left;
+      border: none;
+      background: #999999;
+      color: #333333;
+    }
+  }
 }
 </style>
