@@ -244,8 +244,6 @@ export default {
               xhr.setRequestHeader("specify-path", result.data.orderFilePath);
               xhr.setRequestHeader("ergodic-sub", "false");
               xhr.send(null);
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
             }
           },
           function error(error) {
@@ -283,8 +281,6 @@ export default {
                 ".jpg" +
                 "?" +
                 new Date().getSeconds();
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
             }
           },
           function error(error) {}

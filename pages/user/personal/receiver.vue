@@ -231,8 +231,6 @@ export default {
                   _this.visible = false
                   _this.queryMyConsignee()
                   _this.$message.success(result.message)
-                }else {
-                    _this.$message.error(result.message)
                 }
               }
             )
