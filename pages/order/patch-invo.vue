@@ -23,7 +23,7 @@
           <div class="reason-box" v-if="steps === 0">
             <p class="reason-p">补开原因</p>
             <div class="reason-right">
-              <!-- <a-form-item label="补开原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
+              <a-form-item label="补开原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
                 <a-select
                   v-model="reasonType"
                   style="width: 200px;margin-bottom: 10px;"
@@ -34,7 +34,7 @@
               </a-form-item>
               <a-form-item label="原因描述" :label-col="{ span: 2 }" :wrapper-col="{ span: 16 }">
                 <a-textarea v-model="content" class="evaluate-text" maxlength="300"/>
-              </a-form-item> -->
+              </a-form-item>
               <p class="limit">{{content.length}}/300</p>
 
               <!-- <p class="upload">上传相片</p> -->
@@ -82,11 +82,10 @@
                     placeholder="纳税人识别号或社会信用代码"
                     v-decorator="[
                       'taxpayer',
-                      {rules: [{ required: true, validator: validateTaxID}]}
+                      {rules: [{ required: true, message: '纳税人识别号有误'}, { validator: validateTaxID }]}
                     ]"
                   />
                 </a-form-item>
-
                 <a-form-item
                   v-if="invoiceType != 1"
                   label="注册电话："
@@ -127,6 +126,34 @@
                   <a-button class="submission-btn" type="primary" html-type="submit">下一步</a-button>
                 </div>
               </a-form>
+
+              <!-- <a-form
+                :form="form"
+                @submit="handleSubmit"
+              >
+                <a-form-item
+                  label="纳税人识别号"
+                  :label-col="{ span: 5 }"
+                  :wrapper-col="{ span: 12 }"
+                >
+                  <a-input
+                    v-decorator="[
+                      'taxpayer',
+                      {rules: [{ required: true, message: '请输入纳税人识别号' },{ validator: validateTaxID}]}
+                    ]"
+                  />
+                </a-form-item>
+                <a-form-item
+                  :wrapper-col="{ span: 12, offset: 5 }"
+                >
+                  <a-button
+                    type="primary"
+                    html-type="submit"
+                  >
+                    Submit
+                  </a-button>
+                </a-form-item>
+              </a-form> -->
             </div>
           </div>
           <!-- 第三步 -->
@@ -213,6 +240,7 @@ export default {
   },
   data() {
     return {
+      form: this.$form.createForm(this),
       orderno: 0,
       comp: {},
       consignee: "",
@@ -220,7 +248,7 @@ export default {
       reprreason: [],
       content: "",
       steps: 0,
-      reasonType: 79,
+      reasonType: '',
       asType: 0,
       previewVisible: false,
       previewImage: "",
@@ -241,7 +269,6 @@ export default {
     };
   },
   mounted() {
-    this.form = this.$form.createForm(this)
     this.orderno = this.$route.query.orderno;
     this.comp = this.storeInfo.comp;
     this.queryDictList();
@@ -455,6 +482,12 @@ export default {
       this.fileList = fileList;
     },
     setStep(index) {
+        if (index === 1) {
+            if (this.reasonType === '') {
+                this.$message.warning("请选择补开发票原因")
+                return
+            }
+        }
       if (index === 3) {
         this.prePay();
         return;
@@ -471,22 +504,17 @@ export default {
     },
     validateTaxID(rule, value, callback) {
       const form = this.form;
-      if (
-        (value && value != "" && value.length === 15) ||
-        value.length === 18 ||
-        value.length === 20
-      ) {
+      if (value && (value.length === 15 ||value.length === 18 || value.length === 20)) {
         callback();
       } else {
-        callback("请输入正确的纳税人识别号");
+        callback("纳税人识别号有误");
       }
     },
     handleSubmit(e) {
       e.preventDefault();
-      debugger
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.steps = 2;
+           this.steps = 2;
         }
       });
     }
