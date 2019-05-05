@@ -36,7 +36,7 @@
         <div class="complete">
             {{ item.astype | asTypeFormat }}
             <!-- 退款有？ -->
-            <!-- <p class="price" v-if="items.price">完成退款：￥{{items.price}}</p> -->
+            <!-- <p class="price" v-if="item.astype === 0 || item.astype === 1">完成退款：￥{{item.refamt}}</p> -->
         </div>
         <div class="see-detail" @click="seeDetail(item)">
            查看详情
@@ -47,7 +47,7 @@
     </ul>
     <div class="no-data" v-if="this.list.length === 0">
       <p class="icon"><a-icon type="exclamation" /></p>
-      <p class="text">没有查询到订单！</p>
+      <p class="text">没有查询到售后记录！</p>
         <!--<p @click="toSuppInvo(item)">补开发票</p>-->
         <!-- <p @click="saleAfter()">申请售后</p> -->
     </div>
@@ -80,7 +80,7 @@ export default {
        text = '仅退款'
        break
        case 2:
-       text = '开发票'
+       text = '补开发票'
        break
        case 3:
        text = '物流跟踪'
@@ -182,7 +182,7 @@ export default {
     float: left;
     .container-size(inline-block, 472px, 140px, 0, 0px);
     border-right: 1px solid #f2f2f2;
-    border-bottom: 1px solid #f2f2f2;
+    // border-bottom: 1px solid #f2f2f2;
     .name {
       .container-size(inline-block, 200px, 30px, 0, 0px);
       .position(relative, 0px, 10px);
@@ -209,10 +209,12 @@ export default {
   }
 }
 .complete {
-  display: inline-block;
+  float: left;
   width: 232px;
+  height: 140px;
+  line-height: 140px;
   text-align: center;
- margin-top: 55px;
+  border-right: 1px solid #f2f2f2;
   .states {
     .container-size(inline-block, 235px, 30px, 0, 0px);
     // .position(absolute, 55px, 0px);
@@ -220,8 +222,9 @@ export default {
   }
   .price {
     .container-size(inline-block, 235px, 30px, 0, 0px);
-    .position(absolute, 80px, 0px);
+    // .position(absolute, 80px, 0px);
     text-align: center;
+    color: #ed3025;
   }
 }
 
@@ -230,6 +233,10 @@ export default {
   width: 232px;
   margin-top: 55px;
   text-align: center;
+}
+.see-detail:hover{
+  color: #3189f5;
+  cursor: pointer;
 }
 // 采购单无数据显示 内容
 .no-data{
@@ -244,6 +251,9 @@ export default {
     width: 985px;
      .p-size(50px,50px,20px,center,0px,#333333);
   }
+}
+.ant-pagination{
+  text-align: center;
 }
 </style>
 

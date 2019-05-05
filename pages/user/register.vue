@@ -76,27 +76,35 @@
             <a-form-item v-bind="tailFormItemLayout">
               <a-checkbox v-decorator="['agreement', {valuePropName: 'checked'}]">
                 注册账号即表示您已阅读并同意
-                <a href>用户服务协议</a> 和
-                <a href>用户隐私协议</a>
+                <a href="javascript:;" @click="isShowService()">用户服务协议</a> 和
+                <a href="javascript:;" @click="isShowPrivacy()">用户隐私协议</a>
               </a-checkbox>
             </a-form-item>
           </a-form>
         </div>
       </div>
       <f-space-footer></f-space-footer>
+      <f-space-privacy v-if="isPrivacy" :isPrivacy="isPrivacy" @handleCancelPrivacy="handleCancelPrivacy()"></f-space-privacy>
+      <f-space-service v-if="isService" :isService="isService" @handleCancelService="handleCancelService()"></f-space-service>
     </a-layout>
   </div>
 </template>
 <script>
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceFooter from "../../components/fspace-ui/footer";
+import FSpacePrivacy from "../../components/modal/privacy";
+import FSpaceService from "../../components/modal/service";
 export default {
   components: {
     FSpaceHeader,
-    FSpaceFooter
+    FSpaceFooter,
+    FSpacePrivacy,
+    FSpaceService
   },
   data() {
     return {
+      isService: false, // 用户服务协议
+      isPrivacy: false, // 用户隐私协议
       sendAuthCode: false, // 控制验证码按钮
       sendAuthCodeText: '获取验证码',
       sendAuthCodeLoading: false,
@@ -290,6 +298,18 @@ export default {
           }
         )
       );
+    },
+    isShowPrivacy() {
+      this.isPrivacy = true
+    },
+    isShowService() {
+      this.isService = true
+    },
+    handleCancelPrivacy() {
+      this.isPrivacy = false
+    },
+    handleCancelService() {
+      this.isService = false
     }
   }
 };

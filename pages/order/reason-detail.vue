@@ -30,7 +30,14 @@
               <!-- <p><a-button class="cancelApply" v-if="detail.ckstatus === 1">审核通过</a-button></p> -->
               <!-- <p class="pay-success">完成</p> -->
             </div>
+
             <div class="line"></div>
+            <div class="step-right">
+               <p class="speed progress">售后信息</p>
+              <p class="consi-p"><span class="title">售后类型：</span><span class="content"> {{ detail.astype | asTypeFormat }}</span> <span class="title">申请时间：</span> <span class="content">{{ detail.apdata }}</span></p>
+              <p class="consi-p"><span class="title">申请单号：</span><span class="content">{{ detail.asno }}</span> <span class="title">联系人：</span> <span class="content">{{ storeInfo.comp.storeName }}</span></p>
+              <p class="consi-p"><span class="title">订单号：</span><span class="content">{{ detail.orderno }}</span> <span class="title">手机号：</span> <span class="content">{{ storeInfo.phone }}</span></p>
+            </div>
             <!-- 订单状态 -->
             <!-- <div class="step-right">
               <a-steps class="setps-box" :current="steps">
@@ -63,17 +70,21 @@
                   </a-steps>
               </div>
           </div> -->
-          <div class="consignee-info">
-            <p class="speed progress">售后信息</p>
-            <p class="consi-p"><span class="title">售后类型：</span><span class="content"> {{ detail.astype | asTypeFormat }}</span> <span class="title">申请时间：</span> <span class="content">{{ detail.apdata }}</span></p>
-            <p class="consi-p"><span class="title">申请单号：</span><span class="content">{{ detail.asno }}</span> <span class="title">联系人：</span> <span class="content">{{ storeInfo.comp.storeName }}</span></p>
-            <p class="consi-p"><span class="title">订单号：</span><span class="content">{{ detail.orderno }}</span> <span class="title">手机号：</span> <span class="content">{{ storeInfo.phone }}</span></p>
-          </div>
+          <!-- <div class="consignee-info">
+           
+               <p class="speed progress">售后信息</p>
+              <p class="consi-p"><span class="title">售后类型：</span><span class="content"> {{ detail.astype | asTypeFormat }}</span> <span class="title">申请时间：</span> <span class="content">{{ detail.apdata }}</span></p>
+              <p class="consi-p"><span class="title">申请单号：</span><span class="content">{{ detail.asno }}</span> <span class="title">联系人：</span> <span class="content">{{ storeInfo.comp.storeName }}</span></p>
+              <p class="consi-p"><span class="title">订单号：</span><span class="content">{{ detail.orderno }}</span> <span class="title">手机号：</span> <span class="content">{{ storeInfo.phone }}</span></p>
+            
+           
+          </div> -->
           <p class="goods-title">
-            <span class="width40">药品信息</span>
-            <span class="width15">单价</span>
-            <span class="width15">数量</span>
-            <span class="width15">实付</span>
+            <span class="width40 float-left">药品信息</span>
+            <!-- <span class="width15 float-left">单价</span> -->
+            <span class="width45 float-left">数量</span>
+            <!-- <span class="width15 float-left">实付</span> -->
+            <span class="width15 float-right">退款金额</span>
           </p>
           <div class="goods-list-box">
             <table>
@@ -85,26 +96,27 @@
               </thead>
               <tbody class="t-body">
                 <tr class="goods-list">
-                  <td class="pic-box widths40">
+                  <td class="pic-box">
                     <div>
                       <img
                         v-lazy="imgUrl"
                         alt
                       >
-                    <span class="goods-name">{{ detail.brandname }}</span>
+                    <span class="goods-name">{{ detail.prodname }}</span>
                       <span>{{ detail.spec }}</span>
                       <span>{{ detail.manuname }}</span>
                     </div>
                   </td>
-                  <td class="count widths15 td-center padding-left5">单价</td>
-                  <td class="count widths15 td-center padding-left5">数量</td>
+                  <!-- <td class="count td-center">单价</td> -->
+                  <td class="count td-center" style="width: 380px;">{{detail.asnum}}</td>
+                  <!-- <td class="count td-center">￥{{ detail.refamt }}</td> -->
                   <!-- <td class="subtotal widths15 td-center padding-left10">￥100</td> -->
                 </tr>
             
                 <div class="total td-center padding-left15">￥{{ detail.refamt }}</div>
               </tbody>
               <tfoot class="t-footer" ref="foot">
-                <p class="ant-dropdown-link"> 退货原因 </p>
+                <p class="ant-dropdown-link"> 申请售后原因 </p>
                 <p class="dropdown-p">原因：{{ detail.reasonName }}</p>
                 <p class="dropdown-p">描述：{{ detail.apdesc }}</p>
                 <p class="dropdown-p">图片：</p>
@@ -321,6 +333,9 @@ export default {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.count{
+  width: 175px;
+}
 .address {
   height: auto !important;
   line-height: 40px !important;
@@ -346,18 +361,24 @@ export default {
   margin-bottom: 10px;
   text-align: center;
 }
+.float-left{
+  float: left;
+}
 .widths40 {
   width: 44%;
 }
 .widths15 {
-  width: 18.5%;
+  width: 18%;
 }
 
 .width40 {
-  width: 38%;
+  width: 40%;
 }
 .width15 {
   width: 15%;
+}
+.width45{
+  width: 32%;
 }
 .height220 {
   height: 220px !important;
@@ -410,9 +431,9 @@ export default {
     }
   }
   .step-right {
-      float: right;
+    float: right;
     .container-size(inline-block, 879px, 220px, 0 auto, 0px);
-    padding: 0px 20px;
+    padding: 0px 65px;
     .setps-box {
       margin-top: 90px;
     }
@@ -500,7 +521,7 @@ export default {
       .container-size(block, 1190px, auto, 0 auto, 0px);
       min-height: 120px;
       .goods-list {
-        .container-size(inline-block, 1000px, 120px, 0 auto, 0px);
+        .container-size(inline-block, 1012px, 120px, 0 auto, 0px);
         border-right: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
         .td-center {
@@ -527,8 +548,10 @@ export default {
         .pic-box {
           display: table;
           float: left;
+          width: 476px;
           div {
             display: table-cell;
+            width: 452px!important;
             vertical-align: middle;
             height: 100%;
             padding-left: 20px;
@@ -551,7 +574,7 @@ export default {
       }
       .total {
         float: right;
-        width: 190px;
+        width: 178px;
         height: 100%;
         text-align: center;
         padding-top: 48px;
