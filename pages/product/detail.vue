@@ -79,7 +79,7 @@
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
                 </p>
-                
+
                 <p class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
                   <span class="money-count" v-if="userStatus">￥{{ discount.killPrice }}</span>
@@ -331,13 +331,10 @@
                   <div class="evaluate-box">
                     <div class="evaluate-list">
                       <a-comment v-for="(item,index) in appriseArr" :key="index">
-                        <a slot="author">{{item.compName}}</a>
-                        <p slot="content" class="comment-text">{{item.content}}</p>
-                        <p>
-                          评分:
-                          <a-rate :defaultValue="item.level" disabled/>
-                          &nbsp &nbsp {{item.createtdate}}&nbsp {{item.createtime}}
-                        </p>
+                        <a style="color: orange">{{item.compName}}</a>
+                        <p><a-rate :defaultValue="item.compEval" disabled/></p>
+                        <p class="comment-text">{{item.content}}</p>
+                        <p class="time-text">评价时间: {{item.createtdate}}&nbsp {{item.createtime}}</p>
                       </a-comment>
                     </div>
                   </div>
@@ -394,6 +391,7 @@ export default {
   // middleware: "authenticated",
   data() {
     return {
+        compEval: 4.7,
       shareURl: '',
       appriseArr: [], //评价列表
       evaluateVal: 0, // 药店评价商品的分数
@@ -1605,8 +1603,15 @@ li {
   margin: 0 !important;
 }
 .comment-text {
-  width: 700px;
-  height: auto;
+  color: #333;
+  line-height: 180%;
+  padding: 10px 0;
+  font-size: 14px;
+}
+.time-text {
+  margin-top: 5px;
+  color: #7f828b;
+  font-size: 12px;
 }
 .evaluate-list {
   border-top: 1px solid rgb(238, 238, 238);
