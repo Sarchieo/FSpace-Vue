@@ -149,7 +149,18 @@
                   <button @click="reduceCount()">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
                   <!-- <a-input-number :min="1" :max="maximum" v-model="inventory" style="width: 70px;padding: 0px;"/> -->
-                  <a-input-number :min="1" :max="maximum" v-model="inventory"/>
+
+
+                  <a-input-number
+                    :min="1"
+                    :max="maximum"
+                    v-model="inventory"
+                    style="position:relative;top: 1px;left:0px;height: 30px;width: 50px;"
+                   
+                  />
+
+
+                  <!-- <a-input-number :min="1" :max="maximum" v-model="inventory" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;"/> -->
                   <button @click="addCount()">+</button>
                 </p>
                 <p class="cart">
@@ -856,6 +867,7 @@ export default {
       iRequest.method = "del";
       iRequest.param.json = JSON.stringify({
         sku: this.prodDetail.sku,
+        unqid: this.prodDetail.unqid,
         prize: this.prodDetail.vatp,
         promtype: 0
       });
@@ -1508,8 +1520,9 @@ li {
 }
 .goods-detail {
   width: 900px;
-  height: 1800px;
+  height: 1600px;
   padding-left: 50px;
+  /* overflow: auto; */
 }
 .explain {
   width: 900px;
@@ -1763,14 +1776,17 @@ li {
   margin-right: 40px;
 }
 .btn-p {
-  text-indent: 20px;
+  padding-left: 20px;
 }
 .btn-p button {
   width: 25px;
-  height: 31px;
+  height: 30px;
   text-align: center;
   border: 1px solid #e0e0e0;
   background: #ffffff;
+}
+.btn-p input {
+  height: 30px;
 }
 .add-cart {
   position: absolute;

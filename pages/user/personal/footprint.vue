@@ -11,17 +11,14 @@
         <p class="foot-data">{{item.date}}</p>
         <li v-for="(items,index1) in item.list" :key="index1" @click="toDetail(items)">
           <a-card hoverable class="card">
-            <img class="card-img" v-lazy="item.imgURl" slot="cover">
+            <img class="card-img" v-lazy="items.imgURl" slot="cover">
             <a-icon type="delete" class="del-foot" @click="delFoot(items.sku)"/>
             <p class="surplus text-Center top185">{{items.brandName}} {{items.popname}}</p>
             <p class="validity">有效期至{{items.prodedate}}</p>
             <p class="card-price top165">￥{{items.vatp/100}}</p>
             <p class="specifications">{{items.spec}}</p>
             <p class="manufacturer">{{items.manuName}}</p>
-            <p class="add-card">
-             
-             
-              
+            <p class="add-card">             
               <button class="cart-btns" @click.stop="addCart(items)">
                 <a-icon type="shopping-cart"/>加入采购单
               </button>
@@ -47,149 +44,7 @@ export default {
       count: 1,
       total: 0,
       currentIndex: 1,
-      footList: [],
-      list: [
-        {
-          time: '2019-03-23',
-          lists: [
-            {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            },
-             {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            },
-             {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            },
-             {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            },
-             {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            },
-             {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            }    
-          ]
-        },
-             {
-          time: '2019-03-24',
-          lists: [
-            {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            },
-             {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            },
-             {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            },
-             {
-              src:
-                "//img.alicdn.com/imgextra/i2/TB1g6YOPVXXXXaYaXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg",
-              text: "999感冒灵颗粒",
-              validity: "2019-09-03",
-              new: 34,
-              old: 35,
-              specifications: "0.5g/袋",
-              manufacturer: "华润三九医药股份有限公司",
-              sold: 33,
-              evaluate: 269,
-              isShowCard: false
-            }
-          ]
-        }
-      ]
+      footList: []
     };
   },
   mounted() {
@@ -250,7 +105,14 @@ export default {
           if (result.code === 200) {
             console.log(result.data)
             _this.footList = result.data;
-            _this.fsGeneralMethods.addImages(_this, _this.footList, "sku", "spu");
+                _this.footList.forEach(item => {
+              _this.fsGeneralMethods.addImages(
+                _this,
+                item.list,
+                "sku",
+                "spu"
+              );
+            });
           } else {
             ;
           }
@@ -358,7 +220,8 @@ export default {
 .card-price {
   .position(absolute, 225px, 0px);
   width: 225px;
-  text-align: center;
+  text-align: left;
+  text-indent: 8px;
   font-weight: bold;
   color: rgb(255, 0, 54);
 }

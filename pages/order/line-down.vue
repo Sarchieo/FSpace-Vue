@@ -21,7 +21,7 @@
             <p><span class="title">订单金额</span><span class="price">￥{{ info.payamt }}</span><span class="title">支付方式</span><span class="bold">{{ type == 'zz' ? '线下支付' : '线下到付' }}</span></p>
         </div>
         <div class="invo-box" v-if="type == 'zz'">
-            <img src="../../assets/img/invo.png" alt="">
+            <img src="../../assets/img/invo.jpg" alt="">
         </div>
         <div class="invo-text" v-if="type == 'zz'">
             <p class="invo-title"><span class="text">转账说明</span></p>

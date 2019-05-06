@@ -66,85 +66,48 @@
           </ul>
         </div>
         <div class="go-pay">
-          <!-- <div class="invoice">
-            <p class="invoice-info">发票信息</p>
-            <p class="is-invoice">
-              是否开票：
-              <a-select defaultValue="不开发票" style="width: 150px">
-                <a-select-option value="不开发票">不开发票</a-select-option>
-                <a-select-option value="普通发票">普通发票</a-select-option>
-                <a-select-option value="增值税发票">增值税发票</a-select-option>
-              </a-select>
-            </p>
-          </div> -->
-          <div class="discount-pay">
-            <div class="discount" v-if="couponList.length > 0">
-              <p class="use-coupon">使用平台优惠券</p>
-              <div class="coupon-box">
-                <!-- <div class="coupon">
+          <div class="discount" v-if="couponList.length > 0">
+            <p class="use-coupon">使用平台优惠券</p>
+            <div class="coupon-box">
+              <div v-for="(item, index) in couponList" :key="index">
+                <!-- 现金券 -->
+                <div class="coupon" v-if="item.brulecode === 2110">
                   <div class="coupon-num">
-                    <p class="coupon-title">现金券</p>
-                    <p>满500送50元</p>
-                    <p>满1000送110元</p>
-                    <p>满2000送250元</p>
+                    <p class="coupon-title">{{ item.rulename }}</p>
+                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
                   </div>
-                  <p class="coupon-bottom">有效期至2019-05-29 <a-checkbox @change="onChange" class="coupon-check"></a-checkbox></p>
-                </div> -->
-                <div v-for="(item, index) in couponList" :key="index">
-                  <!-- 现金券 -->
-                  <div class="coupon" v-if="item.brulecode === 2110">
-                    <div class="coupon-num">
-                      <p class="coupon-title">{{ item.rulename }}</p>
-                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
-                    </div>
-                    <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked"  @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked"  @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                </div>
+
+                <!-- 包邮券 -->
+                <div class="coupon" v-if="item.brulecode === 2120">
+                  <div class="coupon-num">
+                    <p class="coupon-title">{{ item.rulename }}</p>
+                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
                   </div>
-                  <!-- 包邮券 -->
-                  <div class="coupon" v-if="item.brulecode === 2120">
-                    <div class="coupon-num">
-                      <p class="coupon-title">{{ item.rulename }}</p>
-                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
-                    </div>
-                    <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                </div>
+                <!-- 折扣券 -->
+                <div class="coupon" v-if="item.brulecode === 2130">
+                  <div class="coupon-num">
+                    <p class="coupon-title">{{ item.rulename }}</p>
+                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </p>
                   </div>
-                  <!-- 折扣券 -->
-                  <div class="coupon" v-if="item.brulecode === 2130">
-                    <div class="coupon-num">
-                      <p class="coupon-title">{{ item.rulename }}</p>
-                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer}}折 </p>
-                    </div>
-                    <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
-                  </div>
+                  <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                 </div>
               </div>
-              <!-- <p class="pick-coupon">
-                <button @click="pickCoupon()">选择优惠券</button>
-              </p> -->
-              <!-- <p class="picked-coupon"><button>选择优惠券</button></p> -->
-              <!-- <a-tag color="cyan" class="picked-coupon">每满100减50元</a-tag> -->
-            </div>
-            <!-- <div class="pay" v-if="cartList.length > 0 && couponCode === 0">
-              <p>商品合计：￥{{ (cartList[0].acamt +  cartList[0].amt).toFixed(2) }}</p>
-              <p>运费：￥ {{ cartList[0].freight }}</p>
-              <p>优惠：￥ {{ cartList[0].amt }}</p>
-
-              <p class="price" v-if="cartList[0].freepost || isPostal">应付金额：￥ {{ cartList[0].acamt - coupNum }}</p>
-              <p class="price" v-else>应付金额：￥ {{ (cartList[0].acamt + cartList[0].freight).toFixed(2) - coupNum  }}</p>
-
-              <a-button class="pay-btn" @click="toPay()">去付款</a-button>
-            </div> -->
-
-            <div class="pay" v-if="cartList.length > 0">
-              <p>商品合计：￥{{ selectCounpon.tprice }}</p>
-              <p>运费：￥ {{  cartList[0].freight }}</p>
-              <p>优惠：￥ {{ selectCounpon.tdiscount  }}</p>
-              <p>余额： ￥ {{- selectCounpon.debal  }}</p>
-              <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
-              <p class="price">应付金额：￥ {{ selectCounpon.payamt }}</p>
-
-              <a-button class="pay-btn" @click="toPay()">去付款</a-button>
             </div>
           </div>
+          <div class="pay" v-if="cartList.length > 0">
+            <p>商品合计：￥{{ selectCounpon.tprice }}</p>
+            <p>运费：￥ {{  cartList[0].freight }}</p>
+            <p>优惠：￥ {{ selectCounpon.tdiscount  }}</p>
+            <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
+            <p class="price">应付金额：￥ {{ selectCounpon.payamt }}</p>
+
+            <a-button class="pay-btn" @click="toPay()">去付款</a-button>
+          </div>
+          <div style="clear: both;"></div>
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -350,7 +313,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              debugger
               _this.selectCounpon = result.data
             }
           }
@@ -635,10 +597,11 @@ li {
 }
 .discount-pay {
   .container-size(block, 1190px, 310px, 0, 0);
+
 }
 .discount {
   float: left;
-  .container-size(block, 1190px, 250px, 0, 0);
+  .container-size(block, 1190px, auto, 0, 0);
   .use-coupon {
     .p-size(40px, 40px, 16px, left, 20px, #999999);
     span{
@@ -721,7 +684,8 @@ li {
   color: #fdf4e9;
 }
 .coupon-box{
-  .container-size(block, 1190px, 210px, 0, 0);
+  .container-size(block, 1190px, auto, 0, 0);
+
   .coupon{
     .container-size(inline-block, 270px, 180px, 0, 0);
     margin-left: 22px;
