@@ -89,7 +89,6 @@ export default {
     },
     // 获取足迹列表
     getFootList() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyFootprintModule";

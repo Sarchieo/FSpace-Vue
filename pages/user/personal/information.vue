@@ -9,11 +9,13 @@
       <li v-for="(item,index) in informationList" :key="index">
         <img src="../../../assets/img/u49.png" alt class="news-pic">
         <div class="text-box">
-          <p class="send-time">发送时间：2019-03-20</p>
-          <p class="news-text">你提交的认证申请未通过，原因：您的营业执照照片不清晰你提交的认证申请未通过</p>
+          <p class="send-time">发送时间：{{item.time}}</p>
+          <p class="news-text">{{item.msg}}</p>
         </div>
       </li>
+      <a-pagination :total="total" v-if="this.informationList.length !== 0 " @change="onChangePage"/>
     </ul>
+     
   </div>
 </template>
 <script>
@@ -21,7 +23,9 @@ import * as types from "../../../store/mutation-types";
 export default {
   data() {
     return {
-        informationList: [] // 消息列表
+        informationList: [], // 消息列表
+        total: 0,
+        currentIndex: 1
     };
   },
     computed: {
@@ -35,11 +39,12 @@ export default {
   },
   methods: {
     getInformation() {
-        debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "PushMessageModule";
       iRequest.method = "queryMessage";
+      iRequest.param.pageIndex = this.currentIndex;
+      iRequest.param.pageNumber = 11;
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
@@ -49,12 +54,18 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.informationList = result.data;
+            console.log(_this.informationList)
+            _this.total = result.total
             // console.log('查询收藏成功')
           } else {
           }
         })
       );
-    }
+    },
+    onChangePage(pageNumber) {
+      this.currentIndex = pageNumber
+      this.getInformation();
+    },
   }
 };
 </script>
@@ -62,20 +73,23 @@ export default {
 @import "../../../components/fspace-ui/container/index.less";
 @import "../../../components/fspace-ui/button/index.less";
 .news-list-ul {
-  .container-size(block, 925px, 1017px, 0 auto, 0px);
+  .container-size(block, 925px, 970px, 0 auto, 0px);
+  margin-bottom: 10px;
+  overflow: auto;
 }
 .news-list-ul li {
   height: auto;
   min-height: 62px;
   border-bottom: 1px solid #e0e0e0;
   padding: 10px 0px;
+  
 }
 .news-pic {
   .container-size(inline-block, 140px, 62px, 0, 0px);
 }
 .text-box {
-  .container-size(inline-block, 730px, auto, 0, 0px);
-  margin-left: 30px;
+  .container-size(inline-block, 740px, auto, 0, 0px);
+  margin-left: 20px;
   vertical-align: middle;
 }
 .send-time {
@@ -95,6 +109,10 @@ export default {
       font-size: 40px!important;
     }
   }
+}
+.ant-pagination {
+  text-align: center;
+  margin-top: 10px;
 }
 </style>
 

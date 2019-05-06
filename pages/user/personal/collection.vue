@@ -13,7 +13,7 @@
           class="card"
         >
           <img class="card-img" v-lazy="item.imgURl" slot="cover"/>
-          <a-icon type="delete" class="close-coll" @click.stop="delCollec(item.sku)"/>
+          <a-icon type="delete" class="close-coll" @click.stop="delCollec(item)"/>
           <!-- {{item.info.prodname}} -->
           <p class="surplus text-Center top185">{{item.info.prodname}}</p>
           <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
@@ -89,16 +89,14 @@ export default {
       );
     },
     // 取消收藏
-     delCollec(sku) {
-       console.log(sku)
+     delCollec(item) {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MyCollectModule";
       iRequest.method = "del";
       iRequest.param.json = JSON.stringify({
-        sku:sku
-        // prize: this.prodDetail.vatp,
-        // promtype: 0
+        sku:item.sku,
+        unqid:item.unqid
       })
       // 促销类型未传，暂定0，促销完善补上
       iRequest.param.token = localStorage.getItem("identification");
