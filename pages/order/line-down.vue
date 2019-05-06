@@ -23,7 +23,7 @@
 
         </div>
         <div class="invo-box">
-            <img src="../../assets/img/invo.png" alt="">
+            <img src="../../assets/img/invo.jpg" alt="">
         </div>
         <div class="invo-text">
             <p class="invo-title"><span class="text">转账说明</span></p>
