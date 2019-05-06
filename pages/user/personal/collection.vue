@@ -131,6 +131,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
@@ -275,6 +276,9 @@ export default {
   border: none;
   background: #ed3025;
   color: #ffffff;
+}
+.cart-btns:hover{
+  cursor: pointer;
 }
 .no-data{
   width: 985px;

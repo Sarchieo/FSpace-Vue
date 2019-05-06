@@ -11,7 +11,7 @@
         <p class="foot-data">{{item.date}}</p>
         <li v-for="(items,index1) in item.list" :key="index1" @click="toDetail(items)">
           <a-card hoverable class="card">
-            <img class="card-img" v-lazy="items.src" slot="cover">
+            <img class="card-img" v-lazy="item.imgURl" slot="cover">
             <a-icon type="delete" class="del-foot" @click="delFoot(items.sku)"/>
             <p class="surplus text-Center top185">{{items.brandName}} {{items.popname}}</p>
             <p class="validity">有效期至{{items.prodedate}}</p>
@@ -212,6 +212,7 @@ export default {
       })
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
+        this,
         "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(
@@ -249,6 +250,7 @@ export default {
           if (result.code === 200) {
             console.log(result.data)
             _this.footList = result.data;
+            _this.fsGeneralMethods.addImages(_this, _this.footList, "sku", "spu");
           } else {
             ;
           }
@@ -419,6 +421,9 @@ export default {
   border: none;
   background: #ed3025;
   color: #ffffff;
+}
+.cart-btns:hover{
+  cursor: pointer;
 }
 .ant-pagination{
   text-align: center;

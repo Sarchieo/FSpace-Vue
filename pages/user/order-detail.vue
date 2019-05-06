@@ -447,7 +447,7 @@ export default {
   width: 20%;
 }
 .width10 {
-  width: 10.1%;
+  width: 10.3%;
 }
 .height220 {
   height: 220px !important;
