@@ -298,8 +298,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.payamt = result.data.payamt;
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -333,8 +331,6 @@ export default {
             console.log("url --- " + JSON.stringify(result.data));
             _this.url = result.data;
             _this.steps = 3;
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -348,8 +344,6 @@ export default {
           if (result.event == 1 && result.body.tradeStatus == 1) {
             _this.steps = 4;
             // 支付结果页面数据
-          } else {
-            _this.$message.error("订单支付异常, 请稍后重试");
           }
         }
       });

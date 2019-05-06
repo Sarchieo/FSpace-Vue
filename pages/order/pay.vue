@@ -30,13 +30,15 @@
                     <a-radio-group @change="onChange" v-model="value">
                       <a-radio :value="1"><a-icon type="alipay-circle" class="blue"/></a-radio>
                       <a-radio :value="2"><a-icon type="wechat" class="green"/></a-radio>
+                      <a-radio :value="3" class="line-down">线下转账</a-radio>
                     </a-radio-group>
                   </p>
               </div>
           </div>
           <div class="pay-btn">
               <p class="btn-box">
-                  <a-button :disabled="!isPay" type="primary" @click="prePay()">立即支付</a-button>
+                  <a-button :disabled="!isPay" type="primary" @click="prePay()" v-if="this.value === 1 || this.value === 2">立即支付(线上)</a-button>
+                  <a-button :disabled="!isPay" type="primary" @click="lineDown()" v-if="this.value === 3">立即支付(线下)</a-button>
               </p>
               <p class="surplus-time">剩余付款时间：<span>{{ h }}</span>小时<span>{{ m }}</span>分钟<span>{{ s }}</span>秒</p>
           </div>
@@ -132,6 +134,11 @@ export default {
           }
         )
       );
+    },
+    lineDown() {
+      this.$router.push({
+        path: '/order/line-down'
+      })
     },
     stringToDate(str) {
       var tempStrs = str.split(" ");
@@ -309,5 +316,8 @@ li {
 .stets{
   .container-size(block, 600px, 100px, 0 auto, 0);
   margin-top: 30px;
+}
+.line-down{
+  margin-left: 30px;
 }
 </style>

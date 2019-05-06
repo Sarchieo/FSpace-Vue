@@ -27,20 +27,27 @@
               <p class="pay-success" v-if="item.ostatus === -4">已取消</p>
               <p class="pay-success" v-if="item.ostatus === 1">付款成功</p>
               <!-- 付款按钮和提交订单一起显示 -->
-              <p class="pay-btn" v-if="item.ostatus === 0"><button @click="toPay()">付款</button></p>
+              <p class="pay-btn" v-if="item.ostatus === 0">
+                <button @click="toPay()">付款</button>
+              </p>
               <!-- 确认收货和等待收货一起显示 -->
               <!--<p class="pay-btn" v-if="item.ostatus === 2"><button>确认收货</button></p>-->
               <!-- 再次购买和已取消以及完成一起显示 -->
-              <p class="pay-btn" v-if="item.ostatus === 3"><button>再次购买</button></p>
+              <p class="pay-btn" v-if="item.ostatus === 3">
+                <button>再次购买</button>
+              </p>
               <!-- 取消订单只在提交订单和付款成功状态才显示。药品出库后没有取消订单 -->
-              <p class="cancel" @click="cancelOrder()"  v-if="item.ostatus === 1 || item.ostatus === 0">取消订单</p>
-
+              <p
+                class="cancel"
+                @click="cancelOrder()"
+                v-if="item.ostatus === 1 || item.ostatus === 0"
+              >取消订单</p>
             </div>
             <div class="line"></div>
             <!-- 订单状态 -->
             <div class="step-right" v-if="item.ostatus !== -4">
               <a-steps class="setps-box" :current="steps">
-                <a-step title="提交订单" >
+                <a-step title="提交订单">
                   <a-icon type="profile" slot="icon"/>
                 </a-step>
                 <a-step title="付款成功">
@@ -55,17 +62,25 @@
               </a-steps>
             </div>
           </div>
-          <div class="logistics-box-info" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node && logistixs.node.length > 0">
+          <div
+            class="logistics-box-info"
+            v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node && logistixs.node.length > 0"
+          >
             <!-- <div class="logistics-box-info"> -->
             <div class="logistics-left">
-              <p>送货方式：普通快递</p>
-              <p>承运人： 中国邮政</p>
+              <!-- <p>送货方式：普通快递</p>
+              <p>承运人： 中国邮政</p> -->
               <p>货运单号：{{ logistixs.billno }}</p>
             </div>
             <div class="line height220"></div>
             <div class="logistics-right">
-              <a-steps direction="vertical" size="small" :current="logistixs.node.length -1 " >
-                <a-step v-for="(item, index) in logistixs.node" :key="index" :title="item.status" :description="item.date + item.time + item.des"/>
+              <a-steps direction="vertical" size="small" :current="logistixs.node.length -1 ">
+                <a-step
+                  v-for="(item, index) in logistixs.node"
+                  :key="index"
+                  :title="item.status"
+                  :description="item.date + item.time + item.des"
+                />
               </a-steps>
             </div>
           </div>
@@ -73,33 +88,39 @@
             <div class="consignee-left float-left">
               <h3>收货人信息</h3>
               <p>
-                <span class="three">收货人：</span> {{ storeInfo.comp.storeName }}
+                <span class="three">收货人：</span>
+                {{ storeInfo.comp.storeName }}
               </p>
               <p class="address">
                 <span class="three">地址：</span>
                 <span class="address-goods">{{ storeInfo.comp.address }}</span>
               </p>
               <p>
-                <span class="three">手机号:</span> {{ storeInfo.phone }}
+                <span class="three">手机号:</span>
+                {{ storeInfo.phone }}
               </p>
             </div>
             <div class="line height220 float-left"></div>
             <div class="consignee-middle float-left">
               <h3>付款信息</h3>
               <p>
-                <span>付款方式：</span>线上支付
+                <span>付款方式：</span>  {{payText(item.payway)}}
               </p>
               <p>
-                <span>商品总额：</span>￥ {{item.pdamt}}元
+                <span>商品总额：</span>
+                ￥ {{item.pdamt}}元
               </p>
               <p>
-                <span>运费金额：</span>￥ {{item.freight}}元
+                <span>运费金额：</span>
+                ￥ {{item.freight}}元
               </p>
               <p>
-                <span>优惠金额：</span>￥ {{item.distamt}}元
+                <span>优惠金额：</span>
+                ￥ {{item.distamt}}元
               </p>
               <p>
-                <span>应支付金额：</span>￥ {{item.payamt}}元
+                <span>应支付金额：</span>
+                ￥ {{item.payamt}}元
               </p>
             </div>
             <div class="line height220"></div>
@@ -116,6 +137,7 @@
             <span class="width10">数量</span>
             <span class="width10">优惠金额</span>
             <span class="width10">小计</span>
+            <span class="width15 float-right">总计</span>
           </p>
           <div class="goods-list-box">
             <table>
@@ -126,13 +148,12 @@
                 </p>
               </thead>
               <tbody class="t-body" v-for="(items,index1) in item.goods" :key="index1">
-                <tr class="goods-list">
+                <div style="float:left;width: 1000px;">
+                  <tr class="goods-list">
                   <td class="pic-box widths40">
                     <div>
-                      <img
-                        :src="items.imgURl"
-                      >
-                    <span class="goods-name">{{items.pname}}</span>
+                      <img :src="items.imgURl">
+                      <span class="goods-name">{{items.pname}}</span>
                       <span>{{items.pspec}}</span>
                       <span>{{items.manun}}</span>
                       <!-- <p class="spec">0.25g*30片</p>
@@ -148,7 +169,11 @@
                   ￥35
                   </td>-->
                 </tr>
+                </div>
+                
+
                 <div class="total td-center padding-left15">￥{{item.payamt}}</div>
+                <div style="clear: both;"></div>
               </tbody>
               <tfoot class="t-footer">
                 <div class="pay-title">
@@ -205,8 +230,8 @@ export default {
       steps: 0,
       visible: false,
       orderDetail: [],
-      orderno: '',
-      cusno: '',
+      orderno: "",
+      cusno: "",
       logistixs: []
     };
   },
@@ -227,17 +252,16 @@ export default {
       iRequest.param.json = JSON.stringify({
         orderno: this.orderno,
         compid: this.storeInfo.comp.storeId
-      })
+      });
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
+        new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.logistixs = result.data
+            _this.logistixs = result.data;
           } else {
-            ;
           }
         })
       );
@@ -249,34 +273,63 @@ export default {
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "getOrderDetail";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = [this.cusno,this.orderno];
+      iRequest.param.arrays = [this.cusno, this.orderno];
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderDetail = result.data;
-            _this.fsGeneralMethods.addImages(_this, _this.orderDetail[0].goods, 'pdno', 'spu')
-            switch(_this.orderDetail[0].ostatus) {
+            console.log(6767)
+            console.log(_this.orderDetail)
+            _this.fsGeneralMethods.addImages(
+              _this,
+              _this.orderDetail[0].goods,
+              "pdno",
+              "spu"
+            );
+            switch (_this.orderDetail[0].ostatus) {
               case 0:
-                _this.steps = 0
-              break
+                _this.steps = 0;
+                break;
               case 1:
-                _this.steps = 1
-              break
-               case 2:
-                _this.steps = 2
+                _this.steps = 1;
+                break;
+              case 2:
+                _this.steps = 2;
                 // 获取物流信息
                 _this.getLogisticsInfo();
-              break
-               case 3:
-                _this.steps = 3
-              break
+                break;
+              case 3:
+                _this.steps = 3;
+                break;
             }
           }
         })
       );
+    },
+    payText(type) {
+      var text = ''
+      switch(type){
+        case 0:
+        text = '余额支付'
+        break;
+        case 1:
+        text = '微信支付'
+        break;
+        case 2:
+        text = '支付宝支付'
+        break;
+        case 3:
+        text = '银联支付'
+        break;
+        case 4:
+        text = '货到付款'
+        break;
+      }
+      return text
     },
     cancelOrder() {
       this.visible = true;
@@ -289,19 +342,20 @@ export default {
       iRequest.method = "cancelOrder";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
-          orderno: this.orderDetail[0].orderno,
-          cusno: this.orderDetail[0].cusno
+        orderno: this.orderDetail[0].orderno,
+        cusno: this.orderDetail[0].cusno
       });
       this.$refcallback(
         this,
-          "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
-          iRequest,
-          new this.$iceCallback(function result(result) {
-              if (result.code === 200) {
-                _this.visible = false;
-                _this.queryOrderDetail()
-              }
-          })
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.visible = false;
+            _this.queryOrderDetail();
+          }
+        })
       );
     },
     toPay() {
@@ -311,7 +365,7 @@ export default {
           orderno: this.orderDetail[0].orderno
         }
       });
-      window.open(routeData.href, '_blank');
+      window.open(routeData.href, "_blank");
     }
   }
 };
@@ -346,6 +400,9 @@ export default {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.float-right{
+  float: right;
+}
 .address {
   height: auto !important;
   line-height: 40px !important;
@@ -377,7 +434,9 @@ export default {
 .widths15 {
   width: 12.8%;
 }
-
+.width15{
+  width: 15%;
+}
 .width40 {
   width: 38%;
 }
@@ -388,7 +447,7 @@ export default {
   width: 20%;
 }
 .width10 {
-  width: 10.1%;
+  width: 10.3%;
 }
 .height220 {
   height: 220px !important;
@@ -475,7 +534,7 @@ export default {
   .consignee-middle,
   .consignee-right {
     .container-size(inline-block, 389px, 255px, 0 auto, 0px);
-    padding-top: 20px;
+    padding-top: 10px;
     h3 {
       .p-size(40px, 40px, 16px, center, 0px, #666666);
       font-weight: bold;

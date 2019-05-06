@@ -364,8 +364,6 @@ export default {
             _this.visible = false;
             _this.$message.success(result.message);
             _this.queryOrderList();
-          } else {
-              _this.$message.error(result.message);
           }
         })
       );

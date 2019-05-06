@@ -52,8 +52,8 @@
               </span>
             </p>
             <div>
-               <a-textarea placeholder="请对您购买的药品进行评价" :rows="5" v-model="item.content" class="evaluate-text" maxlength="300" @input="descInput"/>
-             <span class="float-right">{{item.content.length}}/300</span>
+               <a-textarea placeholder="请对您购买的药品进行评价" :rows="5" v-model="item.content" class="evaluate-text" maxlength="100" @input="descInput"/>
+             <span class="float-right">{{item.content.length}}/100</span>
             </div>
 <!--
             <a-upload

@@ -187,7 +187,6 @@ export default {
             }
           },function error(error) {
             _this.loading = false
-            _this.$message.error(error)
           }
         )
       );
@@ -281,7 +280,7 @@ export default {
 .login-input {
   float: right;
   .container-size(block, 390px, 400px, 0 auto, 5px);
-  margin-right: 355px;
+  margin-right: 200px;
   margin-top: 90px;
   background: #ffffff;
   padding: 20px 0px;

@@ -9,7 +9,7 @@
           <a-breadcrumb-item>申请售后</a-breadcrumb-item>
         </a-breadcrumb>
         <div class="after-box">
-          <p class="title">请选择退货药品</p>
+          <p class="title">请选择退款药品</p>
           <div class="cart-box">
             <ul class="table-header">
               <li class="whole">

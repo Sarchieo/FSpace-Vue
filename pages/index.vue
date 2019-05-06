@@ -383,11 +383,14 @@
       <f-space-footer></f-space-footer>
     </a-layout>
     <ul class="sider-meun menu-cur-nav">
-      <li class="right-meun">
-        <a>商品分类</a>
+      <li class="right-meun color-base">
+        <a>导航</a>
       </li>
       <li class="right-meun" v-for="(item, index) in list" :class="((scrollTop >= item.sHeight) && (scrollTop <= item.eHeight)) ? item.color : ''"  :key="index" v-show="item.isShow" @click="meauItemClick(item)">
-        <a>{{ item.fname }}</a>
+        <div class="asdadasdad">
+          <a>{{ item.fname }}</a>
+        </div>
+        
       </li>
     </ul>
   </div>
@@ -493,7 +496,7 @@ export default {
                 break
                 case 2:// 热销专区
                 _this.getHotGoods();
-                value.color = 'color-beige'
+                value.color = 'color-wheat'
                 break
                 case 4: // 秒杀专区
                 _this.getSeckillMallFloor();
@@ -502,10 +505,11 @@ export default {
                 case 8: // 一块购
                 _this.getTeamBuyMallFloor()
                 value.color = 'color-pink'
+                value.fname = '一块购区'
                 break
                 case 16: // 包邮专区
                 _this.getExemPostMallFloor();
-                value.color = 'color-blue'
+                value.color = 'color-beige'
                 break
                 case 32: // 新人专享
                 _this.getNewPersonList();
@@ -1592,25 +1596,34 @@ li {
   position: fixed;
   top: 300px;
   right: 10px;
-  width: 85px;
-  height: 400px;
   background: #f2f2f2;
 }
+
 .sider-meun .right-meun {
-  width: 85px;
-  height: 80px;
-  line-height: 80px;
+  width: 50px;
+  height: 50px;   
+  line-height: 50px;
   text-align: center;
-  background: #ffffff;
+  background: #666;
+  border-top: 1px #ffffff solid
 }
 
 .right-meun a {
-  font-size: 14px;
+  font-size: 12px;
+  color: #ffffff !important;
 }
 
-
-.menu-cur-nav {
+.asdadasdad {
+  line-height: 12px;
+  width: 24px;
+  height: 28px;
+  margin: 11px auto;
+}
+.menu-cur-nav .color-base{
   background-color: #ff0036 !important;
+  a {
+    color: #ffffff !important;
+  }
 }
 
 .menu-cur-nav .color-pink {
@@ -1640,6 +1653,14 @@ li {
     color: #ffffff !important;
   }
 }
+
+.menu-cur-nav .color-wheat {
+  background-color: #EE1289 !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
 
 .menu-cur-nav .color-indigo {
   background-color: #4B0082 !important;
