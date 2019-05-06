@@ -31,8 +31,8 @@
             <p class="name">{{ item.prodname }}</p>
             <p class="guige">{{ item.spec }}</p>
           </div>
-          
-        </div> 
+
+        </div>
         <div class="complete">
             {{ item.astype | asTypeFormat }}
             <!-- 退款有？ -->
@@ -124,7 +124,7 @@ export default {
     },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
-      this.currentIndex = 1
+      // this.currentIndex = 1
       this.queryAsapp()
     },
     seeDetail(item) {
