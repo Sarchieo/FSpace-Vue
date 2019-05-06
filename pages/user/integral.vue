@@ -116,8 +116,6 @@ export default {
           if (result.code === 200) {
             _this.userIntergral = result.data;
             _this.getIntegralNum()
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

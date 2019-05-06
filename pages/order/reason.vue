@@ -6,13 +6,13 @@
         <div>
           <div class="step-right">
             <a-steps class="setps-box" :current="steps">
-              <a-step title="买家申请退货"></a-step>
-              <a-step title="卖家处理退货"></a-step>
-              <a-step title="退货完成"></a-step>
+              <a-step title="买家申请退款"></a-step>
+              <a-step title="卖家处理退款"></a-step>
+              <a-step title="退款完成"></a-step>
             </a-steps>
           </div>
           <div class="reason-box">
-            <p class="title">退货原因</p>
+            <p class="title">退款原因</p>
 
             <div class="reason-content">
               <div class="reason-left">
@@ -23,7 +23,7 @@
                 <p>￥ {{ pdprice }}</p>
               </div>
               <div class="reason-right">
-                <a-form-item label="退货原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="退款原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
                   <a-select
                     v-model="reasonType"
                     style="width: 200px;margin-bottom: 10px;"
@@ -199,8 +199,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -227,8 +225,6 @@ export default {
                 _this.fileList.length + ".jpg";
               _this.headers["specify-path"] = _this.uploadInfo.orderFilePath;
               _this.headers["tailor-list"] = "200x200,400x400,600x600";
-            } else {
-              _this.$message.error("文件地址获取失败, 请稍后重试");
             }
           },
           function error(error) {

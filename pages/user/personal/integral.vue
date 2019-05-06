@@ -114,8 +114,6 @@ export default {
             _this.total = result.total;
             console.log(result.data);
             _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );
@@ -140,8 +138,6 @@ export default {
             _this.expirepointNumber = result.data.expirepoint;
             // console.log( result.data)
             _this.$message.success(result.message);
-          } else {
-            _this.$message.error(result.message);
           }
         })
       );

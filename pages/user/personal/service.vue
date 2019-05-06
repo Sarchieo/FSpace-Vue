@@ -114,8 +114,6 @@ export default {
             _this.fsGeneralMethods.addImages(_this, _this.list, 'pdno', 'spu')
             _this.total = result.total
             _this.currentIndex = result.pageNo
-          } else {
-            _this.$message.error(result.data);
           }
         })
       );

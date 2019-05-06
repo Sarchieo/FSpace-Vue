@@ -72,8 +72,6 @@ export default {
                 orderno: result.body.orderNo
               }
             })
-          } else {
-            _this.$message.error('订单支付异常, 请稍后重试')
           }
         }
       })

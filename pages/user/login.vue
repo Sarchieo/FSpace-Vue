@@ -187,7 +187,6 @@ export default {
             }
           },function error(error) {
             _this.loading = false
-            _this.$message.error(error)
           }
         )
       );
