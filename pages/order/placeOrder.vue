@@ -34,7 +34,7 @@
               <span>收货门店：</span>{{ this.storeInfo.comp.storeName }}
             </p>
             <p class="address-info">
-              <span>收货地址：</span>{{ storeInfo.comp.addressCodeStr + this.storeInfo.comp.address }}
+              <span>收货地址：</span>{{ storeInfo.comp.addressCodeStr }} {{ this.storeInfo.comp.address }}
             </p>
           </div>
         </div>
@@ -138,6 +138,7 @@
               <p>商品合计：￥{{ selectCounpon.tprice }}</p>
               <p>运费：￥ {{  cartList[0].freight }}</p>
               <p>优惠：￥ {{ selectCounpon.tdiscount  }}</p>
+              <p>余额： ￥ {{- selectCounpon.debal  }}</p>
               <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
               <p class="price">应付金额：￥ {{ selectCounpon.payamt }}</p>
 
@@ -349,6 +350,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+              debugger
               _this.selectCounpon = result.data
             }
           }

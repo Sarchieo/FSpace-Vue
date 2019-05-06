@@ -48,7 +48,7 @@
       <div class="address-box">
         <p class="my-address">默认收货地址</p>
         <p class="store-info">收货门店：{{ storeInfo.comp.storeName }}</p>
-        <p class="store-info">门店地址：{{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}</p>
+        <p class="store-info">门店地址：{{ storeInfo.comp.addressCodeStr  }} {{ storeInfo.comp.address }}</p>
       </div>
       <!-- <p class="consignee">新增收货人</p> -->
      <a-button type="primary" @click='addReceiver' class="add-person">新增收货人</a-button>

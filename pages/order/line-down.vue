@@ -11,27 +11,33 @@
               <span slot="description"></span>
             </a-step>
             <a-step title="采购单信息" />
-            <a-step title="采购单付款" />
             <a-step title="采购单完成" />
           </a-steps>
         </div>
         <div class="qr-code">
-            <h2>您的订单已收到，请耐心等待客服审核！</h2>
-            <p><span class="title">订单号</span><span class="order-no bold">201905069527</span><span class="title">下单时间</span><span class="bold">2019-05-06</span></p>
-            <p><span class="title">订单金额</span><span class="price">￥20</span><span class="title">发票信息</span><span class="bold">电子普通发票</span></p>
-            <p><span class="title">支付方式</span><span class="bold">线下支付</span></p>
-
+            <h2 v-if="type == 'zz'">您的订单已收到，请耐心等待客服审核！</h2>
+            <h2 v-if="type == 'hdfk'">下单成功！</h2>
+            <p><span class="title">订单号</span><span class="order-no bold">{{ orderno }}</span><span class="title">下单时间</span><span class="bold">{{ info.odate }}{{ info.otime }}</span></p>
+            <p><span class="title">订单金额</span><span class="price">￥{{ info.payamt }}</span><span class="title">支付方式</span><span class="bold">{{ type == 'zz' ? '线下支付' : '线下到付' }}</span></p>
         </div>
-        <div class="invo-box">
+        <div class="invo-box" v-if="type == 'zz'">
             <img src="../../assets/img/invo.png" alt="">
         </div>
-        <div class="invo-text">
+        <div class="invo-text" v-if="type == 'zz'">
             <p class="invo-title"><span class="text">转账说明</span></p>
             <p class="invo-content"><span class="circle"></span>请您在汇款时备注药帮忙订单编号，这将会很大程度上缩短我们的核款时间并能尽快为您安排发货。</p>
             <p class="invo-content"><span class="circle"></span>请于24小时内汇款并确保汇款金额与订单总金额一致，到账时间为1-3个工作日。</p>
             <p class="invo-content"><span class="circle"></span>从下单之日起5天内如果还未付款并到账，系统将自动取消该订单。</p>
             <p class="invo-content"><span class="circle"></span>我们将在收到款项后及时确认收款并安排发货，若款项汇出2天后未帮您收款确认，请及时拨打底部客服热线。</p>
         </div>
+        <p class="order-detail">
+          <a-button
+            type="primary"
+            class="order-detail-btn"
+            @click="toOrderDetail()"
+          >订单详情</a-button>
+          <span class="keep-shoping" @click="toIndex()">继续逛逛</span>
+        </p>
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
@@ -53,34 +59,53 @@ export default {
   data() {
     return {
      value: 1,
-     payamt: ''
+     payamt: '',
+     info: {}
     };
   },
   mounted() {
-    this.url = this.$route.query.url
-    this.payamt = this.$route.query.payamt
+    this.type = this.$route.query.type
     this.orderno = this.$route.query.orderno
-    this.payResult()
+    this.getPayResult()
   },
   methods: {
-    payResult() {
-      let _this = this
-      let ice_callback = new Ice.Class(inf.PushMessageClient, {
-        receive: function(message, current) {
-          let result = JSON.parse(message)
-          if(result.event == 1 && result.body.tradeStatus == 1) {
-            _this.$router.push({
-              path: '/order/pay-complete',
-              query: {
-                orderno: result.body.orderNo
-              }
-            })
-          } else {
-            _this.$message.error('订单支付异常, 请稍后重试')
-          }
-        }
+    // 获取订单详情
+    getPayResult() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "getPayResult";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.comp.storeId
       })
-      this.$initIceLong('orderServer', this.storeInfo.comp.storeId, new ice_callback());
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.info = result.data
+            }
+          }
+        )
+      );
+    },
+    toOrderDetail() {
+      this.$router.push({
+        path: "/user/order-detail",
+        query: {
+          orderno: this.orderno,
+          cusno: this.storeInfo.comp.storeId
+        }
+      });
+    },
+    toIndex() {
+      this.$router.push({
+        path: "/"
+      });
     },
       // 监听单选框的值发生变化
     onChange (e) {
@@ -260,5 +285,16 @@ p{
            background: pink;
        }
    }
+   .order-detail {
+    .p-size(60px, 60px, 16px, center, 0px, #666666);
+    .order-detail-btn {
+      .button-size(150px, 45px, 45px, 16px, 0px, 5px);
+      .button-color(1px solid transparent, #ed2f26, #ffffff);
+    }
+    span {
+      margin-left: 30px;
+      color: #3189f5;
+    }
+  }
 }
 </style>

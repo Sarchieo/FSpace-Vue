@@ -79,13 +79,13 @@
     
       </a-form>
       <ul class="user-info">
-        <li class="two-line">
+        <li class="two-line" v-if="authenticationStatus > 64">
           <a-checkbox checked>已设置</a-checkbox>
           <span>登录密码</span>
           <p>安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码</p>
           <a class="one-updata" @click="isChangePwd = true">修改</a>
         </li>
-        <li class="one-line">
+        <li class="one-line" v-if="authenticationStatus > 64">
           <a-checkbox checked>已设置</a-checkbox>
           <span>手机绑定</span>
           <p>绑定手机后，您即可享受丰富的手机服务，如手机找回密码等。</p>
@@ -338,15 +338,18 @@ export default {
               context: _this,
               user: result.data
             });
+            debugger
             _this.authenticationStatus = result.data.comp.authenticationStatus
             _this.code = []
             _this.getFilePathPrev();
             _this.authenticationMessage = result.data.comp.authenticationMessage;
-            _this.isEditor = !_this.isRelated
+            _this.isEditor = _this.isRelated
             // 获取地区数据
             if(result.data.comp.addressCode) {
               _this.getAncestors(result.data.comp.addressCode)
             }
+          } else {
+            _this.isEditor = true
           }
         })
       );
@@ -423,11 +426,12 @@ export default {
           let flag = true
           let message = ''
           _this.uploadList.forEach((item) => {
-            item.fileList.length === 0 ? flag = false : flag = true
+            if(item.fileList.length === 0 ) {
+              flag = false
+            }
             message = item.message
           })
-          
-          if(!flag || _this.authenticationStatus > 64) {
+          if(!flag && _this.authenticationStatus > 0) {
             _this.$message.error('请提交药店资质图片')
             return 
           }

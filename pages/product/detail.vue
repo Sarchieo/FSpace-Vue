@@ -798,19 +798,6 @@ export default {
                 _this.getFoot();
               }
               _this.details = JSON.parse(_this.prodDetail.detail);
-              // if (_this.rulecode === 0) {
-              //   _this.maximum = _this.prodDetail.store;
-              // } else if (_this.rulecode == 1113) {
-              //   _this.maximum =
-              //     _this.prodDetail.limits > _this.prodDetail.store
-              //       ? _this.prodDetail.store
-              //       : _this.prodDetail.limits;
-              // } else {
-              //   _this.maximum =
-              //     _this.prodDetail.limits > _this.prodDetail.store
-              //       ? _this.prodDetail.store
-              //       : _this.prodDetail.limits;
-              // }
             }
           }
         })

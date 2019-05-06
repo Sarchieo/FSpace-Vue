@@ -31,6 +31,7 @@
                       <a-radio :value="1"><a-icon type="alipay-circle" class="blue"/></a-radio>
                       <a-radio :value="2"><a-icon type="wechat" class="green"/></a-radio>
                       <a-radio :value="3" class="line-down">线下转账</a-radio>
+                      <a-radio :value="4" class="line-down">线下到付</a-radio>
                     </a-radio-group>
                   </p>
               </div>
@@ -38,7 +39,8 @@
           <div class="pay-btn">
               <p class="btn-box">
                   <a-button :disabled="!isPay" type="primary" @click="prePay()" v-if="this.value === 1 || this.value === 2">立即支付(线上)</a-button>
-                  <a-button :disabled="!isPay" type="primary" @click="lineDown()" v-if="this.value === 3">立即支付(线下)</a-button>
+                  <a-button :disabled="!isPay" type="primary" @click="offlinePay('zz')" v-if="this.value === 3">提交订单</a-button>
+                  <a-button :disabled="!isPay" type="primary" @click="offlinePay('hdfk')" v-if="this.value === 4">提交订单</a-button>
               </p>
               <p class="surplus-time">剩余付款时间：<span>{{ h }}</span>小时<span>{{ m }}</span>分钟<span>{{ s }}</span>秒</p>
           </div>
@@ -93,17 +95,51 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.payamt = result.data.payamt
-              _this.isPay = true
-              _this.secondKill(
-              _this.stringToDate(result.data.now),
-                result.data.otime
-              );
+              // 余额完全支付
+              if(result.data.balflag === 1) {
+                _this.balAllPay()
+              } else {
+                _this.payamt = result.data.payamt
+                _this.isPay = true
+                _this.secondKill(
+                _this.stringToDate(result.data.now),
+                  result.data.otime
+                );
+              }
             }
           }
         )
       );
     },
+    balAllPay() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "balAllPay";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.comp.storeId,
+      });
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.$router.push({
+                path: '/order/pay-complete',
+                query: {
+                  orderno: _this.orderno
+                }
+              })
+            }
+          }
+        )
+      );
+    },
+    // 线上支付
     prePay() {
       const _this = this;
       const iRequest = new inf.IRequest();
@@ -135,10 +171,36 @@ export default {
         )
       );
     },
-    lineDown() {
-      this.$router.push({
-        path: '/order/line-down'
-      })
+    // 线下
+    offlinePay(type) {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "offlinePay";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.comp.storeId,
+        paytype: type
+      });
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.$router.push({
+                path: '/order/line-down',
+                query: {
+                  type: type,
+                  orderno: _this.orderno
+                }
+              })
+            }
+          }
+        )
+      );
     },
     stringToDate(str) {
       var tempStrs = str.split(" ");

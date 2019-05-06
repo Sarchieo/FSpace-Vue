@@ -75,7 +75,7 @@
           </p>
           <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
           <!-- v-if="item.ostatus === 3" -->
-          <p @click="afterApply(item)" v-if="item.ostatus == 3">申请售后</p>
+          <p class="detail" @click="afterApply(item)" v-if="item.ostatus == 3">申请售后</p>
           <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate">
             <a>评论</a>
           </p>
@@ -85,7 +85,8 @@
             @click="isShowCancel()"
           >取消订单</p>
           <p class="detail" @click="toDetails(item)">订单详情</p>
-          <p v-if="item.ostatus == 3" class="align">再次购买</p>
+          <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
+          <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
           <p @click="toSuppInvo(item)" class="supplement" v-if="item.ostatus == 3">补开发票</p>
         </div>
         <div style="clear: both;"></div>
@@ -144,6 +145,18 @@
         </a-radio-group>
       </div>
     </a-modal>
+    <a-modal title="物流信息" v-model="isLogistics" okText="确定"  cancelText="取消" @ok="isLogistics = false">
+      <div v-if="isLogistics">
+        <a-steps direction="vertical" size="small" :current="logistixs.node.length -1 ">
+          <a-step
+            v-for="(item, index) in logistixs.node"
+            :key="index"
+            :title="item.status"
+            :description="item.date + item.time + item.des"
+          />
+        </a-steps>
+      </div>
+    </a-modal>
     <!-- <input type="radio" id="radio1" name="radio1" />
     <input type="radio" id="radio2" name="radio1" />-->
   </div>
@@ -176,14 +189,16 @@ export default {
       visible: false,
       currentIndex: 1,
       total: 0,
+      isLogistics: false,
       ostatus: "", // 订单状态
       orderList: [],
+      logistixs: [],
       year: '2019'
     };
   },
   mounted() {
     this.$store.commit(types.SELECTED_KEYS, "/user/personal/myorder");
-    this.queryOrderList();
+    this.queryOrderList()
   },
   methods: {
     changeType(val) {
@@ -240,11 +255,10 @@ export default {
       iRequest.param.arrays = [this.year,this.ostatus];
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
-
       this.$refcallback(
         this,
         "orderServer" +
-          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+          Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -259,6 +273,31 @@ export default {
                 "spu"
               );
             });
+          }
+        })
+      );
+    },
+    // 重新购买
+    reOrder() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderInfoModule";
+      iRequest.method = "againShopCart";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.comp.storeId,
+        pdno: this.prodDetail.sku,
+        pnum: this.inventory,
+        checked: 0
+      });
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            
           }
         })
       );
@@ -282,6 +321,32 @@ export default {
     },
     handleCancel(e) {
       this.visible = false;
+    },
+    viewLogistics(item) {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "OrderOptModule";
+      iRequest.method = "getLogisticsInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.json = JSON.stringify({
+        orderno: item.orderno,
+        compid: this.storeInfo.comp.storeId
+      });
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200 && result.data.node.length > 0) {
+            _this.logistixs = result.data;
+            _this.isLogistics = true;
+          }else {
+            _this.$message.error('暂无物流信息')
+          }
+        })
+      );
     },
     toDetails(item) {
       var routeData = this.$router.resolve({
@@ -390,7 +455,6 @@ export default {
           if (result.code === 200) {
             _this.visible = false;
             _this.queryOrderList();
-          } else {
           }
         })
       );

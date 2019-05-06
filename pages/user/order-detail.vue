@@ -328,6 +328,9 @@ export default {
         case 4:
         text = '货到付款'
         break;
+        case 5:
+        text = '线下支付'
+        break;
       }
       return text
     },

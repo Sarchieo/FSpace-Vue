@@ -83,6 +83,7 @@ export default {
       return this.$store.state.user;
     }
   },
+  middleware: "authenticated",
   data() {
     return {
       userIntergral: [],

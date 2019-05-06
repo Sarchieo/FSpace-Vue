@@ -28,7 +28,7 @@
                 <span>联系电话：</span> {{ storeInfo.phone }}
               </p>
               <p>
-                <span>收货地址：</span>{{ info.address + storeInfo.comp.address }}
+                <span>收货地址：</span>{{ info.address  }} {{ storeInfo.comp.address }}
               </p>
             </div>
           </div>
@@ -41,7 +41,7 @@
             <span class="keep-shoping" @click="toIndex()">继续逛逛</span>
           </p>
         </div>
-        <div class="person-see">
+        <!-- <div class="person-see">
           <p class="person-title">大家都在看</p>
           <div class="person-box">
             <div class="person-list" @click="toGoodsDetail()">
@@ -115,7 +115,7 @@
               </a-card>
             </div>
           </div>
-        </div>
+        </div> -->
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
