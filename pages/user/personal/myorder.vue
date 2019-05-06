@@ -81,9 +81,8 @@
           </p>
           <p
             class="canle-order"
-            v-if="item.ostatus === 0 || item.ostatus === 1"
-            @click="isShowCancel()"
-          >取消订单</p>
+            v-if="item.ostatus === 0"
+            @click="isShowCancel()">取消订单</p>
           <p class="detail" @click="toDetails(item)">订单详情</p>
           <p v-if="item.ostatus == 3" class="align">再次购买</p>
           <p @click="toSuppInvo(item)" class="supplement" v-if="item.ostatus == 3">补开发票</p>

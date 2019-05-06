@@ -496,7 +496,7 @@ export default {
                 break
                 case 2:// 热销专区
                 _this.getHotGoods();
-                value.color = 'color-beige'
+                value.color = 'color-wheat'
                 break
                 case 4: // 秒杀专区
                 _this.getSeckillMallFloor();
@@ -509,7 +509,7 @@ export default {
                 break
                 case 16: // 包邮专区
                 _this.getExemPostMallFloor();
-                value.color = 'color-blue'
+                value.color = 'color-beige'
                 break
                 case 32: // 新人专享
                 _this.getNewPersonList();
@@ -1653,6 +1653,14 @@ li {
     color: #ffffff !important;
   }
 }
+
+.menu-cur-nav .color-wheat {
+  background-color: #EE1289 !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
 
 .menu-cur-nav .color-indigo {
   background-color: #4B0082 !important;
