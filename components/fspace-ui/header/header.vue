@@ -159,6 +159,8 @@
       @ok="handleLogoutOk"
       :confirmLoading="confirmLoading"
       @cancel="handleCancel"
+      okText="确定"
+      cancelText="取消"
     >
       <p>{{ModalText}}</p>
     </a-modal>

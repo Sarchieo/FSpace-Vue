@@ -23,7 +23,7 @@
             </p>
           <div>
             <p class="address-info">
-              <span>联系人：</span>{{ consignee }}
+              <span>联系人：</span>{{ consignee }} <span style="color: blue;" @click="editorAddress()">编辑</span> 
             </p>
             <p class="address-info">
               <span>联系方式：</span>{{ contact }}
@@ -102,8 +102,9 @@
             <p>商品合计：￥{{ selectCounpon.tprice }}</p>
             <p>运费：￥ {{  cartList[0].freight }}</p>
             <p>优惠：￥ {{ selectCounpon.tdiscount  }}</p>
+            <p>余额： ￥ {{ selectCounpon.debal  }}</p>
             <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
-            <p class="price">应付金额：￥ {{ selectCounpon.payamt }}</p>
+            <p class="price">应付金额：￥ {{ selectCounpon.acpay }}</p>
 
             <a-button class="pay-btn" @click="toPay()">去付款</a-button>
           </div>
@@ -138,6 +139,7 @@
           :label-col="{ span: 5 }"
           :wrapper-col="{ span: 12 }"
         >
+    
           <a-input
             v-decorator="[
               'contactphone',
@@ -194,7 +196,8 @@ export default {
         freeship: false, // 是不是免运费
         payamt: 0, // 实付金额
         tdiscount: 0, // 总共优惠
-        tprice: 0 // 总计金额
+        tprice: 0, // 总计金额
+        acpay: 0
       }
     };
   },
@@ -313,6 +316,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+              debugger
               _this.selectCounpon = result.data
             }
           }
@@ -409,6 +413,13 @@ export default {
           );
         }
       });
+    },
+    editorAddress() {
+      this.form.setFieldsValue({
+        contactname: this.consignee,
+        contactphone: this.contact
+      });
+      this.visible = true
     },
     validatePhone(rule, value, callback) {
       let _this = this;

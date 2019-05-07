@@ -12,6 +12,8 @@
               <p>商品合计： ￥ {{ info.pdamt }}元</p>
               <p>运费： ￥{{ info.freight }}元</p>
               <p>优惠券： ￥ {{ info.coupamt }} 元</p>
+              <p>抵扣余额 ￥ {{ info.balamt }} 元</p>
+              
               <p>
                 实付：
                 <span>￥ {{ info.payamt }} 元</span>
