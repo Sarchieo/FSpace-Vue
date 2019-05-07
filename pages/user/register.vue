@@ -76,8 +76,8 @@
             <a-form-item v-bind="tailFormItemLayout">
               <a-checkbox v-decorator="['agreement', {valuePropName: 'checked'}]">
                 注册账号即表示您已阅读并同意
-                <a href="javascript:;" @click="isShowService()">用户服务协议</a> 和
-                <a href="javascript:;" @click="isShowPrivacy()">用户隐私协议</a>
+                <a href="javascript:;" @click="isShowService()">服务协议</a> 和
+                <a href="javascript:;" @click="isShowPrivacy()">隐私协议</a>
               </a-checkbox>
             </a-form-item>
           </a-form>
