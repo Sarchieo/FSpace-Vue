@@ -37,7 +37,7 @@
                   <nuxt-link to="/user/personal">我的一块</nuxt-link>
                 </a-menu-item>
                 <a-menu-item>
-                  <a href="javascript:;">浏览记录</a>
+                  <a href="javascript:;" @click="toFoot()">浏览记录</a>
                 </a-menu-item>
                 <a-menu-item>
                   <a @click="logout()">登出</a>
@@ -360,6 +360,11 @@ export default {
       this.$router.push({
         path: "/user/personal/myorder"
       });
+    },
+    toFoot() {
+      this.$router.push({
+        path: "/user/personal/footprint"
+      })
     },
     async getShoppingCartList() {
       let _this = this;

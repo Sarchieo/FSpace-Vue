@@ -38,7 +38,7 @@
           </div>
           <div class="pay-btn">
               <p class="btn-box">
-                  <a-button :disabled="!isPay" type="primary" @click="prePay()" v-if="this.value === 1 || this.value === 2">立即支付(线上)</a-button>
+                  <a-button :disabled="!isPay" type="primary" @click="prePay()" v-if="this.value === 1 || this.value === 2">立即支付</a-button>
                   <a-button :disabled="!isPay" type="primary" @click="offlinePay('zz')" v-if="this.value === 3">提交订单</a-button>
                   <a-button :disabled="!isPay" type="primary" @click="offlinePay('hdfk')" v-if="this.value === 4">提交订单</a-button>
               </p>

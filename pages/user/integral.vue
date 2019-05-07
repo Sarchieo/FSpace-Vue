@@ -51,10 +51,10 @@
           </p>
 
           <!-- <p class="moon-data"> <span>4.23</span><span>4.24</span><span>4.25</span><span>4.26</span><span>4.27</span><span>4.28</span><span>4.29</span></p> -->
-          <!-- <div class="coupon-box">
+          <div class="coupon-box">
             <div class="coupon-card">
               <div class="coupon-left">
-                <p class="coupon-type"></p>
+                <p class="coupon-type">现金券</p>
                 <span>满 1000 减 50</span>
                 <span>有效期 12 天</span>
               </div>
@@ -62,7 +62,7 @@
                 <img class="state-pic" src="../../assets/img/receive.png" alt>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
 
       </div>
@@ -291,14 +291,17 @@ export default {
         float: left;
         width: 280px;
         height: 160px;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #fdddc5;
+        background: #fffbf3;
       }
       .coupon-type {
         height: 40px;
         line-height: 40px;
         text-align: center;
+        background: #666666;
+        margin-bottom: 5px;
         font-size: 20px;
-        color: #ed3025;
+        color: #ffffff;
       }
       .coupon-left span {
         display: inline-block;
