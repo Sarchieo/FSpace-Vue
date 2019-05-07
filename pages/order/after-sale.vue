@@ -35,7 +35,7 @@
                   </div>
                   <div class="old-price">￥{{item.pdprice}}元</div>
                   <div class="shoping-num">
-                    <span>{{item.pnum}}</span>
+                    <span>{{item.inventory}}</span>
                   </div>
                   <div class="count">
                     <a-button class="add-reduce" @click="reduce(item)">-</a-button>
