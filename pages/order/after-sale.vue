@@ -19,7 +19,8 @@
               <li class="width20">单价</li>
               <li class="width20">购买数量</li>
               <li class="width20">退货数量</li>
-              <li class="width20">实付</li>
+              <!--<li class="width20">退款金额</li>-->
+              <li class="width20">退款金额</li>
             </ul>
             <ul class="goods-lists">
               <li class="goods-lists-li">
@@ -59,6 +60,7 @@
 <script>
 import FSpaceHeader from "../../components/fspace-ui/header/header";
 import FSpaceFooter from "../../components/fspace-ui/footer";
+import { accMul, accDiv } from "@/plugins/calculate.js";
 export default {
   components: {
     FSpaceHeader,
@@ -85,8 +87,9 @@ export default {
       this.fsGeneralMethods.addImages(this, this.goodsArr, "pdno", "spu");
       this.goodsArr.forEach((item) => {
        item.inventory = item.pnum
+       item.price = item.payamt
       })
-    // 
+    //
     // console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr));
   },
   methods: {
@@ -95,15 +98,23 @@ export default {
         return false;
       }
       item.pnum-=1;
+        if (item.pnum == item.inventory) {
+            item.payamt = item.price
+        } else {
+            item.payamt = accMul(accDiv(item.price,item.inventory),item.pnum)
+        }
     },
     addNum(item) {
-
       if(item.pnum >= item.inventory){
         return false
       } else {
         item.pnum +=1;
       }
-
+      if (item.pnum == item.inventory) {
+          item.payamt = item.price
+      } else {
+          item.payamt = accMul(accDiv(item.price,item.inventory),item.pnum)
+      }
     },
 
     onChange(val) {
