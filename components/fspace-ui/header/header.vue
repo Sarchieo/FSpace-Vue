@@ -2,6 +2,7 @@
   <div>
     <!-- 首页 -->
     <a-layout-header v-if="type === 'home'">
+      <!-- <f-space-menu v-if="isShowMenu"></f-space-menu> -->
       <div>
         <div class="header-title" v-show="isShowHeader">
           <div class="header-left">
@@ -112,7 +113,7 @@
               <span>|</span> -->
             </p>
             <div class="nav-box" v-show="isShowHeader">
-              <span href class="goods-type">商品分类</span>
+              <span href class="goods-type"  @mouseover="showMenu()" @mouseleave="hiddenMenu()">商品分类</span>
               <a href="javascript:;"  @click="toNewPerson()">新人专享</a>
               <a href="javascript:;"  @click="toNewGoods()">新品上线</a>
               <a href="javascript:;"  @click="toHotGoods()">热销商品</a>
@@ -122,6 +123,7 @@
           </div>
         </div>
       </div>
+      
     </a-layout-header>
     <!-- 登录 -->
     <a-layout-header v-if="type === 'login'" class="login-header">
@@ -168,11 +170,18 @@
 </template>
 <script>
 // import HeaderNotice from './HeaderNotice'
+// import FSpaceMenu from '../menu'
 export default {
   name: "f-space-header",
   props: ["type", "searchList"],
   // components: {
   //   HeaderNotice
+  // },
+  // components: {
+  //   FSpaceMenu
+  // },
+  // components: {
+  //   FSpaceMenu
   // },
   computed: {
     storeInfo() {
@@ -193,6 +202,7 @@ export default {
   },
   data() {
     return {
+      isShowMenu: false,
       confirmLoading: false,
       ModalText: "您确定要退出登录吗?",
       isLogout: false,
@@ -285,8 +295,8 @@ export default {
       } else {
         home.position = "";
         home.top = "";
-        home.height = "171px";
-        nameBox.height = "141px";
+        home.height = "125px";
+        nameBox.height = "125px";
         this.isShowHeader = true;
       }
     },
@@ -453,6 +463,12 @@ export default {
           actcode: this.hotGoodsID
         }
       });
+    },
+    showMenu() {
+      this.isShowMenu = true
+    },
+    hiddenMenu() {
+      this.isShowMenu = false
     }
   }
 };
@@ -479,7 +495,7 @@ li {
   padding: 0;
 }
 .ant-layout-header {
-  height: 200px;
+  height: 155px;
   line-height: 30px;
   padding: 0px;
   background: rgb(242, 242, 242);
@@ -593,7 +609,7 @@ li {
 .medicine-name-box {
   display: block;
   width: 1200px;
-  height: 170px;
+  height: 125px;
   margin: 0 auto;
   padding-top: 20px;
   background: #ffffff;

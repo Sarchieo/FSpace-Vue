@@ -95,11 +95,14 @@
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName + item.prodname}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
-            <p class="card-price top165" v-if="item.actprod && userStatus">
+            <!-- <p class="card-price top165" v-if="item.actprod && userStatus">
               ￥{{item.minprize }} ~  {{item.maxprize}}
               <del>￥{{item.vatp}}</del>
-            </p>
-            <p class="card-price top165" v-if="!item.actprod && userStatus">
+            </p> -->
+            <!-- <p class="card-price top165" v-if="!item.actprod && userStatus">
+              ￥{{item.vatp}}
+            </p> -->
+            <p class="card-price top165">
               ￥{{item.vatp}}
             </p>
              <p class="card-price top165" v-if="!userStatus">
@@ -657,7 +660,7 @@ li {
   top: 210px;
 }
 .surplus {
-  .position(absolute, 197px, 0px);
+  .position(absolute, 210px, 0px);
   width: 225px;
   text-align: left;
   text-indent: 20px;
@@ -687,7 +690,7 @@ li {
   text-align: center;
 }
 .card-price {
-  .position(absolute, 172px, 0px);
+  .position(absolute, 180px, 0px);
   width: 225px;
   text-align: left;
   text-indent: 17px;

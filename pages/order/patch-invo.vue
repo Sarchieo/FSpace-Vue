@@ -198,10 +198,10 @@
             </div>
           </div>
           <!-- 第五步 -->
-          <div class="reason-box" v-if="steps === 4">
+          <div class="reason-box" v-if="steps === 3">
             <p class="reason-p">发票详情</p>
-            <p>商家正在审核并制票，请耐心等待</p>
-            <table>
+            <p class="reason-wait">您的订单号为{{orderno}}的补开发票申请商家正在审核并制票，请耐心等待</p>
+            <!-- <table>
               <thead>订单号: {{orderno}}</thead>
               <tbody>
                 <tr>
@@ -217,7 +217,7 @@
                   <td>湖南空间折叠互联网科技有限公司</td>
                 </tr>
               </tbody>
-            </table>
+            </table> -->
           </div>
         </div>
       </a-layout-content>
@@ -556,7 +556,7 @@ export default {
     margin-top: 14px;
   }
   .reason-box {
-    .container-size(block, 1190px, 570px, 0 auto, 0px);
+    .container-size(block, 1190px, 600px, 0 auto, 0px);
     border: 1px solid #f2f2f2;
     margin-bottom: 40px;
     .reason-p {
@@ -582,11 +582,11 @@ export default {
     }
   }
 }
-// .ant-input {
-//   border-radius: 0px !important;
-//   -moz-border-radius: 0px !important;
-//   -webkit-border-radius: 0px !important;
-// }
+.ant-input {
+  border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  -webkit-border-radius: 0px !important;
+}
 
 .submission-box {
   .container-size(block, 1190px, 90px, 0 auto, 0px);
@@ -648,8 +648,6 @@ export default {
 }
 table {
   .container-size(block, 800px, 205px, 0 auto, 0px);
-  border: 1px solid #e0e0e0;
-  border-collapse: collapse;
   margin-top: 50px;
 }
 thead {
@@ -658,23 +656,17 @@ thead {
   height: 50px;
   line-height: 50px;
   text-indent: 10px;
-  border: 1px solid #e0e0e0;
-  border-collapse: collapse;
 }
 tr {
   display: inline-block;
   width: 800px;
   height: 50px;
   line-height: 50px;
-  border: 1px solid #e0e0e0;
-  border-collapse: collapse;
   td {
     display: inline-block;
     width: 395px;
     height: 50px;
     line-height: 50px;
-    border: 1px solid #e0e0e0;
-    border-collapse: collapse;
   }
 }
 .payment-header {
@@ -688,7 +680,6 @@ tr {
 .qr-code {
   .container-size(block, 1000px, 500px, 0 auto, 0px);
   padding: 70px 350px;
-  border: 1px solid #e0e0e0;
   margin-bottom: 20px;
   .scan {
     text-align: center;
@@ -718,5 +709,10 @@ tr {
       color: #333333;
     }
   }
+}
+.reason-wait{
+   .p-size(50px, 50px, 16px, center, 0px, #666666);
+    background: #f2f2f2;
+    font-weight: bold;
 }
 </style>
