@@ -31,7 +31,7 @@
               </a>
               <a-menu slot="overlay">
                 <a-menu-item>
-                  <a href="javascript:;">常购药品</a>
+                  <a href="javascript:;" @click="toCollection()">我的收藏</a>
                 </a-menu-item>
                 <a-menu-item>
                   <nuxt-link to="/user/personal">我的一块</nuxt-link>
@@ -364,6 +364,11 @@ export default {
     toFoot() {
       this.$router.push({
         path: "/user/personal/footprint"
+      })
+    },
+    toCollection() {
+       this.$router.push({
+        path: "/user/personal/collection"
       })
     },
     async getShoppingCartList() {
