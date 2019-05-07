@@ -40,7 +40,6 @@ function refcallback(context, moduleName,_IRequest, callback) {
     )
     .then(
       function (result) {
-        
         // console.log('模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + '>结果:' + result)
         let success = JSON.parse(result)
         if(success.code === -2 && context.$route.name !== 'user-login') {
@@ -88,7 +87,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
       function (e) {
         context.$message.error('开发环境提示: 模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + ' > 调用失败: ' + e, 10);
         callback.onCallback(CALLBACK_ACTION.ERROR, e);
-        process.exit(1);
+        // process.exit(1);
       }
     )
 }
@@ -123,9 +122,9 @@ function initIceLong(serverName, compid, callback) {
       console.log(ex.toString());
       Ice.Promise.try(
         function () {
-          if (communication) {
-            return communication.destroy();
-          }
+          // if (communication) {
+          //   return communication.destroy();
+          // }
         }
       ).finally(
         function () {

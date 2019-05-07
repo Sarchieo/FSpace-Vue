@@ -113,8 +113,6 @@ export default {
                 "spu"
               );
             });
-          } else {
-            ;
           }
         })
       );

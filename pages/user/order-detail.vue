@@ -118,6 +118,10 @@
                 <span>优惠金额：</span>
                 ￥ {{item.distamt}}元
               </p>
+               <p>
+                <span>余额抵扣：</span>
+                ￥ {{item.balamt}}元
+              </p>
               <p>
                 <span>应支付金额：</span>
                 ￥ {{item.payamt}}元
@@ -281,8 +285,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderDetail = result.data;
-            console.log(6767)
-            console.log(_this.orderDetail)
             _this.fsGeneralMethods.addImages(
               _this,
               _this.orderDetail[0].goods,
@@ -538,11 +540,11 @@ export default {
     .container-size(inline-block, 389px, 255px, 0 auto, 0px);
     padding-top: 10px;
     h3 {
-      .p-size(40px, 40px, 16px, center, 0px, #666666);
+      .p-size(30px, 30px, 14px, center, 0px, #666666);
       font-weight: bold;
     }
     p {
-      .p-size(40px, 40px, 16px, left, 20px, #999999);
+      .p-size(30px, 30px, 14px, left, 20px, #999999);
       span {
         display: inline-block;
         width: 120px;

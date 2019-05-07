@@ -465,11 +465,11 @@ export default {
     .container-size(inline-block, 389px, 255px, 0 auto, 0px);
     padding-top: 20px;
     h3 {
-      .p-size(40px, 40px, 16px, center, 0px, #666666);
+      .p-size(30px, 30px, 14px, center, 0px, #666666);
       font-weight: bold;
     }
     p {
-      .p-size(40px, 40px, 16px, left, 20px, #999999);
+      .p-size(30px, 30px, 14px, left, 20px, #999999);
       span {
         display: inline-block;
         width: 120px;

@@ -9,8 +9,10 @@
               <a-icon type="environment"></a-icon>湖南
             </a>
             <a>欢迎来到一块医药</a>
+            <span @click="downloadHtml()">桌面快捷方式</span>
             <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
             <nuxt-link to="/user/register" v-show="!isLogin">注册</nuxt-link>
+            
             <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
           </div>
           <div class="header-right">
@@ -216,6 +218,17 @@ export default {
       if (this.isDisTip) {
         localStorage.setItem("isDisTip", "1");
       }
+    },
+    downloadHtml(){               
+      let html = this.getHtmlContent();
+      debugger
+      console.log('s stream',s);
+            
+    },
+    getHtmlContent(){
+        //获取html另外一种方式：this.$el.outerHTML
+        const template = this.$el.outerHTML
+        return template;
     },
     handleLogoutOk(e) {
       this.confirmLoading = true;
