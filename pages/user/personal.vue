@@ -22,6 +22,11 @@
               <a-icon type="mobile"/>
               {{ storeInfo.phone }}
             </p>
+            <p>
+              <a-icon type="team" />
+              会员等级:
+              {{ gradeNumber }}
+            </p>
           </div>
           <div class="right">
             <!-- <p class="right-title">优惠信息</p> -->
@@ -116,11 +121,13 @@ export default {
   // middleware: "authenticated",
   data() {
     return {
-      countList: [0, 0, 0, 0, 0, 0, 0]
+      countList: [0, 0, 0, 0, 0, 0, 0],
+      gradeNumber: 0
     };
   },
   mounted() {
     this.countCompInfo()
+    this.getMember()
   },
   methods: {
     handleClick(e) {
@@ -144,6 +151,28 @@ export default {
           function result(result) {
           if (result.code === 200) {
             _this.countList = result.data
+          }
+        })
+      );
+    },
+    // 获取会员等级
+    getMember() {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MemberModule";
+      iRequest.method = "getMember";
+      iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.comp.storeId
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.gradeNumber = result.data.levelname
           }
         })
       );
@@ -180,7 +209,7 @@ export default {
     text-align: center;
     margin-top: 10px;
     p {
-      .p-size(40px, 40px, 14px, left, 20px, #333333);
+      .p-size(30px, 30px, 14px, left, 20px, #333333);
       i {
         margin-right: 15px;
         color: #ed3025;

@@ -338,7 +338,6 @@ export default {
               context: _this,
               user: result.data
             });
-            debugger
             _this.authenticationStatus = result.data.comp.authenticationStatus
             _this.code = []
             _this.getFilePathPrev();
