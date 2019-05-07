@@ -97,7 +97,7 @@
               </p>
               <p>
                 <span class="three">手机号:</span>
-                {{ storeInfo.phone }}
+                {{ item.contact }}
               </p>
             </div>
             <div class="line height220 float-left"></div>
@@ -170,7 +170,7 @@
                   </td>-->
                 </tr>
                 </div>
-                
+
 
                 <div class="total td-center padding-left15">￥{{item.payamt}}</div>
                 <div style="clear: both;"></div>
