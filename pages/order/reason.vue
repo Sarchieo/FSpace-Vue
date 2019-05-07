@@ -16,10 +16,9 @@
 
             <div class="reason-content">
               <div class="reason-left">
-                <img
-                  :src="imgURl"
-                >
-                <p>{{ pName + pspec }}</p>
+                <img :src="imgURl">
+                <p>{{ pName }}</p>
+                <p>规格: {{ pspec }}</p>
                 <p>￥ {{ pdprice }}</p>
               </div>
               <div class="reason-right">

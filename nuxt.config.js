@@ -19,7 +19,7 @@ module.exports = {
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Ice.js' },
       { src: 'http://114.116.155.221/iceInterfaces.js' }
       // { src: 'https://www.onekdrug.com/iceInterfaces.js' }
-    ]
+    ] 
   },
 
   /*

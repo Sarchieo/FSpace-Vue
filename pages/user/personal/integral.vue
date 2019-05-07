@@ -36,28 +36,28 @@ const columns = [
     // 如果是下单得积分，需要把订单号传进来拼到列表上去，暂未做 （字段 busid 状态码为5 busid就是订单编号）
     customRender: function(text){
       switch(text) {
-         case 1: 
+         case 1:
         text = '签到得积分'
         break;
-         case 2: 
+         case 2:
         text = '评论得积分'
         break;
-         case 3: 
+         case 3:
         text = '兑换商品消耗'
         break;
-         case 4: 
+         case 4:
         text = '兑换优惠券消耗'
         break;
-         case 5: 
+         case 5:
         text = '下单得积分'
         break;
-         case 6: 
+         case 6:
         text = '分享得积分'
         break;
-         case 7: 
+         case 7:
         text = '资料认证'
         break;
-         case 8: 
+         case 8:
         text = '下单消耗'
         break;
       }
@@ -92,7 +92,6 @@ export default {
   methods: {
     // 获取积分列表
     getIntegralList() {
-      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "IntegralModule";
@@ -112,8 +111,8 @@ export default {
           if (result.code === 200) {
             _this.data = result.data
             _this.total = result.total;
-            console.log(result.data);
-            _this.$message.success(result.message);
+            // console.log(result.data);
+            // _this.$message.success(result.message);
           }
         })
       );
@@ -137,12 +136,12 @@ export default {
             _this.integralNumber = result.data.balpoints;
             _this.expirepointNumber = result.data.expirepoint;
             // console.log( result.data)
-            _this.$message.success(result.message);
+            // _this.$message.success(result.message);
           }
         })
       );
     },
-    
+
   }
 };
 </script>

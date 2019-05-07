@@ -831,7 +831,11 @@ export default {
         "orderServer" +
           Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
-        new this.$iceCallback()
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            
+          }
+        })
       );
     },
     // 添加收藏

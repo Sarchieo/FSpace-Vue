@@ -425,7 +425,7 @@ export default {
         asAppArr: arr,
         asType: this.asType
       });
-      console.log("json-- " + iRequest.param.json);
+      // console.log("json-- " + iRequest.param.json);
       this.$refcallback(
         this,
         "orderServer" +
