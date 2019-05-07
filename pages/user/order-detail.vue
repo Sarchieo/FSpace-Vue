@@ -261,7 +261,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.logistixs = result.data;
-          } else {
           }
         })
       );
@@ -282,8 +281,8 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderDetail = result.data;
-            // console.log(6767)
-            // console.log(_this.orderDetail)
+            console.log(6767)
+            console.log(_this.orderDetail)
             _this.fsGeneralMethods.addImages(
               _this,
               _this.orderDetail[0].goods,

@@ -460,9 +460,7 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
-    // this.getNewPersonList();
-    // this.getExemPostMallFloor();
-    // this.getSeckillMallFloor();
+    this.checkStoreLoginStatus();
   },
   methods: {
     handleScroll() {
@@ -470,6 +468,27 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
+    },
+    // 获取楼层显示状态
+    async checkStoreLoginStatus() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "checkStoreLoginStatus";
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification")|| "";
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            // _this.$store.
+          }else {
+
+          }
+        })
+      );
     },
     // 获取楼层显示状态
     async getMallFloorProd() {
