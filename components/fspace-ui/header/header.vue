@@ -6,7 +6,7 @@
         <div class="header-title" v-show="isShowHeader">
           <div class="header-left">
             <a v-show="isLogin">
-              <a-icon type="environment"></a-icon>长沙
+              <a-icon type="environment"></a-icon>湖南
             </a>
             <a>欢迎来到一块医药</a>
             <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
@@ -17,7 +17,7 @@
             <!-- <a>帮助中心</a> -->
             <!-- <a class="margin-left0">在线客服</a> -->
             <!-- 我的消息 -->
-            <header-notice/>
+            <!-- <header-notice/> -->
             <!-- 签到有礼 -->
             <a class="sign" @click="toIntegral()">
               签到有礼
@@ -165,13 +165,13 @@
   </div>
 </template>
 <script>
-import HeaderNotice from './HeaderNotice'
+// import HeaderNotice from './HeaderNotice'
 export default {
   name: "f-space-header",
   props: ["type", "searchList"],
-  components: {
-    HeaderNotice
-  },
+  // components: {
+  //   HeaderNotice
+  // },
   computed: {
     storeInfo() {
       return this.$store.state.user;

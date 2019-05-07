@@ -97,7 +97,7 @@
               </p>
               <p>
                 <span class="three">手机号:</span>
-                {{ item.contact }}
+                {{ storeInfo.phone }}
               </p>
             </div>
             <div class="line height220 float-left"></div>
@@ -170,7 +170,7 @@
                   </td>-->
                 </tr>
                 </div>
-
+                
 
                 <div class="total td-center padding-left15">￥{{item.payamt}}</div>
                 <div style="clear: both;"></div>
@@ -261,7 +261,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.logistixs = result.data;
-          } else {
           }
         })
       );
@@ -282,8 +281,8 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderDetail = result.data;
-            // console.log(6767)
-            // console.log(_this.orderDetail)
+            console.log(6767)
+            console.log(_this.orderDetail)
             _this.fsGeneralMethods.addImages(
               _this,
               _this.orderDetail[0].goods,
