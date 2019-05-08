@@ -5,21 +5,22 @@
       <span>售后类型：</span>
       <a-select defaultValue="" style="width: 200px" @change="handleChange">
         <a-select-option value="">全部</a-select-option>
-        <a-select-option :value="1">仅退款</a-select-option>
-        <a-select-option :value="2">开发票</a-select-option>
-         <a-select-option :value="3">物流跟踪</a-select-option>
+        <a-select-option :value="1">退货退款</a-select-option>
+        <a-select-option :value="2">仅退款</a-select-option>
+         <a-select-option :value="3">补开发票</a-select-option>
       </a-select>
-      <button class="search-btn">搜索</button>
-      <input v-model="arr[0]" type="text" placeholder="请输入订单号" class="search-input">
+      <button class="search-btn" @click="queryAsapp">搜索</button>
+      <input v-model="arr[2]" type="text" placeholder="请输入申请单号" class="search-input">
+      <!--<input v-model="arr[0]" type="text" placeholder="请输入订单号" class="search-input">-->
     </p>
 
-    <ul class="service-ul" v-if="this.list.length !== 0">
+    <ul class="service-ul">
       <li v-for="(item, index) in list" :key="index">
         <p class="list-title">
           售后类型：
           <span>{{ item.astype | asTypeFormat }}</span>申请单号：
           <span>{{ item.asno }}</span>申请时间：
-          <span>{{ item.apdata + item.aptime}}</span>
+          <span>{{ item.apdata}} {{item.aptime}}</span>
         </p>
         <div class="service-box">
           <div class="pic-box">
@@ -106,11 +107,14 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
+            debugger
           if (result.code === 200) {
             _this.list = result.data
-            _this.fsGeneralMethods.addImages(_this, _this.list, 'pdno', 'spu')
             _this.total = result.total
             _this.currentIndex = result.pageNo
+            _this.fsGeneralMethods.addImages(_this, _this.list, 'pdno', 'spu')
+          } else {
+              _this.$message.error(result.message)
           }
         })
       );
