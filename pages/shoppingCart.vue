@@ -112,7 +112,6 @@
             <p class="title">猜你喜欢</p>
             <div class="carousel">
               <div class="like-box">
-                 
                 <div
                   v-for="(item,index) in likeList"
                   :key="index"
@@ -122,7 +121,7 @@
                   <a-card hoverable class="meal-card">
                     <img v-lazy="item.imgURl" slot="cover">
                     <div slot="cover">
-                      <p class="meal-price">${{item.mp}}</p>
+                      <p class="meal-price">¥{{item.mp}}</p>
                       <p class="meal-name">{{item.prodname}}</p>
                     </div>
                   </a-card>
@@ -166,7 +165,6 @@ export default {
       timeoutflag: null,
       checked: false,
       discount: 100,
-      mealList: [], // 猜你喜欢列表
       cartList: [],
       likeList: []
       // acamt amt: 优惠总金额 checked 0未选中 discount: 商品优惠价（优惠多少） inventory 总库存 limitnum 限购 0 不限购 num 商品数量 pdno :sku
@@ -284,7 +282,7 @@ export default {
       let routeData = this.$router.resolve({
         path: "/product/detail",
         query: {
-          sku: item.pdno,
+          sku: item.sku || item.pdno,
           spu: item.spu
         }
       });
@@ -702,6 +700,7 @@ li {
   margin-top: 10px;
   text-align: left;
   text-indent: 20px;
+  padding-right: 20px;
   overflow: hidden;
   text-overflow:ellipsis;
   white-space: nowrap;

@@ -190,6 +190,7 @@ export default {
       receiverList: [],
       consignee: '',
       contact: '',
+      shipid: 0,
       selectCounpon: {
         acvalue: 0, // 活动优惠
         cpvalue: 0, // 优惠券金额
@@ -239,12 +240,14 @@ export default {
                     if ((_this.receiverList[i].cstatus & 2) > 0) {
                         _this.consignee = _this.receiverList[i].contactname
                         _this.contact = _this.receiverList[i].contactphone
+                        _this.shipid = _this.receiverList[i].shipid
                         number ++;
                     }
                 }
                 if (number === 0) {
                     _this.consignee = _this.receiverList[0].contactname
                     _this.contact = _this.receiverList[0].contactphone
+                    _this.shipid = _this.receiverList[0].shipid
                 }
               } else {
                 _this.visible = true
@@ -316,7 +319,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              debugger
               _this.selectCounpon = result.data
             }
           }
@@ -393,7 +395,7 @@ export default {
             compid: _this.storeInfo.comp.storeId,
             contactname: values.contactname,
             contactphone: values.contactphone,
-            shipid: 0
+            shipid: _this.shipid
           })
           iRequest.param.token = localStorage.getItem("identification")
           this.$refcallback(
@@ -415,11 +417,13 @@ export default {
       });
     },
     editorAddress() {
-      this.form.setFieldsValue({
-        contactname: this.consignee,
-        contactphone: this.contact
-      });
       this.visible = true
+      setTimeout(() => {
+        this.form.setFieldsValue({
+          contactname: this.consignee,
+          contactphone: this.contact
+        });
+      },500)
     },
     validatePhone(rule, value, callback) {
       let _this = this;

@@ -168,7 +168,7 @@ export default {
           function result(result) {
             if(result.code === 200) {
               _this.$store
-                .dispatch("setUserStatus", { context: _this })
+                .dispatch("setUserStatus", { context: _this, status: result.data })
                 .then(res => {
                   _this.getBasicInfo()
                 })

@@ -145,7 +145,7 @@
         </div>
       </div>
     </a-modal>
-    
+
     <a-modal title="物流信息" v-model="isLogistics" okText="确定"  cancelText="取消" @ok="isLogistics = false">
       <div v-if="isLogistics">
         <a-steps direction="vertical" size="small" :current="logistixs.node.length -1 ">
@@ -279,18 +279,21 @@ export default {
       );
     },
     // 重新购买
-    reOrder() {
+    reOrder(item) {
       let _this = this;
       let iRequest = new inf.IRequest();
-      iRequest.cls = "OrderInfoModule";
+      iRequest.cls = "ShoppingCartModule";
       iRequest.method = "againShopCart";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.comp.storeId,
-        pdno: this.prodDetail.sku,
-        pnum: this.inventory,
-        checked: 0
-      });
+      let arr = item.goods.map((value) => {
+        return {
+          compid: _this.storeInfo.comp.storeId,
+          pdno: value.pdno,
+          pnum: value.pnum,
+          checked: 0
+        }
+      })
+      iRequest.param.json = JSON.stringify(arr);
       this.$refcallback(
         this,
         "orderServer" +
@@ -298,7 +301,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-
+            _this.$message.success('购物车添加成功')
           }
         })
       );
@@ -536,7 +539,7 @@ export default {
   }
 }
 .order-box {
-  .container-size(block, 985px, 905px, 0 auto, 0px);
+  .container-size(block, 985px, auto, 0 auto, 0px);
   overflow: auto;
   li {
     .container-size(block, 945px, auto, 0 auto, 0px);

@@ -17,8 +17,8 @@ const actions = {
       commit(types.SET_USER, saveUser(app.$cookies.get(UserKey), app))
     }
   },
-  async setUserStatus(store, { context }) {
-    store.commit(types.SET_LOGIN_STATE, saveUserStatus(true, context))
+  async setUserStatus(store, { context, status }) {
+    store.commit(types.SET_LOGIN_STATE, saveUserStatus(status, context))
   },
   async setUser(store, { context, user } ) {
     store.commit(types.SET_USER, saveUser(user, context))

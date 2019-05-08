@@ -36,6 +36,9 @@
             <p>
               <span>积分</span>{{ countList[1] }}
             </p>
+            <p>
+              <span>余额</span>{{ balamt }}
+            </p>
           </div>
           <div class="order-info">
             <!-- <p class="order-title">订单信息</p> -->
@@ -56,7 +59,7 @@
           <div class="left">
             <a-menu
               :selectedKeys="[selectedKeys]"
-              style="width: 194px;height:1017px;"
+              style="width: 194px;height:500px;"
               mode="vertical"
               @click="handleClick"
             >
@@ -122,12 +125,14 @@ export default {
   data() {
     return {
       countList: [0, 0, 0, 0, 0, 0, 0],
-      gradeNumber: 0
+      gradeNumber: 0,
+      balamt: 0
     };
   },
   mounted() {
     this.countCompInfo()
     this.getMember()
+    this.queryCompAllBal()
   },
   methods: {
     handleClick(e) {
@@ -135,6 +140,27 @@ export default {
         path: e.key
       });
       console.log("click ", e);
+    },
+    queryCompAllBal() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "CouponManageModule";
+      iRequest.method = "queryCompAllBal";
+      iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.comp.storeId
+      });
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "discountServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+          if (result.code === 200) {
+            _this.balamt = result.data.balamt
+          }
+        })
+      );
     },
      /** 统计信息 */
     countCompInfo() {
@@ -157,7 +183,6 @@ export default {
     },
     // 获取会员等级
     getMember() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "MemberModule";
@@ -269,7 +294,7 @@ export default {
   }
   .right {
     width: 985px;
-    height: 1022px;
+    // height: 1022px;
     float: left;
     margin-left: 20px;
     background: white;

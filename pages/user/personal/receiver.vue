@@ -170,8 +170,10 @@ export default {
     },
     updConsignee(record) {
       this.shipid = record.shipid
-      this.form.setFieldsValue(record)
       this.visible = true
+      setTimeout(() => {
+        this.form.setFieldsValue(record)
+      }, 500)
     },
     // 删除
     delConsignee(record) {
@@ -220,6 +222,7 @@ export default {
             contactphone: values.contactphone,
             shipid: this.shipid
           })
+          
           iRequest.param.token = localStorage.getItem("identification")
           this.$refcallback(
             this,

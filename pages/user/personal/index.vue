@@ -135,11 +135,6 @@ export default {
   data() {
     return {
       cascaderData: [],
-      fieldNames: {
-        label: 'arean', 
-        value: 'areac', 
-        children: 'cities' 
-      },
       changePwdForm: {
         oldPwd: "",
         newPwd: "",

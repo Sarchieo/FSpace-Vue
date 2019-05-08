@@ -95,17 +95,10 @@
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName + item.prodname}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
-            <!-- <p class="card-price top165" v-if="item.actprod && userStatus">
-              ￥{{item.minprize }} ~  {{item.maxprize}}
-              <del>￥{{item.vatp}}</del>
-            </p> -->
-            <!-- <p class="card-price top165" v-if="!item.actprod && userStatus">
-              ￥{{item.vatp}}
-            </p> -->
-            <p class="card-price top165">
-              ￥{{item.vatp}}
-            </p>
-             <p class="card-price top165" v-if="!userStatus">
+              <p class="card-price top165" v-if="item.vatp == -1">
+                  ￥{{item.vatp}}
+              </p>
+             <p class="card-price top165" v-else>
                登录后价格可见
             </p>
             <!-- 厂家 -->
@@ -115,7 +108,7 @@
               <span class="sold-count">已售{{item.sales}}{{item.unitName}}</span>
             </p>
             <!-- 按钮 -->
-            <p class="add-card" v-if="userStatus"> 
+            <p class="add-card" v-if="item.vatp != -1">
               <!-- <button>-</button>
               <button>{{count}}</button>
               <button>+</button> -->
