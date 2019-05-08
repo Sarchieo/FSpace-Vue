@@ -73,17 +73,14 @@ export default {
    asTypeFormat(val) {
      let text = ''
      switch(val) {
-       case 0:
+       case 1:
        text = '退款退货'
        break
-       case 1:
+       case 2:
        text = '仅退款'
        break
-       case 2:
-       text = '补开发票'
-       break
        case 3:
-       text = '物流跟踪'
+       text = '补开发票'
        break
      }
     return text;

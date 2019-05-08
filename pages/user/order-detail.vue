@@ -24,8 +24,11 @@
               <p class="pay-success" v-if="item.ostatus === 2">等待收货</p>
               <p class="pay-success" v-if="item.ostatus === 3">已签收</p>
               <p class="pay-success" v-if="item.ostatus === 4">已完成</p>
-              <p class="pay-success" v-if="item.ostatus === -4">已取消</p>
+              <p class="pay-success" v-if="item.ostatus === -4">取消交易</p>
               <p class="pay-success" v-if="item.ostatus === 1">付款成功</p>
+              <p class="pay-success" v-if="item.ostatus === -1">退货曰</p>
+              <p class="pay-success" v-if="item.ostatus === -2">退货中</p>
+              <p class="pay-success" v-if="item.ostatus === -3">已退货</p>
               <!-- 付款按钮和提交订单一起显示 -->
               <p class="pay-btn" v-if="item.ostatus === 0">
                 <button @click="toPay()">付款</button>

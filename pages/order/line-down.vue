@@ -42,7 +42,7 @@
             <span class="circle"></span>请于24小时内汇款并确保汇款金额与订单总金额一致，到账时间为1-3个工作日。
           </p>
           <p class="invo-content">
-            <span class="circle"></span>从下单之日起5天内如果还未付款并到账，系统将自动取消该订单。
+            <!-- <span class="circle"></span>从下单之日起5天内如果还未付款并到账，系统将自动取消该订单。 -->
           </p>
           <p class="invo-content">
             <span class="circle"></span>我们将在收到款项后及时确认收款并安排发货，若款项汇出2天后未帮您收款确认，请及时拨打底部客服热线。
