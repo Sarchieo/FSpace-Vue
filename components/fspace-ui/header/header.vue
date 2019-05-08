@@ -12,7 +12,7 @@
             <a>欢迎来到一块医药</a>
             <span @click="downloadHtml()">桌面快捷方式</span>
             <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
-            <nuxt-link to="/user/register" v-show="!isLogin">注册</nuxt-link>
+            <nuxt-link to="/user/register" v-show="!isLogin">注册有礼</nuxt-link>
             
             <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
           </div>
