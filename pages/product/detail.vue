@@ -82,19 +82,19 @@
 
                 <p class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
-                  <span class="money-count" v-if="userStatus">￥{{ discount.killPrice }}</span>
-                  <span class="money-count" v-else>￥登录后可见</span>
+                  <span class="money-count" v-if="userStatus && storeInfo.comp.authenticationStatus === 256">￥{{ discount.killPrice }}</span>
+                  <span class="money-count" v-else>￥认证后可见</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
                 <!-- <p class="price" v-else-if="rulecode === 1133">
                   <span class="price-title">价格</span>
                   <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
-                  <span class="money-count" v-else>￥登录后可见</span>
+                  <span class="money-count" v-else>￥认证后可见</span>
                 </p> -->
                 <p class="price" v-else>
                   <span class="price-title">价格</span>
-                  <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
-                  <span class="money-count" v-else>￥登录后可见</span>
+                  <span class="money-count"  v-if="userStatus && storeInfo.comp.authenticationStatus === 256">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count" v-else>￥认证后可见</span>
                 </p>
                 <!-- 积分 -->
                 <!-- <p class="price">
@@ -149,8 +149,6 @@
                   <button @click="reduceCount()">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
                   <!-- <a-input-number :min="1" :max="maximum" v-model="inventory" style="width: 70px;padding: 0px;"/> -->
-
-
                   <a-input-number
                     :min="1"
                     :max="maximum"
@@ -158,8 +156,6 @@
                     style="position:relative;top: 1px;left:0px;height: 30px;width: 50px;"
                    
                   />
-
-
                   <!-- <a-input-number :min="1" :max="maximum" v-model="inventory" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;"/> -->
                   <button @click="addCount()">+</button>
                 </p>
@@ -214,8 +210,6 @@
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                   </div>
                 </div>
-              </div>
-              <div v-for="(item, index) in couponPub" :key="index" class="coupon-boxs">
                 <div class="coupon-card" v-if="item.brulecode === 2130" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">
@@ -233,8 +227,6 @@
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                   </div>
                 </div>
-              </div>
-              <div class="coupon-boxs" v-for="(item, index) in couponPub" :key="index">
                 <div class="coupon-card" v-if="item.brulecode === 2110" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">
@@ -253,6 +245,43 @@
                   </div>
                 </div>
               </div>
+              <!-- <div v-for="(item, index) in couponPub" :key="index" class="coupon-boxs">
+                <div class="coupon-card" v-if="item.brulecode === 2130" @click="revCoupon(item)">
+                  <div class="coupon-left">
+                    <p class="coupon-type">
+                      {{ item.rulename }}
+                      <span class="term">有效期 {{ item.validday }} 天</span>
+                    </p>
+                    <span class="ladder" v-for="(j, i) in item.ladderVOS" :key="i">
+                      满
+                      <span>{{ j.ladamt }}</span> 打
+                      <span>{{ j.offer/10}}</span> 折
+                    </span>
+                  </div>
+
+                  <div class="coupon-right">
+                    <img class="state-pic" src="../../assets/img/receive.png" alt>
+                  </div>
+                </div>
+              </div> -->
+              <!-- <div class="coupon-boxs" v-for="(item, index) in couponPub" :key="index">
+                <div class="coupon-card" v-if="item.brulecode === 2110" @click="revCoupon(item)">
+                  <div class="coupon-left">
+                    <p class="coupon-type">
+                      {{ item.rulename }}
+                      <span class="term">有效期 {{ item.validday }} 天</span>
+                    </p>
+                    <span v-for="(j, i) in item.ladderVOS" :key="i" class="ladder">
+                      满
+                      <span>{{ j.ladamt }}</span> 减
+                      <span>{{ j.offer}}</span>
+                    </span>
+                  </div>
+                  <div class="coupon-right">
+                    <img class="state-pic" src="../../assets/img/receive.png" alt>
+                  </div>
+                </div>
+              </div> -->
             </div>
           </div>
           <!-- 一块购 -->
@@ -404,7 +433,7 @@ export default {
   // middleware: "authenticated",
   data() {
     return {
-        compEval: 4.7,
+      compEval: 4.7,
       shareURl: '',
       appriseArr: [], //评价列表
       evaluateVal: 0, // 药店评价商品的分数
@@ -598,6 +627,11 @@ export default {
         })
         return
       }
+      if (this.storeInfo.comp.authenticationStatus !== 256) {
+        this.$message.error('购物车添加失败, 当前企业未进行认证审核')
+        return
+      }
+      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -648,6 +682,10 @@ export default {
       );
     },
     attendSecKill() {
+      if (this.storeInfo.comp.authenticationStatus !== 256) {
+        this.$message.error('下单失败, 当前企业未进行认证审核')
+        return
+      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "SecKillModule";
@@ -700,7 +738,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.$message.success(result.message);
               _this.queryCouponPub();
             }
           }
@@ -716,9 +753,7 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
         gcode: _this.sku, // sku
-        compid: _this.storeInfo.comp.storeId, // 企业id
-        pageSize: 5,
-        pageNo: 1
+        compid: _this.storeInfo.comp.storeId // 企业id
       });
       this.$refcallback(
         this,
@@ -726,6 +761,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
+            
             if (result.code === 200) {
               _this.couponPub = result.data;
             }
@@ -750,6 +786,7 @@ export default {
           function result(result) {
           if (result.code === 200) {
             if (result.data) {
+              
               _this.discount = result.data;
               // 设置倒计时
               _this.secondKill(
@@ -803,6 +840,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            
             if (result.data) {
               _this.prodDetail = result.data;
               if(_this.userStatus) {
@@ -919,6 +957,11 @@ export default {
         })
         return
       }
+      if (this.storeInfo.comp.authenticationStatus !== 256) {
+        this.$message.error('下单失败, 当前企业未进行认证审核')
+        return
+      }
+      
       this.loading = true;
       let _this = this;
       let iRequest = new inf.IRequest();

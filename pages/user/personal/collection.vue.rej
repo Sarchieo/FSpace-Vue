@@ -3,7 +3,7 @@ diff a/pages/user/personal/collection.vue b/pages/user/personal/collection.vue	(
      },
         // åŠ å…¥é‡‡è´­å•
      addCart(item) {
-+      debugger
++      
        let _this = this;
        let iRequest = new inf.IRequest();
        iRequest.cls = "ShoppingCartModule";

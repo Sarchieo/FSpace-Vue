@@ -16,8 +16,8 @@
                   <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
                   <p class="goods-surplus">{{item.manuName}}</p>
                   <p class="goods-limit">还剩<span>{{item.store}}</span>盒</p>
-                  <p class="goods-price" v-if="userStatus">单价￥{{item.mp}}元 </p>
-                  <p class="goods-price" v-else>￥登录后可见 </p>
+                  <p class="goods-price" v-if="item.vatp != -1">单价￥{{item.vatp}}元 </p>
+                  <p class="goods-price" v-else>￥认证后可见 </p>
                   <button @click="toDetail(item)">查看详情</button>
                 </a-card>
               </div>

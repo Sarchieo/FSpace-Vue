@@ -21,12 +21,12 @@
             <!-- 我的消息 -->
             <!-- <header-notice/> -->
             <!-- 签到有礼 -->
-            <a class="sign" @click="toIntegral()">
+            <a v-if="isLogin" class="sign" @click="toIntegral()">
               签到有礼
               <!-- <span class="sign"></span> -->
             </a>
-            <a @click="toMyOrder()">我的订单</a>
-            <a-dropdown>
+            <a v-if="isLogin" @click="toMyOrder()">我的订单</a>
+            <a-dropdown v-if="isLogin">
               <a class="ant-dropdown-link" href="#">
                 我的医药
                 <a-icon type="down"/>
@@ -207,6 +207,7 @@ export default {
   },
   mounted() {
     this.init();
+    this.checkStoreLoginStatus()
     window.addEventListener("scroll", this.handleScroll);
     if (this.isLogin) {
       this.getShoppingCartList();
@@ -220,15 +221,33 @@ export default {
       }
     },
     downloadHtml(){               
-      let html = this.getHtmlContent();
-      debugger
-      console.log('s stream',s);
-            
+      location.href = "http://114.116.155.221:8000/一块医药.url";
     },
-    getHtmlContent(){
-        //获取html另外一种方式：this.$el.outerHTML
-        const template = this.$el.outerHTML
-        return template;
+    // 获取楼层显示状态
+    async checkStoreLoginStatus() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "checkStoreLoginStatus";
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification")|| "";
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$store
+              .dispatch("setUserStatus", { context: _this, status: result.data })
+              .then(res => {
+                
+              })
+              .catch(err => {
+                console.log(err);
+            });
+          }
+        })
+      );
     },
     handleLogoutOk(e) {
       this.confirmLoading = true;

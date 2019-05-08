@@ -69,8 +69,8 @@
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期至{{item.vaildedate}}</p>
 
-                  <p class="elaborate-price" v-if="userStatus">￥{{item.vatp}}</p>
-                  <p class="elaborate-price" v-else>￥登录后可见</p>
+                  <p class="elaborate-price" v-if="item.vatp != -1">￥{{item.vatp}}</p>
+                  <p class="elaborate-price" v-else>￥认证后可见</p>
                   <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
                   <p></p>
@@ -94,8 +94,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="userStatus">￥{{item.vatp}}</p>
-                    <p class="card-price top165" v-else>￥登录后可见</p>
+                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}}</p>
+                    <p class="card-price top165" v-else>￥认证后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -119,8 +119,8 @@
                   <a-card hoverable class="onek-card" @click="toDetail(item, secondList.actcode, 2)">
                     <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                     <div class="onek-box" slot="cover">
-                      <p class="onek-price" v-if="userStatus">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
-                      <p class="onek-price" v-else>￥登录后可见</p>
+                      <p class="onek-price" v-if="item.vatp != -1">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-else>￥认证后可见</p>
                       <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
                       <!-- <p class="goods-success">{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p> -->
@@ -179,8 +179,8 @@
                   <a-card hoverable class="onek-card" @click="toDetail(item, teamBuyList.actcode, 2)">
                     <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                     <div class="onek-box" slot="cover">
-                      <p class="onek-price" v-if="userStatus">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
-                      <p class="onek-price" v-else>￥登录后可见</p>
+                      <p class="onek-price" v-if="item.vatp != -1">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-else>￥认证后可见</p>
                       <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
                       <p class="goods-success">{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p>
@@ -213,8 +213,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="userStatus">￥{{item.vatp}} </p>
-                     <p class="card-price top165" v-else>￥登录后可见 </p>
+                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}} </p>
+                     <p class="card-price top165" v-else>￥认证后可见 </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -238,8 +238,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="userStatus">￥{{item.vatp}}</p>
-                    <p class="card-price top165" v-else>￥登录后可见</p>
+                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}}</p>
+                    <p class="card-price top165" v-else>￥认证后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -290,8 +290,8 @@
                   <p class="elaborate-specifications">{{item.spec}}</p>
                   <p class="elaborate-manufacturer">{{item.manuName}}</p>
                   <p class="elaborate-validity">有效期至{{item.vaildedate}}</p>
-                  <p class="elaborate-price" v-if="userStatus">￥{{item.vatp}}</p>
-                  <p class="elaborate-price" v-else>￥登录后可见</p>
+                  <p class="elaborate-price" v-if="item.vatp != -1">￥{{item.vatp}}</p>
+                  <p class="elaborate-price" v-else>￥认证后可见</p>
                   <p class="elaborate-sold">已售{{item.sales}}{{item.unitName}}</p>
                   <a-card-meta></a-card-meta>
                   <p></p>
@@ -313,8 +313,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="userStatus">￥{{item.vatp}} </p>
-                    <p class="card-price top165" else>￥登录后可见 </p>
+                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}} </p>
+                    <p class="card-price top165" else>￥认证后可见 </p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -364,12 +364,12 @@
 
                     <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
                     <div class="goods-info">
-                      <p class="card-prices" v-if="userStatus">
+                      <p class="card-prices" v-if="item.vatp != -1">
                         ￥{{items.actprize}}
                         <del>￥{{items.mp}}</del>
                       </p>
                         <p class="card-prices" v-else>
-                        ￥登录后可见
+                        ￥认证后可见
                       </p>
                       <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
                     </div>
@@ -460,7 +460,6 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
-    this.checkStoreLoginStatus();
   },
   methods: {
     handleScroll() {
@@ -468,27 +467,6 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-    },
-    // 获取楼层显示状态
-    async checkStoreLoginStatus() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "checkStoreLoginStatus";
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification")|| "";
-      this.$refcallback(
-        this,
-        "userServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            // _this.$store.
-          }else {
-
-          }
-        })
-      );
     },
     // 获取楼层显示状态
     async getMallFloorProd() {

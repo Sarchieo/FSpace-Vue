@@ -24,12 +24,12 @@
                   {{item.startnum}}{{item.unitName}}起拼/
                   <span>{{item.surplusstock}}</span>{{item.unitName}}成团
                 </p> -->
-                <p class="goods-price" v-if="userStatus">
+                <p class="goods-price" v-if="item.vatp != -1">
                   限时价￥{{item.actprize}}元
                   <del>￥{{item.mp}}元</del>
                 </p>
                 <p class="goods-price" v-else>
-                  ￥登录后可见
+                  ￥认证后可见
                 </p>
                 <p class="go-imme">
                    <span class="sur-time">还剩</span>
