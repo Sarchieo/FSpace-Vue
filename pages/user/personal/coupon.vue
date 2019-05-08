@@ -6,8 +6,10 @@
           <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
             <div class="discount" v-if="item.brulecode === 2110">
               <p class="discount-count">{{ item.rulename }}</p>
-              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
-              <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
+            <!-- ctype=== 3 为兑换券 -->
+              <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i"><span v-if="item.ctype !== 3">满 </span>
+                <span v-if="item.ctype !== 3">{{ j.ladamt }}</span> <span v-if="item.ctype !== 3">减</span> <span>{{ j.offer}}</span> </p>
+              <p class="validity" v-if="item.ctype !== 3">有效期:{{item.startdate}}至{{item.enddate}}</p>
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
             </div>
             <div class="discount" v-if="item.brulecode === 2120">
@@ -142,6 +144,7 @@ export default {
   methods: {
     // 获取我的优惠券
     queryRevCouponList(ctype) {
+      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";
@@ -179,7 +182,6 @@ export default {
     },
      // 获取待领取优惠券
     queryCouponPub() {
-      
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";

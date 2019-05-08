@@ -117,7 +117,8 @@ export default {
   color: rgb(255, 0, 54);
 }
 .sider-menu {
-  width: 196px;
+  float: left;
+  width: 175px;
   height: 435px;
   padding-top: 15px !important;
   padding-bottom: 15px !important;
@@ -126,7 +127,7 @@ export default {
 }
 .sider-menu-li {
   position: relative;
-  width: 196px;
+  width: 175px;
   height: 58px;
   box-sizing: border-box;
   line-height: 58px;
@@ -135,6 +136,9 @@ export default {
 .sider-menu-li:hover {
   background: rgb(255, 0, 54);
   color: #f2f2f2;
+}
+.sider-menu-li:hover i{
+  color: #ffffff;
 }
 .sider-menu-li i {
   float: right;
@@ -145,8 +149,8 @@ export default {
 .hover-show {
   position: absolute;
   top: 0px;
-  left: 197px;
-  width: 970px !important;
+  left: 175px;
+  width: 1015px !important;
   height: 435px !important;
   padding-top:20px;
   background: #ffffff;

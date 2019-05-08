@@ -26,34 +26,54 @@
               </div>
               <div>
                 <img
-                  v-lazy="'//m.360buyimg.com/babel/jfs/t1/26491/29/9870/42039/5c820018E6ac9f854/55c42a68a489cd18.jpg'"
+                  src="../assets/banner/hunan.jpg"
                   class="banner-pic"
                 >
               </div>
               <div>
                 <img
-                  v-lazy="'//img30.360buyimg.com/img/jfs/t15169/46/1365117661/178502/d02d6948/5a4ddc4eNbd55867a.jpg'"
+                  src="../assets/banner/integral.jpg"
                   class="banner-pic"
                 >
               </div>
               <div>
                 <img
-                  v-lazy="'//img30.360buyimg.com/img/jfs/t16327/24/1234872079/191114/a510775d/5a4ddbc6N2d73dd08.jpg'"
+                   src="../assets/banner/newperson.jpg"
                   class="banner-pic"
                 >
               </div>
               <div>
                 <img
-                  v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'"
+                  src="../assets/banner/register.jpg"
                   class="banner-pic"
                 >
               </div>
             </a-carousel>
           </div>
+          <div class="notice-box">
+            <p class="every-day">每日签到领积分</p>
+            <a-button class="sign-btn">签到</a-button>
+            <div class="line">
+            </div>
+            <img src=""/>
+            <div class="notice-content">
+              <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
+              <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
+              <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
+              <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
+              <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
+            </div>
+          </div>
         </div>
-
+        <div class="pic-link">
+          <img src="../assets/img/coupon.png" alt="">
+          <img src="../assets/img/sign.png" alt="">
+          <img src="../assets/img/brand.png" alt="">
+          <img src="../assets/img/type.png" alt="">
+        </div>
         <div v-for="(item,index) in list" :key="index" style="height: auto;">
           <!-- 新品专区 -->
+           <!-- v-if="item.unqid === 1 && newGoodsList.length > 4" -->
           <div :ref="item.unqid" class="elaborate" v-if="item.unqid === 1 && newGoodsList.length > 4">
             <p class="elaborate-title">新品专区
                <a href="javascript:;" @click="toNewGoods()">
@@ -79,6 +99,7 @@
             </ul>
           </div>
            <!-- 热销专区 -->
+           <!-- v-if="item.unqid === 2 && hotGoodsList.length > 9" -->
           <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 2 && hotGoodsList.length > 9">
             <p class="brand-hall-title">
               热销专区
@@ -87,7 +108,7 @@
             </p>
             <div class="brand-div">
               <ul class="brand-right hot-width height-auto">
-                <li v-for="(item,index) in hotGoodsList" :key="index">
+                <li v-for="(item,index) in hotGoodsList" :key="index" class="margin-bottom10">
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
@@ -106,6 +127,7 @@
             </div>
           </div>
           <!-- 秒杀专区 -->
+           <!-- v-if="item.unqid === 4 && secondList.length > 4" -->
           <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 4 && secondList.length > 4">
             <div class="brand-hall-title height80">
               秒杀专区
@@ -140,6 +162,7 @@
             </div>
           </div>
            <!-- 一块购 -->
+            <!-- v-if="item.unqid === 8 && teamBuyList.length > 4" -->
           <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 8 && teamBuyList.length > 4">
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
@@ -200,6 +223,7 @@
             </div>
           </div>
           <!-- 包邮专区 -->
+          <!-- v-if="item.unqid === 16 && postList.length > 4" -->
           <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 16 && postList.length > 4">
             <p class="brand-hall-title">
               包邮专区
@@ -207,7 +231,7 @@
               </a> -->
             </p>
             <div class="brand-div">
-              <ul class="brand-right hot-width">
+              <ul class="brand-right height-auto hot-width">
                 <li v-for="(item,index) in postList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
@@ -225,6 +249,7 @@
             </div>
           </div>
            <!-- 新人专享 -->
+            <!-- v-if="item.unqid === 32 && newPersonList.length > 4" -->
           <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 32 && newPersonList.length > 4">
             <p class="brand-hall-title">
               新人专享
@@ -232,7 +257,7 @@
               </a>
             </p>
             <div class="brand-div">
-              <ul class="brand-right hot-width">
+              <ul class="brand-right height-auto hot-width">
                 <li v-for="(item,index) in newPersonList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
@@ -277,6 +302,7 @@
             </div>
           </div>   -->
            <!-- 为你精选 -->
+            <!-- v-if="item.unqid === 128 && selectedList.length > 5" -->
           <div :ref="item.unqid" class="elaborate" v-if="item.unqid === 128 && selectedList.length > 5">
             <p class="elaborate-title">为你精选
                <a href="javascript:;" @click="toSelected()">
@@ -301,6 +327,7 @@
             </ul>
           </div>
            <!-- 品牌专区 -->
+            <!-- v-if="item.unqid === 256 && brandList.length > 4" -->
           <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 256 && brandList.length > 4">
             <p class="brand-hall-title">
               品牌专区
@@ -308,7 +335,7 @@
               </a>
             </p>
             <div class="brand-div">
-              <ul class="brand-right hot-width">
+              <ul class="brand-right height-auto hot-width">
                 <li v-for="(item,index) in brandList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
@@ -325,6 +352,7 @@
             </div>
           </div>
           <!-- 限时抢购 -->
+          <!-- v-if="item.unqid === 512 && limitedList.length > 3" -->
           <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 512 && limitedList.length > 3">
             <p class="brand-hall-title">
              限时折扣
@@ -348,7 +376,7 @@
                   <a-icon type="right"/>
                 </button>
               </div>
-              <ul class="brand-right">
+              <ul class="brand-right height-auto">
                 <li v-for="(items,index) in limitedList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(items, limitedList.actcode, 1)">
                     <img class="card-img" v-lazy="items.imgURl" slot="cover">
@@ -995,6 +1023,15 @@ li {
   margin: 0;
   padding: 0;
 }
+.more:hover{
+  cursor: pointer;
+}
+.float-left{
+  float: left;
+}
+.float-right{
+  float: right;
+}
 .greenColor {
   color: #10b68c !important;
 }
@@ -1033,6 +1070,17 @@ li {
 }
 .active a {
   color: #ffffff !important;
+}
+// 广告下方的图片
+.pic-link{
+  .container-size(block, 1210px, 165px, 0 auto, 0px);
+}
+.pic-link img{
+  width: 298.5px;
+  height: 162px;
+}
+.pic-link img:hover{
+  cursor: pointer;
 }
 /* 限时抢购 */
 .card {
@@ -1469,12 +1517,13 @@ li {
   color: #fff;
 }
 .banner-pic {
-  width: 995px;
+  width: 765px;
   height: 435px;
 }
 .binnar-box {
-  .container-size(inline-block, 995px, 435px, 0, 0px);
-  .position(absolute, 0px, 197px);
+  float: left;
+  .container-size(inline-block, 765px, 435px, 0, 0px);
+  // .position(absolute, 0px, 197px);
 }
 .binnar-pic {
   width: 750px;
@@ -1482,6 +1531,47 @@ li {
   /* background: orchid; */
   line-height: 321px;
   text-align: center;
+}
+.notice-box{
+  float: right;
+  width: 250px;
+  height: 435px;
+  .every-day{
+    .p-size(40px, 40px, 14px, left, 20px, #333333);
+  }
+  .sign-btn{
+    .button-display(block,0 auto);
+    .button-size(229px,37px,37px,14px,0px,5px);
+    .button-color(1px solid transparent,#FF0036,#ffffff);
+  }
+  .line{
+    .container-size(block, 229px, 10px, 0 auto, 0px);
+    border-bottom: 1px solid #e0e0e0;
+  }
+  img{
+    display: block;
+    width: 230px;
+    height: 155px;
+    margin: 0 auto;
+    border: 1px solid deeppink;
+  }
+  .notice-content{
+    .container-size(block, 230px, 193px, 0 auto, 0px);
+    .title{
+      width: 230px;
+      .p-size(40px, 40px, 14px, left, 20px, #333333);
+      border-bottom: 1px solid #e0e0e0;
+      .more{
+        color: #999999!important;
+      }
+    }
+    .notice-text{
+      .p-size(35px, 35px, 14px, left, 5px, #333333);
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+    }
+  }
 }
 .to-top {
   height: 0px;
@@ -1593,7 +1683,7 @@ li {
 .sider-meun {
   position: fixed;
   top: 300px;
-  right: 10px;
+  left: 10px;
   background: #f2f2f2;
 }
 
@@ -1665,5 +1755,8 @@ li {
   a {
     color: #ffffff !important;
   }
+}
+.margin-bottom10{
+  margin-bottom: 10px;
 }
 </style>

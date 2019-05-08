@@ -21,7 +21,7 @@
                   <a-icon type="star"/>
                 </span>
                 <img v-lazy="item.imgURl" alt class="goods-pic">
-                <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
+                <p class="validity">有效期{{item.vaildsdate}}至{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
@@ -259,6 +259,9 @@ export default {
   width: 100%;
   padding: 0 10px;
   background: #e0e0e0;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .package {
   .position(absolute, 278px, 0px);
