@@ -95,14 +95,10 @@
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName + item.prodname}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
-            <p class="card-price top165" v-if="item.actprod && item.vatp != -1">
-              ￥{{item.minprize }} ~  {{item.maxprize}}
-              <del>￥{{item.vatp}}</del>
-            </p>
-            <p class="card-price top165" v-if="!item.actprod && item.vatp != -1">
-              ￥{{item.vatp}}
-            </p>
-             <p class="card-price top165" v-if="item.vatp == -1">
+              <p class="card-price top165" v-if="item.vatp == -1">
+                  ￥{{item.vatp}}
+              </p>
+             <p class="card-price top165" else>
                登录后价格可见
             </p>
             <!-- 厂家 -->
@@ -112,7 +108,7 @@
               <span class="sold-count">已售{{item.sales}}{{item.unitName}}</span>
             </p>
             <!-- 按钮 -->
-            <p class="add-card" v-if="item.vatp != -1"> 
+            <p class="add-card" v-if="item.vatp != -1">
               <!-- <button>-</button>
               <button>{{count}}</button>
               <button>+</button> -->
@@ -657,7 +653,7 @@ li {
   top: 210px;
 }
 .surplus {
-  .position(absolute, 197px, 0px);
+  .position(absolute, 210px, 0px);
   width: 225px;
   text-align: left;
   text-indent: 20px;
@@ -687,7 +683,7 @@ li {
   text-align: center;
 }
 .card-price {
-  .position(absolute, 172px, 0px);
+  .position(absolute, 180px, 0px);
   width: 225px;
   text-align: left;
   text-indent: 17px;

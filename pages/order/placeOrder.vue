@@ -99,12 +99,12 @@
             </div>
           </div>
           <div class="pay" v-if="cartList.length > 0">
-            <p>商品合计：￥{{ selectCounpon.tprice }}</p>
-            <p>运费：￥ {{  cartList[0].freight }}</p>
-            <p>优惠：￥ {{ selectCounpon.tdiscount  }}</p>
-            <p>余额： ￥ {{ selectCounpon.debal  }}</p>
+            <p> <span class="price-span">￥{{ selectCounpon.tprice }}</span><span class="title">商品合计：</span></p>
+            <p><span class="price-span">￥ {{  cartList[0].freight }}</span><span class="title">运费：</span></p>
+            <p><span class="price-span">￥ {{ selectCounpon.tdiscount  }}</span><span class="title">优惠：</span></p>
+            <p><span class="price-span"> ￥ {{ selectCounpon.debal  }}</span><span class="title">余额：</span></p>
             <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
-            <p class="price">应付金额：￥ {{ selectCounpon.acpay }}</p>
+            <p class="price"> <span class="price-span">￥ {{ selectCounpon.acpay }}</span><span class="title">应付金额：</span></p>
 
             <a-button class="pay-btn" @click="toPay()">去付款</a-button>
           </div>
@@ -597,7 +597,7 @@ li {
   font-weight: bold;
 }
 .go-pay {
-  .container-size(block, 1190px, 530px, 0 auto 80px auto, 0);
+  .container-size(block, 1190px, auto, 0 auto 80px auto, 0);
   border: 1px solid #e0e0e0;
 }
 .invoice {
@@ -644,8 +644,21 @@ li {
   float: right;
   .container-size(block, 595px, 310px, 0, 0);
 }
+
 .pay p {
-  .p-size(50px, 50px, 16px, left, 195px, #666666);
+  .p-size(40px, 40px, 16px, right, 0px, #666666);
+  padding-right: 45px;
+  .title{
+    float: right;
+    width: 100px;
+    height: 40px;
+    text-align: right!important;
+  }
+  .price-span{
+    float: right;
+    width: 150px;
+    height: 40px;
+  }
 }
 .pay .price {
   font-size: 20px !important;
@@ -653,7 +666,9 @@ li {
   color: #ed2f26 !important;
 }
 .pay-btn {
-  .button-display(block, 20px auto 0 auto);
+  float: right;
+  margin-right: 40px;
+  margin-top: 40px;
   .button-color(1px solid transparent, #ed2f26, #ffffff);
   .button-size(200px, 50px, 50px, 18px, 0, 5px);
 }

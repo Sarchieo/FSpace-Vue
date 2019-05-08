@@ -7,7 +7,7 @@
      </div>
     <ul class="news-list-ul" v-if="this.informationList.length !== 0 ">
       <li v-for="(item,index) in informationList" :key="index">
-        <img src="../../../assets/img/u49.png" alt class="news-pic">
+        <img src="../../../assets/img/touxiang.png" alt class="news-pic">
         <div class="text-box">
           <p class="send-time">发送时间：{{item.time}}</p>
           <p class="news-text">{{item.msg}}</p>
@@ -86,7 +86,9 @@ export default {
 
 }
 .news-pic {
-  .container-size(inline-block, 140px, 62px, 0, 0px);
+  .container-size(inline-block, 80px, 80px, 0, 0px);
+  border: 1px solid transparent;
+  border-radius: 50%;
 }
 .text-box {
   .container-size(inline-block, 740px, auto, 0, 0px);
@@ -99,6 +101,21 @@ export default {
 .news-text {
     font-size: 16px;
     color: #666666;
+}
+.ant-pagination{
+  text-align: center;
+  margin-top: 10px;
+}
+.no-data{
+  width: 985px;
+  height: 400px;
+  margin-top: 200px;
+  p{
+    .p-size(60px,60px,20px,center,0px,#666666);
+    i{
+      font-size: 40px!important;
+    }
+  }
 }
 </style>
 

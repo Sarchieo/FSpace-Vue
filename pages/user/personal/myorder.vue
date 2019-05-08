@@ -86,8 +86,22 @@
           <p class="detail" @click="toDetails(item)">订单详情</p>
           <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
           <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
-          <!-- <p @click="reOrder(item)" class="align">再次购买</p> -->
-          <p @click="toSuppInvo(item)" class="supplement" v-if="item.ostatus == 3">补开发票</p>
+           <!-- v-if="item.ostatus == 3" -->
+          <p @click="toSuppInvo(item)" class="supplement">补开发票</p>
+          <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
+            <p>订单取消成功后将无法恢复</p>
+            <p>优惠券不再返还，支付优惠也将一并取消</p>
+            <div>
+              <a-radio-group defaultValue="a" size="large">
+                <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
+                <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
+                <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
+                <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
+                <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
+                <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
+              </a-radio-group>
+            </div>
+          </a-modal>
         </div>
         <div style="clear: both;"></div>
       </li>
@@ -131,20 +145,7 @@
         </div>
       </div>
     </a-modal>
-    <a-modal title="提示" v-model="visible" @ok="cancelOrder(item)" okText="提交" cancelText="再想想">
-      <p>订单取消成功后将无法恢复</p>
-      <p>优惠券不再返还，支付优惠也将一并取消</p>
-      <div>
-        <a-radio-group defaultValue="a" size="large">
-          <a-radio-button value="a" class="cancel-reason" defaultValue>订单不能按预计时间送达</a-radio-button>
-          <a-radio-button value="b" class="cancel-reason">操作有误(药品选错)</a-radio-button>
-          <a-radio-button value="c" class="cancel-reason">重复下单/误下单</a-radio-button>
-          <a-radio-button value="d" class="cancel-reason">其它渠道价格更低</a-radio-button>
-          <a-radio-button value="e" class="cancel-reason">该商品降价了</a-radio-button>
-          <a-radio-button value="f" class="cancel-reason">不想买了</a-radio-button>
-        </a-radio-group>
-      </div>
-    </a-modal>
+
     <a-modal title="物流信息" v-model="isLogistics" okText="确定"  cancelText="取消" @ok="isLogistics = false">
       <div v-if="isLogistics">
         <a-steps direction="vertical" size="small" :current="logistixs.node.length -1 ">

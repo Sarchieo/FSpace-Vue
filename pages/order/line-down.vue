@@ -36,7 +36,7 @@
             <span class="text">转账说明</span>
           </p>
           <p class="invo-content">
-            <span class="circle"></span>请您在汇款时备注药帮忙订单编号，这将会很大程度上缩短我们的核款时间并能尽快为您安排发货。
+            <span class="circle"></span>请您在汇款时备注一块医药订单编号，这将会很大程度上缩短我们的核款时间并能尽快为您安排发货。
           </p>
           <p class="invo-content">
             <span class="circle"></span>请于24小时内汇款并确保汇款金额与订单总金额一致，到账时间为1-3个工作日。

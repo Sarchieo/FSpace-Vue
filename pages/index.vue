@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <div v-for="(item,index) in list" :key="index">
+        <div v-for="(item,index) in list" :key="index" style="height: auto;">
           <!-- 新品专区 -->
           <div :ref="item.unqid" class="elaborate" v-if="item.unqid === 1 && newGoodsList.length > 4">
             <p class="elaborate-title">新品专区
@@ -79,14 +79,14 @@
             </ul>
           </div>
            <!-- 热销专区 -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 2 && hotGoodsList.length > 4">
+          <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 2 && hotGoodsList.length > 9">
             <p class="brand-hall-title">
               热销专区
               <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
-              <ul class="brand-right hot-width">
+              <ul class="brand-right hot-width height-auto">
                 <li v-for="(item,index) in hotGoodsList" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
                     <!-- <img class="top" src="../assets/img/top2.png" slot="cover"> -->
@@ -102,6 +102,7 @@
                   </a-card>
                 </li>
               </ul>
+              <div style="clear:both"></div>
             </div>
           </div>
           <!-- 秒杀专区 -->
@@ -793,7 +794,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.hotGoodsList = result.data.slice(0, 5);
+            _this.hotGoodsList = result.data.slice(0, 10);
             _this.hotGoodsID = result.data.actcode
             _this.hotGoodsList.forEach((item,index) => {
                item.top = '/_nuxt/assets/img/top' + (index+1) + '.png'
@@ -1023,7 +1024,7 @@ li {
   margin: 0;
 }
 .height-auto{
-  min-height: 360px;
+  // min-height: 360px;
   height: auto!important;
 }
 .active {
@@ -1360,7 +1361,7 @@ li {
   color: #000000;
 }
 .brand-div {
-  .container-size(block, 1202px, 310px, 0 auto, 0px);
+  .container-size(block, 1202px, auto, 0 auto, 0px);
   background: #f2f2f2;
 }
 .brand-left {
@@ -1412,7 +1413,7 @@ li {
 .brand-right {
   float: left;
   width: 970px;
-  height: 310px;
+  height: 360px;
   background: #f2f2f2;
   li {
     display: inline-block;
