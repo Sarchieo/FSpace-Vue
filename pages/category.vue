@@ -98,7 +98,7 @@
               <p class="card-price top165" v-if="item.vatp == -1">
                   ￥{{item.vatp}}
               </p>
-             <p class="card-price top165" else>
+             <p class="card-price top165" v-else>
                登录后价格可见
             </p>
             <!-- 厂家 -->
