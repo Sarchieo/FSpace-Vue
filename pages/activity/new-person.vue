@@ -124,7 +124,6 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
           if (result.code === 200 && result.data) {
             _this.newPersonList = result.data
             _this.newPersonID = result.data.actcode
@@ -260,6 +259,9 @@ export default {
   width: 100%;
   padding: 0 10px;
   background: #e0e0e0;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .package {
   .position(absolute, 278px, 0px);
