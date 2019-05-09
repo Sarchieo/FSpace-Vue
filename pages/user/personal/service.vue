@@ -45,13 +45,14 @@
          <div style="clear: both;"></div>
       </li>
       <a-pagination  v-if="this.list.length !== 0 " @change="onChangePage" :total="total"/>
-    </ul>
-    <div class="no-data" v-if="this.list.length === 0">
+      <div class="no-data" v-if="this.list.length === 0">
       <p class="icon"><a-icon type="exclamation" /></p>
       <p class="text">没有查询到售后记录！</p>
         <!--<p @click="toSuppInvo(item)">补开发票</p>-->
         <!-- <p @click="saleAfter()">申请售后</p> -->
     </div>
+    </ul>
+    
   </div>
 </template>
 <script>
@@ -172,7 +173,7 @@ export default {
   .container-size(block, 945px, auto, 0, 0px);
   min-height: 185px;
   margin-bottom: 20px;
-  border: 1px solid #f8f8f8;
+  border: 1px solid #e0e0e0;
 }
 .service-box {
   .container-size(block, 473px, 140px, 0, 0px);
@@ -180,7 +181,7 @@ export default {
   .pic-box {
     float: left;
     .container-size(inline-block, 472px, 140px, 0, 0px);
-    border-right: 1px solid #f8f8f8;
+    border-right: 1px solid #e0e0e0;
     // border-bottom: 1px solid #f8f8f8;
     .name {
       .container-size(inline-block, 200px, 30px, 0, 0px);
@@ -202,7 +203,7 @@ export default {
 }
 .list-title {
   .p-size(45px, 45px, 14px, left, 20px, #333333);
-  background: #f8f8f8;
+  background: #e0e0e0;
   span {
     margin-right: 50px;
   }
@@ -213,7 +214,7 @@ export default {
   height: 140px;
   line-height: 140px;
   text-align: center;
-  border-right: 1px solid #f8f8f8;
+  border-right: 1px solid #e0e0e0;
   .states {
     .container-size(inline-block, 235px, 30px, 0, 0px);
     // .position(absolute, 55px, 0px);

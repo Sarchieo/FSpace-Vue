@@ -7,7 +7,7 @@
         <div class="goods-nav-box">
           <f-space-menu></f-space-menu>
           <div class="binnar-box">
-            <a-carousel autoplay arrows>
+            <a-carousel autoplay arrows v-if="isCarousel">
               <div
                 slot="prevArrow"
                 slot-scope="props"
@@ -26,7 +26,7 @@
               </div>
               <div>
                 <img
-                  src="../assets/banner/hunan.jpg"
+                  src="../assets/banner/hunan.png"
                   class="banner-pic"
                 >
               </div>
@@ -58,7 +58,7 @@
             <img src=""/>
             <div class="notice-content">
               <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
-              <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
+              <p class="notice-text" v->【通知】端午节优惠多多，欢迎进店采购</p>
               <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
               <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
               <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
@@ -442,6 +442,8 @@ export default {
   },
   data() {
     return {
+      noticeList: [], // 公告列表
+      isCarousel: false,
       percentage: 0,
       teamBuy: {
         h: 0,
@@ -491,6 +493,10 @@ export default {
     this.$nextTick(() => {
       window.addEventListener("scroll", this.handleScroll);
     })
+    this.$nextTick(() => {
+      this.isCarousel = true;
+    });
+    this.getNotice();
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.handleScroll)
@@ -844,6 +850,26 @@ export default {
         })
       );
     },
+    // 获取公告消息列表
+    getNotice() {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "NoticeModule";
+      iRequest.method = "query";
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.noticeList = result.data;
+          }
+        })
+      );
+    },
     stringToDate(str) {
       var tempStrs = str.split(" ");
       var dateStrs = tempStrs[0].split("-");
@@ -1088,7 +1114,7 @@ li {
 }
 .pic-link img{
   width: 298.5px;
-  height: 162px;
+  // height: 162px;
 }
 .pic-link img:hover{
   cursor: pointer;
@@ -1512,7 +1538,7 @@ li {
   color: #fff;
 }
 .goods-nav-box {
-  .container-size(block, 1190px, 435px, 0 auto, 0px);
+  .container-size(block, 1190px, 412px, 0 auto, 0px);
   position: relative;
   background: #ffffff;
   border-top: 1px solid #f8f8f8;
@@ -1528,12 +1554,12 @@ li {
   color: #fff;
 }
 .banner-pic {
-  width: 765px;
-  height: 435px;
+  width: 804px;
+  height: 413px;
 }
 .binnar-box {
   float: left;
-  .container-size(inline-block, 765px, 435px, 0, 0px);
+  .container-size(inline-block, 804px, 412px, 0, 0px);
   // .position(absolute, 0px, 197px);
 }
 .binnar-pic {
@@ -1545,33 +1571,36 @@ li {
 }
 .notice-box{
   float: right;
-  width: 250px;
-  height: 435px;
+  width: 210px;
+  height: 413px;
+  // border: 1px solid #e0e0e0;
   .every-day{
     .p-size(40px, 40px, 14px, left, 20px, #333333);
   }
   .sign-btn{
     .button-display(block,0 auto);
-    .button-size(229px,37px,37px,14px,0px,5px);
+    .button-size(195px,37px,37px,14px,0px,5px);
     .button-color(1px solid transparent,#FF0036,#ffffff);
   }
   .line{
-    .container-size(block, 229px, 10px, 0 auto, 0px);
+    .container-size(block, 195px, 10px, 0 auto, 0px);
     border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
   }
   img{
     display: block;
-    width: 230px;
-    height: 155px;
+    width: 195px;
+    height: 119px;
     margin: 0 auto;
     border: 1px solid deeppink;
   }
   .notice-content{
-    .container-size(block, 230px, 193px, 0 auto, 0px);
+    .container-size(block, 210px, 193px, 0 auto, 0px);
     .title{
-      width: 230px;
+      width: 210px;
       .p-size(40px, 40px, 14px, left, 20px, #333333);
       border-bottom: 1px solid #e0e0e0;
+      padding-right: 20px;
       .more{
         color: #999999!important;
       }
@@ -1694,7 +1723,7 @@ li {
 .sider-meun {
   position: fixed;
   top: 300px;
-  right: 10px;
+  left: 10px;
   background: #f8f8f8;
 }
 

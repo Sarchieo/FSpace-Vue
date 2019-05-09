@@ -6,6 +6,7 @@
     width="1190px"
     v-model="isPrivacy"
     @cancel="handleCancelPrivacy"
+    @ok="handleCancelPrivacy"
   >
     <div class="privacy-box">
       <h2>用户注册及隐私协议</h2>

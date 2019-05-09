@@ -17,7 +17,8 @@
       <span class="width13">单价</span>
       <span class="width13">数量</span>
       <!-- <span class="width11">订单操作</span> -->
-      <span class="width13">交易状态</span>
+      <span class="width13">订单状态</span>
+      <span class="width13">结算状态</span>
       <span class="width13">实付款</span>
       <span class="width13">操作</span>
     </p>
@@ -61,6 +62,9 @@
             </div>
             <div class="state">
               <p class="sucess">{{statusText(item.ostatus)}}</p>
+            </div>
+            <div class="state">
+              <p class="sucess">结算状态</p>
             </div>
             <div class="pay fact-div">
               <p class="shiji">￥{{item.payamt}}</p>
@@ -517,7 +521,7 @@ export default {
   }
 }
 .width13 {
-  width: 13.1%;
+  width: 10.8%;
 }
 .width11 {
   width: 13.5%;
@@ -582,7 +586,7 @@ export default {
       }
       .goods-pic {
         float: left;
-        width: 315px;
+        width: 308px;
         padding-top: 14px;
         padding-left: 10px;
         img {
@@ -658,7 +662,7 @@ export default {
       }
       .state {
         float: left;
-        width: 126px;
+        width: 101px;
         min-height: 108px;
         height: auto;
         padding-top: 42px;
@@ -689,20 +693,20 @@ export default {
 }
 .price-div {
   float: left;
-  width: 126px;
+  width: 104px;
   text-align: center;
   line-height: 108px;
   color: #ed3025;
 }
 .count-div {
   float: left;
-  width: 126px;
+  width: 104px;
   text-align: center;
   line-height: 108px;
 }
 .fact-div {
   float: left;
-  width: 126px;
+  width: 100px;
   padding: 32px 0px;
   p {
     text-align: center;
@@ -785,7 +789,7 @@ export default {
   // height: auto;
   // border-bottom: 1px solid #e0e0e0;
   border-top: 1px solid #f8f8f8;
-  padding-top: 10px;
+  padding-top: 4px;
   p {
     text-align: center;
   }
