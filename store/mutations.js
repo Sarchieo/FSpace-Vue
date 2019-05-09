@@ -19,8 +19,9 @@ const mutations = {
   [types.IS_NEW_NOTICE] (state, status) {
     state.isNewNotice = status
   },
-  [types.IS_NOTICE_TEXT] (state, text) {
-    state.noticeText = text
-  }
+  [types.NOTICE_LIST] (state, list) {
+    
+    state.noticeList = list
+  },
 }
 export default mutations

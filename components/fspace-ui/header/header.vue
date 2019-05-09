@@ -23,7 +23,32 @@
             <!-- <a>帮助中心</a> -->
             <!-- <a class="margin-left0">在线客服</a> -->
             <!-- 我的消息 -->
-            <!-- <header-notice/> -->
+            <a-popover
+              v-model="visible"
+              trigger="click"
+              placement="bottomRight"
+              :autoAdjustOverflow="true"
+              :arrowPointAtCenter="true"
+              overlayClassName="header-notice-wrapper"
+              :overlayStyle="{ width: '300px', top: '50px' }"
+            >
+              <template slot="content">
+                <a-list :locale="locale">
+                  <a-list-item v-for="(item, index) in noticeList" :key="index" @click="toInformation">
+                    <a-list-item-meta :title="item.text">
+                      <a-avatar
+                        style="background-color: white"
+                        slot="avatar"
+                        src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"
+                      />
+                    </a-list-item-meta>
+                  </a-list-item>
+                </a-list>
+              </template>
+              <a-badge :dot="isNewNotice" class="margin-top15">
+                  <a href="#">我的消息</a>
+                </a-badge>
+            </a-popover>
             <!-- 签到有礼 -->
             <a v-if="isLogin" class="sign" @click="toIntegral()">
               签到有礼
@@ -214,10 +239,19 @@ export default {
     },
     isLogin() {
       return this.$store.state.userStatus;
+    },
+    isNewNotice() {
+      return this.$store.state.isNewNotice;
+    },
+    noticeList() {
+      return this.$store.state.noticeList;
     }
   },
   data() {
     return {
+      locale: {
+        emptyText: '暂无消息'
+      },
       isShowMenu: false,
       confirmLoading: false,
       ModalText: "您确定要退出登录吗?",
@@ -226,7 +260,9 @@ export default {
       isShowHeader: true,
       isDisTip: false,
       isShowCartList: false,
-      cartList: []
+      cartList: [],
+      loadding: false,
+      visible: false
     };
   },
   mounted() {
@@ -518,6 +554,20 @@ export default {
     },
     hiddenMenu() {
       this.isShowMenu = false;
+    }
+  },
+  watch: {
+    visible(val) {
+      if(!val) {
+        this.$store
+          .dispatch("removeNoticeList")
+          .then(res => {
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   }
 };
@@ -926,5 +976,8 @@ li {
 }
 .searchs-input {
   width: 82% !important;
+}
+.margin-top15{
+  margin-top: 8px;
 }
 </style>

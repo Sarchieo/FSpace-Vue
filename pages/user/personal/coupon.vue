@@ -144,7 +144,7 @@ export default {
   methods: {
     // 获取我的优惠券
     queryRevCouponList(ctype) {
-      debugger
+      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";

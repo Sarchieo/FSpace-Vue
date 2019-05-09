@@ -5,5 +5,5 @@ export default {
   keyword: '',
   selectedKeys: '',
   isNewNotice: false,
-  noticeText: ''
+  noticeList: []
 }

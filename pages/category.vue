@@ -328,7 +328,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
-              debugger
+              
               _this.fsGeneralMethods.addImages(_this,_this.searchList, 'sku', 'spu' );
 
               if (_this.searchList.length === 0 || _this.searchList === null) {

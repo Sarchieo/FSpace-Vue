@@ -78,8 +78,14 @@ function refcallback(context, moduleName,_IRequest, callback) {
               try{
                 let result = JSON.parse(message)
               } catch(err){
-                context.$store.commit(types.IS_NEW_NOTICE, true)
-                context.$store.commit(types.IS_NOTICE_TEXT, message.replace('sys:', ''))
+                context.$store
+                  .dispatch("setNoticeList", { message: message.replace('sys:', '') })
+                  .then(res => {
+                    
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
               }
             }
           })

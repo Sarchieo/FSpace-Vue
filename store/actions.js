@@ -32,6 +32,19 @@ const actions = {
   async setLogout(store, { context }) {
     store.commit(types.SET_USER, removeUser())
     store.commit(types.SET_LOGIN_STATE, saveUserStatus(false, context))
+  },
+  async setNoticeList(store, { message }) {
+
+    store.commit(types.IS_NEW_NOTICE, true)
+    let list = store.state.noticeList
+    list.push({
+      text: message
+    })
+    store.commit(types.NOTICE_LIST, list)
+  },
+  async removeNoticeList(store) {
+    store.commit(types.IS_NEW_NOTICE, false)
+    store.commit(types.NOTICE_LIST, [])
   }
 }
 export default actions

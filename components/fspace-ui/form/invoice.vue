@@ -136,7 +136,7 @@ export default {
   watch: {
     values: {
       handler: function(newVal, oldVal) {
-        debugger
+        
         this.form.setFieldsValue(newVal);
       },
       deep: true

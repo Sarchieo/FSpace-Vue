@@ -107,7 +107,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-            debugger
+            
           if (result.code === 200) {
             _this.list = result.data
             _this.total = result.total
