@@ -1,6 +1,7 @@
 
 import { iceGridInstanceName, serverIp, serverPort, CALLBACK_ACTION } from '../config/index'
 import Vue from 'vue'
+import * as types from '../store/mutation-types'
 
 let communication;
 
@@ -71,10 +72,15 @@ function refcallback(context, moduleName,_IRequest, callback) {
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         }
         // 接口不失败情况下调用 消息上线
-        if(success.flag) {
+        if(success.flag && context.$store.state.userStatus) {
           let ice_callback = new Ice.Class(inf.PushMessageClient, {
             receive: function(message, current) {
-              console.log(message)
+              try{
+                let result = JSON.parse(message)
+              } catch(err){
+                context.$store.commit(types.IS_NEW_NOTICE, true)
+                context.$store.commit(types.IS_NOTICE_TEXT, message.replace('sys:', ''))
+              }
             }
           })
           context.$initIceLong('orderServer', context.storeInfo.comp.storeId, new ice_callback());

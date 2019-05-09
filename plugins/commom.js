@@ -49,7 +49,6 @@ var fsGeneralMethods = {
                       "-" + imageType +".jpg" +
                       '?' + Math.round(Math.random()*10)
                   );
-                  
                 });
               }
             }

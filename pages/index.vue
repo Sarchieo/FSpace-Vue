@@ -52,7 +52,7 @@
           </div>
           <div class="notice-box">
             <p class="every-day">每日签到领积分</p>
-            <a-button class="sign-btn">签到</a-button>
+            <a-button @click="adasdasdasd()" class="sign-btn">签到</a-button>
             <div class="line">
             </div>
             <img src=""/>
@@ -428,6 +428,7 @@
 import FSpaceHeader from "../components/fspace-ui/header/header";
 import FSpaceMenu from "../components/fspace-ui/menu";
 import FSpaceFooter from "../components/fspace-ui/footer";
+import * as types from '../store/mutation-types.js'
 
 export default {
   components: {
@@ -501,6 +502,10 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
+    },
+    adasdasdasd() {
+      let sys = 'sys:尊敬的用户：您的采购订单单号：1905090000024201支付成功，预计包裹三日内送达，请注意签收。'
+      this.$store.commit(types.IS_NOTICE_TEXT, sys)
     },
     // 获取楼层显示状态
     async getMallFloorProd() {

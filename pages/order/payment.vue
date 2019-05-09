@@ -68,16 +68,19 @@ export default {
       let _this = this
       let ice_callback = new Ice.Class(inf.PushMessageClient, {
         receive: function(message, current) {
-          debugger
-          let result = JSON.parse(message)
-          if(result.event == 1 && result.body.tradeStatus == 1) {
-            _this.$router.push({
-              path: '/order/pay-complete',
-              query: {
-                orderno: result.body.orderNo
-              }
-            })
-          }
+            try{
+                let result = JSON.parse(message)
+                if(result.event == 1 && result.body.tradeStatus == 1) {
+                  _this.$router.push({
+                    path: '/order/pay-complete',
+                    query: {
+                      orderno: result.body.orderNo
+                    }
+                  })
+                }
+            } catch(err){
+              console.log(message)
+            }
         }
       })
       this.$initIceLong('orderServer', this.storeInfo.comp.storeId, new ice_callback());

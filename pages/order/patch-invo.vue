@@ -385,11 +385,15 @@ export default {
       let _this = this;
       let ice_callback = new Ice.Class(inf.PushMessageClient, {
         receive: function(message, current) {
-          let result = JSON.parse(message);
-          // event tradeStatus 需要跟蒋文广确认
-          if (result.event == 1 && result.body.tradeStatus == 1) {
-            _this.steps = 4;
-            // 支付结果页面数据
+          try{
+            let result = JSON.parse(message);
+            // event tradeStatus 需要跟蒋文广确认
+            if (result.event == 1 && result.body.tradeStatus == 1) {
+              _this.steps = 4;
+              // 支付结果页面数据
+            }
+          } catch(err){
+            console.log(message)
           }
         }
       });

@@ -3,5 +3,7 @@ export default {
   areas: {},
   userStatus: false,
   keyword: '',
-  selectedKeys: ''
+  selectedKeys: '',
+  isNewNotice: false,
+  noticeText: ''
 }

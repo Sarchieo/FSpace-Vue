@@ -15,6 +15,12 @@ const mutations = {
   },
   [types.SELECTED_KEYS] (state, selectedKeys) {
     state.selectedKeys = selectedKeys
+  },
+  [types.IS_NEW_NOTICE] (state, status) {
+    state.isNewNotice = status
+  },
+  [types.IS_NOTICE_TEXT] (state, text) {
+    state.noticeText = text
   }
 }
 export default mutations
