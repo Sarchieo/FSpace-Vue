@@ -568,6 +568,9 @@ li {
   float: left;
   .container-size(inline-block, 450px, 120px, 0, 0);
   position: relative;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .goods-name img {
   vertical-align: middle;

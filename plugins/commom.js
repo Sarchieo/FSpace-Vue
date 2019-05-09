@@ -46,7 +46,8 @@ var fsGeneralMethods = {
                       c +
                       "/" +
                       arr[index][skuName] +
-                      "-" + imageType +".jpg"
+                      "-" + imageType +".jpg" +
+                      '?' + Math.round(Math.random()*10)
                   );
                   
                 });

@@ -111,7 +111,9 @@ function initIceLong(serverName, compid, callback) {
               r.name = compid + ''
               adapter.add(callback, r)
               proxy.ice_getCachedConnection().setAdapter(adapter);
-              return server.online(r);
+              if(server.online) {
+                return server.online(r);
+              }
             });
         });
     }

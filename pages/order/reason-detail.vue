@@ -102,7 +102,7 @@
                         v-lazy="imgUrl"
                         alt
                       >
-                    <span class="goods-name">{{ detail.prodname }}</span>
+                    <span class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</span>
                       <span>{{ detail.spec }}</span>
                       <span>{{ detail.manuname }}</span>
                     </div>
@@ -391,7 +391,7 @@ export default {
   .container-size(block, 1190px, 220px, 0 auto, 0px);
   border-top: 3px solid #ed3025;
   margin-bottom: 20px;
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
   .step-left {
     float: left;
     .container-size(inline-block, 300px, 220px, 0 auto, 0px);
@@ -435,7 +435,7 @@ export default {
 .logistics-box-info {
   .container-size(block, 1190px, 260px, 0 auto, 0px);
   margin-bottom: 20px;
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
   .logistics-left {
     float: left;
     .container-size(inline-block, 300px, 260px, 0 auto, 0px);
@@ -455,7 +455,7 @@ export default {
   .container-size(block, 1190px, 230px, 0 auto, 0px);
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
   .consignee-left,
   .consignee-middle,
   .consignee-right {
@@ -595,7 +595,7 @@ export default {
       .pay-count {
         .container-size(inline-block, 190px, 210px, 0 auto, 0px);
         float: right;
-        background: #f2f2f2;
+        background: #f8f8f8;
         padding: 20px 0px;
         p {
           .p-size(40px, 40px, 16px, center, 0px, #333333);
@@ -610,7 +610,7 @@ export default {
 }
 .cancelApply{
    .button-size(120px,38px,38px,14px,0px,3px);
-   .button-color(1px solid #999999,#f2f2f2,#333333);
+   .button-color(1px solid #999999,#f8f8f8,#333333);
 }
 .logi{
     .container-size(block, 700px, 210px, 0 auto, 0px);

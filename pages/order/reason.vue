@@ -129,7 +129,7 @@ export default {
         "specify-path": "",
         "specify-filename": ""
       },
-        goodsObj:{},
+      goodsObj:{},
     };
   },
   mounted() {
@@ -323,12 +323,12 @@ export default {
 
 .title {
   .p-size(50px, 50px, 18px, left, 20px, #333333);
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 
 .reason-content {
   .container-size(inline-block, 1190px, 405px, 0, 0px);
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
 
   .reason-left {
     .container-size(inline-block, 200px, 260px, 30px 0px 0px 30px, 0px);

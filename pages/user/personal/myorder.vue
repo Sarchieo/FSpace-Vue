@@ -530,7 +530,7 @@ export default {
   display: block;
   width: 960px;
   margin: 0 auto;
-  background: #f2f2f2;
+  background: #f8f8f8;
   span {
     display: inline-block;
     float: left;
@@ -543,12 +543,12 @@ export default {
   overflow: auto;
   li {
     .container-size(block, 945px, auto, 0 auto, 0px);
-    .container-color(#ffffff, 1px solid #f2f2f2, #666666);
+    .container-color(#ffffff, 1px solid #f8f8f8, #666666);
     margin-top: 10px;
     margin-bottom: 10px;
     .order-info-text {
       .p-size(45px, 45px, 16px, left, 20px, #666666);
-      background: #f2f2f2;
+      background: #f8f8f8;
       .time {
         font-weight: bold;
       }
@@ -574,8 +574,8 @@ export default {
       width: 820px;
       height: 108px;
       margin: 0px;
-      border-top: 1px solid #f2f2f2;
-      border-right: 1px solid #f2f2f2;
+      border-top: 1px solid #f8f8f8;
+      border-right: 1px solid #f8f8f8;
       div {
         display: inline-block;
         height: 108px;
@@ -662,8 +662,8 @@ export default {
         min-height: 108px;
         height: auto;
         padding-top: 42px;
-        border-left: 1px solid #f2f2f2;
-        border-right: 1px solid #f2f2f2;
+        border-left: 1px solid #f8f8f8;
+        border-right: 1px solid #f8f8f8;
         .sucess {
           // .position(absolute, 28px, 0px);
           width: 100%;
@@ -784,7 +784,7 @@ export default {
   // height: 108px;
   // height: auto;
   // border-bottom: 1px solid #e0e0e0;
-  border-top: 1px solid #f2f2f2;
+  border-top: 1px solid #f8f8f8;
   padding-top: 10px;
   p {
     text-align: center;

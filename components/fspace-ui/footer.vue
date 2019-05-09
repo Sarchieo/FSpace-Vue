@@ -47,7 +47,7 @@
           运输无忧
       </p>
     </div>
-    <h4 class="footer-copyright">Copyright@2015-2019 一块医药v1.0.0.2019050601 湖南空间折叠互联网科技有限公司版权所有</h4>
+    <h4 class="footer-copyright">Copyright@2015-2019 一块医药v1.0.0.2019050701 湖南空间折叠互联网科技有限公司版权所有</h4>
   </a-layout-footer>
 </template>
 <script>
@@ -66,7 +66,7 @@ export default {
   color: #000;
   height: 240px;
   background: white;
-  border-top: 1px solid #f2f2f2;
+  border-top: 1px solid #f8f8f8;
 }
 .footer-message-item {
   text-align: center;

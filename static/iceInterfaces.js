@@ -111,7 +111,29 @@
 
     Slice.defineOperations(inf.Interfaces, inf.InterfacesPrx,
     {
-        "accessService": [, , , , , [7], [[inf.IRequest]], , , , ]
+        "accessService": [, , , , , [7], [[inf.IRequest]], , , , ],
+        "online": [, , , , , , [[Ice.Identity]], , , , ],
+        "offline": [, , , , , , [[7]], , , , ],
+        "sendMessageToClient": [, , , , , , [[7], [7]], , , , ]
+    });
+
+    /**
+     * 娑堟伅鎺ㄩ€�-瀹㈡埛绔� 闇€瑕佸叿浣撳鎴风瀹炵幇
+     **/
+    inf.PushMessageClient = Slice.defineObject(
+        undefined,
+        Ice.Object, undefined, 1,
+        [
+            "::Ice::Object",
+            "::inf::PushMessageClient"
+        ],
+        -1, undefined, undefined, false);
+
+    inf.PushMessageClientPrx = Slice.defineProxy(Ice.ObjectPrx, inf.PushMessageClient.ice_staticId, undefined);
+
+    Slice.defineOperations(inf.PushMessageClient, inf.PushMessageClientPrx,
+    {
+        "receive": [, , , , , , [[7]], , , , ]
     });
     exports.inf = inf;
 }

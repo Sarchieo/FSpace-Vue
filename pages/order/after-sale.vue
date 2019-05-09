@@ -29,7 +29,7 @@
                   <!-- <input type="radio" class="pick-input"> -->
                   <img v-lazy="item.imgURl" class="after-pic">
                   <div class="goods-info">
-                    <p class="goods-name">{{item.pname}}</p>
+                    <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                     <p class="goods-guige">{{item.pspec}}</p>
                     <p class="manufactor">{{item.manun}}</p>
                   </div>
@@ -140,23 +140,23 @@ export default {
     },
     // 跳转填写原因
     toReason() {
-        let arr = []
-        for (let i = 0; i < this.goodsArr.length; i++) {
-            if (this.goodsArr[i].checked) {
-                arr.push({
-                    pname: this.goodsArr[i].pname,
-                    pspec: this.goodsArr[i].pspec,
-                    manun: this.goodsArr[i].manun,
-                    pdprice: this.goodsArr[i].pdprice,
-                    pnum: this.goodsArr[i].pnum,
-                    payamt: this.goodsArr[i].payamt,
-                    pdno: this.goodsArr[i].pdno,
-                    orderno: this.goodsArr[i].orderno,
-                    compid: this.goodsArr[i].compid,
-                    imgURl: this.goodsArr[i].imgURl
-                })
-            }
+      let arr = []
+      for (let i = 0; i < this.goodsArr.length; i++) {
+        if (this.goodsArr[i].checked) {
+          arr.push({
+              pname: this.goodsArr[i].pname,
+              pspec: this.goodsArr[i].pspec,
+              manun: this.goodsArr[i].manun,
+              pdprice: this.goodsArr[i].pdprice,
+              pnum: this.goodsArr[i].pnum,
+              payamt: this.goodsArr[i].payamt,
+              pdno: this.goodsArr[i].pdno,
+              orderno: this.goodsArr[i].orderno,
+              compid: this.goodsArr[i].compid,
+              imgURl: this.goodsArr[i].imgURl
+          })
         }
+      }
       // console.log("fillOrderReason--- " + JSON.stringify(arr))
       sessionStorage.setItem("fillOrderReason", JSON.stringify(arr));
       this.$router.push({
@@ -211,7 +211,7 @@ export default {
 }
 .table-header {
   .container-size(block, 1190px, 60px, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
   color: #666;
 }
 .table-header li {
@@ -322,7 +322,7 @@ export default {
 }
 .next-step {
   .container-size(block, 1190px, 90px, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
   margin-bottom: 20px;
   .after-btn {
     float: right;

@@ -160,7 +160,7 @@
                   <td class="pic-box widths40">
                     <div>
                       <img :src="items.imgURl">
-                      <span class="goods-name">{{items.pname}}</span>
+                      <span class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</span>
                       <span>{{items.pspec}}</span>
                       <span>{{items.manun}}</span>
                       <!-- <p class="spec">0.25g*30片</p>
@@ -474,7 +474,7 @@ export default {
   .container-size(block, 1190px, 220px, 0 auto, 0px);
   border-top: 3px solid #ed3025;
   margin-bottom: 20px;
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
   .step-left {
     float: left;
     .container-size(inline-block, 300px, 220px, 0 auto, 0px);
@@ -517,7 +517,7 @@ export default {
 .logistics-box-info {
   .container-size(block, 1190px, 260px, 0 auto, 0px);
   margin-bottom: 20px;
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
   .logistics-left {
     float: left;
     .container-size(inline-block, 300px, 260px, 0 auto, 0px);
@@ -536,7 +536,7 @@ export default {
 .consignee-info {
   .container-size(block, 1190px, 255px, 0 auto, 0px);
   margin-bottom: 20px;
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
   .consignee-left,
   .consignee-middle,
   .consignee-right {
@@ -651,7 +651,7 @@ export default {
         text-align: center;
         padding-top: 48px;
         min-height: 120px;
-        // background: #f2f2f2;
+        // background: #f8f8f8;
         // border-left: 1px solid #eeeeee;
         font-size: 18px;
         font-weight: bold;
@@ -674,7 +674,7 @@ export default {
       .pay-count {
         .container-size(inline-block, 190px, 210px, 0 auto, 0px);
         float: right;
-        background: #f2f2f2;
+        background: #f8f8f8;
         padding: 20px 0px;
         p {
           .p-size(40px, 40px, 16px, center, 0px, #333333);

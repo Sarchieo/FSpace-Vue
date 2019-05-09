@@ -50,7 +50,8 @@ export default {
   data() {
     return {
      value: 1,
-     payamt: ''
+     payamt: '',
+     intervalid: {}
     };
   },
   mounted() {
@@ -58,12 +59,16 @@ export default {
     this.payamt = this.$route.query.payamt
     this.orderno = this.$route.query.orderno
     this.payResult()
+    this.intervalid = setInterval(() => {
+      this.getPayResult()
+    }, 5000)
   },
   methods: {
     payResult() {
       let _this = this
       let ice_callback = new Ice.Class(inf.PushMessageClient, {
         receive: function(message, current) {
+          debugger
           let result = JSON.parse(message)
           if(result.event == 1 && result.body.tradeStatus == 1) {
             _this.$router.push({
@@ -76,6 +81,31 @@ export default {
         }
       })
       this.$initIceLong('orderServer', this.storeInfo.comp.storeId, new ice_callback());
+    },
+     // 获取订单详情
+    getPayResult() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "getPayResult";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.comp.storeId
+      })
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200 && result.data.paystatus === 1) {
+              clearInterval(_this.intervalid);
+              _this.toSuccess()
+            }
+          }
+        )
+      );
     },
       // 监听单选框的值发生变化
     onChange (e) {

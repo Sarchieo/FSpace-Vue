@@ -36,7 +36,7 @@
                 ></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
                 <img v-lazy="item.imgURl">
-                <p class="goods-name" @click="toDetail(item)">{{item.ptitle}}</p>
+                <p class="goods-name" @click="toDetail(item)">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
                 <p class="icon" v-if="item.rule.length > 0">
@@ -45,9 +45,9 @@
                   <a-tag color="#999999" v-if="item.status == 3">商品库存不足</a-tag>
                   <a-tag
                     color="red"
-                    v-for="(item, index) in item.rule"
-                    :key="index"
-                  >{{ item.rulename }}</a-tag>
+                    v-for="(ruleItem, i) in item.rule"
+                    :key="i"
+                  >{{ ruleItem.rulename }}</a-tag>
                 </p>
                 <p class="old-price">￥ {{item.pdprice}}</p>
                 <p class="validity">有效期：{{item.vperiod}}</p>
@@ -57,7 +57,7 @@
                   <a-input-number
                     :disabled="item.status == 1 || item.status == 2 || item.status == 3"
                     :min="1"
-                    :max="item.inventory"
+                    :max="item.maximum"
                     v-model="item.num"
                     style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;"
                     readonly="readonly"
@@ -98,8 +98,6 @@
             </li>
           </ul>
           <div class="whole-pick" v-if="this.cartList.length !== 0">
-            <!-- <a-checkbox @change="onChange">全选</a-checkbox> -->
-            <!-- <span>删除选中商品</span> -->
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
               <span>活动优惠：￥{{amt}}</span>
@@ -113,8 +111,8 @@
             <div class="carousel">
               <div class="like-box">
                 <div
-                  v-for="(item,index) in likeList"
-                  :key="index"
+                  v-for="(item,i) in likeList"
+                  :key="i"
                   style="display: inline-block;"
                   @click="toDetail(item)"
                 >
@@ -130,8 +128,8 @@
                   <a-card
                     hoverable
                     class="meal-card"
-                    v-for="(items,index) in item.list"
-                    :key="index"
+                    v-for="(items,i) in item.list"
+                    :key="i"
                   >
                     <img v-lazy="items.imgURl" slot="cover">
                     <p class="meal-price">${{items.mp}}</p>
@@ -209,8 +207,12 @@ export default {
             if (result.data) {
               _this.cartList = result.data;
               _this.cartList.forEach((item) => {
-                item.checked ? false : true,
-                item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
+                item.checked ? false : true
+                if(item.limitnum > item.inventory) {
+                  item.maximum = item.inventory
+                } else {
+                  item.maximum = item.limitnum
+                }
               })
               _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
             }
@@ -567,6 +569,9 @@ li {
 .goods-name {
   .position(absolute, 10px, 180px);
   .p-size(30px, 30px, 12px, left, 0px, #333333);
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .goods-guige {
   .position(absolute, 52px, 180px);
@@ -650,7 +655,7 @@ li {
 }
 .whole-pick {
   .container-size(inline-block, 1190px, 72px, 0, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
   line-height: 70px;
   padding-left: 20px;
 }
@@ -668,11 +673,11 @@ li {
 // 猜你喜欢
 .guess {
   .container-size(block, 1190px, 360px, 0 auto, 0px);
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
   margin-top: 20px;
   .title {
     .p-size(50px, 50px, 18px, left, 20px, #666666);
-    background: #f2f2f2;
+    background: #f8f8f8;
   }
 }
 
@@ -710,7 +715,7 @@ li {
   width: 1190px;
   height: 310px;
   padding-top: 15px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .ant-carousel .slick-prev,
 .ant-carousel .slick-next {

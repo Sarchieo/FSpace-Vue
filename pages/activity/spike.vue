@@ -18,7 +18,7 @@
             <div class="goods-box" v-for="(item,index) in secondList.list" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
                 <img v-lazy="item.imgURl" alt class="goods-pic">
-                <p class="goods-name">{{item.prodname}} {{item.spec}}</p>
+                <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">
                   {{item.startnum}}{{item.unitName}}起拼/
@@ -40,7 +40,7 @@
                 </p>
               </a-card>
             </div>
-            <a-pagination :total="total" v-if="this.secondList.length !== 0" @change="onChangePage"/>
+            <a-pagination :total="total" @change="onChangePage"/>
             <!-- <a-pagination v-model="current" :total="this.searchList.length"/> -->
           </div>
         </div>
@@ -93,6 +93,7 @@ export default {
   // 获取秒杀数据
     async getSeckillMallFloor() {
       let _this = this;
+      _this.secondList = [];
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getSeckillMallFloor";
@@ -202,7 +203,7 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 .ant-layout{
-   background: #f2f2f2;
+   background: #f8f8f8;
 }
 .imme-btn:hover{
   cursor: pointer;
@@ -279,7 +280,7 @@ export default {
 .limited-goods {
   .container-size(block, 1210px, auto, 0 auto, 0px);
   min-height: 400px;
-  background: #f2f2f2;
+  background: #f8f8f8;
   margin-bottom: 20px;
 }
 .tab-pane {

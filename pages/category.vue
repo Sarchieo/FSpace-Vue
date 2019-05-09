@@ -95,11 +95,12 @@
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName + item.prodname}}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
-              <p class="card-price top165" v-if="item.vatp == -1">
+              <p class="card-price top165" v-if="item.vatp != -1">
                   ￥{{item.vatp}}
+                  <del>￥{{item.mp}}</del>
               </p>
              <p class="card-price top165" v-else>
-               登录后价格可见
+               ￥认证后可见
             </p>
             <!-- 厂家 -->
             <p class="manufacturer hidden-text">{{item.manuName}}</p>
@@ -327,6 +328,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
+              debugger
               _this.fsGeneralMethods.addImages(_this,_this.searchList, 'sku', 'spu' );
 
               if (_this.searchList.length === 0 || _this.searchList === null) {
@@ -702,7 +704,7 @@ li {
   .position(absolute, 149px, 0px);
   .p-size(20px, 20px, 14px, center, 0px, #666666);
   width: 226px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .sold {
   display: inline-block;

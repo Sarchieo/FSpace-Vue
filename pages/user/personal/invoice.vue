@@ -50,10 +50,9 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
+            debugger
             if(result.code === 200) {
               _this.invoice = result.data[0]
-            }else {
-             
             }
           }
         )

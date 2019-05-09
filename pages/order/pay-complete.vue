@@ -264,7 +264,7 @@ li {
 }
 .complete-box {
   .container-size(block, 1190px, 435px, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
   margin-bottom: 30px;
   border: 1px solid #eeeeee;
   padding: 20px 20px;

@@ -51,7 +51,7 @@
                 </p>
               </a-card>
             </div>
-            <a-pagination :total="total" v-if="this.teamBuyList.length !== 0" @change="onChangePage" />
+            <a-pagination :total="total" @change="onChangePage" />
             <!-- <a-pagination v-model="current" :total="this.searchList.length"/> -->
           </div>
         </div>
@@ -105,6 +105,7 @@ export default {
     // 获取一块购数据
     async getTeamBuyMallFloor() {
       let _this = this;
+      _this.teamBuyList = [];
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getAllTeamBuy";
@@ -229,7 +230,7 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 .ant-layout{
-   background: #f2f2f2;
+   background: #f8f8f8;
 }
 .imme-btn:hover{
   cursor: pointer;
@@ -306,7 +307,7 @@ export default {
 .limited-goods {
   .container-size(block, 1210px, auto, 0 auto, 0px);
   min-height: 400px;
-  background: #f2f2f2;
+  background: #f8f8f8;
   margin-bottom: 20px;
 }
 .tab-pane {

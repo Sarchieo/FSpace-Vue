@@ -26,7 +26,7 @@
         <li v-for="(item,index) in appriseArr" :key="index">
           <div class="goods-pic">
             <img  v-lazy="item.imgURl">
-            <p class="goods-name">{{item.pname}}</p>
+            <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
             <p class="spec">{{item.pspec}}</p>
           </div>
           <div class="evaluate-star">

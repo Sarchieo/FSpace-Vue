@@ -35,21 +35,26 @@
               <a-form-item label="原因描述" :label-col="{ span: 2 }" :wrapper-col="{ span: 16 }">
                 <a-textarea v-model="content" class="evaluate-text" maxlength="300"/>
               </a-form-item>
-              <p class="limit">{{content.length}}/300</p>
-
-              <!-- <p class="upload">上传相片</p> -->
-              <!-- <a-upload
-                action="//jsonplaceholder.typicode.com/posts/"
-                listType="picture-card"
-                :fileList="fileList"
-                @preview="handlePreview"
-                @change="handleChange"
-              >
-                <div v-if="fileList.length < 3">
-                  <a-icon type="plus"/>
-                  <div class="ant-upload-text">最多三张</div>
-                </div>
-              </a-upload>-->
+              <!-- <p class="limit">{{content.length}}/300</p>
+              <p class="upload">上传相片</p>
+                <a-upload
+                  :fileList="fileList"
+                  listType="picture-card"
+                  class="avatar-uploader"
+                  :headers="headers"
+                  :showUploadList="showUpload"
+                  :action="uploadInfo.upUrl"
+                  :beforeUpload="beforeUpload"
+                  :supportServerRender="true"
+                  :remove="remove"
+                  @change="handleChangeUpload"
+                  @preview="handlePreview"
+                >
+                  <div v-if="fileList.length < 3">
+                    <a-icon :type="loading ? 'loading' : 'plus'"/>
+                    <div class="ant-upload-text">商品图片</div>
+                  </div>
+                </a-upload> -->
               <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
                 <img alt="example" style="width: 100%" :src="previewImage">
               </a-modal>
@@ -240,6 +245,16 @@ export default {
   },
   data() {
     return {
+      showUpload: {
+        showPreviewIcon: true,
+        showRemoveIcon: true
+      },
+      headers: {
+        "specify-path": "",
+        "specify-filename": ""
+      },
+      loading: false,
+      uploadInfo: {},
       form: this.$form.createForm(this),
       orderno: 0,
       comp: {},
@@ -276,8 +291,39 @@ export default {
     this.showFeePayInfo();
     // 支付结果监听
     this.payResult();
+    this.getFilePathPrev();
   },
   methods: {
+     getFilePathPrev() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "FileInfoModule";
+      iRequest.method = "fileServerInfo";
+      iRequest.param.token = localStorage.getItem("identification");
+      iRequest.param.json = JSON.stringify({
+        orderid: this.orderno,
+        compid: this.storeInfo.comp.storeId
+      });
+      this.$refcallback(
+        this,
+        "globalServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.uploadInfo = result.data;
+              _this.headers["specify-filename"] =
+                _this.fileList.length + ".jpg";
+              _this.headers["specify-path"] = _this.uploadInfo.orderFilePath;
+              _this.headers["tailor-list"] = "200x200,400x400,600x600";
+            }
+          },
+          function error(error) {
+            ;
+          }
+        )
+      );
+    },
     //运费
     showFeePayInfo() {
       const _this = this;
@@ -465,6 +511,28 @@ export default {
     handleChangePatch(value) {
       this.reasonType = value;
     },
+    beforeUpload(file) {
+      const isJPG = file.type;
+      if (isJPG !== "image/jpeg" && isJPG !== "image/png") {
+        this.$message.error("图片支持只jpg，png两种格式。!");
+        return false;
+      }
+      const isLt2M = file.size / 1024 / 1024 < 5;
+      if (!isLt2M) {
+        this.$message.error("图片大小不能超过5M!");
+      }
+      return isJPG && isLt2M;
+    },
+    remove(file) {
+      for(let i = 0; i< this.fileList.length; i++) {
+        if(this.fileList[i].uid === file.uid) {
+          this.fileList.splice(i,1);
+        }
+      }
+    },
+    handleChange(value) {
+      this.reasonType = value;
+    },
     handleCancel() {
       this.previewVisible = false;
     },
@@ -472,8 +540,9 @@ export default {
       this.previewImage = file.url || file.thumbUrl;
       this.previewVisible = true;
     },
-    handleChange({ fileList }) {
+    handleChangeUpload({ file, fileList, event }) {
       this.fileList = fileList;
+      // console.log("value-- " + this.reasonType)
     },
     setStep(index) {
         if (index === 1) {
@@ -557,11 +626,11 @@ export default {
   }
   .reason-box {
     .container-size(block, 1190px, 600px, 0 auto, 0px);
-    border: 1px solid #f2f2f2;
+    border: 1px solid #f8f8f8;
     margin-bottom: 40px;
     .reason-p {
       .p-size(50px, 50px, 16px, left, 20px, #999999);
-      background: #f2f2f2;
+      background: #f8f8f8;
     }
     .reason-right {
       .container-size(inline-block, 1155px, 350px, 30px 0px 0px 30px, 0px);
@@ -712,7 +781,7 @@ tr {
 }
 .reason-wait{
    .p-size(50px, 50px, 16px, center, 0px, #666666);
-    background: #f2f2f2;
+    background: #f8f8f8;
     font-weight: bold;
 }
 </style>

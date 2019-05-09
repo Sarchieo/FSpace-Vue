@@ -18,7 +18,7 @@
           ]"
         />
       </a-form-item>
-      <a-form-item v-show="vat" label="注册电话：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+      <a-form-item v-if="vat" label="注册电话：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
         <a-input
           placeholder="专票要求的公司电话"
           v-decorator="[
@@ -115,7 +115,7 @@ export default {
             taxpayer: values.taxpayer,
             bankers: values.bankers,
             account: values.account,
-            tel: values.tel
+            tel: values.tel || ''
           });
           iRequest.param.token = localStorage.getItem("identification");
           this.$refcallback(
@@ -136,6 +136,7 @@ export default {
   watch: {
     values: {
       handler: function(newVal, oldVal) {
+        debugger
         this.form.setFieldsValue(newVal);
       },
       deep: true

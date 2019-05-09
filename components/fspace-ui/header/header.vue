@@ -218,10 +218,15 @@ export default {
   mounted() {
     this.init();
     this.checkStoreLoginStatus()
-    window.addEventListener("scroll", this.handleScroll);
+    this.$nextTick(() => {
+      window.addEventListener("scroll", this.handleScroll);
+    })
     if (this.isLogin) {
       this.getShoppingCartList();
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll)
   },
   methods: {
     init() {
