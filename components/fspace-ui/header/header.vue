@@ -57,7 +57,7 @@
         <div class="medicine-names" ref="home">
           <div class="medicine-name-box" ref="nameBox">
             <div class="medicine-name">
-              <img src="../../../assets/img/u49.png" alt>
+              <img src="../../../assets/img/index_logo_1.jpg" alt>
             </div>
             <div class="medicine-search">
               <div class="search-box">
@@ -130,9 +130,10 @@
           </div>
           <div class="nav-box" v-show="isShowHeader">
             <div>
-              <span href class="goods-type" @mouseover="showMenu()" @mouseleave="hiddenMenu()">商品分类</span>
+              <span href class="goods-type" @mouseover="showMenu()" @mouseleave="hiddenMenu()">商品分类 <a-icon type="down" /></span>
               <a href="javascript:;" @click="toNewPerson()">新人专享</a>
               <a href="javascript:;" @click="toNewGoods()">新品上线</a>
+              <a href="javascript:;" @click="toNewGoods()">中华名方</a>
               <a href="javascript:;" @click="toHotGoods()">热销商品</a>
               <a href="javascript:;" @click="toBrand()">品牌专区</a>
               <!-- <a href>全部商品</a> -->
@@ -699,8 +700,8 @@ li {
   color: black;
 }
 .medicine-name img {
-  width: 195px;
-  height: 62px;
+  // width: 195px;
+  // height: 62px;
 }
 .medicine-search {
   display: inline-block;
@@ -842,20 +843,27 @@ li {
 }
 .nav-box div {
   display: block;
-  width: 1190px;
+  width: 1196px;
   margin: 0 auto;
+  
 }
 .nav-box .goods-type {
   display: inline-block;
   width: 175px !important;
   height: 40px;
-  background: #ed3025;
+  background: #db2920;
   line-height: 40px;
+  margin-right: 30px;
   text-align: center;
   font-size: 16px;
   color: #ffffff;
   a:hover {
     color: #ffffff;
+  }
+  i{
+    float: right;
+    margin-top: 12px;
+    margin-right: 10px;
   }
 }
 .nav-box a {

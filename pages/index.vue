@@ -32,19 +32,19 @@
               </div>
               <div>
                 <img
+                 src="../assets/banner/register.jpg"
+                class="banner-pic"
+                >
+              </div>
+              <div>
+                <img
+                  src="../assets/banner/newperson.jpg"
+                  class="banner-pic"
+                >
+              </div>
+              <div>
+                <img
                   src="../assets/banner/integral.jpg"
-                  class="banner-pic"
-                >
-              </div>
-              <div>
-                <img
-                   src="../assets/banner/newperson.jpg"
-                  class="banner-pic"
-                >
-              </div>
-              <div>
-                <img
-                  src="../assets/banner/register.jpg"
                   class="banner-pic"
                 >
               </div>
@@ -52,7 +52,7 @@
           </div>
           <div class="notice-box">
             <p class="every-day">每日签到领积分</p>
-            <a-button class="sign-btn">签到</a-button>
+            <a-button class="sign-btn" @click="toCar()">购物车临时入口</a-button>
             <div class="line">
             </div>
             <img src=""/>
@@ -491,6 +491,12 @@ export default {
     this.getMallFloorProd();
   },
   methods: {
+    // 购物车临时入口
+    toCar() {
+      this.$router.push({
+        path: '/shoppingCart'
+      })
+    },
     handleScroll() {
       this.scrollTop =
         window.pageYOffset ||
@@ -1073,11 +1079,11 @@ li {
 }
 // 广告下方的图片
 .pic-link{
-  .container-size(block, 1210px, 165px, 0 auto, 0px);
+  .container-size(block, 1210px, 160px, 0 auto, 0px);
 }
 .pic-link img{
   width: 298.5px;
-  height: 162px;
+  // height: 162px;
 }
 .pic-link img:hover{
   cursor: pointer;

@@ -53,12 +53,11 @@
           <!-- <p class="moon-data"> <span>4.23</span><span>4.24</span><span>4.25</span><span>4.26</span><span>4.27</span><span>4.28</span><span>4.29</span></p> -->
           <div class="coupon-box">
             <p v-if="exchangeList.length === 0" class="no-data">暂无优惠券！</p>
-            <div class="coupon-card" v-for="(item,index) in exchangeList" :key="index">
+            <div class="coupon-card" v-for="(item,index) in exchangeList" :key="index" @click="receiveCoupon(item)">
               <div class="coupon-left" v-if="item.brulecode === 2110">
                 <div
                   v-for="(items,index1) in item.ladderVOS"
                   :key="index1"
-                  @click="receiveCoupon(item)"
                 >
                   <p class="coupon-type">
                     <span class="float-left">{{item.rulename}}</span>
@@ -82,16 +81,16 @@
                     <span class="float-left">{{item.rulename}}</span>
                     <span class="float-right">永久有效</span>
                   </p>
-                  <span class="fuhao"></span>
-                  <span class="offer"></span>
-                  <span class="text postage">无门槛通用券</span>
-                  <p class="every-text">选购商城任意商品可使用</p>
+                  <span class="fuhao">￥</span>
+                  <span class="offer">{{items.offer}}</span>
+                  <span class="text">无门槛通用券</span>
+                  <p class="every-text">邮费根据系统计算自动得出</p>
                   <p class="counts"><span class="jifen">{{items.offer*1000}}</span> <span class="exchange">积分兑换</span></p>
                 </div>
                 
               </div>
               <div class="coupon-right">
-                <img class="state-pic" src="../../assets/img/receive.png" alt>
+                <img class="state-pic" src="../../assets/img/imme.png" alt>
               </div>
               
             </div>
@@ -252,7 +251,9 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
       iRequest.method = "queryCouponExcgPub";
-      iRequest.param.json = JSON.stringify({});
+      iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.comp.storeId
+      });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
@@ -288,7 +289,6 @@ export default {
     },
     // 更多优惠券
     queryCouponPub() {
-      debugger;
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponManageModule";
@@ -314,7 +314,6 @@ export default {
     },
         // 领取优惠券
     revCoupon(item) {
-      debugger
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";

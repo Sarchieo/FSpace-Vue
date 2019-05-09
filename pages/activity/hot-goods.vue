@@ -3,13 +3,13 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
+         <div class="buying-text">
+            <img src="../../assets/banner/hot.jpg" alt="">
+         </div>
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
-         <div class="buying-text">
-            <p>人气推荐好药，它们最受欢迎</p>
-         </div>
+        
           <div class="limited-goods">
-              <p class="one-day">热销药品</p>
               <div class="goods-box" v-for="(item,index) in hotGoodsList" :key="index">
                 <a-card hoverable class="card" @click="toDetail(item)">
                   <img v-lazy="item.imgURl" alt="" class="goods-pic">
@@ -129,12 +129,11 @@ export default {
    .container-size(inline-block, 225px, 310px, 0px 0px, 0px);
 }
 .buying-text{
-    .container-size(block,1190px,200px,0 auto,0px) ;
-    background: #e0e0e0;
-    p{
-        .p-size(100px,100px,28px,center,0px,#333333);
-        font-weight: bold;
-    }
+   .container-size(block, 100%, 463px, 0, 0px);
+  img{
+    width: 100%;
+    height: 100%;
+  }
 }
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);

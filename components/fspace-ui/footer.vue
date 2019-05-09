@@ -159,8 +159,8 @@ export default {
 }
 .footer-message-box-item i {
   width: 50%;
-  margin-top: 10%;
-  margin-bottom: 10%;
+  margin-top: 11%;
+  margin-bottom: 12%;
   font-size: 40px;
 }
 .footer-box {

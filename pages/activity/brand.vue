@@ -3,12 +3,12 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
+         <div class="buying-text">
+            <img src="../../assets/banner/brands.jpg" alt="">
+         </div>
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
-          <div class="buying-text">
-            <p>品牌专区</p>
-            <p>大家都在买 应季畅销单品</p>
-          </div>
+          
           <!-- <div class="person-num">
              <div class="person-left">
                  商品累计拼团人数/折扣 描述方式待定
@@ -344,5 +344,12 @@ export default {
 }
 .card:hover .collec {
   display: block;
+}
+.buying-text{
+   .container-size(block, 100%, 463px, 0, 0px);
+  img{
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

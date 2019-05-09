@@ -42,7 +42,7 @@
           </div> -->
           <div class="condition-price" v-for="(item, index) in usedCouponList" :key="index">
             <div class="discount" v-if="item.brulecode === 2110">
-              <p class="discount-count">{{ item.rulename }} <span class="term">有效期:{{item.startdate}}至{{item.enddate}}</span></p>
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
               <!-- <p>有效期:{{item.startdate}}至{{item.enddate}}</p> -->
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
@@ -72,7 +72,7 @@
           </div> -->
            <div class="condition-price" v-for="(item, index) in invalidCouponList" :key="index">
             <div class="discount" v-if="item.brulecode === 2110">
-              <p class="discount-count">{{ item.rulename }} <span class="term">有效期:{{item.startdate}}至{{item.enddate}}</span></p>
+              <p class="discount-count">{{ item.rulename }} <span class="term">有效期 {{ item.validday }} 天</span></p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">满 <span>{{ j.ladamt }}</span> 减 <span>{{ j.offer}}</span> </p>
               <!-- <p>有效期:{{item.startdate}}至{{item.enddate}}</p> -->
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
@@ -262,7 +262,7 @@ export default {
 }
 .haved-coupon {
   .container-size(inline-block, 968px, 400px, 10px 0px 20px 6px, 0px);
-  padding: 15px 0 0 15px;
+  padding: 15px 0 0 10px;
   overflow: auto;
   // border: 1px solid #e0e0e0;
   .condition-price {

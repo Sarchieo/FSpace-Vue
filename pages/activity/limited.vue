@@ -3,52 +3,12 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
+        <div class="binnar-box">
+            <img src="../../assets/banner/limited.jpg" alt="">
+          </div>
         <div class="limited-box">
           <!-- 广告位 -->
-          <div class="binnar-box">
-            <a-carousel arrows autoplay>
-              <div
-                slot="prevArrow"
-                slot-scope="props"
-                class="custom-slick-arrow"
-                style="left: 10px;zIndex: 1"
-              >
-                <a-icon type="left-circle"/>
-              </div>
-              <div
-                slot="nextArrow"
-                slot-scope="props"
-                class="custom-slick-arrow"
-                style="right: 10px"
-              >
-                <a-icon type="right-circle"/>
-              </div>
-              <div>
-                <img
-                  v-lazy="'//m.360buyimg.com/babel/jfs/t1/26491/29/9870/42039/5c820018E6ac9f854/55c42a68a489cd18.jpg'"
-                  class="banner-pic"
-                >
-              </div>
-              <div>
-                <img
-                  v-lazy="'//img30.360buyimg.com/img/jfs/t15169/46/1365117661/178502/d02d6948/5a4ddc4eNbd55867a.jpg'"
-                  class="banner-pic"
-                >
-              </div>
-              <div>
-                <img
-                  v-lazy="'//img30.360buyimg.com/img/jfs/t16327/24/1234872079/191114/a510775d/5a4ddbc6N2d73dd08.jpg'"
-                  class="banner-pic"
-                >
-              </div>
-              <div>
-                <img
-                  v-lazy="'//img.alicdn.com/mt/TB1dC1xlznD8KJjSspbXXbbEXXa-750-320.png_q90.jpg'"
-                  class="banner-pic"
-                >
-              </div>
-            </a-carousel>
-          </div>
+          
           <div class="limited-goods">
             <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle" size="large">
               <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.edate">
@@ -226,7 +186,11 @@ export default {
 }
 // 广告位样式
 .binnar-box {
-  .container-size(inline-block, 1190px, 350px, 0, 0px);
+  .container-size(block, 100%, 463px, 0, 0px);
+  img{
+    width: 100%;
+    height: 100%;
+  }
 }
 .ant-carousel > .slick-slide {
   text-align: center;

@@ -3,12 +3,12 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
+         <div class="buying-text">
+            <img src="../../assets/banner/new-person.jpg" alt="">
+         </div>
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
-          <div class="buying-text">
-            <p>新人专享</p>
-            <p></p>
-          </div>
+         
           <div class="limited-goods">
             <p class="search-p">
               <input type="text" placeholder="在结果中搜索">
@@ -164,14 +164,6 @@ export default {
 }
 .card {
   .container-size(inline-block, 225px, 310px, 0px 0px, 0px);
-}
-.buying-text {
-  .container-size(block, 1190px, 200px, 0 auto, 0px);
-  background: #e0e0e0;
-  p {
-    .p-size(100px, 100px, 28px, center, 0px, #333333);
-    font-weight: bold;
-  }
 }
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
@@ -339,5 +331,12 @@ export default {
 }
 .card:hover .collec {
   display: block;
+}
+.buying-text{
+   .container-size(block, 100%, 463px, 0, 0px);
+  img{
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
