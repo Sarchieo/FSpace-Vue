@@ -228,6 +228,173 @@
       <p>{{ModalText}}</p>
     </a-modal>
   </div>
+            <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
+          </div>
+          <div class="header-right">
+            <!-- <a>帮助中心</a> -->
+            <!-- <a class="margin-left0">在线客服</a> -->
+            <!-- 我的消息 -->
+            <!-- <header-notice/> -->
+            <!-- 签到有礼 -->
+            <a v-if="isLogin" class="sign" @click="toIntegral()">
+              签到有礼
+              <!-- <span class="sign"></span> -->
+            </a>
+            <a v-if="isLogin" @click="toMyOrder()">我的订单</a>
+            <a-dropdown v-if="isLogin">
+              <a class="ant-dropdown-link" href="#">
+                我的医药
+                <a-icon type="down"/>
+              </a>
+              <a-menu slot="overlay">
+                <a-menu-item>
+                  <a href="javascript:;" @click="toCollection()">我的收藏</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <nuxt-link to="/user/personal">我的一块</nuxt-link>
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;" @click="toFoot()">浏览记录</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="logout()">登出</a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+            <nuxt-link to="/">首页</nuxt-link>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+        <div class="medicine-names" ref="home">
+          <div class="medicine-name-box" ref="nameBox">
+            <div class="medicine-name">
+              <img src="../../../assets/img/index_logo_1.jpg" alt>
+            </div>
+            <div class="medicine-search">
+              <div class="search-box">
+                <a-input
+                  v-model="keyword"
+                  placeholder="药品名称/药品通用名"
+                  class="searchs-input"
+                  @keyup.enter="toGoods(keyword)"
+                />
+                <button class="search-btn" @click="toGoods(keyword)">搜索</button>
+              </div>
+            </div>
+            <div class="service">
+              <div>
+                <img src="../../../assets/img/zhengpin.png" alt>
+                <p>正品保证</p>
+              </div>
+              <div>
+                <img src="../../../assets/img/pinzhong.png" alt>
+                <p>品类丰富</p>
+              </div>
+              <div>
+                <img src="../../../assets/img/yunshu.png" alt>
+                <p>准时送达</p>
+              </div>
+              <div>
+                <img src="../../../assets/img/fuwu.png" alt>
+                <p>专业服务</p>
+              </div>
+            </div>
+            <!-- <div
+              class="ant-dropdown-link cart-btn"
+              @click="toPage('shoppingCart')"
+              @mouseover="showList()"
+              @mouseout="hideList()"
+            >
+              <a-icon type="shopping-cart" class="cart-icon"/>
+              <span class="cart-count">{{ cartList.length }}</span>
+              <span class="cart-text">采购单</span>
+              <div class="cart-down" v-show="isShowCartList">
+                <p class="no-data" v-if="cartList.length === 0">您的采购单空空如也</p>
+                <ul class="cart-down-ul" v-if="cartList.length !== 0">
+                  <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
+                    <a href="javascript:;">
+                      <img v-lazy="item.imgURl" class="cart-img">
+                      <p class="cart-goods-text">
+                        {{item.ptitle}}
+                        <span>￥{{item.pdprice * item.num}}元</span>
+                      </p>
+                      <p class="cart-goods-count">{{item.spec}}</p>
+                      <a-icon @click.stop="removeCartList(item, index)" type="close" class="del-cart-goods"/>
+                    </a>
+                  </li>
+                </ul>
+                <div class="total-settlement">
+                  <p>
+                    <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车</button>
+                  </p>
+                </div>
+              </div>
+            </div>-->
+            <p class="spike" v-show="isShowHeader">
+              <!-- <a href="javascript:;" @click="toNewPerson()">新人专享</a>
+              <span>|</span>-->
+              <!-- <a href>秒杀</a>
+              <span>|</span>
+              <a href>一块购</a>
+              <span>|</span>-->
+            </p>
+          </div>
+          <div class="nav-box" v-show="isShowHeader">
+            <div>
+              <span href class="goods-type" @mouseover="showMenu()" @mouseleave="hiddenMenu()">商品分类 <a-icon type="down" /></span>
+              <a href="javascript:;" @click="toNewPerson()">新人专享</a>
+              <a href="javascript:;" @click="toNewGoods()">新品上线</a>
+              <a href="javascript:;" @click="toNewGoods()">中华名方</a>
+              <a href="javascript:;" @click="toHotGoods()">热销商品</a>
+              <a href="javascript:;" @click="toBrand()">品牌专区</a>
+              <!-- <a href>全部商品</a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </a-layout-header>
+    <!-- 登录 -->
+    <a-layout-header v-if="type === 'login'" class="login-header">
+      <div class="ant-layout-header-login">
+        <div class="medicine-name-login">
+          <img src="../../../assets/img/u49.png" alt>
+        </div>
+        <div class="ant-layout-header-back login-header-text">
+          <nuxt-link to="/">
+            <a class="back-index">返回首页</a>
+          </nuxt-link>
+          <a class="service-phone">客服电话：88159987</a>
+        </div>
+        <div class="divider"></div>
+      </div>
+    </a-layout-header>
+    <!-- 注册 -->
+    <a-layout-header v-if="type === 'register'" class="login-header">
+      <div class="ant-layout-header-login">
+        <div class="medicine-name-login">
+          <img src="../../../assets/img/u49.png" alt>
+        </div>
+        <div class="ant-layout-header-back">
+          <a class="already">已有账号</a>
+          <nuxt-link to="/user/login">
+            <a class="immediately">立即登录</a>
+          </nuxt-link>
+        </div>
+        <div class="divider"></div>
+      </div>
+    </a-layout-header>
+    <a-modal
+      title="提示"
+      :visible="isLogout"
+      @ok="handleLogoutOk"
+      :confirmLoading="confirmLoading"
+      @cancel="handleCancel"
+      okText="确定"
+      cancelText="取消"
+    >
+      <p>{{ModalText}}</p>
+    </a-modal>
+  </div>
 </template>
 <script>
 // import HeaderNotice from './HeaderNotice'
@@ -292,7 +459,7 @@ export default {
         text: this.$store.state.noticeText
       })
     }
-   
+
   },
   methods: {
     init() {
@@ -890,109 +1057,408 @@ li {
 .total-settlement p span {
   color: #ed3025;
 }
-
-.settlement-btn {
-  .button-size(80px, 35px, 35px, 14px, 0px, 5px);
-  .button-color(none, #ed3025, #ffffff);
-  float: right;
-  margin-top: 12px;
-  margin-right: 10px;
+@import "../../../components/fspace-ui/container/index.less";
+@import "../../../components/fspace-ui/button/index.less";
+a {
+  text-decoration: none;
 }
-.nav-box {
-  display: block;
-  width: 100%;
-  height: 40px;
-  background: #ed3025;
-  padding-left: 6px;
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  margin: 0;
+  padding: 0;
 }
-.nav-box div {
-  display: block;
-  width: 1190px;
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ant-layout-header {
+  height: 200px;
+  line-height: 30px;
+  padding: 0px;
+  background: #ffffff;
+  color: gray;
+}
+.already {
+  color: #999999;
+}
+.immediately {
+  color: rgb(255, 0, 54) !important;
+}
+.no-data {
+  .p-size(40px, 40px, 14px, center, 0px, #666666);
+}
+.desktop {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+/* 登录头部 */
+.login-header {
+  height: 85px;
+}
+/* 头部 */
+.header-title {
+  width: 1200px;
+  height: 30px;
   margin: 0 auto;
 }
-.nav-box .goods-type {
+.header-title span {
+  float: right;
+  margin-right: 10px;
+}
+.header-left {
   display: inline-block;
-  width: 175px !important;
-  height: 40px;
-  background: #ed3025;
-  line-height: 40px;
-  text-align: center;
-  font-size: 16px;
-  color: #ffffff;
-  a:hover {
+  width: 365px;
+}
+.header-left a {
+  margin-right: 15px;
+  color: #999999;
+}
+.header-left i {
+  margin-right: 5px;
+}
+.header-right {
+  float: right;
+  width: 510px;
+  height: 30px;
+  /* margin-right: 50px; */
+}
+.drop-down {
+  .position(relative, 0px, 0px);
+}
+.margin-right0 {
+  margin-right: 0px !important;
+}
+.margin-left0 {
+  margin-left: 0px !important;
+}
+.sign {
+  margin-right: 15px;
+}
+.header-right a {
+  float: right;
+  display: inline-block;
+  margin-left: 15px;
+  color: #999999;
+}
+.news-box {
+  .position(absolute, 22px, -95px);
+  .container-size(inline-block, 250px, auto, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
+  min-height: 300px;
+  opacity: 1;
+  z-index: 1;
+}
+.news-ul {
+  .position(absolute, 0px, 0px);
+  .container-size(inline-block, 250px, auto, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
+  overflow: auto;
+  max-height: 245px;
+  min-height: 100px;
+}
+.news-ul li {
+  .container-size(inline-block, 231px, auto, 0px, 0px);
+  .container-color(#ffffff, 1px solid transparent, #666666);
+  max-height: 245px;
+  min-height: 100px;
+  p {
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    padding: 0px 8px;
+  }
+  p:hover {
+    background: #ed2f26;
     color: #ffffff;
   }
 }
-.nav-box a {
+.see-news {
+  position: absolute;
+  bottom: 0px;
+  .container-size(inline-block, 250px, 50px, 0px, 0px);
+}
+.see-news button {
+  .button-size(246px, 50px, 50px, 16px, 0px, 0px);
+  .button-color(1px solid transparent, #ed2f26, #ffffff);
+}
+.medicine-names {
+  display: block;
+  width: 100%;
+  height: 170px;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+}
+.medicine-name-box {
+  display: block;
+  width: 1200px;
+  height: 130px;
+  margin: 0 auto;
+  padding-top: 20px;
+  background: #ffffff;
+}
+.service {
+  float: right;
+  width: 360px;
+  height: 80px;
+}
+.service div {
+  float: right;
+  width: 22%;
+  height: 80px;
+}
+.spike {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-indent: 27.4%;
+}
+.spike a {
+  margin-left: 15px;
+  margin-right: 15px;
+  color: #999999 !important;
+}
+.medicine-name {
   display: inline-block;
-  height: 40px;
-  margin-right: 30px;
-  font-size: 16px;
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+}
+.medicine-name span {
+  color: black;
+}
+.medicine-name img {
+  width: 195px;
+  height: 62px;
+}
+.medicine-search {
+  display: inline-block;
+  width: 518px;
+  height: 42px;
+  border-radius: 20px;
+  margin-left: 100px;
+  border: 2px solid rgb(255, 0, 54);
+  background: rgb(255, 0, 54);
+}
+/* .search-box{
+  border-radius: 50%;
+} */
+.search-btn {
+  width: 83px;
+  height: 30px;
+  background-color: rgb(255, 0, 54);
+  border: none;
+  outline: none;
   color: #ffffff;
 }
-// .nav-box a:hover {
-//   color: rgb(255, 0, 54);
-// }
-.ant-input {
-  width: 84% !important;
-  height: 38px;
-  border: none;
-  border-radius: 18px 0 0 18px !important;
+.search-btn:hover {
+  background-color: rgb(255, 0, 54);
+  color: #ffffff;
 }
-/* .ant-btn {
+.search-btn:active {
+  background-color: rgb(255, 0, 54);
+  border: none;
+  outline: none;
+  color: #ffffff;
+}
+.cart-btn {
+  position: relative;
+  float: right;
+  width: 154px;
+  height: 42px;
+  background: #ffffff;
+  border: 1px solid rgb(255, 0, 54);
+  border-radius: 20px;
+  margin-top: 8px;
+  color: #666666;
+}
+.cart-text {
+  position: absolute;
+  top: 5px;
+  left: 65px;
+  font-size: 16px;
+}
+.cart-btn:hover {
+  color: #666666;
+  border: 1px solid rgb(255, 0, 54);
+  /* background: rgb(255,0,54); */
+}
+.cart-btn .cart-count {
+  position: absolute;
+  top: 2px;
+  left: 42px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  background: rgb(255, 0, 54);
+  color: #ffffff;
+}
+.cart-btn i {
+  position: absolute;
+  top: 8px;
+  left: 30px;
+  margin-right: 20px;
+  font-size: 22px;
+}
+.cart-down {
+  .container-size(block, 300px, auto, 0px, 0px);
+  .position(relative, 41px, -55px);
+  overflow: auto;
+  z-index: 99;
+  opacity: 1;
+}
+.cart-down-ul {
+  .container-size(block, 300px, auto, 0px, 0px);
+  overflow: auto;
+}
+.cart-down-list {
+  .container-size(block, 283px, 80px, 0px, 0px);
+  .position(relative, 0px, 0px);
+  background: #ffffff;
+  line-height: 80px;
+}
+.cart-down-list:hover {
+  background: #e0e0e0;
+}
+.cart-img {
+  .position(absolute, 5px, 5px);
+  .container-size(inline-block, 70px, 70px, 0px, 0px);
+}
+.cart-goods-text {
+  .position(absolute, 5px, 80px);
+  display: inline-block;
+  width: 180px;
+  .p-size(40px, 40px, 14px, left, 0px, #666666);
+  overflow: hidden;
+}
+.cart-goods-count {
+  .position(absolute, 35px, 80px);
+  .p-size(40px, 40px, 14px, left, 0px, #666666);
+}
+.del-cart-goods {
+  .position(absolute, 35px, 260px) !important;
+  font-size: 14px !important;
+  color: #666666;
+}
+.total-settlement {
+  .container-size(inline-block, 280px, 70px, 0px, 0px);
+  .position(absolute, 300px, 0px);
+  background: #ffffff;
+  line-height: 70px;
+}
+.total-settlement p {
+  padding-left: 10px;
+}
+.total-settlement p span {
+  color: #ed3025;
+}
+
+    .settlement-btn {
+        .button-size(80px, 35px, 35px, 14px, 0px, 5px);
+        .button-color(none, #ed3025, #ffffff);
+        float: right;
+        margin-top: 12px;
+        margin-right: 10px;
+    }
+    .nav-box {
+        display: block;
+        width: 100%;
+        height: 40px;
+        background: #ed3025;
+        padding-left: 6px;
+    }
+    .nav-box div {
+        display: block;
+        width: 1190px;
+        margin: 0 auto;
+    }
+    .nav-box .goods-type {
+        display: inline-block;
+        width: 175px !important;
+        height: 40px;
+        background: #ed3025;
+        line-height: 40px;
+        text-align: center;
+        font-size: 16px;
+        color: #ffffff;
+        a:hover {
+            color: #ffffff;
+        }
+    }
+    .nav-box a {
+        display: inline-block;
+        height: 40px;
+        margin-right: 30px;
+        font-size: 16px;
+        color: #ffffff;
+    }
+    // .nav-box a:hover {
+    //   color: rgb(255, 0, 54);
+    // }
+    .ant-input {
+        width: 84% !important;
+        height: 38px;
+        border: none;
+        border-radius: 18px 0 0 18px !important;
+    }
+    /* .ant-btn {
       background-color: rgb(255, 0, 54);
       border: none;
       color: #ffffff;
     } */
-.ant-layout-header-login {
-  height: 85px;
-  line-height: 85px;
-  background: #ffffff;
-  .medicine-name-login {
-    margin-left: 10%;
-    width: 200px;
-    height: 85px;
-    display: inline-block;
-    img {
-      width: 180px;
-      height: 50px;
+    .ant-layout-header-login {
+        height: 85px;
+        line-height: 85px;
+        background: #ffffff;
+        .medicine-name-login {
+            margin-left: 10%;
+            width: 200px;
+            height: 85px;
+            display: inline-block;
+            img {
+                width: 180px;
+                height: 50px;
+            }
+        }
+        .ant-layout-header-back {
+            float: right;
+            width: 200px;
+            font-size: 18px;
+            margin-right: 5%;
+            a {
+                margin-right: 10%;
+            }
+            a:nth-child(2) {
+                color: #999999;
+            }
+        }
+        .divider {
+            height: 1px;
+            background: #73a1f3;
+        }
     }
-  }
-  .ant-layout-header-back {
-    float: right;
-    width: 200px;
-    font-size: 18px;
-    margin-right: 5%;
-    a {
-      margin-right: 10%;
+    .back-index {
+        font-size: 16px;
+        color: #999999;
     }
-    a:nth-child(2) {
-      color: #999999;
+    .service-phone {
+        font-size: 16px;
+        color: #3189f5 !important;
     }
-  }
-  .divider {
-    height: 1px;
-    background: #73a1f3;
-  }
-}
-.back-index {
-  font-size: 16px;
-  color: #999999;
-}
-.service-phone {
-  font-size: 16px;
-  color: #3189f5 !important;
-}
-.login-header {
-  width: 100%;
-}
-.login-header-text {
-  width: 290px !important;
-}
-.searchs-input {
-  width: 82% !important;
-}
-.margin-top15{
-  margin-top: 8px;
-}
+    .login-header {
+        width: 100%;
+    }
+    .login-header-text {
+        width: 290px !important;
+    }
+    .searchs-input {
+        width: 82% !important;
+    }
 </style>

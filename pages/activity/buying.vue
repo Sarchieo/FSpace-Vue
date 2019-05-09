@@ -3,12 +3,12 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
+          <div class="buying-text">
+            <img src="../../assets/banner/onek.jpg" alt="">
+         </div>
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
-          <div class="buying-text">
-            <p>一块购</p>
-            <p>一块团购 团购越多越实惠</p>
-          </div>
+         
           <div class="person-num">
             <div class="person-left">
               <span class="buying-content">商品累计拼团人数/折扣</span>
@@ -292,14 +292,6 @@ export default {
     }
   }
 }
-.buying-text {
-  .container-size(block, 1190px, 200px, 0 auto, 0px);
-  background: #e0e0e0;
-  p {
-    .p-size(100px, 100px, 28px, center, 0px, #333333);
-    font-weight: bold;
-  }
-}
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   background: #ffffff;
@@ -377,5 +369,12 @@ export default {
 }
 .ant-pagination{
   text-align: center;
+}
+.buying-text{
+   .container-size(block, 100%, 463px, 0, 0px);
+  img{
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

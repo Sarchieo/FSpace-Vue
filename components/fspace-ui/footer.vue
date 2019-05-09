@@ -96,184 +96,184 @@
     };
 </script>
 <style lang='less' scoped>
-    .law span:hover{
-        cursor: pointer;
+.law span:hover{
+  cursor: pointer;
+}
+.help span:hover{
+  cursor: pointer;
+}
+.footer {
+  background: #414141;
+  border-top: 1px #000;
+}
+.footer-message {
+  color: #000;
+  height: 220px;
+  background: #ffffff;
+  border-top: 1px solid #f2f2f2;
+}
+.footer-message-item {
+  text-align: center;
+  float: left;
+  width: 33.3%;
+  font-size: 18px;
+  color: black;
+}
+.footer-message-p {
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+}
+.footer-message-box {
+  height: 120px;
+  // line-height: 120px;
+}
+.footer-message-box-item {
+  display: inline-block;
+  width: 90px;
+  height: 100px;
+  line-height: 80%;
+  border: 0.5px solid #dddddd;
+  padding-top: 5px;
+}
+.footer-message-box img {
+  float: left;
+  width: 100px;
+  height: 100px;
+  margin-left: 45px;
+  // vertical-align: top;
+}
+.footer-message-box p {
+  float: right;
+  width: 150px;
+  height: 35px;
+  text-align: left;
+  line-height: 35px;
+  text-indent: 5px;
+  // vertical-align: top;
+}
+.width250 {
+  display: block;
+  margin: 0 auto;
+  width: 300px!important
+}
+.footer-message-box-item i {
+  width: 50%;
+  margin-top: 11%;
+  margin-bottom: 12%;
+  font-size: 40px;
+}
+.footer-box {
+  padding-left: 10%;
+  padding-right: 10%;
+  text-align: center;
+  margin: 0 auto;
+  border-bottom: 1px solid #555555;
+  height: 120px;
+}
+.footer-box p {
+  float: left;
+  width: 25%;
+  font-size: 20px;
+  color: white;
+  height: 120px;
+  line-height: 120px;
+}
+.footer p i {
+  vertical-align: middle;
+  font-size: 50px;
+  color: white;
+}
+.footer-copyright {
+  display: block;
+  line-height: 50px;
+  height: 50px;
+  width: 1190px;
+  margin: 0 auto;
+  text-align: center;
+  color: #555555;
+}
+.p-left {
+  width: 90px!important;
+  text-align: center!important;
+}
+.ant-layout-footer {
+  padding: 0px!important;
+}
+.footer-message-box-item:hover{
+  cursor: pointer;
+}
+.footer-content{
+  width: 1190px;
+  height: 220px;
+  margin: 0 auto;
+
+  .footer-left{
+    float: left;
+    width: 720px;
+    height: 220px;
+    padding: 40px 0px;
+    li .title{
+      height: 50px;
+      line-height: 50px;
+      text-align: left;
+      font-size: 15px;
+      font-weight: bold;
+      color: #333333;
     }
-    .help span:hover{
-        cursor: pointer;
+    li span{
+      display: inline-block;
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      text-align: left;
+      color: #999999;
     }
-    .footer {
-        background: #414141;
-        border-top: 1px #000;
+    .law{
+      float: left;
+      width: 140px;
+      height: 140px;
     }
-    .footer-message {
-        color: #000;
-        height: 220px;
-        background: #ffffff;
-        border-top: 1px solid #f2f2f2;
+    .help{
+      float: left;
+      width: 140px;
+      height: 140px;
+
     }
-    .footer-message-item {
-        text-align: center;
-        float: left;
-        width: 33.3%;
-        font-size: 18px;
-        color: black;
+    .sale{
+      float: left;
+      width: 200px;
+      height: 140px;
+
     }
-    .footer-message-p {
-        width: 100%;
-        height: 100px;
-        line-height: 100px;
+    .service{
+      float: left;
+      width: 200px;
+      height: 140px;
+
     }
-    .footer-message-box {
-        height: 120px;
-        // line-height: 120px;
-    }
-    .footer-message-box-item {
-        display: inline-block;
+  }
+  .footer-right{
+    float: right;
+    width: 440px;
+    height: 220px;
+    padding: 50px 0px;
+    div{
+      float: right;
+      width: 90px;
+      height: 125px;
+      img{
         width: 90px;
-        height: 100px;
-        line-height: 80%;
-        border: 0.5px solid #dddddd;
-        padding-top: 5px;
-    }
-    .footer-message-box img {
-        float: left;
-        width: 100px;
-        height: 100px;
-        margin-left: 45px;
-        // vertical-align: top;
-    }
-    .footer-message-box p {
-        float: right;
-        width: 150px;
-        height: 35px;
-        text-align: left;
-        line-height: 35px;
-        text-indent: 5px;
-        // vertical-align: top;
-    }
-    .width250 {
-        display: block;
-        margin: 0 auto;
-        width: 300px!important
-    }
-    .footer-message-box-item i {
-        width: 50%;
-        margin-top: 10%;
-        margin-bottom: 10%;
-        font-size: 40px;
-    }
-    .footer-box {
-        padding-left: 10%;
-        padding-right: 10%;
+        height: 90px;
+      }
+      p{
+        height: 30px;
+        line-height: 30px;
         text-align: center;
-        margin: 0 auto;
-        border-bottom: 1px solid #555555;
-        height: 120px;
+      }
     }
-    .footer-box p {
-        float: left;
-        width: 25%;
-        font-size: 20px;
-        color: white;
-        height: 120px;
-        line-height: 120px;
-    }
-    .footer p i {
-        vertical-align: middle;
-        font-size: 50px;
-        color: white;
-    }
-    .footer-copyright {
-        display: block;
-        line-height: 50px;
-        height: 50px;
-        width: 1190px;
-        margin: 0 auto;
-        text-align: center;
-        color: #555555;
-    }
-    .p-left {
-        width: 90px!important;
-        text-align: center!important;
-    }
-    .ant-layout-footer {
-        padding: 0px!important;
-    }
-    .footer-message-box-item:hover{
-        cursor: pointer;
-    }
-    .footer-content{
-        width: 1190px;
-        height: 220px;
-        margin: 0 auto;
-
-        .footer-left{
-            float: left;
-            width: 720px;
-            height: 220px;
-            padding: 40px 0px;
-            li .title{
-                height: 50px;
-                line-height: 50px;
-                text-align: left;
-                font-size: 15px;
-                font-weight: bold;
-                color: #333333;
-            }
-            li span{
-                display: inline-block;
-                width: 100%;
-                height: 30px;
-                line-height: 30px;
-                text-align: left;
-                color: #999999;
-            }
-            .law{
-                float: left;
-                width: 140px;
-                height: 140px;
-            }
-            .help{
-                float: left;
-                width: 140px;
-                height: 140px;
-
-            }
-            .sale{
-                float: left;
-                width: 200px;
-                height: 140px;
-
-            }
-            .service{
-                float: left;
-                width: 200px;
-                height: 140px;
-
-            }
-        }
-        .footer-right{
-            float: right;
-            width: 440px;
-            height: 220px;
-            padding: 50px 0px;
-            div{
-                float: right;
-                width: 90px;
-                height: 125px;
-                img{
-                    width: 90px;
-                    height: 90px;
-                }
-                p{
-                    height: 30px;
-                    line-height: 30px;
-                    text-align: center;
-                }
-            }
-        }
-    }
+  }
+}
 </style>
 
 
