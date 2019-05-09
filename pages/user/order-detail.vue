@@ -96,7 +96,7 @@
               </p>
               <p class="address">
                 <span class="three">地址：</span>
-                <span class="address-goods">{{ storeInfo.comp.address }}</span>
+                <span class="address-goods">{{item.areaAllName}}{{ storeInfo.comp.address }}</span>
               </p>
               <p>
                 <span class="three">手机号:</span>
