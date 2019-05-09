@@ -1,21 +1,21 @@
 <template>
-  <div>
-    <!-- 首页 -->
-    <a-layout-header v-if="type === 'home'">
-      <!-- <f-space-menu v-if="isShowMenu"></f-space-menu> -->
-      <div>
-        <div class="header-title" v-show="isShowHeader">
-          <div class="header-left">
-            <a v-show="isLogin">
-              <a-icon type="environment"></a-icon>湖南
-            </a>
-            <a>欢迎来到一块医药</a>
-            <span @click="downloadHtml()">
+    <div>
+        <!-- 首页 -->
+        <a-layout-header v-if="type === 'home'">
+            <!-- <f-space-menu v-if="isShowMenu"></f-space-menu> -->
+            <div>
+                <div class="header-title" v-show="isShowHeader">
+                    <div class="header-left">
+                        <a v-show="isLogin">
+                            <a-icon type="environment"></a-icon>湖南
+                        </a>
+                        <a>欢迎来到一块医药</a>
+                        <span @click="downloadHtml()">
               <!-- <img src="../../../assets/img/desktop.png" alt="" class="desktop"> -->
               桌面快捷方式
             </span>
-            <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
-            <nuxt-link to="/user/register" v-show="!isLogin">注册有礼</nuxt-link>
+                        <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
+                        <nuxt-link to="/user/register" v-show="!isLogin">注册有礼</nuxt-link>
 
             <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
           </div>
@@ -186,342 +186,342 @@
   </div>
 </template>
 <script>
-// import HeaderNotice from './HeaderNotice'
-// import FSpaceMenu from '../menu'
-export default {
-  name: "f-space-header",
-  props: ["type", "searchList"],
-  // components: {
-  //   HeaderNotice
-  // },
-  // components: {
-  //   FSpaceMenu
-  // },
-  // components: {
-  //   FSpaceMenu
-  // },
-  computed: {
-    storeInfo() {
-      return this.$store.state.user;
-    },
-    keyword: {
-      get() {
-        return this.$store.state.keyword;
-      },
-      set(newValue) {
-        this.$store.commit("KEY_WORD", newValue);
-        return this.$store.state.keyword;
-      }
-    },
-    isLogin() {
-      return this.$store.state.userStatus;
-    }
-  },
-  data() {
-    return {
-      isShowMenu: false,
-      confirmLoading: false,
-      ModalText: "您确定要退出登录吗?",
-      isLogout: false,
-      goodsClass: "",
-      isShowHeader: true,
-      isDisTip: false,
-      isShowCartList: false,
-      cartList: []
-    };
-  },
-  mounted() {
-    this.init();
-    this.checkStoreLoginStatus();
-    window.addEventListener("scroll", this.handleScroll);
-    if (this.isLogin) {
-      this.getShoppingCartList();
-    }
-  },
-  methods: {
-    init() {
-      this.isDisTip = localStorage.getItem("isDisTip") ? false : true;
-      if (this.isDisTip) {
-        localStorage.setItem("isDisTip", "1");
-      }
-    },
-    downloadHtml() {
-      location.href = "http://114.116.155.221:8000/一块医药.url";
-    },
-    // 获取楼层显示状态
-    async checkStoreLoginStatus() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "checkStoreLoginStatus";
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification") || "";
-      this.$refcallback(
-        this,
-        "userServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.$store
-              .dispatch("setUserStatus", {
-                context: _this,
-                status: result.data
-              })
-              .then(res => {})
-              .catch(err => {
-                console.log(err);
-              });
-          }
-        })
-      );
-    },
-    handleLogoutOk(e) {
-      this.confirmLoading = true;
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "logout";
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "userServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.$message.success(result.data);
-            _this.$store
-              .dispatch("setLogout", { context: _this })
-              .then(res => {
-                _this.isLogout = false;
-                _this.confirmLoading = false;
-                // 跳转页面
-                setTimeout(() => {
-                  _this.$router.push({
-                    path: "/user/login"
-                  });
-                }, 500);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else {
-            _this.$store
-              .dispatch("setLogout", { context: _this })
-              .then(res => {
-                _this.isLogout = false;
-                _this.confirmLoading = false;
-                // 跳转页面
-                setTimeout(() => {
-                  _this.$router.push({
-                    path: "/user/login"
-                  });
-                }, 500);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          }
-        })
-      );
-    },
-    handleScroll() {
-      var scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      var home = this.$refs.home.style;
-      var nameBox = this.$refs.nameBox.style;
-      if (scrollTop >= 170) {
-        home.position = "fixed";
-        home.top = "0px";
-        home.opacity = "1";
-        home.zIndex = "1000";
-        home.width = "100%";
-        home.height = "125px";
-        nameBox.height = "100px";
-        this.isShowHeader = false;
-      } else {
-        home.position = "";
-        home.top = "";
-        home.height = "170px";
-        nameBox.height = "130px";
-        this.isShowHeader = true;
-      }
-    },
-    removeCartList(item, index) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ShoppingCartModule";
-      iRequest.method = "clearShopCart";
-      iRequest.param.json = JSON.stringify({
-        compid: _this.storeInfo.comp.storeId,
-        ids: item.unqid
-      });
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" +
-          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.$message.success("购物车移除成功~");
-            _this.cartList.splice(index, 1);
-            if (_this.cartList.length > 0) _this.getShoppingCartList();
-          }
-        })
-      );
-    },
-    handleOk() {
-      // 跳转企业中心页面
-      this.$router.push({
-        path: "/user/personal"
-      });
-    },
-    toBrand() {
-      this.$router.push({
-        path: "/activity/brand"
-      });
-    },
-    handleCancel() {
-      this.isLogout = false;
-    },
-    toPage(name) {
-      this.$router.push({
-        name: name
-      });
-    },
-    toGoods(keyword) {
-      if (keyword === "") {
-        return;
-      }
-      // this.$store.commit('KEY_WORD', keyword)
-      let routeData = this.$router.resolve({
-        name: "category",
-        query: {
-          keyword: keyword
-        }
-      });
-      window.open(routeData.href, "_blank");
-    },
-    showList() {
-      this.isShowCartList = true;
-    },
-    hideList() {
-      this.isShowCartList = false;
-    },
-    toInformation() {
-      this.$router.push({
-        path: "/user/personal/information"
-      });
-    },
-    toMyOrder() {
-      this.$router.push({
-        path: "/user/personal/myorder"
-      });
-    },
-    toFoot() {
-      this.$router.push({
-        path: "/user/personal/footprint"
-      });
-    },
-    toCollection() {
-      this.$router.push({
-        path: "/user/personal/collection"
-      });
-    },
-    async getShoppingCartList() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ShoppingCartModule";
-      iRequest.method = "queryUnCheckShopCartList";
-      iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.comp.storeId
-      });
-      console.log(
-        "orderServer" +
-          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535)
-      );
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" +
-          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            if (result.data) {
-              _this.cartList = result.data;
-              _this.cartList.forEach(item => {
-                item.checked ? false : true;
-              });
-              _this.fsGeneralMethods.addImages(
-                _this,
-                _this.cartList,
-                "pdno",
-                "spu"
-              );
+    // import HeaderNotice from './HeaderNotice'
+    // import FSpaceMenu from '../menu'
+    export default {
+        name: "f-space-header",
+        props: ["type", "searchList"],
+        // components: {
+        //   HeaderNotice
+        // },
+        // components: {
+        //   FSpaceMenu
+        // },
+        // components: {
+        //   FSpaceMenu
+        // },
+        computed: {
+            storeInfo() {
+                return this.$store.state.user;
+            },
+            keyword: {
+                get() {
+                    return this.$store.state.keyword;
+                },
+                set(newValue) {
+                    this.$store.commit("KEY_WORD", newValue);
+                    return this.$store.state.keyword;
+                }
+            },
+            isLogin() {
+                return this.$store.state.userStatus;
             }
-          }
-        })
-      );
-    },
-    async getBasicInfo() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "getStoreSession";
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "userServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            // 设置登录
-            _this.$store.dispatch("setUserState");
-            localStorage.setItem("storeInfo", result.data);
-          }
-        })
-      );
-    },
-    // 退出登录
-    logout() {
-      this.isLogout = true;
-    },
-    toIntegral() {
-      let routeData = this.$router.resolve({
-        path: "/user/integral"
-      });
-      window.open(routeData.href, "_blank");
-    },
-    toNewGoods() {
-      this.$router.push({
-        path: "/activity/new-goods"
-      });
-    },
-    // 新人专享
-    toNewPerson() {
-      this.$router.push({
-        path: "/activity/new-person"
-      });
-    },
-    toHotGoods() {
-      this.$router.push({
-        path: "/activity/hot-goods",
-        query: {
-          actcode: this.hotGoodsID
+        },
+        data() {
+            return {
+                isShowMenu: false,
+                confirmLoading: false,
+                ModalText: "您确定要退出登录吗?",
+                isLogout: false,
+                goodsClass: "",
+                isShowHeader: true,
+                isDisTip: false,
+                isShowCartList: false,
+                cartList: []
+            };
+        },
+        mounted() {
+            this.init();
+            this.checkStoreLoginStatus();
+            window.addEventListener("scroll", this.handleScroll);
+            if (this.isLogin) {
+                this.getShoppingCartList();
+            }
+        },
+        methods: {
+            init() {
+                this.isDisTip = localStorage.getItem("isDisTip") ? false : true;
+                if (this.isDisTip) {
+                    localStorage.setItem("isDisTip", "1");
+                }
+            },
+            downloadHtml() {
+                location.href = "http://114.116.155.221:8000/一块医药.url";
+            },
+            // 获取楼层显示状态
+            async checkStoreLoginStatus() {
+                let _this = this;
+                let iRequest = new inf.IRequest();
+                iRequest.cls = "LoginRegistrationModule";
+                iRequest.method = "checkStoreLoginStatus";
+                iRequest.param.json = JSON.stringify({});
+                iRequest.param.token = localStorage.getItem("identification") || "";
+                this.$refcallback(
+                    this,
+                    "userServer",
+                    iRequest,
+                    new this.$iceCallback(function result(result) {
+                        if (result.code === 200) {
+                            _this.$store
+                                .dispatch("setUserStatus", {
+                                    context: _this,
+                                    status: result.data
+                                })
+                                .then(res => {})
+                                .catch(err => {
+                                    console.log(err);
+                                });
+                        }
+                    })
+                );
+            },
+            handleLogoutOk(e) {
+                this.confirmLoading = true;
+                let _this = this;
+                let iRequest = new inf.IRequest();
+                iRequest.cls = "LoginRegistrationModule";
+                iRequest.method = "logout";
+                iRequest.param.token = localStorage.getItem("identification");
+                this.$refcallback(
+                    this,
+                    "userServer",
+                    iRequest,
+                    new this.$iceCallback(function result(result) {
+                        if (result.code === 200) {
+                            _this.$message.success(result.data);
+                            _this.$store
+                                .dispatch("setLogout", { context: _this })
+                                .then(res => {
+                                    _this.isLogout = false;
+                                    _this.confirmLoading = false;
+                                    // 跳转页面
+                                    setTimeout(() => {
+                                        _this.$router.push({
+                                            path: "/user/login"
+                                        });
+                                    }, 500);
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                });
+                        } else {
+                            _this.$store
+                                .dispatch("setLogout", { context: _this })
+                                .then(res => {
+                                    _this.isLogout = false;
+                                    _this.confirmLoading = false;
+                                    // 跳转页面
+                                    setTimeout(() => {
+                                        _this.$router.push({
+                                            path: "/user/login"
+                                        });
+                                    }, 500);
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                });
+                        }
+                    })
+                );
+            },
+            handleScroll() {
+                var scrollTop =
+                    window.pageYOffset ||
+                    document.documentElement.scrollTop ||
+                    document.body.scrollTop;
+                var home = this.$refs.home.style;
+                var nameBox = this.$refs.nameBox.style;
+                if (scrollTop >= 170) {
+                    home.position = "fixed";
+                    home.top = "0px";
+                    home.opacity = "1";
+                    home.zIndex = "1000";
+                    home.width = "100%";
+                    home.height = "125px";
+                    nameBox.height = "100px";
+                    this.isShowHeader = false;
+                } else {
+                    home.position = "";
+                    home.top = "";
+                    home.height = "170px";
+                    nameBox.height = "130px";
+                    this.isShowHeader = true;
+                }
+            },
+            removeCartList(item, index) {
+                let _this = this;
+                let iRequest = new inf.IRequest();
+                iRequest.cls = "ShoppingCartModule";
+                iRequest.method = "clearShopCart";
+                iRequest.param.json = JSON.stringify({
+                    compid: _this.storeInfo.comp.storeId,
+                    ids: item.unqid
+                });
+                iRequest.param.token = localStorage.getItem("identification");
+                this.$refcallback(
+                    this,
+                    "orderServer" +
+                    Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+                    iRequest,
+                    new this.$iceCallback(function result(result) {
+                        if (result.code === 200) {
+                            _this.$message.success("购物车移除成功~");
+                            _this.cartList.splice(index, 1);
+                            if (_this.cartList.length > 0) _this.getShoppingCartList();
+                        }
+                    })
+                );
+            },
+            handleOk() {
+                // 跳转企业中心页面
+                this.$router.push({
+                    path: "/user/personal"
+                });
+            },
+            toBrand() {
+                this.$router.push({
+                    path: "/activity/brand"
+                });
+            },
+            handleCancel() {
+                this.isLogout = false;
+            },
+            toPage(name) {
+                this.$router.push({
+                    name: name
+                });
+            },
+            toGoods(keyword) {
+                if (keyword === "") {
+                    return;
+                }
+                // this.$store.commit('KEY_WORD', keyword)
+                let routeData = this.$router.resolve({
+                    name: "category",
+                    query: {
+                        keyword: keyword
+                    }
+                });
+                window.open(routeData.href, "_blank");
+            },
+            showList() {
+                this.isShowCartList = true;
+            },
+            hideList() {
+                this.isShowCartList = false;
+            },
+            toInformation() {
+                this.$router.push({
+                    path: "/user/personal/information"
+                });
+            },
+            toMyOrder() {
+                this.$router.push({
+                    path: "/user/personal/myorder"
+                });
+            },
+            toFoot() {
+                this.$router.push({
+                    path: "/user/personal/footprint"
+                });
+            },
+            toCollection() {
+                this.$router.push({
+                    path: "/user/personal/collection"
+                });
+            },
+            async getShoppingCartList() {
+                let _this = this;
+                let iRequest = new inf.IRequest();
+                iRequest.cls = "ShoppingCartModule";
+                iRequest.method = "queryUnCheckShopCartList";
+                iRequest.param.json = JSON.stringify({
+                    compid: this.storeInfo.comp.storeId
+                });
+                console.log(
+                    "orderServer" +
+                    Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535)
+                );
+                iRequest.param.token = localStorage.getItem("identification");
+                this.$refcallback(
+                    this,
+                    "orderServer" +
+                    Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+                    iRequest,
+                    new this.$iceCallback(function result(result) {
+                        if (result.code === 200) {
+                            if (result.data) {
+                                _this.cartList = result.data;
+                                _this.cartList.forEach(item => {
+                                    item.checked ? false : true;
+                                });
+                                _this.fsGeneralMethods.addImages(
+                                    _this,
+                                    _this.cartList,
+                                    "pdno",
+                                    "spu"
+                                );
+                            }
+                        }
+                    })
+                );
+            },
+            async getBasicInfo() {
+                let _this = this;
+                let iRequest = new inf.IRequest();
+                iRequest.cls = "LoginRegistrationModule";
+                iRequest.method = "getStoreSession";
+                iRequest.param.token = localStorage.getItem("identification");
+                this.$refcallback(
+                    this,
+                    "userServer",
+                    iRequest,
+                    new this.$iceCallback(function result(result) {
+                        if (result.code === 200) {
+                            // 设置登录
+                            _this.$store.dispatch("setUserState");
+                            localStorage.setItem("storeInfo", result.data);
+                        }
+                    })
+                );
+            },
+            // 退出登录
+            logout() {
+                this.isLogout = true;
+            },
+            toIntegral() {
+                let routeData = this.$router.resolve({
+                    path: "/user/integral"
+                });
+                window.open(routeData.href, "_blank");
+            },
+            toNewGoods() {
+                this.$router.push({
+                    path: "/activity/new-goods"
+                });
+            },
+            // 新人专享
+            toNewPerson() {
+                this.$router.push({
+                    path: "/activity/new-person"
+                });
+            },
+            toHotGoods() {
+                this.$router.push({
+                    path: "/activity/hot-goods",
+                    query: {
+                        actcode: this.hotGoodsID
+                    }
+                });
+            },
+            showMenu() {
+                this.isShowMenu = true;
+            },
+            hiddenMenu() {
+                this.isShowMenu = false;
+            }
         }
-      });
-    },
-    showMenu() {
-      this.isShowMenu = true;
-    },
-    hiddenMenu() {
-      this.isShowMenu = false;
-    }
-  }
-};
+    };
 </script>
 <style lang='less'>
 @import "../../../components/fspace-ui/container/index.less";
@@ -700,8 +700,8 @@ li {
   color: black;
 }
 .medicine-name img {
-  // width: 195px;
-  // height: 62px;
+  width: 195px;
+  height: 62px;
 }
 .medicine-search {
   display: inline-block;
@@ -845,7 +845,7 @@ li {
   display: block;
   width: 1196px;
   margin: 0 auto;
-  
+
 }
 .nav-box .goods-type {
   display: inline-block;

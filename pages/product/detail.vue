@@ -40,7 +40,7 @@
                </p>
             </div>
             <div class="goods-info">
-              <p class="goods-name">{{ prodDetail.prodname }}</p>
+              <p class="goods-name">{{prodDetail.brandName}} {{ prodDetail.prodname }} {{prodDetail.spec}}</p>
               <p
                 class="rush-time"
                 v-if="rulecode == 1113 && isSecondkill"
@@ -51,28 +51,18 @@
               >一块购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒 <span @click="toBuying()">查看更多 ></span></p>
               <div class="price-server">
                 <p class="onek-person" v-if="rulecode == 1133">
-                  <span>10.0</span>
-                  <span>9.8</span>
-                  <span>9.5</span>
-                  <span>9.0</span>
-                  <span>8.8</span>
-                  <span>8.5</span>
+                  <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.offer / 10 }}</span>
                   <span>折</span>
                 </p>
                 <a-progress
                   v-if="rulecode === 1113 || rulecode === 1133"
-                  :percent="percentAge"
+                  :percent="discount.currNums / ladnum * 100" 
                   style="width: 295px;height: 8px;margin-left: 20px;"
                   :showInfo="false"
                   status="exception"
                 />
                 <p class="onek-person" v-if="rulecode === 1133">
-                  <span>1</span>
-                  <span>5</span>
-                  <span>10</span>
-                  <span>15</span>
-                  <span>20</span>
-                  <span>25</span>
+                  <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.ladnum }}</span>
                   <span>人</span>
                 </p>
                 <p class="surplus" v-if="rulecode == 1113">
@@ -154,7 +144,6 @@
                     :max="maximum"
                     v-model="inventory"
                     style="position:relative;top: 1px;left:0px;height: 30px;width: 50px;"
-                   
                   />
                   <!-- <a-input-number :min="1" :max="maximum" v-model="inventory" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;"/> -->
                   <button @click="addCount()">+</button>
@@ -503,6 +492,7 @@ export default {
           id: 6
         }
       ],
+      ladnum: 0,
       discount: {},
       likes: 0,
       brandNum: "",
@@ -513,7 +503,7 @@ export default {
       tabStyle: {
         color: "black",
         fontSize: "26px",
-        backgroundColor: "#f2f2f2"
+        backgroundColor: "#f8f8f8"
       },
       count: 1
     };
@@ -525,20 +515,6 @@ export default {
     // 获取商品详情
     this.getProd();
     this.getImgUrl();
-    if(this.userStatus) {
-      // 获取优惠券
-      this.queryCouponPub();
-      // 获取是否收藏
-      this.isCollec();
-      // 获取活动详情
-      this.getActivitiesBySKU();
-      // 获取热销数据
-      this.getProdDetailHotArea();
-      //获取评价信息
-      this.$nextTick(function() {
-        this.getGoodsApprise();
-      });
-    }
     this.$nextTick(() => {
       this.isShowPic = true;
     });
@@ -605,6 +581,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
+            console.log(_this.activitiesBySKU)
             // 如果存在活动 取库存与活动库存最小值
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
@@ -786,8 +763,8 @@ export default {
           function result(result) {
           if (result.code === 200) {
             if (result.data) {
-              
               _this.discount = result.data;
+              _this.ladnum = _this.discount.ladoffs[_this.discount.ladoffs.length -1].ladnum
               // 设置倒计时
               _this.secondKill(
                 _this.stringToDate(_this.discount.currentDate),
@@ -844,8 +821,22 @@ export default {
             if (result.data) {
               _this.prodDetail = result.data;
               if(_this.userStatus) {
+                // 上传足迹
                 _this.getFoot();
+                // 获取优惠券
+                _this.queryCouponPub();
+                // 获取是否收藏
+                _this.isCollec();
+                // 获取活动详情
+                _this.getActivitiesBySKU();
+                // 获取热销数据
+                _this.getProdDetailHotArea();
+                //获取评价信息
+                _this.$nextTick(function() {
+                  _this.getGoodsApprise();
+                });
               }
+              _this.maximum = _this.prodDetail.store;
               _this.details = JSON.parse(_this.prodDetail.detail);
             }
           }
@@ -1198,14 +1189,14 @@ li {
   width: 1190px;
   height: auto;
   margin: 0 auto 40px auto;
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
   padding-bottom: 20px;
 }
 .coupon-title {
   height: 50px;
   line-height: 50px;
   font-size: 20px;
-  background: #f2f2f2;
+  background: #f8f8f8;
   text-indent: 20px;
   color: #999999;
 }
@@ -1364,6 +1355,9 @@ li {
   line-height: 40px;
   font-size: 24px;
   font-weight: bold;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .rush-time {
   height: 40px;

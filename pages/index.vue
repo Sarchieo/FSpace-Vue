@@ -144,7 +144,7 @@
                     <div class="onek-box" slot="cover">
                       <p class="onek-price" v-if="item.vatp != -1">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
                       <p class="onek-price" v-else>￥认证后可见</p>
-                      <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
+                      <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
                       <!-- <p class="goods-success">{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p> -->
                       <!-- <p class="goods-state"></p> -->
@@ -393,11 +393,11 @@
 
                     <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
                     <div class="goods-info">
-                      <p class="card-prices" v-if="item.vatp != -1">
+                      <p class="card-prices" v-if="items.vatp != -1">
                         ￥{{items.actprize}}
                         <del>￥{{items.mp}}</del>
                       </p>
-                        <p class="card-prices" v-else>
+                      <p class="card-prices" v-else>
                         ￥认证后可见
                       </p>
                       <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
@@ -487,8 +487,13 @@ export default {
     };
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll);
     this.getMallFloorProd();
+    this.$nextTick(() => {
+      window.addEventListener("scroll", this.handleScroll);
+    })
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll)
   },
   methods: {
     // 购物车临时入口
@@ -1055,7 +1060,7 @@ li {
   background: #000000;
 }
 #components-layout-demo-basic .ant-layout-content {
-  background: #f2f2f2;
+  background: #f8f8f8;
   height: auto;
   min-height: 1000px;
   color: #000000;
@@ -1215,14 +1220,14 @@ li {
   height: 30px;
   text-align: center;
   line-height: 30px;
-  border-top: 1px solid #f2f2f2;
+  border-top: 1px solid #f8f8f8;
   color: #999;
 }
 /* 为你精选 */
 .elaborate {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 300px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .elaborate-ui {
   // display: flex;
@@ -1304,7 +1309,7 @@ li {
 /* 热销专区，包邮专区 */
 .brand-divs {
   .container-size(block, 1210px, 310px, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .brand-hall {
   .container-size(block, 1190px, 360px, 0 auto, 0px);
@@ -1320,13 +1325,13 @@ li {
 }
 .onek-text {
   .p-size(30px, 30px, 16px, left, 0px, #333333);
-  background: #f2f2f2;
+  background: #f8f8f8;
   font-weight: bold;
 }
 .onek-shoping {
   .container-size(block, 1202px, auto, 0 auto, 0px);
   min-height: 310px;
-  background: #f2f2f2;
+  background: #f8f8f8;
   ul {
     float: left;
     width: 1210px;
@@ -1416,7 +1421,7 @@ li {
 }
 .brand-div {
   .container-size(block, 1202px, auto, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .brand-left {
   float: left;
@@ -1450,7 +1455,7 @@ li {
 .see-whole {
   .position(absolute, 240px, 40px);
   .button-size(150px, 40px, 40px, 14px, 0, 30px);
-  .button-color(1px solid #c40000, #f2f2f2, #c40000);
+  .button-color(1px solid #c40000, #f8f8f8, #c40000);
 }
 .brand-left a {
   width: 100%;
@@ -1468,7 +1473,7 @@ li {
   float: left;
   width: 970px;
   height: 360px;
-  background: #f2f2f2;
+  background: #f8f8f8;
   li {
     display: inline-block;
     margin-left: 0px;
@@ -1510,7 +1515,7 @@ li {
   .container-size(block, 1190px, 435px, 0 auto, 0px);
   position: relative;
   background: #ffffff;
-  border-top: 1px solid #f2f2f2;
+  border-top: 1px solid #f8f8f8;
   margin-bottom: 25px;
 }
 .ant-carousel > .slick-slide {
@@ -1689,8 +1694,8 @@ li {
 .sider-meun {
   position: fixed;
   top: 300px;
-  left: 10px;
-  background: #f2f2f2;
+  right: 10px;
+  background: #f8f8f8;
 }
 
 .sider-meun .right-meun {

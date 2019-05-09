@@ -135,7 +135,7 @@ export default {
 }
 .sider-menu-li:hover {
   background: rgb(255, 0, 54);
-  color: #f2f2f2;
+  color: #f8f8f8;
 }
 .sider-menu-li:hover i{
   color: #ffffff;

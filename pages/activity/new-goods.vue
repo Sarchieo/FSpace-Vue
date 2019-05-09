@@ -8,7 +8,7 @@
          </div>
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
-       
+
           <!-- <div class="person-num">
              <div class="person-left">
                  商品累计拼团人数/折扣 描述方式待定
@@ -21,7 +21,7 @@
             <div class="goods-box" v-for="(item,index) in newGoodsList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
                 <img v-lazy="item.imgURl" alt class="goods-pic">
-                <p class="goods-name">{{item.prodname}} {{item.spec}}</p>
+                <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
                 <p class="goods-price" v-if="item.vatp != -1">限时价￥{{item.vatp}}元</p>
@@ -31,7 +31,6 @@
             </div>
             <a-pagination
               :total="total"
-              v-if="this.newGoodsList.length !== 0 "
               @change="onChangePage"
             />
           </div>
@@ -86,6 +85,7 @@ export default {
     },
     async getNewGoods() {
       let _this = this;
+      _this.newGoodsList = []
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "newProdSearch";
@@ -120,7 +120,7 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 .ant-layout-content {
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .person-num {
   .container-size(block, 1190px, 86px, 0 auto, 0px);
@@ -144,13 +144,13 @@ export default {
 
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .limited-goods {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
   margin-bottom: 20px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .tab-pane {
   width: 270px;

@@ -17,7 +17,7 @@ module.exports = {
     ],
     script: [
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/ice/3.6.3/Ice.js' },
-      { src: 'http://114.116.155.221/iceInterfaces.js' }
+      { src: 'http://114.116.149.145:9999/iceInterfaces.js' }
       // { src: 'https://www.onekdrug.com/iceInterfaces.js' }
     ] 
   },
@@ -64,6 +64,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    extractCSS: false,
     analyze: true,
         vendor: [],
         maxChunkSize: 300000,
@@ -90,8 +91,8 @@ module.exports = {
     loaders: {
       less: {
         modifyVars: {
-          'primary-color': '#378dd0',
-          'link-color': '#378dd0',
+          'primary-color': '#dc4234',
+          'link-color': '#dc4234',
           'border-radius-base': '1px',
         },
         javascriptEnabled: true

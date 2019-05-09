@@ -11,8 +11,8 @@
          
           <div class="limited-goods">
             <p class="search-p">
-              <input type="text" placeholder="在结果中搜索">
-              <button>搜索</button>
+              <input type="text" v-model="keyword" placeholder="在结果中搜索">
+              <button @click="getNewPersonList()">搜索</button>
             </p>
             <div class="goods-box" v-for="(item,index) in newPersonList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
@@ -21,8 +21,8 @@
                   <a-icon type="star"/>
                 </span>
                 <img v-lazy="item.imgURl" alt class="goods-pic">
-                <p class="validity">有效期{{item.vaildsdate}}至{{item.vaildedate}}</p>
-                <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
+                <p class="validity">有效期{{item.vaildedate}}</p>
+                <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
                 <p class="goods-price" v-if="item.vatp != -1">
@@ -34,7 +34,7 @@
                 </p>
                 <p class="package">
                   <span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span>
-                  <span class="float-right">已售{{item.buynum}}{{item.unitName}}</span>
+                  <span class="float-right">已售{{item.sales}}{{item.unitName}}</span>
                 </p>
                 <p class="limit">
                   <span>限购{{item.limits}} {{item.unitName}}</span>
@@ -51,7 +51,6 @@
             </div>
             <a-pagination
               :total="total"
-              v-if="this.newPersonList.length !== 0 "
               @change = "onChangePage"
             />
           </div>
@@ -110,6 +109,7 @@ export default {
     //获取新人专享列表
    getNewPersonList() {
       let _this = this;
+      _this.newPersonList = []
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "newMemberSearch";
@@ -144,7 +144,7 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 .ant-layout-content {
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .person-num {
   .container-size(block, 1190px, 86px, 0 auto, 0px);
@@ -167,13 +167,13 @@ export default {
 }
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .limited-goods {
   .container-size(block, 1210px, auto, 0 auto, 0px);
   min-height: 400px;
   margin-bottom: 20px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .tab-pane {
   width: 270px;
@@ -317,7 +317,7 @@ export default {
     background: #ffffff;
   }
   .add-cart {
-    .button-size(85px, 30px, 20px, 14px, 0px, 0px);
+    .button-size(80px, 30px, 20px, 14px, 0px, 0px);
     .button-color(1px solid transparent, #ff0036, #ffffff);
   }
 }

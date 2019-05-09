@@ -19,8 +19,8 @@
           </div>-->
           <div class="limited-goods">
             <p class="search-p">
-              <input type="text" placeholder="在结果中搜索">
-              <button>搜索</button>
+              <input v-model="keyword" type="text" placeholder="在结果中搜索">
+              <button @click="getSelects()">搜索</button>
             </p>
             <div class="goods-box" v-for="(item,index) in selectedList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
@@ -30,7 +30,7 @@
                 </span>
                 <img v-lazy="item.imgURl" alt class="goods-pic">
                 <p class="validity">有效期至{{item.vaildedate}}</p>
-                <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
+                <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
                 <p class="goods-price" v-if="item.vatp != -1">
@@ -57,7 +57,6 @@
             </div>
             <a-pagination
               :total="total"
-              v-if="this.selectedList.length !== 0 "
               @change="onChangePage"
             />
           </div>
@@ -148,6 +147,7 @@ export default {
     // 为你精选数据
     getSelects() {
       let _this = this;
+      _this.selectedList = []
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "chooseForYouSearch";
@@ -182,7 +182,7 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 .ant-layout-content {
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .person-num {
   .container-size(block, 1190px, 86px, 0 auto, 0px);
@@ -213,13 +213,13 @@ export default {
 }
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .limited-goods {
   .container-size(block, 1210px, auto, 0 auto, 0px);
   min-height: 400px;
   margin-bottom: 20px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .tab-pane {
   width: 270px;

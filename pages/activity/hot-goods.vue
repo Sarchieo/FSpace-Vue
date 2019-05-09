@@ -12,16 +12,16 @@
           <div class="limited-goods">
               <div class="goods-box" v-for="(item,index) in hotGoodsList" :key="index">
                 <a-card hoverable class="card" @click="toDetail(item)">
-                  <img v-lazy="item.imgURl" alt="" class="goods-pic">
-                  <p class="goods-name">{{item.brandName}} {{item.spec}}</p>
-                  <p class="goods-surplus">{{item.manuName}}</p>
+                  <img v-lazy="item.imgURl" class="goods-pic">
+                  <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
+                  <p class="goods-surplus">{{item.manuName}} </p>
                   <p class="goods-limit">还剩<span>{{item.store}}</span>盒</p>
                   <p class="goods-price" v-if="item.vatp != -1">单价￥{{item.vatp}}元 </p>
                   <p class="goods-price" v-else>￥认证后可见 </p>
                   <button @click="toDetail(item)">查看详情</button>
                 </a-card>
               </div>
-              <a-pagination :total="total" v-if="this.hotGoodsList.length !== 0 " @change="onChangePage"/>
+              <a-pagination :total="total" @change="onChangePage"/>
           </div>
         </div>
       </a-layout-content>
@@ -64,6 +64,7 @@ export default {
      // 热销商品列表
     async getHotGoods() {
       let _this = this;
+      this.hotGoodsList = []
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "hotProdSearch";
@@ -143,7 +144,7 @@ export default {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
   margin-bottom: 20px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .tab-pane {
     width: 270px;
@@ -169,6 +170,9 @@ export default {
   width: 100%;
   text-indent: 10px;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .goods-adv {
   .position(absolute,50px,250px);

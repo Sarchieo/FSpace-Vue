@@ -14,7 +14,7 @@
               <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.edate">
                 <div class="goods-box" v-for="(item,index) in goodsList.list" :key="index">
                   <img v-lazy="item.imgURl" alt class="goods-pic">
-                  <p class="goods-name">{{item.prodname}}</p>
+                  <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                   <p class="goods-adv">{{item.spec}}</p>
                   <a-progress
                     :percent="item.percentage"
@@ -36,7 +36,7 @@
               </a-tab-pane>
 
             </a-tabs>
-             <a-pagination :total="total" v-if="this.goodsList.length !== 0 " @change="onChangePage"/>
+             <a-pagination :total="total" @change="onChangePage"/>
           </div>
         </div>
       </a-layout-content>
@@ -79,6 +79,7 @@ export default {
     // 获取限时抢购数据
     async getAllDiscount() {
       let _this = this;
+      _this.goodsList = [];
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getAllDiscount";
@@ -178,7 +179,7 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 #components-layout-demo-basic .ant-layout-content{
-   background: #f2f2f2;
+   background: #f8f8f8;
 }
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
@@ -224,7 +225,7 @@ export default {
   .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
   margin-bottom: 20px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .tab-pane {
   width: 270px;

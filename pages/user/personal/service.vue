@@ -144,7 +144,7 @@ export default {
 @import "../../../components/fspace-ui/button/index.less";
 .service-title {
   .p-size(60px, 60px, 16px, left, 20px, #333333);
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .search-input {
   float: right;
@@ -172,7 +172,7 @@ export default {
   .container-size(block, 945px, auto, 0, 0px);
   min-height: 185px;
   margin-bottom: 20px;
-  border: 1px solid #f2f2f2;
+  border: 1px solid #f8f8f8;
 }
 .service-box {
   .container-size(block, 473px, 140px, 0, 0px);
@@ -180,8 +180,8 @@ export default {
   .pic-box {
     float: left;
     .container-size(inline-block, 472px, 140px, 0, 0px);
-    border-right: 1px solid #f2f2f2;
-    // border-bottom: 1px solid #f2f2f2;
+    border-right: 1px solid #f8f8f8;
+    // border-bottom: 1px solid #f8f8f8;
     .name {
       .container-size(inline-block, 200px, 30px, 0, 0px);
       .position(relative, 0px, 10px);
@@ -202,7 +202,7 @@ export default {
 }
 .list-title {
   .p-size(45px, 45px, 14px, left, 20px, #333333);
-  background: #f2f2f2;
+  background: #f8f8f8;
   span {
     margin-right: 50px;
   }
@@ -213,7 +213,7 @@ export default {
   height: 140px;
   line-height: 140px;
   text-align: center;
-  border-right: 1px solid #f2f2f2;
+  border-right: 1px solid #f8f8f8;
   .states {
     .container-size(inline-block, 235px, 30px, 0, 0px);
     // .position(absolute, 55px, 0px);

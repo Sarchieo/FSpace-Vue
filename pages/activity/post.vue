@@ -18,13 +18,12 @@
              </div>
          </div> -->
           <div class="limited-goods">
-              <p class="search-p"><input type="text" placeholder="在结果中搜索"><button>搜索</button></p>
               <div class="goods-box" v-for="(item,index) in postList" :key="index">
                 <a-card hoverable class="card" @click="toDetails(item)">
                   <span class="collec">收藏 <a-icon type="star"/></span>
                   <img v-lazy="item.src" alt="" class="goods-pic">
                   <p class="validity">有效期{{item.vaildsdate}}-{{item.vaildedate}}</p>
-                  <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
+                  <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                   <p class="goods-surplus">{{item.manuName}}</p>
                   <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
                   <p class="goods-price" v-if="item.vatp != -1">￥{{item.vatp}}元 <del>原价￥{{item.rrp}}元</del></p>
@@ -35,7 +34,7 @@
                   <!-- <button @click="toDetails()">查看详情</button> -->
                 </a-card>  
               </div>
-              <a-pagination :total="total" v-if="this.postList.length !== 0 " @change="onChangePage"/>
+              <a-pagination :total="total" @change="onChangePage"/>
           </div>
         </div>
       </a-layout-content>
@@ -90,6 +89,7 @@ export default {
           // 为你精选数据
     getPost() {
       let _this = this;
+      _this.postList = []
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getBrandMallFloor";
@@ -121,7 +121,7 @@ export default {
 @import "../../components/fspace-ui/container/index.less";
 @import "../../components/fspace-ui/button/index.less";
 .ant-layout-content {
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .person-num{
     .container-size(block,1190px,86px,0 auto,0px) ;
@@ -152,13 +152,13 @@ export default {
 }
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .limited-goods {
   .container-size(block, 1210px, auto, 0 auto, 0px);
   min-height: 400px;
   margin-bottom: 20px;
-  background: #f2f2f2;
+  background: #f8f8f8;
 }
 .tab-pane {
     width: 270px;
