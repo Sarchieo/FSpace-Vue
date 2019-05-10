@@ -19,7 +19,7 @@
           <!-- {{item.info.prodsdate}} - {{item.info.prodedate}} -->
           <p class="validity">有效期{{item.info.prodsdate}}-{{item.info.prodedate}}</p>
           <!-- {{item.info.vatp}} -->
-          <p class="card-price top165">￥{{item.prize}} </p>
+          <p class="card-price top165">￥{{item.info.vatp/100}} </p>
 
           <!-- 规格 -->
           <!-- {{item.info.spec}} -->
@@ -77,6 +77,7 @@ export default {
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
             _this.collecList = result.data;
+            console.log(_this.collecList)
               for (let i = 0; i < _this.collecList.length; i++) {
                   _this.collecList[i].spu = _this.collecList[i].info.spu
               }

@@ -85,8 +85,10 @@
         
         <div class="medicine-names" ref="home">
           <div class="medicine-name-box" ref="nameBox">
+            
             <div class="medicine-name">
-              <img src="../../../assets/img/index_logo_1.jpg" alt>
+              <img src="../../../assets/img/u49.png" alt>
+              <p class="medicine-text"><span class="float-left">舒 心 购</span><span class="circle">•</span><span class="float-right">聚 划 算</span></p>
             </div>
             <div class="medicine-search">
               <div class="search-box">
@@ -766,7 +768,7 @@ li {
   width: 518px;
   height: 42px;
   border-radius: 20px;
-  margin-left: 100px;
+  margin-left: 80px;
   border: 2px solid rgb(255, 0, 54);
   background: rgb(255, 0, 54);
 }
@@ -991,5 +993,28 @@ li {
 }
 .title-box{
   background: #f8f8f8;
+}
+.medicine-text{
+  .p-size(20px, 20px, 18px, left, 0px, #ed3025);
+  margin-top:  -5px;
+  // padding: 0px 20px 0px 30px;
+  padding-right: 15px;
+  span{
+    color: #999;
+    font-weight: 500;
+  }
+  .float-left{
+    float: left;
+  }
+  .float-right{
+    float: right;
+  }
+}
+.circle{
+  float: left;
+  width: 5px;
+  height: 5px;
+  margin-left: 22px;
+  color: #999;
 }
 </style>

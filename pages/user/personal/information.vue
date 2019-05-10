@@ -45,7 +45,7 @@ export default {
       iRequest.cls = "PushMessageModule";
       iRequest.method = "queryMessage";
       iRequest.param.pageIndex = this.currentIndex;
-      iRequest.param.pageNumber = 11;
+      iRequest.param.pageNumber = 10;
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,

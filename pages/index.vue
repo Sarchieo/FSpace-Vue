@@ -60,14 +60,14 @@
             <div class="login-tips">
               <h3>欢迎来到一块医药</h3>
               <!-- {{ storeInfo.comp.storeName }} -->
-              <p v-if="userStatus">您好，</p>
+              <p v-if="userStatus">您好，{{ storeInfo.comp.storeName }}</p>
               <p v-if="!userStatus"><a-button class="float-left" @click="toLogin()">登录</a-button><a-button class="float-right" @click="toRegister()">注册</a-button></p>
             </div>
             <!-- <p class="every-day">每日签到领积分</p>
             <a-button class="sign-btn" @click="toCar()">购物车临时入口</a-button>
             <div class="line">
             </div> -->
-            <img src=""/>
+            <img src="../assets/img/certificate.png"/>
             <div class="notice-content">
               <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
                <!-- <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
@@ -1482,7 +1482,7 @@ li {
 .brand-hall .brand-hall-title {
   height: 50px;
   line-height: 50px;
-  background: #f2f2f2;
+  background: #f8f8f8;
   font-size: 22px;
   font-weight: bold;
   color: #333333;
