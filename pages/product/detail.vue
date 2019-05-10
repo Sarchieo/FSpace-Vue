@@ -361,9 +361,11 @@
                 <a-tab-pane tab="药品评价" key="2" forceRender>
                   <div class="evaluate-box">
                     <div class="evaluate-list">
-                      <a-comment v-for="(item,index) in appriseArr" :key="index">
+                      <a-comment v-for="(item,index) in appriseArr" :key="index" class="evaluate-boxs">
                         <a style="color: orange">{{item.compName}}</a>
+                       
                         <p>
+                           综合评分：
                           <a-rate allowHalf :defaultValue="item.compEval" disabled/>
                         </p>
                         <p class="comment-text">{{item.content}}</p>
@@ -1559,6 +1561,7 @@ li {
   width: 905px;
   height: 1900px;
   border: 1px solid rgb(238, 238, 238);
+  margin: 0 auto;
 }
 .goods-detail {
   width: 900px;
@@ -1593,10 +1596,10 @@ li {
 }
 .evaluate-box {
   display: block;
-  width: 900px;
+  width: 903px;
   height: 1600px;
   margin-bottom: 20px;
-  border-left: 1px solid rgb(238, 238, 238);
+  /* border-left: 1px solid rgb(238, 238, 238); */
   border-bottom: 1px solid rgb(238, 238, 238);
 }
 .evaluate-box .praise {
@@ -1658,6 +1661,11 @@ li {
 }
 .evaluate-list {
   border-top: 1px solid rgb(238, 238, 238);
+}
+.evaluate-boxs{
+  width: 100%;
+  border-bottom: 1px solid #f2f2f2;
+  padding-bottom: 10px;
 }
 /* 热销推荐 */
 .hot-recommend {
