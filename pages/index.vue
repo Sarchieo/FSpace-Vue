@@ -7,22 +7,20 @@
         <div class="goods-nav-box">
           <f-space-menu></f-space-menu>
           <div class="binnar-box">
-            <a-carousel autoplay arrows v-if="isCarousel">
+            <a-carousel autoplay v-if="isCarousel">
               <div
-                slot="prevArrow"
-                slot-scope="props"
-                class="custom-slick-arrow"
-                style="left: 10px;zIndex: 1"
-              >
-                <a-icon type="left-circle"/>
-              </div>
-              <div
-                slot="nextArrow"
-                slot-scope="props"
-                class="custom-slick-arrow"
-                style="right: 10px"
-              >
-                <a-icon type="right-circle"/>
+                  slot="prevArrow" slot-scope="props"
+                  class="custom-slick-arrow"
+                  style="left: 10px;zIndex: 1"
+                >
+                  <a-icon type="left-circle" />
+                </div>
+                <div
+                  slot="nextArrow" slot-scope="props"
+                  class="custom-slick-arrow"
+                  style="right: 10px"
+                >
+                  <a-icon type="right-circle" />
               </div>
               <div>
                 <img
@@ -60,7 +58,7 @@
             <div class="login-tips">
               <h3>欢迎来到一块医药</h3>
               <!-- {{ storeInfo.comp.storeName }} -->
-              <p v-if="userStatus">您好，</p>
+              <p v-if="userStatus && storeInfo.comp && storeInfo.comp.storeName">您好，{{ storeInfo.comp.storeName }}</p>
               <p v-if="!userStatus"><a-button class="float-left" @click="toLogin()">登录</a-button><a-button class="float-right" @click="toRegister()">注册</a-button></p>
             </div>
             <!-- <p class="every-day">每日签到领积分</p>
@@ -804,8 +802,8 @@ export default {
           let div = this.$refs[item.unqid]
           if(div) {
             item.isShow = true
-            item.sHeight = div[0].offsetTop - div[0].offsetHeight
-            item.eHeight = div[0].offsetTop
+            item.sHeight = div[0].offsetTop - 120
+            item.eHeight = div[0].offsetTop + div[0].offsetHeight - 125
             
           } else {
             item.isShow = false
@@ -1877,5 +1875,32 @@ li {
 }
 .margin-bottom10{
   margin-bottom: 10px;
+}
+/* For demo */
+.ant-carousel > .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel > .custom-slick-arrow {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #fff;
+  background-color: rgba(31,45,61,.11);
+  opacity: 0.3;
+}
+.ant-carousel > .custom-slick-arrow:before {
+  display: none;
+}
+.ant-carousel > .custom-slick-arrow:hover {
+  opacity: 0.5;
+}
+
+.ant-carousel > .slick-slide  h3 {
+  color: #fff;
 }
 </style>

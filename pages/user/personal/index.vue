@@ -417,6 +417,8 @@ export default {
                     }
                   }
                 }
+                // 初次注册提交表单、没有企业id 图片表单提交暂时放到此处 ^ ^.
+                _this.uploads()
               };
               xhr.open("POST", path, true);
               xhr.setRequestHeader("specify-path", result.data.companyFilePath);
@@ -490,7 +492,6 @@ export default {
             iRequest,
             new this.$iceCallback(function result(result) {
               if (result.code === 200) {
-                _this.uploads()
                 _this.getBasicInfo();
                 _this.setEditor();
                 _this.$success({
