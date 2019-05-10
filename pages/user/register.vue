@@ -70,11 +70,11 @@
             </a-form-item>
             <a-form-item v-bind="tailFormItemLayout">
               <!-- <a-button type="primary" html-type="submit" class="register-btn" >注册</a-button> -->
-              <a-button type="primary" html-type="submit" class="register-btn">注册</a-button>
+              <a-button type="primary" html-type="submit" class="register-btn" :disabled="!isChecked">注册</a-button>
               
             </a-form-item>
             <a-form-item v-bind="tailFormItemLayout">
-              <a-checkbox v-decorator="['agreement', {valuePropName: 'checked'}]">
+              <a-checkbox v-decorator="['agreement', {valuePropName: 'checked'}]" :checked="isChecked" @change="checkedChange">
                 注册账号即表示您已阅读并同意
                 <a href="javascript:;" @click="isShowService()">服务协议</a> 和
                 <a href="javascript:;" @click="isShowPrivacy()">隐私协议</a>
@@ -103,6 +103,7 @@ export default {
   },
   data() {
     return {
+      isChecked: false,
       isService: false, // 用户服务协议
       isPrivacy: false, // 用户隐私协议
       sendAuthCode: false, // 控制验证码按钮
@@ -151,6 +152,9 @@ export default {
     this.form = this.$form.createForm(this);
   },
   methods: {
+    checkedChange(val) {
+      this.isChecked = !this.isChecked
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
@@ -336,6 +340,7 @@ export default {
 .register-btn {
   .button-size(390px, 45px, 45px, 18px, 0px, 5px);
   .button-color(1px solid transparent, #ed2f26, #ffffff);
+  .button-disabled(#D3D3D3, #ffffff)
 }
 .register-btn:hover {
   opacity: 0.8;

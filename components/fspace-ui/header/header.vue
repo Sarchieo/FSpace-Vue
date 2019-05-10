@@ -97,21 +97,24 @@
             </div>
             <div class="service">
               <div>
-                <img src="../../../assets/img/zhengpin.png" alt>
-                <p>正品保证</p>
+                <img src="../../../assets/img/fuwu.png" alt>
+                <p>专业服务</p>
               </div>
-              <div>
+               <div>
+                <img src="../../../assets/img/yunshu.png" alt>
+                <p>准时送达</p>
+              </div>
+               <div>
                 <img src="../../../assets/img/pinzhong.png" alt>
                 <p>品类丰富</p>
               </div>
               <div>
-                <img src="../../../assets/img/yunshu.png" alt>
-                <p>准时送达</p>
+                <img src="../../../assets/img/zhengpin.png" alt>
+                <p>正品保证</p>
               </div>
-              <div>
-                <img src="../../../assets/img/fuwu.png" alt>
-                <p>专业服务</p>
-              </div>
+             
+             
+              
             </div>
             <!-- <div
               class="ant-dropdown-link cart-btn"
@@ -623,6 +626,7 @@ li {
   width: 1200px;
   height: 30px;
   margin: 0 auto;
+  background: #f8f8f8;
 }
 .header-title span {
   float: right;

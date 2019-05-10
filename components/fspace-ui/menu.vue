@@ -119,7 +119,7 @@ export default {
 .sider-menu {
   float: left;
   width: 175px;
-  height: 435px;
+  height: 413px;
   padding-top: 15px !important;
   padding-bottom: 15px !important;
   /* box-shadow: 1px 1px 3px #999; */
@@ -128,9 +128,9 @@ export default {
 .sider-menu-li {
   position: relative;
   width: 175px;
-  height: 58px;
+  height: 54px;
   box-sizing: border-box;
-  line-height: 58px;
+  line-height: 54px;
   text-indent: 20px;
 }
 .sider-menu-li:hover {
@@ -151,7 +151,7 @@ export default {
   top: 0px;
   left: 175px;
   width: 1015px !important;
-  height: 435px !important;
+  height: 413px !important;
   padding-top:20px;
   background: #ffffff;
   overflow: auto;

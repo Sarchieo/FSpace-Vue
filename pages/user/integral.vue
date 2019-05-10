@@ -328,7 +328,6 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.$message.success(result.message);
-              _this.queryRevCouponList(_this.type)
               _this.queryCouponPub()
             }
           }
