@@ -32,6 +32,12 @@
               </div>
               <div>
                 <img
+                 src="../assets/banner/money.jpg"
+                class="banner-pic"
+                >
+              </div>
+              <div>
+                <img
                  src="../assets/banner/register.jpg"
                 class="banner-pic"
                 >
@@ -51,25 +57,27 @@
             </a-carousel>
           </div>
           <div class="notice-box">
-            <p class="every-day">每日签到领积分</p>
+            <div class="login-tips">
+              <h3>欢迎来到一块医药</h3>
+              <p v-if="userStatus">您好，{{storeInfo.comp.storeName}}</p>
+              <p v-if="!userStatus"><a-button class="float-left" @click="toLogin()">登录</a-button><a-button class="float-right" @click="toRegister()">注册</a-button></p>
+            </div>
+            <!-- <p class="every-day">每日签到领积分</p>
             <a-button class="sign-btn" @click="toCar()">购物车临时入口</a-button>
             <div class="line">
-            </div>
+            </div> -->
             <img src=""/>
             <div class="notice-content">
               <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
-              <p class="notice-text" v->【通知】端午节优惠多多，欢迎进店采购</p>
-              <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
-              <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
-              <p class="notice-text">【通知】端午节优惠多多，欢迎进店采购</p>
+              <p class="notice-text" v-for="(item,index) in noticeList" :key="index" @click="toNotice(item)">{{item.type}}{{item.title}}</p>
             </div>
           </div>
         </div>
         <div class="pic-link">
-          <img src="../assets/img/coupon.png" alt="">
-          <img src="../assets/img/sign.png" alt="">
+          <img src="../assets/img/coupon.png" @click="toCoupon()" alt="">
+          <img src="../assets/img/sign.png" @click="toIntegral()" alt="">
           <img src="../assets/img/brand.png" alt="">
-          <img src="../assets/img/type.png" alt="">
+          <img src="../assets/img/type.png" @click="toCategory()" alt="">
         </div>
         <div v-for="(item,index) in list" :key="index" style="height: auto;">
           <!-- 新品专区 -->
@@ -439,9 +447,13 @@ export default {
     userStatus() {
       return this.$store.state.userStatus
     },
+    storeInfo() {
+      return this.$store.state.user;
+    },
   },
   data() {
     return {
+      notice: {},
       noticeList: [], // 公告列表
       isCarousel: false,
       percentage: 0,
@@ -852,7 +864,6 @@ export default {
     },
     // 获取公告消息列表
     getNotice() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "NoticeModule";
@@ -865,7 +876,9 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.noticeList = result.data;
+            _this.noticeList = result.data.slice(0, 4);
+            console.log(7676)
+            console.log(_this.noticeList)
           }
         })
       );
@@ -984,6 +997,33 @@ export default {
         }
       });
     },
+    toLogin() {
+      this.$router.push({
+        path: '/user/login'
+      })
+    },
+    toRegister() {
+      this.$router.push({
+        path: '/user/register'
+      })
+    },
+    toIntegral() {
+      let routeData = this.$router.resolve({
+        path: "/user/integral"
+      });
+      window.open(routeData.href, "_blank");
+    },
+    toCoupon() {
+      this.$router.push({
+        path: 'user/personal/coupon'
+      })
+    },
+    toCategory() {
+      let routeData = this.$router.resolve({
+        path: "/category"
+      });
+      window.open(routeData.href, "_blank");
+    },
     toHotGoods() {
       this.$router.push({
         path: "/activity/hot-goods",
@@ -1013,6 +1053,16 @@ export default {
         path: '/activity/post',
         query: {
           actcode: this.postID
+        }
+      })
+    },
+    // 消息详情
+    toNotice(item) {
+      debugger
+      this.$router.push({
+        path: '/user/notice',
+        query: {
+          
         }
       })
     },
@@ -1573,7 +1623,25 @@ li {
   float: right;
   width: 210px;
   height: 413px;
+  margin: 0 auto;
   // border: 1px solid #e0e0e0;
+  .login-tips{
+    .container-size(block, 200px, 100px, 0 auto, 0px);
+    border: 1px solid #f2f2f2;
+    h3{
+      .p-size(40px, 40px, 12px, center, 0px, #333333);
+    }
+    p{
+      .p-size(40px, 40px, 14px, center, 0px, #333333);
+       padding: 0 10px;
+       overflow: hidden; 
+       text-overflow:ellipsis;
+       white-space: nowrap;
+       button{
+         .button-size(82px,28px,28px,14px,0px,3px);
+       }
+    }
+  }
   .every-day{
     .p-size(40px, 40px, 14px, left, 20px, #333333);
   }
@@ -1589,27 +1657,35 @@ li {
   }
   img{
     display: block;
-    width: 195px;
+    width: 200px;
     height: 119px;
     margin: 0 auto;
-    border: 1px solid deeppink;
+    border: 1px solid transparent;
   }
   .notice-content{
-    .container-size(block, 210px, 193px, 0 auto, 0px);
+    .container-size(block, 200px, 150px, 0 auto, 0px);
+    border: 1px solid #f2f2f2;
     .title{
-      width: 210px;
+      width: 200px;
       .p-size(40px, 40px, 14px, left, 20px, #333333);
-      border-bottom: 1px solid #e0e0e0;
+      border-top: 1px solid #f2f2f2;
+      border-bottom: 1px solid #f2f2f2;
       padding-right: 20px;
       .more{
         color: #999999!important;
       }
     }
     .notice-text{
-      .p-size(35px, 35px, 14px, left, 5px, #333333);
+      width: 200px;
+      .p-size(25px, 25px, 14px, left, 5px, #666);
       overflow: hidden;
       text-overflow:ellipsis;
       white-space: nowrap;
+
+    }
+    .notice-text:hover{
+      color: #ed3025;
+      cursor: pointer;
     }
   }
 }

@@ -115,6 +115,7 @@
                 <p class="packing">
                   <span>生产厂家：</span>
                   <span class="margin-right190">{{ prodDetail.manuName }}</span>
+                  <span class="medpacknum-text">中包装量：</span><span>{{prodDetail.medpacknum}}</span> <span>{{prodDetail.unitName}}</span>
                 </p>
                 <p class="packing">
                   <span>生产日期：</span>
@@ -300,6 +301,7 @@
                     <p>
                       <span class="title-left">生产厂商：</span>
                       {{prodDetail.manuName}}
+                      
                     </p>
                     <p>
                       <span class="title-left">批准文号：</span>
@@ -1922,5 +1924,9 @@ li {
 }
 .ant-input-number-input{
   width: 75%!important;
+}
+.medpacknum-text{
+  display: inline-block;
+  margin-right: 20px;
 }
 </style>

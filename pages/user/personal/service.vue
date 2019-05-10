@@ -240,15 +240,15 @@ export default {
 }
 // 采购单无数据显示 内容
 .no-data{
-  .container-size(block, 985px, 120px, 0 auto 20px auto, 0px);
+  .container-size(block, 100%, 120px, 0 auto 20px auto, 0px);
   padding-top: 30px;
   .icon{
-    width: 965px;
+    width: 100%;
     .p-size(50px,50px,50px,center,0px,#333333);
     margin-bottom: 20px;
   }
   .text{
-    width: 985px;
+    width: 100%;
      .p-size(50px,50px,20px,center,0px,#333333);
   }
 }

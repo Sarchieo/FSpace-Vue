@@ -12,7 +12,7 @@
             <a>欢迎来到一块医药</a>
             <span @click="downloadHtml()">
               <!-- <img src="../../../assets/img/desktop.png" alt="" class="desktop"> -->
-              桌面快捷方式
+              桌面快捷
             </span>
             <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
             <nuxt-link to="/user/register" v-show="!isLogin">注册有礼</nuxt-link>
@@ -50,10 +50,10 @@
                 </a-badge>
             </a-popover>
             <!-- 签到有礼 -->
-            <a v-if="isLogin" class="sign" @click="toIntegral()">
+            <!-- <a v-if="isLogin" class="sign" @click="toIntegral()">
               签到有礼
-              <!-- <span class="sign"></span> -->
-            </a>
+             
+            </a> -->
             <a v-if="isLogin" @click="toMyOrder()">我的订单</a>
             <a-dropdown v-if="isLogin">
               <a class="ant-dropdown-link" href="#">
@@ -82,7 +82,7 @@
         <div class="medicine-names" ref="home">
           <div class="medicine-name-box" ref="nameBox">
             <div class="medicine-name">
-              <img src="../../../assets/img/u49.png" alt>
+              <img src="../../../assets/img/index_logo_1.jpg" alt>
             </div>
             <div class="medicine-search">
               <div class="search-box">
