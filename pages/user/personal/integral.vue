@@ -88,6 +88,7 @@ export default {
   mounted() {
     this.getIntegralList();
     this.getMember();
+    this.$store.commit(types.SELECTED_KEYS, "/user/personal/integral");
   },
   methods: {
     // 获取积分列表

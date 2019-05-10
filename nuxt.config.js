@@ -52,6 +52,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios',
     'cookie-universal-nuxt',
     '@nuxtjs/component-cache',
     ['@nuxtjs/component-cache', {
@@ -59,6 +60,8 @@ module.exports = {
       maxAge: 1000 * 60 * 5
     }],
   ],
+  axios: {
+  },
 
   /*
   ** Build configuration

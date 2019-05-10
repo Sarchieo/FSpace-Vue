@@ -72,8 +72,7 @@
 
                 <p class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
-                  <span class="money-count" v-if="userStatus && storeInfo.comp.authenticationStatus === 256">￥{{ discount.killPrice }}</span>
-                  <span class="money-count" v-else>￥认证后可见</span>
+                  <span class="money-count">￥{{ discount.killPrice }}</span>
                   <del>{{ prodDetail.mp }}</del>
                 </p>
                 <!-- <p class="price" v-else-if="rulecode === 1133">
@@ -83,8 +82,9 @@
                 </p> -->
                 <p class="price" v-else>
                   <span class="price-title">价格</span>
-                  <span class="money-count"  v-if="userStatus && storeInfo.comp.authenticationStatus === 256">￥{{ prodDetail.vatp }}</span>
+                  <span class="money-count" v-if="prodDetail.vatp != -1">￥{{ prodDetail.vatp }}</span>
                   <span class="money-count" v-else>￥认证后可见</span>
+                  <del v-if="prodDetail.vatp != -1">{{ prodDetail.mp }}</del>
                 </p>
                 <!-- 积分 -->
                 <!-- <p class="price">
@@ -383,7 +383,7 @@
                       <img v-lazy="item.imgURl" slot="cover">
                       <p class="meal-name">{{item.prodname}}</p>
                       <p class="meal-price">￥{{item.mp}}元</p>
-                      <p class="meal-packing">已售{{item.buynum}}{{item.unitName}}</p>
+                      <p class="meal-packing">已售{{item.sales}}{{item.unitName}}</p>
                     </a-card>
                   </li>
                 </ul>
@@ -553,7 +553,7 @@ export default {
     },
     // 新增采购数量
     addCount() {
-      if (this.inventory >= this.maximum) {
+      if (this.inventory > this.maximum) {
         this.$message.warning("库存不足或超出限购数量");
         return;
       }
@@ -581,7 +581,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
-            console.log(_this.activitiesBySKU)
             // 如果存在活动 取库存与活动库存最小值
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
@@ -604,11 +603,10 @@ export default {
         })
         return
       }
-      if (this.storeInfo.comp.authenticationStatus !== 256) {
-        this.$message.error('购物车添加失败, 当前企业未进行认证审核')
+      if(!this.inventory > 0 || this.inventory > this.maximum) {
+        this.$message.warning("库存不足或超出限购数量");
         return
       }
-      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -948,8 +946,9 @@ export default {
         })
         return
       }
-      if (this.storeInfo.comp.authenticationStatus !== 256) {
-        this.$message.error('下单失败, 当前企业未进行认证审核')
+
+      if(!this.inventory > 0 || this.inventory > this.maximum) {
+        this.$message.warning("库存不足或超出限购数量");
         return
       }
       

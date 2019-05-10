@@ -36,7 +36,7 @@ export default {
     middleware: "authenticated",
   mounted() {
     this.getInformation();
-    // this.$store.commit(types.SELECTED_KEYS, "/user/personal/information");
+    this.$store.commit(types.SELECTED_KEYS, "/user/personal/information");
   },
   methods: {
     getInformation() {

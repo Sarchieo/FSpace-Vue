@@ -47,8 +47,8 @@
         <div style="float:left;overflow: hidden;">
           <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
             <div class="goods-pic">
-              <img v-lazy="items.imgURl">
-              <p class="goods-text">{{items.pname}}</p>
+              <img v-lazy="items.imgURl" @click="toDetail(items)">
+              <p class="goods-text" @click="toDetail(items)">{{items.pname}}</p>
               <p class="guige">规格：{{items.pspec}}</p>
               <p class="menu-name">{{items.manun}}</p>
               <!-- <p class="date">有效期：2019-04-12</p> -->
@@ -350,6 +350,15 @@ export default {
           }
         })
       );
+    },
+    toDetail(item) {
+      this.$router.push({
+        path: "/product/detail",
+        query: {
+          sku: item.pdno,
+          spu: item.spu,
+        }
+      });
     },
     toDetails(item) {
       var routeData = this.$router.resolve({

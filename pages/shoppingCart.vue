@@ -35,8 +35,8 @@
                   class="pick-input"
                 ></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
-                <img v-lazy="item.imgURl">
-                <p class="goods-name" @click="toDetail(item)">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
+                <img v-lazy="item.imgURl">  
+                <p class="goods-name" @click="toDetail(item)">{{ item.ptitle }}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
                 <p class="icon" v-if="item.rule.length > 0">
@@ -55,7 +55,7 @@
                   <button :disabled="item.status == 1" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
                   <a-input-number
-                    :disabled="item.status == 1 || item.status == 2 || item.status == 3"
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.checked"
                     :min="1"
                     :max="item.maximum"
                     v-model="item.num"
@@ -206,6 +206,7 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.cartList = result.data;
+              debugger
               _this.cartList.forEach((item) => {
                 item.checked ? false : true
                 if(item.limitnum > item.inventory) {
