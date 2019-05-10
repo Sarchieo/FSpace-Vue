@@ -93,7 +93,7 @@
             <img class="card-img" v-lazy="item.imgURl" slot="cover">
             <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus === 1 || item.rulestatus === 2 || item.rulestatus === 4" alt="" slot="cover">
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
-            <p class="surplus text-Center top185">{{item.brandName + item.prodname}}</p>
+            <p class="surplus text-Center top185">{{item.brandName}} {{ item.prodname }} {{ item.spec }}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
               <p class="card-price top165" v-if="item.vatp != -1">
                   ￥{{item.vatp}}

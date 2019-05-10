@@ -53,6 +53,7 @@
   </div>
 </template>
 <script>
+import * as types from "../../../store/mutation-types";
 export default {
   name: "f-space-form-invoice",
   props: ["vat", "values"],
@@ -65,6 +66,9 @@ export default {
     return {
       form: this.$form.createForm(this)
     };
+  },
+  mounted() {
+    this.$store.commit(types.SELECTED_KEYS, "/user/personal/invoice");
   },
   methods: {
     validatebankers(rule, value, callback) {
@@ -136,7 +140,6 @@ export default {
   watch: {
     values: {
       handler: function(newVal, oldVal) {
-        
         this.form.setFieldsValue(newVal);
       },
       deep: true

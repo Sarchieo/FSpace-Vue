@@ -28,7 +28,7 @@
                   <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
                   <p class="goods-price" v-if="item.vatp != -1">￥{{item.vatp}}元 <del>原价￥{{item.rrp}}元</del></p>
                   <p class="goods-price" v-else>￥认证后可见</p>
-                  <p class="package"><span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span> <span class="float-right">已售{{item.buynum}}{{item.unitName}}</span></p>
+                  <p class="package"><span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span> <span class="float-right">已售{{item.sales}}{{item.unitName}}</span></p>
                   <p class="limit"><span>限购{{item.limits}} {{item.unitName}}</span> <span class="float-right">库存{{item.surplusstock}} {{item.unitName}}</span></p>
                   <p class="p-btn"><button class="small-btn">-</button><input type="text" v-model="count" readonly="readonly"><button class="small-btn">+</button> <button class="add-cart">加入采购单</button></p>
                   <!-- <button @click="toDetails()">查看详情</button> -->

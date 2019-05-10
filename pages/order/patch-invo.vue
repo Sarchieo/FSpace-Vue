@@ -80,6 +80,7 @@
                 <span>公司注册地址：</span>
                 {{ storeInfo.comp.addressCodeStr + storeInfo.comp.address }}
               </p>
+
               <a-form :form="form" @submit="handleSubmit">
                 <a-form-item label="纳税人识别号：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
                   <a-input
@@ -131,34 +132,6 @@
                   <a-button class="submission-btn" type="primary" html-type="submit">下一步</a-button>
                 </div>
               </a-form>
-
-              <!-- <a-form
-                :form="form"
-                @submit="handleSubmit"
-              >
-                <a-form-item
-                  label="纳税人识别号"
-                  :label-col="{ span: 5 }"
-                  :wrapper-col="{ span: 12 }"
-                >
-                  <a-input
-                    v-decorator="[
-                      'taxpayer',
-                      {rules: [{ required: true, message: '请输入纳税人识别号' },{ validator: validateTaxID}]}
-                    ]"
-                  />
-                </a-form-item>
-                <a-form-item
-                  :wrapper-col="{ span: 12, offset: 5 }"
-                >
-                  <a-button
-                    type="primary"
-                    html-type="submit"
-                  >
-                    Submit
-                  </a-button>
-                </a-form-item>
-              </a-form> -->
             </div>
           </div>
           <!-- 第三步 -->
@@ -292,8 +265,28 @@ export default {
     // 支付结果监听
     this.payResult();
     this.getFilePathPrev();
+    this.getInvoice()
   },
   methods: {
+    getInvoice(){
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "MyInvoiceModule";
+      iRequest.method = "getInvoice";
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if(result.code === 200 && result.data.length > 0) {
+              _this.invoice = result.data[0]
+            }
+          }
+        )
+      );
+    },
      getFilePathPrev() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -317,9 +310,6 @@ export default {
               _this.headers["specify-path"] = _this.uploadInfo.orderFilePath;
               _this.headers["tailor-list"] = "200x200,400x400,600x600";
             }
-          },
-          function error(error) {
-            ;
           }
         )
       );
@@ -554,6 +544,10 @@ export default {
                 this.$message.warning("请选择补开发票原因")
                 return
             }
+            setTimeout(() => {
+              this.form.setFieldsValue(this.invoice);
+            }, 500)
+            
         }
       if (index === 3) {
         this.prePay();

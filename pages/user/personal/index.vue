@@ -16,10 +16,10 @@
           <a-cascader
             class="city"
             :disabled="!isEditor"
-            :options="cascaderData" 
-            @change="onChange" 
-            :loadData="loadData" 
-            placeholder="请选择省市区" 
+            :options="cascaderData"
+            @change="onChange"
+            :loadData="loadData"
+            placeholder="请选择省市区"
             v-decorator="[
               'aCode',
               {rules: [{ required: true, message: '请选择省市区' }]}
@@ -44,14 +44,13 @@
           <a-icon type="profile"/>
           <span>{{ authenticationMessage }}</span>
         </p>
-        <div v-if="authenticationStatus > 64">
+        <div>
           <h2 class="certificate-title">药店资质</h2>
           <a-form-item
             v-bind="formItemLayout"
             class="upload"
             v-for="(item, index) in uploadList"
             :key="index"
-           
           >
             <div @click="setUploadIndex(index)">
               <a-upload
@@ -76,7 +75,6 @@
             </div>
           </a-form-item>
         </div>
-    
       </a-form>
       <ul class="user-info">
         <li class="two-line" v-if="authenticationStatus > 64">
@@ -103,13 +101,18 @@
       <img alt="example" style="width: 100%" :src="previewImage">
     </a-modal>
     <f-space-modal-pwd :visible="isChangePwd" @handleCancel="changePwdCancel()"></f-space-modal-pwd>
-    <f-space-modal-phone :visible="isChangePhone" @handleCancel="changePhoneCancel()" @handleSussece="changePhoneSussece"></f-space-modal-phone>
+    <f-space-modal-phone
+      :visible="isChangePhone"
+      @handleCancel="changePhoneCancel()"
+      @handleSussece="changePhoneSussece"
+    ></f-space-modal-phone>
   </div>
 </template>
 <script>
 import FSpaceModalPwd from "../../../components/modal/changePwd";
 import FSpaceModalPhone from "../../../components/modal/changePhone";
-import * as types from '../../../store/mutation-types'
+import * as types from "../../../store/mutation-types";
+import upload from "../../../plugins/request.js";
 
 export default {
   components: { FSpaceModalPwd, FSpaceModalPhone },
@@ -118,7 +121,7 @@ export default {
       return this.$store.state.user;
     }
   },
-  middleware: 'authenticated',
+  middleware: "authenticated",
   watch: {
     storeInfo(val) {
       if (val.comp.addressCode) {
@@ -209,10 +212,11 @@ export default {
     // });
     this.getBasicInfo();
     this.getNodes();
-    this.$store.commit(types.SELECTED_KEYS, '/user/personal')
+    this.$store.commit(types.SELECTED_KEYS, "/user/personal");
+    this.getFilePathPrev(false);
   },
   methods: {
-    getAncestors(code) {
+    async getAncestors(code) {
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CommonModule";
@@ -223,17 +227,15 @@ export default {
         this,
         "globalServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.setArea(_this.cascaderData, result.data, 0)
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.setArea(_this.cascaderData, result.data, 0);
           }
-        )
+        })
       );
     },
     setArea(area, data, index) {
-      this.code.push(data[index].areac)
+      this.code.push(data[index].areac);
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CommonModule";
@@ -244,33 +246,31 @@ export default {
         this,
         "globalServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              let Items = result.data;
-              area.map((value, i) => {
-                if(value.value === data[index].areac) {
-                  let arr = Items.map((value, i) => {
-                    return {
-                      value: value.areac,
-                      label: value.arean,
-                      isLeaf: false
-                    };
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            let Items = result.data;
+            area.map((value, i) => {
+              if (value.value === data[index].areac) {
+                let arr = Items.map((value, i) => {
+                  return {
+                    value: value.areac,
+                    label: value.arean,
+                    isLeaf: false
+                  };
+                });
+                if (index < _this.areaMax) {
+                  index++;
+                  _this.$set(value, "children", arr);
+                  _this.setArea(value.children, data, index);
+                } else {
+                  _this.form.setFieldsValue({
+                    aCode: _this.code
                   });
-                  if(index < _this.areaMax) {
-                    index++
-                    _this.$set(value, 'children', arr)
-                    _this.setArea(value.children, data, index)
-                  }else {
-                    _this.form.setFieldsValue({
-                      aCode: _this.code
-                    })
-                  }
                 }
-              });
-            }
+              }
+            });
           }
-        )
+        })
       );
     },
     setEditor() {
@@ -279,7 +279,7 @@ export default {
     },
     setUploadIndex(index) {
       this.headers["specify-filename"] = index + ".jpg";
-      this.headers["specify-path"] =  this.uploadInfo.companyFilePath
+      this.headers["specify-path"] = this.uploadInfo.companyFilePath;
       this.uploadIndex = index;
     },
     remove(file) {
@@ -304,15 +304,21 @@ export default {
       this.uploadList[this.uploadIndex].fileList = fileList;
     },
     beforeUpload(file) {
-      // 修改uid 便于删除～
       file.uid = this.uploadIndex;
+      const r = new FileReader();
+      r.readAsDataURL(file);
+      r.onload = e => {
+        file.thumbUrl = e.target.result;
+        this.uploadList[0].fileList[0] = file;
+      };
+      return false;
     },
     changePhoneCancel() {
       this.isChangePhone = false;
     },
     changePhoneSussece() {
       this.isChangePhone = false;
-      this.getBasicInfo()
+      this.getBasicInfo();
     },
     changePwdCancel() {
       this.isChangePwd = false;
@@ -333,30 +339,31 @@ export default {
               context: _this,
               user: result.data
             });
-            _this.authenticationStatus = result.data.comp.authenticationStatus
-            _this.code = []
-            _this.getFilePathPrev();
-            _this.authenticationMessage = result.data.comp.authenticationMessage;
-            _this.isEditor = _this.isRelated
+            _this.authenticationStatus = result.data.comp.authenticationStatus;
+            _this.code = [];
+            _this.getFilePathPrev(true);
+            _this.authenticationMessage =
+              result.data.comp.authenticationMessage;
+            _this.isEditor = _this.isRelated;
             // 获取地区数据
-            if(result.data.comp.addressCode) {
-              _this.getAncestors(result.data.comp.addressCode)
+            if (result.data.comp.addressCode) {
+              _this.getAncestors(result.data.comp.addressCode);
             }
           } else {
-            _this.isEditor = true
+            _this.isEditor = true;
           }
         })
       );
     },
-    getFilePathPrev() {
+    getFilePathPrev(isDefault) {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "FileInfoModule";
       iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
-        compid: this.$store.state.user.comp.storeId
-      })
+        compid: this.$store.state.user.comp.storeId || 0
+      });
       this.$refcallback(
         this,
         "globalServer",
@@ -364,7 +371,8 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.uploadInfo = result.data;
-            // 获取默认图片
+            if (isDefault) {
+              // 获取默认图片
               var path = result.data.ergodicUrl;
               var xhr = new XMLHttpRequest();
               xhr.onreadystatechange = function() {
@@ -388,18 +396,28 @@ export default {
                       name: "GSP认证",
                       message: "请上传GSP认证"
                     }
-                  ]
+                  ];
                   var data = xhr.responseText;
                   data = JSON.parse(data).data.sort();
                   for (var i in data) {
                     if (i !== 7) {
-                       _this.uploadList[i].fileList.push({
+                      _this.uploadList[i].fileList.push({
                         uid: i,
                         name: data[i],
-                        status: 'done',
-                        url: result.data.downPrev + result.data.companyFilePath + data[i] + "?" + new Date().getSeconds(),
-                      })
-                      _this.uploadList[i].url = result.data.downPrev + result.data.companyFilePath + data[i] + "?" + new Date().getSeconds()
+                        status: "done",
+                        url:
+                          result.data.downPrev +
+                          result.data.companyFilePath +
+                          data[i] +
+                          "?" +
+                          new Date().getSeconds()
+                      });
+                      _this.uploadList[i].url =
+                        result.data.downPrev +
+                        result.data.companyFilePath +
+                        data[i] +
+                        "?" +
+                        new Date().getSeconds();
                     }
                   }
                 }
@@ -408,12 +426,42 @@ export default {
               xhr.setRequestHeader("specify-path", result.data.companyFilePath);
               xhr.setRequestHeader("ergodic-sub", "false");
               xhr.send(null);
+            }
           }
         })
       );
     },
+    uploads() {
+      let _this = this;
+      let fileList = this.uploadList.map(value => {
+        return value.fileList[0];
+      });
+      // 批量上传图片
+      fileList.forEach((file, index) => {
+        if (file.thumbUrl) {
+          var blob = this.dataURLtoBlob(file.thumbUrl);
+          let options = {
+            action: this.uploadInfo.upUrl,
+            filename: "file",
+            file: blob,
+            headers: {
+              "specify-filename": index + ".jpg",
+              "specify-path": this.uploadInfo.companyFilePath
+            }
+          };
+          upload(options, function(success) {
+            if(index === 2) {
+              _this.getFilePathPrev(true)
+            }
+          });
+        }
+      });
+    },
+
     handleSubmit(e) {
       e.preventDefault();
+      // this.uploads()
+      const { fileList } = this;
       this.form.validateFields((err, values) => {
         if (!err) {
           let _this = this;
@@ -427,7 +475,7 @@ export default {
           })
           if(!flag && _this.authenticationStatus > 0) {
             _this.$message.error('请提交药店资质图片')
-            return 
+            return
           }
           let iRequest = new inf.IRequest();
           iRequest.cls = "StoreManageModule";
@@ -462,7 +510,7 @@ export default {
             })
           );
         }
-      });
+      })
     },
     loadData(selectedOptions) {
       const targetOption = selectedOptions[selectedOptions.length - 1];
@@ -477,22 +525,20 @@ export default {
         this,
         "globalServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              let Items = result.data;
-              targetOption.loading = false;
-              let arr = Items.map((value, i) => {
-                return {
-                  value: value.areac,
-                  label: value.arean,
-                  isLeaf: selectedOptions.length >= _this.areaMax ? true : false
-                };
-              });
-              _this.$set(targetOption, 'children', arr)
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            let Items = result.data;
+            targetOption.loading = false;
+            let arr = Items.map((value, i) => {
+              return {
+                value: value.areac,
+                label: value.arean,
+                isLeaf: selectedOptions.length >= _this.areaMax ? true : false
+              };
+            });
+            _this.$set(targetOption, "children", arr);
           }
-        )
+        })
       );
     },
     getNodes() {
@@ -506,21 +552,30 @@ export default {
         this,
         "globalServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              let Items = result.data;
-              _this.cascaderData = Items.map((value, i) => {
-                return {
-                  value: value.areac,
-                  label: value.arean,
-                  isLeaf: false
-                };
-              });
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            let Items = result.data;
+            _this.cascaderData = Items.map((value, i) => {
+              return {
+                value: value.areac,
+                label: value.arean,
+                isLeaf: false
+              };
+            });
           }
-        )
+        })
       );
+    },
+    dataURLtoBlob(dataurl) {
+      var arr = dataurl.split(",");
+      var mime = arr[0].match(/:(.*?);/)[1];
+      var bstr = atob(arr[1].replace(/\s/g, ""));
+      var n = bstr.length;
+      var u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new Blob([u8arr], { type: mime }); //值，类型
     }
   }
 };

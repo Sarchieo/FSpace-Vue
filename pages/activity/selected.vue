@@ -42,7 +42,7 @@
                 </p>
                 <p class="package">
                   <span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span>
-                  <span class="float-right">已售{{item.buynum}}{{item.unitName}}</span>
+                  <span class="float-right">已售{{item.sales}}{{item.unitName}}</span>
                 </p>
                 <p class="limit">
                   <span>限购{{item.limits}} {{item.unitName}}</span>

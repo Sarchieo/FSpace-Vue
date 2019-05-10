@@ -13,7 +13,7 @@
               <p>运费： ￥{{ info.freight }}元</p>
               <p>优惠券： ￥ {{ info.coupamt }} 元</p>
               <p>抵扣余额 ￥ {{ info.balamt }} 元</p>
-              
+
               <p>
                 实付：
                 <span>￥ {{ info.payamt }} 元</span>
@@ -27,7 +27,7 @@
                 <span>收货人：</span> {{ storeInfo.comp.storeName }}
               </p>
               <p>
-                <span>联系电话：</span> {{ storeInfo.phone }}
+                <span>联系电话：</span> {{ info.contact}}
               </p>
               <p>
                 <span>收货地址：</span>{{ info.address  }} {{ storeInfo.comp.address }}
@@ -165,6 +165,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
+                // console.log("--- " + JSON.stringify(result.data))
               _this.info = result.data
             }
           }
