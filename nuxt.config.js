@@ -1,10 +1,9 @@
 const pkg = require('./package')
+const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
   mode: 'universal',
-  /*
-  ** Headers of the page
-  */
+  
   head: {
     title: '一块医药',
     meta: [
@@ -22,14 +21,8 @@ module.exports = {
     ] 
   },
 
-  /*
-  ** Customize the progress-bar color
-  */
   loading: { color: '#fff' },
 
-  /*
-  ** Global CSS
-  */
   css: [
     'ant-design-vue/dist/antd.less',
     'element-ui/lib/theme-chalk/index.css',
@@ -37,60 +30,24 @@ module.exports = {
   ],
 
   /*
-  ** Plugins to load before mounting the App
+  ** 插件配置
   */
   plugins: [
     { src: '~/plugins/antd-ui.js', ssr: true },
     { src: '~/plugins/vue-lazyload.js', ssr: true },
-    { src: '~/plugins/element-ui', ssr: true },
+    { src: '~/plugins/element-ui', ssr: false },
     { src: '~/plugins/fs-plugin.js', ssr: false },
     { src: '~/plugins/fingerprint2.js', ssr: false },
     { src: '~/plugins/commom.js', ssr: false },
     { src: '~/plugins/clipboard2.js', ssr: false }
   ],
-  /*
-  ** Nuxt.js modules
-  */
+  
   modules: [
-    '@nuxtjs/axios',
-    'cookie-universal-nuxt',
-    '@nuxtjs/component-cache',
-    ['@nuxtjs/component-cache', {
-      max: 10000,
-      maxAge: 1000 * 60 * 5
-    }],
+    'cookie-universal-nuxt'
   ],
-  axios: {
-  },
 
-  /*
-  ** Build configuration
-  */
   build: {
-    extractCSS: false,
-    analyze: true,
-        vendor: [],
-        maxChunkSize: 300000,
-        babel: {
-          plugins: [
-            [
-              'component',
-              {
-                'libraryName': 'element-ui',
-                'styleLibraryName': 'theme-chalk'
-              }
-            ]
-          ]
-    },
     vendor: ['vue-lazyload'],
-    /*
-    ** You can extend webpack config here
-    */
-    extend(config, ctx) {
-      if(ctx.isClient) {
-        config.module.unknownContextCritical = false
-      }
-    },
     loaders: {
       less: {
         modifyVars: {

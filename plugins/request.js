@@ -30,10 +30,10 @@ function upload(option, onSuccess) {
   var xhr = new XMLHttpRequest();
   if (xhr.upload) {
     xhr.upload.onprogress = function progress(e) {
-      if (e.total > 0) {
-        e.percent = e.loaded / e.total * 100;
-      }
-      option.onProgress(e);
+      // if (e.total > 0) {
+      //   e.percent = e.loaded / e.total * 100;
+      // }
+      // option.onProgress(e);
     };
   }
 

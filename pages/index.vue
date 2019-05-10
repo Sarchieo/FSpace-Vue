@@ -59,7 +59,8 @@
           <div class="notice-box">
             <div class="login-tips">
               <h3>欢迎来到一块医药</h3>
-              <p v-if="userStatus">您好，{{storeInfo.comp.storeName}}</p>
+              <!-- {{ storeInfo.comp.storeName }} -->
+              <p v-if="userStatus">您好，</p>
               <p v-if="!userStatus"><a-button class="float-left" @click="toLogin()">登录</a-button><a-button class="float-right" @click="toRegister()">注册</a-button></p>
             </div>
             <!-- <p class="every-day">每日签到领积分</p>
@@ -69,6 +70,8 @@
             <img src=""/>
             <div class="notice-content">
               <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
+               <!-- <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
+                <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p> -->
               <p class="notice-text" v-for="(item,index) in noticeList" :key="index" @click="toNotice(item)">{{item.type}}{{item.title}}</p>
             </div>
           </div>
