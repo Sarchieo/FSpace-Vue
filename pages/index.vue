@@ -439,7 +439,7 @@
 import FSpaceHeader from "../components/fspace-ui/header/header";
 import FSpaceMenu from "../components/fspace-ui/menu";
 import FSpaceFooter from "../components/fspace-ui/footer";
-
+// import FSpaceRight from "../components/fspace-ui/right-menu";
 export default {
   components: {
     FSpaceHeader,
@@ -456,7 +456,7 @@ export default {
   },
   data() {
     return {
-      notice: {},
+      // notice: '',
       noticeList: [], // 公告列表
       isCarousel: false,
       percentage: 0,
@@ -1065,7 +1065,7 @@ export default {
       this.$router.push({
         path: '/user/notice',
         query: {
-          
+          notice: JSON.stringify(item)
         }
       })
     },
@@ -1666,7 +1666,7 @@ li {
     border: 1px solid transparent;
   }
   .notice-content{
-    .container-size(block, 200px, 150px, 0 auto, 0px);
+    .container-size(block, 200px, 190px, 0 auto, 0px);
     border: 1px solid #f2f2f2;
     .title{
       width: 200px;
@@ -1680,7 +1680,7 @@ li {
     }
     .notice-text{
       width: 200px;
-      .p-size(25px, 25px, 14px, left, 5px, #666);
+      .p-size(35px, 35px, 14px, left, 5px, #666);
       overflow: hidden;
       text-overflow:ellipsis;
       white-space: nowrap;

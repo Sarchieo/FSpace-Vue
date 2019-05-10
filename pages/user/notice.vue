@@ -11,16 +11,16 @@
         </a-breadcrumb>
         <div>
           <div class="notice-box">
-            <h1></h1>
+            <h1>{{notice.type}} {{notice.title}}</h1>
           </div>
-          <p class="time">发布时间：</p>
+          <p class="time">发布时间：{{notice.date}} {{notice.time}}</p>
           <div>
-            <img src alt class="notice-pic">
+            <img :src="notice.img" alt class="notice-pic">
           </div>
-          <p class="step">
+          <!-- <p class="step">
             <span class="previous">上一条</span>
             <span class="next">下一条</span>
-          </p>
+          </p> -->
         </div>
       </a-layout-content>
 
@@ -43,12 +43,13 @@ export default {
   },
   data() {
     return {
-     notice: {}
+     notice: ''
     };
   },
   mounted() {
-  
     
+    this.notice = JSON.parse(this.$route.query.notice)
+    console.log(this.notice)
   },
   methods: {
 

@@ -3,8 +3,10 @@
     <!-- 首页 -->
     <a-layout-header v-if="type === 'home'">
       <!-- <f-space-menu v-if="isShowMenu"></f-space-menu> -->
+      <f-space-right></f-space-right>
       <div>
-        <div class="header-title" v-show="isShowHeader">
+        <div class="title-box">
+          <div class="header-title" v-show="isShowHeader">
           <div class="header-left">
             <a v-show="isLogin">
               <a-icon type="environment"></a-icon>湖南
@@ -79,6 +81,8 @@
             <div style="clear:both;"></div>
           </div>
         </div>
+        </div>
+        
         <div class="medicine-names" ref="home">
           <div class="medicine-name-box" ref="nameBox">
             <div class="medicine-name">
@@ -215,6 +219,7 @@
 <script>
 // import HeaderNotice from './HeaderNotice'
 // import FSpaceMenu from '../menu'
+import FSpaceRight from '../right-menu'
 export default {
   name: "f-space-header",
   props: ["type", "searchList"],
@@ -224,9 +229,9 @@ export default {
   // components: {
   //   FSpaceMenu
   // },
-  // components: {
-  //   FSpaceMenu
-  // },
+  components: {
+    FSpaceRight
+  },
   computed: {
     storeInfo() {
       return this.$store.state.user;
@@ -754,7 +759,7 @@ li {
 }
 .medicine-name img {
   width: 195px;
-  height: 62px;
+  // height: 62px;
 }
 .medicine-search {
   display: inline-block;
@@ -983,5 +988,8 @@ li {
 }
 .margin-top15{
   margin-top: 8px;
+}
+.title-box{
+  background: #f8f8f8;
 }
 </style>
