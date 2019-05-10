@@ -65,7 +65,7 @@
             <a-button class="sign-btn" @click="toCar()">购物车临时入口</a-button>
             <div class="line">
             </div> -->
-            <img src=""/>
+            <img src="../assets/img/certificate.png"/>
             <div class="notice-content">
               <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
                <!-- <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
@@ -802,8 +802,8 @@ export default {
           let div = this.$refs[item.unqid]
           if(div) {
             item.isShow = true
-            item.sHeight = div[0].offsetTop - 120
-            item.eHeight = div[0].offsetTop + div[0].offsetHeight - 125
+            item.sHeight = div[0].offsetTop - div[0].offsetHeight
+            item.eHeight = div[0].offsetTop
             
           } else {
             item.isShow = false
