@@ -38,7 +38,7 @@
                 </p>
                 <p class="limit">
                   <span>限购{{item.limits}} {{item.unitName}}</span>
-                  <span class="float-right">库存{{item.surplusstock}} {{item.unitName}}</span>
+                  <span class="float-right">库存{{item.store}} {{item.unitName}}</span>
                 </p>
                 <p class="p-btn">
                   <button class="small-btn">-</button>

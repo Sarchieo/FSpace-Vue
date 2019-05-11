@@ -46,7 +46,7 @@
                 </p>
                 <p class="limit">
                   <span>限购{{item.limits}} {{item.unitName}}</span>
-                  <span class="float-right">库存{{item.surplusstock}} {{item.unitName}}</span>
+                  <span class="float-right">库存{{item.store}} {{item.unitName}}</span>
                 </p>
                 <p class="p-btn" v-if="userStatus">
                   <!-- <button class="small-btn">-</button><input type="text" v-model="count" readonly="readonly"><button class="small-btn">+</button>  -->

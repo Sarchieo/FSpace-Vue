@@ -68,8 +68,6 @@
             <img src="../assets/img/certificate.png"/>
             <div class="notice-content">
               <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
-               <!-- <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
-                <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p> -->
               <p class="notice-text" v-for="(item,index) in noticeList" :key="index" @click="toNotice(item)">{{item.type}}{{item.title}}</p>
             </div>
           </div>

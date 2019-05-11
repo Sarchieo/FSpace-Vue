@@ -1,5 +1,4 @@
 const pkg = require('./package')
-const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
   mode: 'universal',
@@ -9,7 +8,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: pkg.version, name: pkg.name, content: pkg.description }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -48,6 +47,7 @@ module.exports = {
 
   build: {
     vendor: ['vue-lazyload'],
+    analyze: true,
     loaders: {
       less: {
         modifyVars: {
@@ -57,6 +57,13 @@ module.exports = {
         },
         javascriptEnabled: true
       }
+    },
+    filenames: {
+      manifest: 'manifest.js?v=[hash:7]',
+      vendor: 'vendor.js?v=[hash:7]',
+      app: 'app.js?v=[chunkhash:7]',
+      //- `chunk` build vue-server-renderer.patch.js 解决
+      // chunk: '[name].js?v=[chunkhash:7]'
     }
   }
 }
