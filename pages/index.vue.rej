@@ -1,9 +1,0 @@
-diff a/pages/index.vue b/pages/index.vue	(rejected hunks)
-@@ -160,6 +160,7 @@
-                       <p class="goods-success">{{item.success}}æˆå›¢</p>
-                       <p class="goods-state">{{item.startnum}}ç›’èµ·æ‹¼</p>
-                       <p class="goods-btn">
-+
-                         <button class="imme-btn">ç«‹å³å‚å›¢</button>
-                       </p>
-                     </div>

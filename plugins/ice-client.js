@@ -23,7 +23,6 @@ function initIce() {
  * @param  {...any} _IRequest 参数
  */
 function refcallback(context, moduleName,_IRequest, callback) {
-  console.log('模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + '>调用参数:' + JSON.stringify(_IRequest))
   if (!callback || callback.constructor === IceCallback.constructor) {
     throw new Error("callback is not IceCallback!")
   }
@@ -64,40 +63,17 @@ function refcallback(context, moduleName,_IRequest, callback) {
             path: '/user/personal'
           })
           context.$message.error(success.message, 3);
-          // callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else if (success.code === -1){
           context.$message.error(success.message);
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else {
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         }
-        // 接口不失败情况下调用 消息上线
-        if(success.flag && context.$store.state.userStatus) {
-          let ice_callback = new Ice.Class(inf.PushMessageClient, {
-            receive: function(message, current) {
-              try{
-                let result = JSON.parse(message)
-              } catch(err){
-                context.$store
-                  .dispatch("setNoticeList", { message: message.replace('sys:', '') })
-                  .then(res => {
-                    
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
-              }
-            }
-          })
-          context.$initIceLong('orderServer', context.storeInfo.comp.storeId, new ice_callback());
-        }
       }
     )
     .exception(
       function (e) {
-        // context.$message.error('开发环境提示: 模块名<' + _IRequest.cls + '>  方法名:<' + _IRequest.method + ' > 调用失败: ' + e, 10);
         callback.onCallback(CALLBACK_ACTION.ERROR, e);
-        // process.exit(1);
       }
     )
 }
