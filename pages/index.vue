@@ -584,21 +584,21 @@ export default {
         document.documentElement.scrollTop ||
         document.body.scrollTop;
     },
+    // 设置导航栏
     async setNavBar(floorList) {
+      // 加载楼层
       Promise.all(floorList).then(values => {
         this.list.forEach(item => {
           let div = this.$refs[item.unqid];
           if (div) {
-            let top =  125 + 30
+            let top =  125 + 30 // 头部位置, 以后动态获取
             this.$set(item,'isShow',true)
             this.$set(item,'sHeight',div[0].offsetTop - top)
-            debugger
             this.$set(item,'eHeight',div[0].offsetTop - top + div[0].offsetHeight -1)
           } else {
             this.$set(item,'isShow',false)
           }
         });
-        console.log(this.list)
       });
     },
     // 获取楼层显示状态
@@ -608,12 +608,12 @@ export default {
         .then(result => {
           if (result.code === 200) {
             this.list = result.data;
-            let floorList = [];
+            let floorList = []; // 需要加载的楼层
             this.list.map((value, index) => {
               switch (value.unqid) {
                 case 1: // 新品专区
                   floorList.push(this.getNewGoods());
-                  value.color = "color-green";
+                  value.color = "color-purple";
                   break;
                 case 2: // 热销专区
                   floorList.push(this.getHotGoods());
@@ -648,7 +648,7 @@ export default {
                   break;
                 case 512: // 限时抢购
                   floorList.push(this.getDiscountMallFloor());
-                  value.color = "color-green";
+                  value.color = "color-khaki";
                   break;
               }
             });
@@ -1853,6 +1853,21 @@ li {
     color: #ffffff !important;
   }
 }
+
+.menu-cur-nav .color-khaki {
+  background-color: #F0E68C !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
+.menu-cur-nav .color-purple {
+  background-color: #800080 !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
 
 .menu-cur-nav .color-beige {
   background-color: #6b8e23 !important;
