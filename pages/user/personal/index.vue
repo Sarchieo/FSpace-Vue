@@ -100,9 +100,9 @@
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
       <img alt="example" style="width: 100%" :src="previewImage">
     </a-modal>
-    <f-space-modal-pwd :visible="isChangePwd" @handleCancel="changePwdCancel()"></f-space-modal-pwd>
+    <f-space-modal-pwd :visible="isChangePwd" @changePwdCancel="changePwdCancel()"></f-space-modal-pwd>
     <f-space-modal-phone
-      :visible="isChangePhone"
+      :isChangePhone="isChangePhone"
       @handleCancel="changePhoneCancel()"
       @handleSussece="changePhoneSussece"
     ></f-space-modal-phone>

@@ -20,17 +20,18 @@
             <div class="step-left">
               <p class="order-num">订单编号：{{item.orderno}}</p>
               <!-- 显示药品列表相对应的订单状态 -->
-              <p class="pay-success" v-if="item.ostatus === 0">提交订单</p>
+              <p class="pay-success" v-if="item.ostatus === 0">未付款</p>
               <p class="pay-success" v-if="item.ostatus === 2">等待收货</p>
               <p class="pay-success" v-if="item.ostatus === 3">已签收</p>
               <p class="pay-success" v-if="item.ostatus === 4">已完成</p>
               <p class="pay-success" v-if="item.ostatus === -4">取消交易</p>
-              <p class="pay-success" v-if="item.ostatus === 1">付款成功</p>
+              <p class="pay-success" v-if="item.ostatus === 1 && item.opayway != 4 && item.opayway != 5">付款成功</p>
+              <p class="pay-success" v-if="item.ostatus === 1 && (item.opayway == 4 || item.opayway == 5)">待发货</p>
               <p class="pay-success" v-if="item.ostatus === -1">退货曰</p>
               <p class="pay-success" v-if="item.ostatus === -2">退货中</p>
               <p class="pay-success" v-if="item.ostatus === -3">已退货</p>
               <!-- 付款按钮和提交订单一起显示 -->
-              <p class="pay-btn" v-if="item.ostatus === 0">
+              <p class="pay-btn" v-if="item.ostatus === 0 && item.opayway == -1">
                 <button @click="toPay()">付款</button>
               </p>
               <!-- 确认收货和等待收货一起显示 -->
@@ -40,11 +41,8 @@
                 <button>再次购买</button>
               </p>
               <!-- 取消订单只在提交订单和付款成功状态才显示。药品出库后没有取消订单 -->
-              <p
-                class="cancel"
-                @click="cancelOrder()"
-                v-if="item.ostatus === 1 || item.ostatus === 0"
-              >取消订单</p>
+              <p class="cancel"
+                @click="cancelOrder()" v-if="canCancel(item)">取消订单</p>
             </div>
             <div class="line"></div>
             <!-- 订单状态 -->
@@ -53,7 +51,7 @@
                 <a-step title="提交订单">
                   <a-icon type="profile" slot="icon"/>
                 </a-step>
-                <a-step title="付款成功">
+                <a-step title="待发货">
                   <a-icon type="pay-circle" slot="icon"/>
                 </a-step>
                 <a-step title="等待收货">
@@ -107,7 +105,7 @@
             <div class="consignee-middle float-left">
               <h3>付款信息</h3>
               <p>
-                <span>付款方式：</span>  {{payText(item.payway)}}
+                <span>付款方式：</span>  {{payText(item.opayway)}}
               </p>
               <p>
                 <span>商品总额：</span>
@@ -310,6 +308,12 @@ export default {
                 _this.steps = 3;
                 break;
             }
+            // if (_this.orderDetail[0].opayway == 4 && _this.orderDetail[0].ostatus === 1 && _this.orderDetail[0].settstatus === 0) {
+            //     _this.steps = 0;
+            // }
+            //   if (_this.orderDetail[0].opayway == 5 && _this.orderDetail[0].ostatus === 1 && _this.orderDetail[0].settstatus === 0) {
+            //     _this.steps = 0;
+            //   }
           }
         })
       );
@@ -329,11 +333,11 @@ export default {
         case 3:
         text = '银联支付'
         break;
-        case 4:
-        text = '货到付款'
-        break;
         case 5:
-        text = '线下支付'
+        text = '线下到付'
+        break;
+        case 4:
+        text = '线下即付'
         break;
       }
       return text
@@ -341,6 +345,27 @@ export default {
     cancelOrder() {
       this.visible = true;
     },
+      //是否可以取消订单
+      canCancel(item) {
+          console.log("item---- " + JSON.stringify(item))
+          let date = item.odate + " " + item.otime;
+          date = date.substring(0,19);
+          date = date.replace(/-/g,'/');
+          var timestamp = new Date(date).getTime();
+          var timestampNow = parseInt(new Date().getTime());    // 当前时间戳
+          var times = timestampNow - timestamp;
+          var thirtyMin = 30 * 60 * 1000;
+          if (item.payway == 4 && times < thirtyMin){
+              return true
+          }
+          if (item.payway == 5 && item.ostatus === 1 && times < thirtyMin) {
+              return true
+          }
+          if (item.ostatus === 0 && item.payway === -1) {
+              return true
+          }
+
+      },
     // 取消订单
     hideModal() {
       let _this = this;

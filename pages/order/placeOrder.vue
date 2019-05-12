@@ -23,7 +23,7 @@
             </p>
           <div>
             <p class="address-info">
-              <span>联系人：</span>{{ consignee }} <span style="color: blue;" @click="editorAddress()">编辑</span> 
+              <span>联系人：</span>{{ consignee }} <span @click="editorAddress()" class="edit">编辑</span> 
             </p>
             <p class="address-info">
               <span>联系方式：</span>{{ contact }}
@@ -66,6 +66,14 @@
           </ul>
         </div>
         <div class="go-pay">
+          <div class="select-invo-box">
+             <p class="title">发票信息</p>
+             <p class="select-invo">是否开票： <a-select defaultValue="开发票" style="width: 120px" @change="handleChange">
+                            <a-select-option :value="1">不开发票</a-select-option>
+                            <a-select-option :value="2">开发票</a-select-option>
+                          </a-select>
+              </p>
+          </div>
           <div class="discount" v-if="couponList.length > 0">
             <p class="use-coupon">使用平台优惠券</p>
             <div class="coupon-box">
@@ -73,19 +81,22 @@
                 <!-- 现金券 -->
                 <div class="coupon" v-if="item.brulecode === 2110">
                   <div class="coupon-num">
+                    <!-- <span v-if="item.ctype === 3">111</span> -->
                     <p class="coupon-title">{{ item.rulename }}</p>
-                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
+                    <p v-if="item.ctype === 3"><span class="fuhao">￥</span><span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span></p>
+                    <div v-if="item.ctype !== 3"><p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p></div>
                   </div>
-                  <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked"  @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom"> <span v-if="item.ctype === 3">永久有效</span><span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span> <a-checkbox v-model="item.isChecked"  @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                 </div>
 
                 <!-- 包邮券 -->
                 <div class="coupon" v-if="item.brulecode === 2120">
                   <div class="coupon-num">
+                    <p v-if="item.ctype === 3"><span class="fuhao">￥</span><span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span></p>
                     <p class="coupon-title">{{ item.rulename }}</p>
-                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
+                    <div v-if="item.ctype !==3"><p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p></div>
                   </div>
-                  <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom"><span v-if="item.ctype === 3">永久有效</span><span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>  <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                 </div>
                 <!-- 折扣券 -->
                 <div class="coupon" v-if="item.brulecode === 2130">
@@ -289,6 +300,7 @@ export default {
                 item.isChecked = false
               })
               _this.couponList = result.data
+              console.log(_this.couponList)
             }
           }
         )
@@ -508,6 +520,29 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.edit{
+  color: #3189f5!important;
+}
+.edit:hover{
+  cursor: pointer;
+}
+.fuhao {
+  font-size: 16px;
+}
+.money{
+  font-size: 30px;
+}
+.select-invo-box{
+  .container-size(block, 1190px, 105px, 0 auto, 0px);
+  border-bottom: 1px solid #e0e0e0;
+  .title{
+    .p-size(50px, 50px, 16px, left, 20px, #999999);
+  }
+  .select-invo{
+    .p-size(50px, 50px, 16px, left, 20px, #999999);
+  }
+}
+
 .receiving {
   .container-size(block, 1190px, 280px, 20px auto 20px auto, 0px);
   .container-color(#ffffff, 1px solid #e0e0e0, #333333);
