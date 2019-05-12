@@ -4,7 +4,7 @@
     <a-tabs defaultActiveKey="" @change="callback">
       <a-tab-pane tab="全部订单" key=""></a-tab-pane>
       <a-tab-pane tab="未付款" key="0"></a-tab-pane>
-      <a-tab-pane tab="已付款" key="1"></a-tab-pane>
+      <a-tab-pane tab="待发货" key="1"></a-tab-pane>
       <a-tab-pane tab="已发货" key="2"></a-tab-pane>
       <a-tab-pane tab="已签收" key="3"></a-tab-pane>
       <a-tab-pane tab="退货申请" key="-1"></a-tab-pane>
@@ -61,10 +61,10 @@
               <p>{{items.pnum}}</p>
             </div>
             <div class="state">
-              <p class="sucess">{{statusText(item.ostatus)}}</p>
+              <p class="sucess">{{statusText(item)}}</p>
             </div>
             <div class="state">
-              <p class="sucess">结算状态</p>
+              <p class="sucess">{{setstatusText(item.settstatus)}}</p>
             </div>
             <div class="pay fact-div">
               <p class="shiji">￥{{item.payamt}}</p>
@@ -74,7 +74,7 @@
         </div>
 
         <div class="operation">
-          <p class="button-p" v-if="item.ostatus === 0">
+          <p class="button-p" v-if="item.ostatus === 0 && item.payway == -1">
             <a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button>
           </p>
           <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
@@ -85,7 +85,7 @@
           </p>
           <p
             class="canle-order"
-            v-if="item.ostatus === 0"
+            v-if="canCancel(item)"
             @click="isShowCancel()">取消订单</p>
           <p class="detail" @click="toDetails(item)">订单详情</p>
           <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
@@ -391,12 +391,12 @@ export default {
     },
     statusText(val) {
       var text = "";
-      switch (val) {
+      switch (val.ostatus) {
         case 0:
           text = "未付款";
           break;
         case 1:
-          text = "已付款";
+          text = "待发货";
           break;
         case 2:
           text = "已发货";
@@ -420,11 +420,44 @@ export default {
           text = "已取消";
           break;
       }
-      return text;
+        // if (val.payway == 4 && val.ostatus === 1 && val.settstatus === 0){
+        //     text = "待发货"
+        // }
+        // if (val.payway == 5 && val.ostatus === 1 && val.settstatus === 0){
+        //     text = "待发货"
+        // }
+        return text;
     },
+      setstatusText(settstatus) {
+          if (settstatus===0) {
+              return "未结算"
+          } else {
+              return "已结算"
+          }
+      },
     isShowCancel() {
       this.visible = true;
     },
+      //是否可以取消订单
+      canCancel(item) {
+        console.log("item---- " + JSON.stringify(item))
+        let date = item.odate + " " + item.otime;
+        date = date.substring(0,19);
+        date = date.replace(/-/g,'/');
+        var timestamp = new Date(date).getTime();
+        var timestampNow = parseInt(new Date().getTime());    // 当前时间戳
+        var times = timestampNow - timestamp;
+        var thirtyMin = 30 * 60 * 1000;
+        if (item.payway == 4 && times < thirtyMin){
+            return true
+        }
+        if (item.payway == 5 && item.ostatus === 1 && times < thirtyMin) {
+            return true
+        }
+        if (item.ostatus === 0 && item.payway === -1) {
+            return true
+        }
+      },
     // 删除订单
     deleteOrder(item) {
       let _this = this;
