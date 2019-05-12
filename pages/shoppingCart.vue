@@ -207,7 +207,7 @@ export default {
             if (result.data) {
               _this.cartList = result.data;
               _this.cartList.forEach((item) => {
-                item.checked ? false : true
+                _this.$set(item, 'checked', item.checked === 0 ? false : true)
                 if(item.limitnum > item.inventory) {
                   item.maximum = item.inventory
                 } else {

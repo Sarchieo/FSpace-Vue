@@ -45,7 +45,7 @@
                   <span class="float-right">已售{{item.sales}}{{item.unitName}}</span>
                 </p>
                 <p class="limit">
-                  <span>限购{{item.limits}} {{item.unitName}}</span>
+                  <span v-if="item.limits !== 0">限购{{item.limits}} {{item.unitName}}</span>
                   <span class="float-right">库存{{item.store}} {{item.unitName}}</span>
                 </p>
                 <p class="p-btn" v-if="userStatus">
@@ -77,6 +77,9 @@ export default {
   computed: {
     userStatus() {
       return this.$store.state.userStatus;
+    },
+    storeInfo() {
+      return this.$store.state.user;
     }
   },
   data() {
@@ -121,6 +124,10 @@ export default {
     },
      // 加入购物车
     addCart(item) {
+      if(item.store === 0) {
+        this.$message.error('商品库存不足')
+        return
+      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
