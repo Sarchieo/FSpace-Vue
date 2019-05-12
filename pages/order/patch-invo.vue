@@ -344,6 +344,9 @@ export default {
       } else {
         this.invoiceStr = "增值税专用发票";
       }
+      setTimeout(() => {
+        this.form.setFieldsValue(this.invoice);
+      }, 500)
     },
     prePay() {
       const _this = this;
@@ -364,7 +367,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            console.log("url --- " + JSON.stringify(result.data));
             _this.url = result.data;
             _this.steps = 3;
           }
@@ -539,16 +541,15 @@ export default {
       // console.log("value-- " + this.reasonType)
     },
     setStep(index) {
-        if (index === 1) {
-            if (this.reasonType === '') {
-                this.$message.warning("请选择补开发票原因")
-                return
-            }
-            setTimeout(() => {
-              this.form.setFieldsValue(this.invoice);
-            }, 500)
-            
+      if (index === 1) {
+        if (this.reasonType === '') {
+            this.$message.warning("请选择补开发票原因")
+            return
         }
+        setTimeout(() => {
+          this.form.setFieldsValue(this.invoice);
+        }, 500)
+      }
       if (index === 3) {
         this.prePay();
         return;

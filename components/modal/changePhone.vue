@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="修改绑定手机" v-model="visible" :footer="null" @cancel="handleCancel">
+  <a-modal title="修改绑定手机" v-model="isChangePhone" :footer="null" @cancel="changePwdCancel">
     <a-form :form="form" @submit="handleSubmitOld" v-show="!isShowNewPhone">
       <a-form-item v-bind="formItemLayout" label="旧手机号" has-feedback>
         <a-input v-model="oldPhone" :disabled="isDisabled" id="validating"></a-input>
@@ -91,7 +91,7 @@
 <script>
 export default {
   name: "f-space-modal-phone",
-  props: ["visible"],
+  props: ["isChangePhone"],
   computed: {
     storeInfo() {
       return this.$store.state.user;
@@ -138,6 +138,9 @@ export default {
     });
   },
   methods: {
+    changePhoneCancel() {
+      this.$emit("changePhoneCancel");
+    },
     infoPhone() {
       this.oldPhone = this.storeInfo.phone;
       // console.log(this.storeInfo)
@@ -162,16 +165,14 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             // 回到登录页面
-            _this.$emit(handleSussece);
-            _this.$message.success(result.message);
+             _this.$message.success(result.message);
+            _this.$emit(changePhoneCancel);
+           
           }
         })
       );
     },
     handleOk() {},
-    handleCancel() {
-      this.$emit("handleCancel");
-    },
     // 验证手机号码是否已被注册
     validatePhone(rule, value, callback) {
       let _this = this;

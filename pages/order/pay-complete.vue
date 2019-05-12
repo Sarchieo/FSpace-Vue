@@ -24,7 +24,7 @@
                 <span>下单时间：</span> {{ info.odate + ' ' + info.otime }}
               </p>
               <p>
-                <span>收货人：</span> {{ storeInfo.comp.storeName }}
+                <span>收货人：</span> {{ info.consignee }}
               </p>
               <p>
                 <span>联系电话：</span> {{ info.contact}}
@@ -164,6 +164,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
+            debugger
             if (result.code === 200) {
                 // console.log("--- " + JSON.stringify(result.data))
               _this.info = result.data

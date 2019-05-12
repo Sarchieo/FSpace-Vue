@@ -121,7 +121,7 @@ export default {
       return this.$store.state.selectedKeys;
     }
   },
-  // middleware: "authenticated",
+  middleware: "authenticated",
   data() {
     return {
       countList: [0, 0, 0, 0, 0, 0, 0],
@@ -235,6 +235,9 @@ export default {
     margin-top: 10px;
     p {
       .p-size(30px, 30px, 14px, left, 20px, #333333);
+       overflow: hidden;
+       text-overflow:ellipsis;
+       white-space: nowrap;
       i {
         margin-right: 15px;
         color: #ed3025;

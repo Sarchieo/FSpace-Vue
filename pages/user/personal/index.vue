@@ -100,9 +100,9 @@
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
       <img alt="example" style="width: 100%" :src="previewImage">
     </a-modal>
-    <f-space-modal-pwd :visible="isChangePwd" @handleCancel="changePwdCancel()"></f-space-modal-pwd>
+    <f-space-modal-pwd :visible="isChangePwd" @changePwdCancel="changePwdCancel()"></f-space-modal-pwd>
     <f-space-modal-phone
-      :visible="isChangePhone"
+      :isChangePhone="isChangePhone"
       @handleCancel="changePhoneCancel()"
       @handleSussece="changePhoneSussece"
     ></f-space-modal-phone>
@@ -205,11 +205,6 @@ export default {
     };
   },
   mounted() {
-    // this.form.setFieldsValue({
-    //   storeName: "",
-    //   address: "",
-    //   addressCode: ""
-    // });
     this.getBasicInfo();
     this.getNodes();
     this.$store.commit(types.SELECTED_KEYS, "/user/personal");
@@ -309,7 +304,7 @@ export default {
       r.readAsDataURL(file);
       r.onload = e => {
         file.thumbUrl = e.target.result;
-        this.uploadList[0].fileList[0] = file;
+        this.$set(this.uploadList[this.uploadIndex].fileList, 0, file)
       };
       return false;
     },
@@ -335,13 +330,14 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            _this.getFilePathPrev(true);
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
             });
             _this.authenticationStatus = result.data.comp.authenticationStatus;
             _this.code = [];
-            _this.getFilePathPrev(true);
+           
             _this.authenticationMessage =
               result.data.comp.authenticationMessage;
             _this.isEditor = _this.isRelated;
@@ -417,10 +413,12 @@ export default {
                         result.data.companyFilePath +
                         data[i] +
                         "?" +
-                        new Date().getSeconds();
+                        new Date().getMinutes() + new Date().getSeconds() + new Date().getMilliseconds();
                     }
                   }
                 }
+                // 初次注册提交表单、没有企业id 图片表单提交暂时放到此处 ^ ^.
+                _this.uploads()
               };
               xhr.open("POST", path, true);
               xhr.setRequestHeader("specify-path", result.data.companyFilePath);
@@ -445,11 +443,12 @@ export default {
             filename: "file",
             file: blob,
             headers: {
-              "specify-filename": index + ".jpg",
+              "specify-filename": file.uid + ".jpg",
               "specify-path": this.uploadInfo.companyFilePath
             }
           };
           upload(options, function(success) {
+            // 这里有不确定性 先这样吧
             if(index === 2) {
               _this.getFilePathPrev(true)
             }
@@ -460,7 +459,6 @@ export default {
 
     handleSubmit(e) {
       e.preventDefault();
-      // this.uploads()
       const { fileList } = this;
       this.form.validateFields((err, values) => {
         if (!err) {

@@ -90,7 +90,7 @@
               <h3>收货人信息</h3>
               <p>
                 <span class="three">收货人：</span>
-                {{ storeInfo.comp.storeName }}
+                {{ item.consignee }}
               </p>
               <p class="address">
                 <span class="three">地址：</span>

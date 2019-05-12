@@ -102,7 +102,7 @@
                         v-lazy="imgUrl"
                         alt
                       >
-                    <span class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</span>
+                    <span class="goods-name">{{detail.brandname}} {{ detail.prodname }}</span>
                       <span>{{ detail.spec }}</span>
                       <span>{{ detail.manuname }}</span>
                     </div>
@@ -558,6 +558,9 @@ export default {
               width: 77%;
               margin-left: 10px;
               margin-top: 3px;
+              overflow: hidden;
+              text-overflow:ellipsis;
+              white-space: nowrap;
             }
           }
         }
