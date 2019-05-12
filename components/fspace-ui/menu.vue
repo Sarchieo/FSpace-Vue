@@ -8,8 +8,9 @@
       @mouseover="showChildren(i, index,$event)"
       @mouseout="hideChildren(i)"
     >
+    <a-icon type="bars" class="i-left"/>
     {{i.label}}
-    <a-icon type="right"/>
+    <a-icon type="right" class="i-right"/>
       <!-- 弹出层  v-show="i.isActive"-->
       <div :ref="'hover' + index" class="hover-show" v-show="i.isActive">
         <div
@@ -93,7 +94,9 @@ export default {
 <style>
 .two-type {
   display: block;
+  width: 200px!important;
   height: 30px !important;
+  text-align: left;
   line-height: 30px !important;
   text-indent: 20px !important;
   font-size: 16px!important;
@@ -104,7 +107,7 @@ export default {
   cursor: pointer;
 }
 .small-type{
-  width: 100%;
+  width: 100%!important;
   min-height: 80px;
   height: auto;
   margin-bottom: 10px;
@@ -117,9 +120,12 @@ export default {
   color: rgb(255, 0, 54);
 }
 .sider-menu {
-  float: left;
+  position: absolute;
+  top: 40px;
+  left: 0px;
   width: 175px;
   height: 413px;
+  background:#404b5a;
   padding-top: 15px !important;
   padding-bottom: 15px !important;
   /* box-shadow: 1px 1px 3px #999; */
@@ -129,9 +135,10 @@ export default {
   position: relative;
   width: 175px;
   height: 54px;
+  font-size: 14px;
   box-sizing: border-box;
   line-height: 54px;
-  text-indent: 20px;
+  padding-left: 12px;
 }
 .sider-menu-li:hover {
   background: rgb(255, 0, 54);
@@ -140,11 +147,16 @@ export default {
 .sider-menu-li:hover i{
   color: #ffffff;
 }
-.sider-menu-li i {
+.i-left{
+  float: left;
+  margin-top: 20px;
+  margin-right: 15px;
+  font-size: 16px;
+}
+.i-right{
   float: right;
   margin-top: 20px;
-  margin-right: 5px;
-  color: #999999;
+  font-size: 16px;
 }
 .hover-show {
   position: absolute;
@@ -153,6 +165,7 @@ export default {
   width: 1015px !important;
   height: 413px !important;
   padding-top:20px;
+  border: 1px solid #f2f2f2;
   background: #ffffff;
   overflow: auto;
   color: #666 !important;

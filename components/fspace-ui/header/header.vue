@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="header-box">
     <!-- 首页 -->
     <a-layout-header v-if="type === 'home'">
-      <!-- <f-space-menu v-if="isShowMenu"></f-space-menu> -->
+     
       <f-space-right></f-space-right>
       <div>
         <div class="title-box">
@@ -127,13 +127,13 @@
             </div>
             <p class="spike" v-show="isShowHeader">
               
-              <a href="javascript:;" @click="toGoods(item)" v-for="(item, index) in keyWordList" :key="index">{{ item }} <span>|</span></a>
+              <a href="javascript:;" @click="toGoods(item)" v-for="(item, index) in keyWordList" :key="index">{{ item }} </a>
               <!--  -->
             </p>
           </div>
           <div class="nav-box" v-show="isShowHeader">
             <div>
-              <span href class="goods-type" @mouseover="showMenu()" @mouseleave="hiddenMenu()">商品分类</span>
+              <span href class="goods-type" @mouseover="showMenu()" @mouseleave="hiddenMenu()"> <a-icon type="bars" class="bars"/>商品分类  <f-space-menu></f-space-menu></span>
               <a href="javascript:;" @click="toNewPerson()">新人专享</a>
               <a href="javascript:;" @click="toNewGoods()">新品上线</a>
               <a href="javascript:;" @click="toHotGoods()">热销商品</a>
@@ -189,7 +189,7 @@
 </template>
 <script>
 // import HeaderNotice from './HeaderNotice'
-// import FSpaceMenu from '../menu'
+import FSpaceMenu from '../menu'
 import FSpaceRight from '../right-menu'
 export default {
   name: "f-space-header",
@@ -197,10 +197,8 @@ export default {
   // components: {
   //   HeaderNotice
   // },
-  // components: {
-  //   FSpaceMenu
-  // },
   components: {
+    FSpaceMenu,
     FSpaceRight
   },
   computed: {
@@ -585,6 +583,9 @@ li {
   background: #ffffff;
   color: gray;
 }
+.header-box{
+  height: auto;
+}
 .already {
   color: #999999;
 }
@@ -599,6 +600,10 @@ li {
   width: 20px;
   height: 20px;
 }
+.ant-select-auto-complete.ant-select .ant-select-selection{
+  margin-left: -8px;
+  border-radius: 15px 0px 0px 15px!important;
+}
 /* 登录头部 */
 .login-header {
   height: 85px;
@@ -612,7 +617,7 @@ li {
 }
 .header-title span {
   float: right;
-  margin-right: 40px;
+  margin-right: 25px;
 }
 .header-left {
   display: inline-block;
@@ -721,9 +726,17 @@ li {
   text-indent: 27.4%;
 }
 .spike a {
+  padding: 0px 23px 0px 0px;
   margin-left: 15px;
   margin-right: 15px;
+  border-right: 2px solid #e0e0e0;
   color: #999999 !important;
+}
+.medicine-name-box .spike a:last-child{
+  border: none!important;
+}
+.spike a:hover{
+  color: #ed2f26!important;
 }
 .medicine-name {
   display: inline-block;
@@ -741,7 +754,7 @@ li {
 .medicine-search {
   display: inline-block;
   width: 518px;
-  height: 42px;
+  height: 40px;
   border-radius: 20px;
   margin-left: 80px;
   border: 2px solid rgb(255, 0, 54);
@@ -749,7 +762,7 @@ li {
 }
 .search-box{
   width: 97%;
-  margin-top: 3px;
+  margin-top: 2px;
   margin-left: 10px;
   border-radius: 50%;
   } 
@@ -884,13 +897,23 @@ li {
   width: 1190px;
   margin: 0 auto;
 }
+.goods-type .bars{
+  float: left;
+  margin-top: 10px;
+  margin-left: -8px;
+  margin-right: 10px;
+  font-size: 20px;
+}
 .nav-box .goods-type {
-  display: inline-block;
+  position: relative;
+  left: 0px;
+  top: 0px;
+  float: left;
   width: 175px !important;
-  height: 40px;
-  background: #ed3025;
+  height: auto;
+  background: #db2920;
   line-height: 40px;
-  text-align: center;
+  padding-left: 20px;
   font-size: 16px;
   color: #ffffff;
   a:hover {
@@ -900,6 +923,7 @@ li {
 .nav-box a {
   display: inline-block;
   height: 40px;
+  line-height: 40px;
   margin-right: 30px;
   font-size: 16px;
   color: #ffffff;

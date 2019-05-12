@@ -5,8 +5,9 @@
       <!-- 左侧菜单，轮播，广告位及物价区 -->
       <a-layout-content>
         <div class="goods-nav-box">
-          <f-space-menu></f-space-menu>
-          <div class="binnar-box">
+          <!-- <f-space-menu></f-space-menu> -->
+          <div class="index-header">
+              <div class="binnar-box">
             <a-carousel autoplay v-if="isCarousel">
               <div
                 slot="prevArrow"
@@ -71,6 +72,8 @@
               >{{item.type}}{{item.title}}</p>
             </div>
           </div>
+          </div>
+        
         </div>
         <div class="pic-link">
           <nuxt-link to="/user/personal/coupon">
@@ -1151,6 +1154,9 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.index-header{
+  .container-size(block, 1192px, 412px, 0 auto, 0px);
+}
 .height-auto {
   // min-height: 360px;
   height: auto !important;
@@ -1592,9 +1598,10 @@ li {
   color: #fff;
 }
 .goods-nav-box {
-  .container-size(block, 1190px, 412px, 0 auto, 0px);
+  .container-size(block, 100%, 412px, 0 auto, 0px);
   position: relative;
-  background: #ffffff;
+  // float: left;
+  background: #f8f8f8;
   border-top: 1px solid #f8f8f8;
   margin-bottom: 25px;
 }
@@ -1612,9 +1619,9 @@ li {
   height: 413px;
 }
 .binnar-box {
-  float: left;
-  .container-size(inline-block, 804px, 412px, 0, 0px);
-  // .position(absolute, 0px, 197px);
+float: left;
+.container-size(inline-block, 804px, 412px, 0 auto, 0px);
+margin-left: 178px;
 }
 .binnar-pic {
   width: 750px;
@@ -1624,7 +1631,7 @@ li {
   text-align: center;
 }
 .notice-box {
-  float: right;
+  float: left;
   width: 210px;
   height: 413px;
   margin: 0 auto;
