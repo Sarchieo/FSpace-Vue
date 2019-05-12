@@ -35,7 +35,7 @@
                   class="pick-input"
                 ></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
-                <img v-lazy="item.imgURl">  
+                <img @click="toDetail(item)" v-lazy="item.imgURl">  
                 <p class="goods-name" @click="toDetail(item)">{{ item.ptitle }}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
@@ -206,7 +206,6 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.cartList = result.data;
-              debugger
               _this.cartList.forEach((item) => {
                 item.checked ? false : true
                 if(item.limitnum > item.inventory) {

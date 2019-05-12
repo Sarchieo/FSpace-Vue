@@ -12,13 +12,9 @@
               <a-icon type="environment"></a-icon>湖南
             </a>
             <a>欢迎来到一块医药</a>
-            <span @click="downloadHtml()">
-              <!-- <img src="../../../assets/img/desktop.png" alt="" class="desktop"> -->
-              桌面快捷
-            </span>
-            <nuxt-link to="/user/login" v-show="!isLogin">请登录</nuxt-link>
-            <nuxt-link to="/user/register" v-show="!isLogin">注册有礼</nuxt-link>
-
+            <nuxt-link to="/user/login" v-if="!isLogin">请登录</nuxt-link>
+            <nuxt-link to="/user/register" v-if="!isLogin">注册有礼</nuxt-link>
+             <a href="javascript:;" @click="downloadHtml()"> 桌面快捷</a>
             <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
           </div>
           <div class="header-right">
@@ -92,12 +88,22 @@
             </div>
             <div class="medicine-search">
               <div class="search-box">
-                <a-input
+                <!-- <a-input
                   v-model="keyword"
                   placeholder="药品名称/药品通用名"
                   class="searchs-input"
                   @keyup.enter="toGoods(keyword)"
-                />
+                /> -->
+                <a-auto-complete
+                  v-model="keyword"
+                  class="searchs-input"
+                  @search="handleSearch"
+                  placeholder="药品名称/药品通用名"
+                >
+                  <template slot="dataSource">
+                    <a-select-option v-for="item in autoResult" :key="item">{{item}}</a-select-option>
+                  </template>
+                </a-auto-complete>
                 <button class="search-btn" @click="toGoods(keyword)">搜索</button>
               </div>
             </div>
@@ -118,48 +124,11 @@
                 <img src="../../../assets/img/zhengpin.png" alt>
                 <p>正品保证</p>
               </div>
-             
-             
-              
             </div>
-            <!-- <div
-              class="ant-dropdown-link cart-btn"
-              @click="toPage('shoppingCart')"
-              @mouseover="showList()"
-              @mouseout="hideList()"
-            >
-              <a-icon type="shopping-cart" class="cart-icon"/>
-              <span class="cart-count">{{ cartList.length }}</span>
-              <span class="cart-text">采购单</span>
-              <div class="cart-down" v-show="isShowCartList">
-                <p class="no-data" v-if="cartList.length === 0">您的采购单空空如也</p>
-                <ul class="cart-down-ul" v-if="cartList.length !== 0">
-                  <li class="cart-down-list" v-for="(item,index) in cartList" :key="index">
-                    <a href="javascript:;">
-                      <img v-lazy="item.imgURl" class="cart-img">
-                      <p class="cart-goods-text">
-                        {{item.ptitle}}
-                        <span>￥{{item.pdprice * item.num}}元</span>
-                      </p>
-                      <p class="cart-goods-count">{{item.spec}}</p>
-                      <a-icon @click.stop="removeCartList(item, index)" type="close" class="del-cart-goods"/>
-                    </a>
-                  </li>
-                </ul>
-                <div class="total-settlement">
-                  <p>
-                    <button class="settlement-btn" @click="toPage('shoppingCart')">去购物车</button>
-                  </p>
-                </div>
-              </div>
-            </div>-->
             <p class="spike" v-show="isShowHeader">
-              <!-- <a href="javascript:;" @click="toNewPerson()">新人专享</a>
-              <span>|</span>-->
-              <!-- <a href>秒杀</a>
-              <span>|</span>
-              <a href>一块购</a>
-              <span>|</span>-->
+              
+              <a href="javascript:;" @click="toGoods(item)" v-for="(item, index) in keyWordList" :key="index">{{ item }} <span>|</span></a>
+              <!--  -->
             </p>
           </div>
           <div class="nav-box" v-show="isShowHeader">
@@ -270,18 +239,17 @@ export default {
       isShowHeader: true,
       isDisTip: false,
       isShowCartList: false,
-      cartList: [],
       loadding: false,
-      visible: false
+      visible: false,
+      keyWordList: [],
+      autoResult: []
     };
   },
   mounted() {
     this.init();
     this.checkStoreLoginStatus();
+    this.usualKeyword();
     window.addEventListener("scroll", this.handleScroll);
-    if (this.isLogin) {
-      this.getShoppingCartList();
-    }
   },
   methods: {
     init() {
@@ -292,6 +260,29 @@ export default {
     },
     downloadHtml() {
       location.href = "http://114.116.155.221:8000/一块医药.url";
+    },
+     // 获取楼层显示状态
+    async usualKeyword() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "usualKeyword";
+      iRequest.param.json = JSON.stringify({});
+      iRequest.param.token = localStorage.getItem("identification") || "";
+      this.$refcallback(
+        this,
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.keyWordList = result.data
+            if(_this.keyWordList.length > 3) {
+              _this.keyWordList.splice(0,3)
+            }
+           
+          }
+        })
+      );
     },
     // 获取楼层显示状态
     async checkStoreLoginStatus() {
@@ -316,6 +307,26 @@ export default {
               .catch(err => {
                 console.log(err);
               });
+          }
+        })
+      );
+    },
+    handleSearch(value) {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ProdModule";
+      iRequest.method = "intelligentFullTextsearch";
+      iRequest.param.json = JSON.stringify({
+        keyword: value
+      });
+      iRequest.param.token = localStorage.getItem("identification") || "";
+      this.$refcallback(
+        this,
+        "goodsServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.autoResult = result.data
           }
         })
       );
@@ -475,42 +486,6 @@ export default {
         path: "/user/personal/collection"
       });
     },
-    async getShoppingCartList() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ShoppingCartModule";
-      iRequest.method = "queryUnCheckShopCartList";
-      iRequest.param.json = JSON.stringify({
-        compid: this.storeInfo.comp.storeId
-      });
-      console.log(
-        "orderServer" +
-          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535)
-      );
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" +
-          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            if (result.data) {
-              _this.cartList = result.data;
-              _this.cartList.forEach(item => {
-                item.checked ? false : true;
-              });
-              _this.fsGeneralMethods.addImages(
-                _this,
-                _this.cartList,
-                "pdno",
-                "spu"
-              );
-            }
-          }
-        })
-      );
-    },
     async getBasicInfo() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -637,7 +612,7 @@ li {
 }
 .header-title span {
   float: right;
-  margin-right: 10px;
+  margin-right: 40px;
 }
 .header-left {
   display: inline-block;
@@ -772,9 +747,12 @@ li {
   border: 2px solid rgb(255, 0, 54);
   background: rgb(255, 0, 54);
 }
-/* .search-box{
-    border-radius: 50%;
-  } */
+.search-box{
+  width: 97%;
+  margin-top: 3px;
+  margin-left: 10px;
+  border-radius: 50%;
+  } 
 .search-btn {
   width: 83px;
   height: 30px;

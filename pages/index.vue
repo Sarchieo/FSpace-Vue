@@ -7,7 +7,7 @@
         <div class="goods-nav-box">
           <f-space-menu></f-space-menu>
           <div class="binnar-box">
-            <a-carousel autoplay arrows v-if="isCarousel">
+            <a-carousel autoplay v-if="isCarousel">
               <div
                 slot="prevArrow"
                 slot-scope="props"
@@ -25,34 +25,19 @@
                 <a-icon type="right-circle"/>
               </div>
               <div>
-                <img
-                  src="../assets/banner/hunan.png"
-                  class="banner-pic"
-                >
+                <img src="../assets/banner/hunan.png" class="banner-pic">
               </div>
               <div>
-                <img
-                 src="../assets/banner/money.jpg"
-                class="banner-pic"
-                >
+                <img src="../assets/banner/money.jpg" class="banner-pic">
               </div>
               <div>
-                <img
-                 src="../assets/banner/register.jpg"
-                class="banner-pic"
-                >
+                <img src="../assets/banner/register.jpg" class="banner-pic">
               </div>
               <div>
-                <img
-                  src="../assets/banner/newperson.jpg"
-                  class="banner-pic"
-                >
+                <img src="../assets/banner/newperson.jpg" class="banner-pic">
               </div>
               <div>
-                <img
-                  src="../assets/banner/integral.jpg"
-                  class="banner-pic"
-                >
+                <img src="../assets/banner/integral.jpg" class="banner-pic">
               </div>
             </a-carousel>
           </div>
@@ -60,37 +45,57 @@
             <div class="login-tips">
               <h3>欢迎来到一块医药</h3>
               <!-- {{ storeInfo.comp.storeName }} -->
-              <p v-if="userStatus">您好，{{ storeInfo.comp.storeName }}</p>
-              <p v-if="!userStatus"><a-button class="float-left" @click="toLogin()">登录</a-button><a-button class="float-right" @click="toRegister()">注册</a-button></p>
+              <p
+                v-if="userStatus && storeInfo.comp && storeInfo.comp.storeName"
+              >您好，{{ storeInfo.comp.storeName }}</p>
+              <p v-if="!userStatus">
+                <nuxt-link to="/user/login">
+                  <a-button class="float-left">登录</a-button>
+                </nuxt-link>
+                <nuxt-link to="/user/register">
+                  <a-button class="float-right">注册</a-button>
+                </nuxt-link>
+              </p>
             </div>
-            <!-- <p class="every-day">每日签到领积分</p>
-            <a-button class="sign-btn" @click="toCar()">购物车临时入口</a-button>
-            <div class="line">
-            </div> -->
-            <img src="../assets/img/certificate.png"/>
+            <img src="../assets/img/certificate.png">
             <div class="notice-content">
-              <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
-               <!-- <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p>
-                <p class="title"><span class="float-left">公告</span><span class="float-right more">更多</span></p> -->
-              <p class="notice-text" v-for="(item,index) in noticeList" :key="index" @click="toNotice(item)">{{item.type}}{{item.title}}</p>
+              <p class="title">
+                <span class="float-left">公告</span>
+                <span class="float-right more">更多</span>
+              </p>
+              <p
+                class="notice-text"
+                v-for="(item,index) in noticeList"
+                :key="index"
+                @click="toNotice(item)"
+              >{{item.type}}{{item.title}}</p>
             </div>
           </div>
         </div>
         <div class="pic-link">
-          <img src="../assets/img/coupon.png" @click="toCoupon()" alt="">
-          <img src="../assets/img/sign.png" @click="toIntegral()" alt="">
-          <img src="../assets/img/brand.png" alt="">
-          <img src="../assets/img/type.png" @click="toCategory()" alt="">
+          <nuxt-link to="/user/personal/coupon">
+            <img src="../assets/img/coupon.png" alt>
+          </nuxt-link>
+
+          <img src="../assets/img/sign.png" @click="toIntegral()" alt>
+          <img src="../assets/img/brand.png" alt>
+          <img src="../assets/img/type.png" @click="toCategory()" alt>
         </div>
         <div v-for="(item,index) in list" :key="index" style="height: auto;">
           <!-- 新品专区 -->
-           <!-- v-if="item.unqid === 1 && newGoodsList.length > 4" -->
-          <div :ref="item.unqid" class="elaborate" v-if="item.unqid === 1 && newGoodsList.length > 4">
-            <p class="elaborate-title">新品专区
-               <a href="javascript:;" @click="toNewGoods()">
+          <!-- v-if="item.unqid === 1 && newGoodsList.length > 4" -->
+          <div
+            :ref="item.unqid"
+            class="elaborate"
+            v-if="item.unqid === 1 && newGoodsList.length > 4"
+          >
+            <p class="elaborate-title">
+              新品专区
+              <a href="javascript:;" @click="toNewGoods()">
                 查看全部
                 <a-icon type="right"/>
-              </a> </p>
+              </a>
+            </p>
             <ul class="elaborate-ui">
               <li v-for="(item,index) in newGoodsList" :key="index">
                 <a-card hoverable class="elaborate-card" @click="toDetail(item)">
@@ -109,12 +114,18 @@
               </li>
             </ul>
           </div>
-           <!-- 热销专区 -->
-           <!-- v-if="item.unqid === 2 && hotGoodsList.length > 9" -->
-          <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 2 && hotGoodsList.length > 9">
+          <!-- 热销专区 -->
+          <!-- v-if="item.unqid === 2 && hotGoodsList.length > 9" -->
+          <div
+            :ref="item.unqid"
+            class="brand-hall height-auto"
+            v-if="item.unqid === 2 && hotGoodsList.length > 9"
+          >
             <p class="brand-hall-title">
               热销专区
-              <a href="javascript:;" @click="toHotGoods()">查看全部<a-icon type="right"/>
+              <a href="javascript:;" @click="toHotGoods()">
+                查看全部
+                <a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
@@ -138,8 +149,12 @@
             </div>
           </div>
           <!-- 秒杀专区 -->
-           <!-- v-if="item.unqid === 4 && secondList.length > 4" -->
-          <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 4 && secondList.length > 4">
+          <!-- v-if="item.unqid === 4 && secondList.length > 4" -->
+          <div
+            :ref="item.unqid"
+            class="brand-hall height-auto"
+            v-if="item.unqid === 4 && secondList.length > 4"
+          >
             <div class="brand-hall-title height80">
               秒杀专区
               <a href="javascript:;" @click="toSpike()" class="see-wholes">
@@ -150,10 +165,17 @@
             <div class="onek-shoping">
               <ul>
                 <li v-for="(item,index) in secondList" :key="index">
-                  <a-card hoverable class="onek-card" @click="toDetail(item, secondList.actcode, 2)">
+                  <a-card
+                    hoverable
+                    class="onek-card"
+                    @click="toDetail(item, secondList.actcode, 2)"
+                  >
                     <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                     <div class="onek-box" slot="cover">
-                      <p class="onek-price" v-if="item.vatp != -1">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-if="item.vatp != -1">
+                        ￥{{item.vatp}}元
+                        <del>原价{{item.rrp}}元</del>
+                      </p>
                       <p class="onek-price" v-else>￥认证后可见</p>
                       <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
@@ -172,9 +194,13 @@
               </ul>
             </div>
           </div>
-           <!-- 一块购 -->
-            <!-- v-if="item.unqid === 8 && teamBuyList.length > 4" -->
-          <div :ref="item.unqid" class="brand-hall height-auto" v-if="item.unqid === 8 && teamBuyList.length > 4">
+          <!-- 一块购 -->
+          <!-- v-if="item.unqid === 8 && teamBuyList.length > 4" -->
+          <div
+            :ref="item.unqid"
+            class="brand-hall height-auto"
+            v-if="item.unqid === 8 && teamBuyList.length > 4"
+          >
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
               <a href="javascript:;" @click="toBuying()" class="see-wholes">
@@ -188,17 +214,17 @@
                 <span>9.7</span>
                 <span>9.6</span>
                 <span>折</span>
-              </h5> -->
+              </h5>-->
               <!-- <a-tooltip title="3 done / 3 in progress / 4 to do">
                  <a-progress :percent="60" :successPercent="30" style="position: absolute;top: 18px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/>
-              </a-tooltip> -->
+              </a-tooltip>-->
               <!-- <a-progress strokeLinecap="square" :percent="75" strokeColor="#ed3025" style="position: absolute;top: 28px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"/> -->
               <!-- <a-progress
                   :percent="20"
                   style="position: absolute;top: 18px;left: 240px;width: 190px;height: 8px;margin-left: 20px;"
                   :strokeColor="black"
                   status="exception"
-                /> -->
+              />-->
               <!-- <h5 class="person-num">
                 <span>2</span>
                 <span>5</span>
@@ -206,19 +232,28 @@
                 <span>30</span>
                 <span>50</span>
                 <span>人</span>
-              </h5> -->
+              </h5>-->
             </div>
             <div class="onek-shoping">
               <ul>
                 <li v-for="(item,index) in teamBuyList" :key="index">
-                  <a-card hoverable class="onek-card" @click="toDetail(item, teamBuyList.actcode, 2)">
+                  <a-card
+                    hoverable
+                    class="onek-card"
+                    @click="toDetail(item, teamBuyList.actcode, 2)"
+                  >
                     <img v-lazy="item.imgURl" class="onek-img" slot="cover">
                     <div class="onek-box" slot="cover">
-                      <p class="onek-price" v-if="item.vatp != -1">￥{{item.vatp}}元 <del> 原价{{item.rrp}}元</del></p>
+                      <p class="onek-price" v-if="item.vatp != -1">
+                        ￥{{item.vatp}}元
+                        <del>原价{{item.rrp}}元</del>
+                      </p>
                       <p class="onek-price" v-else>￥认证后可见</p>
                       <p class="goods-name">{{item.prodname}}{{item.spec}}</p>
                       <p class="goods-manu">{{item.manuName}}</p>
-                      <p class="goods-success">{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p>
+                      <p
+                        class="goods-success"
+                      >{{item.actlimit}}{{item.unitName}}起拼/{{item.surplusstock}}成团</p>
                       <!-- <p class="goods-state"></p> -->
                       <p class="goods-btn">
                         <span class="sur-time">还剩</span>
@@ -239,7 +274,7 @@
             <p class="brand-hall-title">
               包邮专区
               <!-- <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
-              </a> -->
+              </a>-->
             </p>
             <div class="brand-div">
               <ul class="brand-right height-auto hot-width">
@@ -249,8 +284,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}} </p>
-                     <p class="card-price top165" v-else>￥认证后可见 </p>
+                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}}</p>
+                    <p class="card-price top165" v-else>￥认证后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -259,12 +294,18 @@
               </ul>
             </div>
           </div>
-           <!-- 新人专享 -->
-            <!-- v-if="item.unqid === 32 && newPersonList.length > 4" -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 32 && newPersonList.length > 4">
+          <!-- 新人专享 -->
+          <!-- v-if="item.unqid === 32 && newPersonList.length > 4" -->
+          <div
+            :ref="item.unqid"
+            class="brand-hall"
+            v-if="item.unqid === 32 && newPersonList.length > 4"
+          >
             <p class="brand-hall-title">
               新人专享
-              <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
+              <a href="javascript:;" @click="toNewPerson()">
+                查看全部
+                <a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
@@ -311,15 +352,21 @@
                 </li>
               </ul>
             </div>
-          </div>   -->
-           <!-- 为你精选 -->
-            <!-- v-if="item.unqid === 128 && selectedList.length > 5" -->
-          <div :ref="item.unqid" class="elaborate" v-if="item.unqid === 128 && selectedList.length > 5">
-            <p class="elaborate-title">为你精选
-               <a href="javascript:;" @click="toSelected()">
+          </div>-->
+          <!-- 为你精选 -->
+          <!-- v-if="item.unqid === 128 && selectedList.length > 5" -->
+          <div
+            :ref="item.unqid"
+            class="elaborate"
+            v-if="item.unqid === 128 && selectedList.length > 5"
+          >
+            <p class="elaborate-title">
+              为你精选
+              <a href="javascript:;" @click="toSelected()">
                 查看全部
                 <a-icon type="right"/>
-              </a> </p>
+              </a>
+            </p>
             <ul class="elaborate-ui">
               <li v-for="(item,index) in selectedList" :key="index">
                 <a-card hoverable class="elaborate-card" @click="toDetail(item)">
@@ -337,12 +384,18 @@
               </li>
             </ul>
           </div>
-           <!-- 品牌专区 -->
-            <!-- v-if="item.unqid === 256 && brandList.length > 4" -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 256 && brandList.length > 4">
+          <!-- 品牌专区 -->
+          <!-- v-if="item.unqid === 256 && brandList.length > 4" -->
+          <div
+            :ref="item.unqid"
+            class="brand-hall"
+            v-if="item.unqid === 256 && brandList.length > 4"
+          >
             <p class="brand-hall-title">
               品牌专区
-              <a href="javascript:;" @click="toBrand()">查看全部<a-icon type="right"/>
+              <a href="javascript:;" @click="toBrand()">
+                查看全部
+                <a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
@@ -352,8 +405,8 @@
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName + item.prodname}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}} </p>
-                    <p class="card-price top165" else>￥认证后可见 </p>
+                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}}</p>
+                    <p class="card-price top165" else>￥认证后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -364,9 +417,13 @@
           </div>
           <!-- 限时抢购 -->
           <!-- v-if="item.unqid === 512 && limitedList.length > 3" -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 512 && limitedList.length > 3">
+          <div
+            :ref="item.unqid"
+            class="brand-hall"
+            v-if="item.unqid === 512 && limitedList.length > 3"
+          >
             <p class="brand-hall-title">
-             限时折扣
+              限时折扣
               <a class="all-hot" @click="toLimited()">
                 查看全部抢购
                 <a-icon type="right"/>
@@ -408,9 +465,7 @@
                         ￥{{items.actprize}}
                         <del>￥{{items.mp}}</del>
                       </p>
-                      <p class="card-prices" v-else>
-                        ￥认证后可见
-                      </p>
+                      <p class="card-prices" v-else>￥认证后可见</p>
                       <p class="name-guige">{{items.prodname}}{{items.spec}}</p>
                     </div>
                   </a-card>
@@ -426,11 +481,17 @@
       <li class="right-meun color-base">
         <a>导航</a>
       </li>
-      <li class="right-meun" v-for="(item, index) in list" :class="((scrollTop >= item.sHeight) && (scrollTop <= item.eHeight)) ? item.color : ''"  :key="index" v-show="item.isShow" @click="meauItemClick(item)">
+      <li
+        class="right-meun"
+        v-for="(item, index) in list"
+        :class="((scrollTop >= item.sHeight) && (scrollTop <= item.eHeight)) ? item.color : ''"
+        :key="index"
+        v-show="item.isShow"
+        @click="meauItemClick(item)"
+      >
         <div class="asdadasdad">
           <a>{{ item.fname }}</a>
         </div>
-        
       </li>
     </ul>
   </div>
@@ -448,11 +509,11 @@ export default {
   },
   computed: {
     userStatus() {
-      return this.$store.state.userStatus
+      return this.$store.state.userStatus;
     },
     storeInfo() {
       return this.$store.state.user;
-    },
+    }
   },
   data() {
     return {
@@ -463,7 +524,7 @@ export default {
       teamBuy: {
         h: 0,
         m: 0,
-        s: 0,
+        s: 0
       },
       flashSale: {
         h: 0,
@@ -504,196 +565,188 @@ export default {
     };
   },
   mounted() {
+    this.getNotice();
     this.getMallFloorProd();
     this.$nextTick(() => {
       window.addEventListener("scroll", this.handleScroll);
-    })
+    });
     this.$nextTick(() => {
       this.isCarousel = true;
     });
-    this.getNotice();
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", this.handleScroll)
+    window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
-    // 购物车临时入口
-    toCar() {
-      this.$router.push({
-        path: '/shoppingCart'
-      })
-    },
     handleScroll() {
       this.scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
     },
+    // 设置导航栏
+    async setNavBar(floorList) {
+      // 加载楼层
+      Promise.all(floorList).then(values => {
+        this.list.forEach(item => {
+          let div = this.$refs[item.unqid];
+          if (div) {
+            let top =  125 + 30 // 头部位置, 以后动态获取
+            this.$set(item,'isShow',true)
+            this.$set(item,'sHeight',div[0].offsetTop - top)
+            this.$set(item,'eHeight',div[0].offsetTop - top + div[0].offsetHeight -1)
+          } else {
+            this.$set(item,'isShow',false)
+          }
+        });
+      });
+    },
     // 获取楼层显示状态
     async getMallFloorProd() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getMallFloorProd";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification")|| "";
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
+      this.fsGeneralMethods
+        .request(this, "goodsServer", "ProdModule", "getMallFloorProd")
+        .then(result => {
           if (result.code === 200) {
-            _this.list = result.data;
-            _this.list.map((value, index) => {
-              switch(value.unqid) {
+            this.list = result.data;
+            let floorList = []; // 需要加载的楼层
+            this.list.map((value, index) => {
+              switch (value.unqid) {
                 case 1: // 新品专区
-                _this.getNewGoods();
-                value.color = 'color-green'
-                break
-                case 2:// 热销专区
-                _this.getHotGoods();
-                value.color = 'color-wheat'
-                break
+                  floorList.push(this.getNewGoods());
+                  value.color = "color-purple";
+                  break;
+                case 2: // 热销专区
+                  floorList.push(this.getHotGoods());
+                  value.color = "color-wheat";
+                  break;
                 case 4: // 秒杀专区
-                _this.getSeckillMallFloor();
-                value.color = 'color-blue'
-                break
+                  floorList.push(this.getSeckillMallFloor());
+                  value.color = "color-blue";
+                  break;
                 case 8: // 一块购
-                _this.getTeamBuyMallFloor()
-                value.color = 'color-pink'
-                value.fname = '一块购区'
-                break
+                  floorList.push(this.getTeamBuyMallFloor());
+                  value.color = "color-pink";
+                  value.fname = "一块购区";
+                  break;
                 case 16: // 包邮专区
-                _this.getExemPostMallFloor();
-                value.color = 'color-beige'
-                break
+                  floorList.push(this.getExemPostMallFloor());
+                  value.color = "color-beige";
+                  break;
                 case 32: // 新人专享
-                _this.getNewPersonList();
-                value.color = 'color-pink'
-                break
+                  floorList.push(this.getNewPersonList());
+                  value.color = "color-pink";
+                  break;
                 case 64: // 中华名方 暂未提供接口
-                break
+                  break;
                 case 128: // 为你精选
-                _this.getSelects();
-                value.color = 'color-green'
-                break
+                  floorList.push(this.getSelects());
+                  value.color = "color-green";
+                  break;
                 case 256: // 品牌专区
-                _this.getBrandMallFloor();
-                value.color = 'color-indigo'
-                break
-                case 512:// 限时抢购
-                _this.getDiscountMallFloor();
-                value.color = 'color-green'
-                break
+                  floorList.push(this.getBrandMallFloor());
+                  value.color = "color-indigo";
+                  break;
+                case 512: // 限时抢购
+                  floorList.push(this.getDiscountMallFloor());
+                  value.color = "color-khaki";
+                  break;
               }
-            })
+            });
+            this.setNavBar(floorList);
           }
-        })
-      );
+        });
     },
-     // 获取一块购数据
-    async getTeamBuyMallFloor() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getTeamBuyMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data.list) {
-            result.data.list = result.data.list.slice(0, 5)
-            _this.teamBuyList = result.data.list
-            _this.teamByID = result.data.actcode
-            _this.fsGeneralMethods.addImages(_this, _this.teamBuyList, 'sku', 'spu')
-            _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
-            _this.setHeight()
-          }
-        })
-      );
+    // 获取一块购数据
+    getTeamBuyMallFloor() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getTeamBuyMallFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.list) {
+              result.data.list = result.data.list.slice(0, 5);
+              this.teamBuyList = result.data.list;
+              this.teamByID = result.data.actcode;
+              this.fsGeneralMethods.addImages(
+                this,
+                this.teamBuyList,
+                "sku",
+                "spu"
+              );
+              this.secondKills(
+                this.stringToDate(result.data.now),
+                result.data.edate
+              );
+            }
+          });
+      });
     },
-     // 获取秒杀数据
-    async getSeckillMallFloor() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getSeckillMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data.list) {
-            result.data.list = result.data.list.slice(0, 5)
-            _this.secondList = result.data.list
-            _this.secondID = result.data.actcode
-            _this.fsGeneralMethods.addImages(_this, _this.secondList, 'sku', 'spu')
-            _this.secondKills(_this.stringToDate(result.data.now), result.data.edate)
-            _this.setHeight()
-          }
-        })
-      );
+    // 获取秒杀数据
+    getSeckillMallFloor() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getSeckillMallFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.list) {
+              result.data.list = result.data.list.slice(0, 5);
+              this.secondList = result.data.list;
+              this.secondID = result.data.actcode;
+              this.fsGeneralMethods.addImages(
+                this,
+                this.secondList,
+                "sku",
+                "spu"
+              );
+              this.secondKills(
+                this.stringToDate(result.data.now),
+                result.data.edate
+              );
+            }
+          });
+      });
     },
-     // 获取品牌数据
-    async getBrandMallFloor() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getBrandMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data.list) {
-            result.data.list = result.data.list.slice(0, 5)
-            _this.brandList = result.data.list
-            _this.brandID = result.data.actcode
-            _this.fsGeneralMethods.addImages(_this, _this.brandList, 'sku', 'spu')
-            _this.setHeight()
-          }
-        })
-      );
+    // 获取品牌数据
+    getBrandMallFloor() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getBrandMallFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.list) {
+              result.data.list = result.data.list.slice(0, 5);
+              this.brandList = result.data.list;
+              this.brandID = result.data.actcode;
+              this.fsGeneralMethods.addImages(
+                this,
+                this.brandList,
+                "sku",
+                "spu"
+              );
+            }
+          });
+      });
     },
     // 包邮专区
-    async getExemPostMallFloor() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getExemPostMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data.list) {
-            result.data.list = result.data.list.slice(0, 5)
-            _this.postList = result.data.list
-            _this.postID = result.data.actcode
-            _this.fsGeneralMethods.addImages(_this, _this.postList, 'sku', 'spu')
-            _this.setHeight()
-          }
-        })
-      );
+    getExemPostMallFloor() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getExemPostMallFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.list) {
+              result.data.list = result.data.list.slice(0, 5);
+              this.postList = result.data.list;
+              this.postID = result.data.actcode;
+              this.fsGeneralMethods.addImages(
+                this,
+                this.postList,
+                "sku",
+                "spu"
+              );
+            }
+          });
+      });
     },
     // 中华名方 -- 暂时没接口
     //  async getExemPostMallFloor() {
@@ -721,170 +774,134 @@ export default {
     //   );
     // },
     //获取新人专享列表
-    async getNewPersonList() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getNewMemberMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data.list) {
-            result.data.list = result.data.list.slice(0, 5)
-            _this.newPersonList = result.data.list
-            _this.newPersonID = result.data.actcode
-            _this.fsGeneralMethods.addImages(_this, _this.newPersonList, 'sku', 'spu')
-            _this.setHeight()
-          }
-        })
-      );
+    getNewPersonList() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getNewMemberMallFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.list) {
+              result.data.list = result.data.list.slice(0, 5);
+              this.newPersonList = result.data.list;
+              this.newPersonID = result.data.actcode;
+              this.fsGeneralMethods.addImages(
+                this,
+                this.newPersonList,
+                "sku",
+                "spu"
+              );
+            }
+          });
+      });
     },
     // 获取限时抢购列表
-    async getDiscountMallFloor() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getDiscountMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data.list) {
-            result.data.list = result.data.list.slice(0, 4)
-            _this.limitedList = result.data.list
-            _this.limitedList.forEach((item) => {
-              item.percentage = 100 - item.buynum/item.surplusstock*100
-            })
-            _this.limitedID = result.data.actcode
-            _this.secondKill(_this.stringToDate(result.data.now), result.data.edate)
-            _this.fsGeneralMethods.addImages(_this, _this.limitedList, 'sku', 'spu')
-            _this.setHeight()
-          }
-        })
-      );
+    getDiscountMallFloor() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getDiscountMallFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.list) {
+              result.data.list = result.data.list.slice(0, 4);
+              this.limitedList = result.data.list;
+              this.limitedList.forEach(item => {
+                item.percentage = 100 - (item.buynum / item.surplusstock) * 100;
+              });
+              this.limitedID = result.data.actcode;
+              this.secondKill(
+                this.stringToDate(result.data.now),
+                result.data.edate
+              );
+              this.fsGeneralMethods.addImages(
+                this,
+                this.limitedList,
+                "sku",
+                "spu"
+              );
+            }
+          });
+      });
     },
     // 请求新品专区数据列表
-    async getNewGoods(item) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getNewMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.newGoodsList = result.data.slice(0, 6);
-            _this.newGoodsID = result.data.actcode
-            _this.fsGeneralMethods.addImages(_this, _this.newGoodsList, 'sku', 'spu')
-            _this.setHeight()
-          }
-        })
-      );
-    },
-    setHeight() {
-      this.$nextTick(() => {
-        this.list.forEach((item) => {
-          let div = this.$refs[item.unqid]
-          if(div) {
-            item.isShow = true
-            item.sHeight = div[0].offsetTop - div[0].offsetHeight
-            item.eHeight = div[0].offsetTop
-            
-          } else {
-            item.isShow = false
-          } 
-        })
-        console.log(this.list)
-      })
+    getNewGoods(item) {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getNewMallFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.length > 6) {
+              this.newGoodsList = result.data.slice(0, 6);
+              this.newGoodsID = result.data.actcode;
+              this.fsGeneralMethods.addImages(
+                this,
+                this.newGoodsList,
+                "sku",
+                "spu"
+              );
+            }
+          });
+      });
     },
     // 为你精选数据
-    async getSelects() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getChooseForYouMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 20;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.selectedList = result.data.slice(0, 6);
-            _this.fsGeneralMethods.addImages(_this, _this.selectedList, 'sku', 'spu')
-            _this.selectedID = result.data.actcode
-            _this.setHeight()
-          }
-        })
-      );
+    getSelects() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(
+            this,
+            "goodsServer",
+            "ProdModule",
+            "getChooseForYouMallFloor"
+          )
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.length > 6) {
+              this.selectedList = result.data.slice(0, 6);
+              this.fsGeneralMethods.addImages(
+                this,
+                this.selectedList,
+                "sku",
+                "spu"
+              );
+              this.selectedID = result.data.actcode;
+            }
+          });
+      });
     },
     // 热销商品列表
-    async getHotGoods() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "getHotMallFloor";
-      iRequest.param.pageIndex = 1;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.hotGoodsList = result.data.slice(0, 10);
-            _this.hotGoodsID = result.data.actcode
-            _this.hotGoodsList.forEach((item,index) => {
-               item.top = '/_nuxt/assets/img/top' + (index+1) + '.png'
-            })
-            _this.fsGeneralMethods.addImages(_this, _this.hotGoodsList, 'sku', 'spu')
-            _this.setHeight()
-          }
-        })
-      );
+    getHotGoods() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getHotMallFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.length > 10) {
+              this.hotGoodsList = result.data.slice(0, 10);
+              this.hotGoodsID = result.data.actcode;
+              this.hotGoodsList.forEach((item, index) => {
+                item.top = "/_nuxt/assets/img/top" + (index + 1) + ".png";
+              });
+              this.fsGeneralMethods.addImages(
+                this,
+                this.hotGoodsList,
+                "sku",
+                "spu"
+              );
+            }
+          });
+      });
     },
     // 获取公告消息列表
     getNotice() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "NoticeModule";
-      iRequest.method = "query";
-      iRequest.param.json = JSON.stringify({});
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "globalServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.noticeList = result.data.slice(0, 4);
-            console.log(7676)
-            console.log(_this.noticeList)
-          }
-        })
-      );
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "globalServer", "NoticeModule", "query")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.length > 4) {
+              this.noticeList = result.data.slice(0, 4);
+            }
+          });
+      });
     },
     stringToDate(str) {
       var tempStrs = str.split(" ");
@@ -900,7 +917,7 @@ export default {
       return date;
     },
     // 批量设置倒计时
-    async secondKills(date,eDate) {
+    async secondKills(date, eDate) {
       let endDate = this.stringToDate(
         date.getFullYear() +
           "-" +
@@ -910,28 +927,28 @@ export default {
           " " +
           eDate
       );
-      let times = Math.floor((endDate - date)/1000);
-      let _this = this
-      if(times>=0) {
+      let times = Math.floor((endDate - date) / 1000);
+      let _this = this;
+      if (times >= 0) {
         let timer;
-        timer = setInterval(function () {
-        times--;
-        _this.teamBuy.h = Math.floor(times/60/60);
-        _this.teamBuy.m = Math.floor(times/60)%60;
-        _this.teamBuy.s = times%60;
-        if (times <= 0) {
-          clearInterval(timer);
-        }
+        timer = setInterval(function() {
+          times--;
+          _this.teamBuy.h = Math.floor(times / 60 / 60);
+          _this.teamBuy.m = Math.floor(times / 60) % 60;
+          _this.teamBuy.s = times % 60;
+          if (times <= 0) {
+            clearInterval(timer);
+          }
         }, 1000);
         if (times >= 0) {
-          console.log(times)
+          console.log(times);
         } else {
-          console.log('活动结束')
+          console.log("活动结束");
         }
       }
     },
     // 设置倒计时
-    async secondKill(date,eDate) {
+    async secondKill(date, eDate) {
       let endDate = this.stringToDate(
         date.getFullYear() +
           "-" +
@@ -941,23 +958,23 @@ export default {
           " " +
           eDate
       );
-      let times = Math.floor((endDate - date)/1000);
-      let _this = this
-      if(times>=0) {
+      let times = Math.floor((endDate - date) / 1000);
+      let _this = this;
+      if (times >= 0) {
         let timer;
-        timer = setInterval(function () {
-        times--;
-        _this.flashSale.h = Math.floor(times/60/60);
-        _this.flashSale.m = Math.floor(times/60)%60;
-        _this.flashSale.s = times%60;
-        if (times <= 0) {
-          clearInterval(timer);
-        }
+        timer = setInterval(function() {
+          times--;
+          _this.flashSale.h = Math.floor(times / 60 / 60);
+          _this.flashSale.m = Math.floor(times / 60) % 60;
+          _this.flashSale.s = times % 60;
+          if (times <= 0) {
+            clearInterval(timer);
+          }
         }, 1000);
         if (times >= 0) {
-          console.log(times)
+          console.log(times);
         } else {
-          console.log('活动结束')
+          console.log("活动结束");
         }
       }
     },
@@ -986,11 +1003,11 @@ export default {
     },
     toNewPerson() {
       this.$router.push({
-        path: '/activity/new-person',
+        path: "/activity/new-person",
         query: {
           actcode: this.newPersonID
         }
-      })
+      });
     },
     toNewGoods() {
       this.$router.push({
@@ -1000,26 +1017,11 @@ export default {
         }
       });
     },
-    toLogin() {
-      this.$router.push({
-        path: '/user/login'
-      })
-    },
-    toRegister() {
-      this.$router.push({
-        path: '/user/register'
-      })
-    },
     toIntegral() {
       let routeData = this.$router.resolve({
         path: "/user/integral"
       });
       window.open(routeData.href, "_blank");
-    },
-    toCoupon() {
-      this.$router.push({
-        path: 'user/personal/coupon'
-      })
     },
     toCategory() {
       let routeData = this.$router.resolve({
@@ -1053,37 +1055,36 @@ export default {
     },
     toPost() {
       this.$router.push({
-        path: '/activity/post',
+        path: "/activity/post",
         query: {
           actcode: this.postID
         }
-      })
+      });
     },
     // 消息详情
     toNotice(item) {
-      debugger
       this.$router.push({
-        path: '/user/notice',
+        path: "/user/notice",
         query: {
           notice: JSON.stringify(item)
         }
-      })
+      });
     },
     toSpike() {
       this.$router.push({
-        path: '/activity/spike',
+        path: "/activity/spike",
         query: {
           actcode: this.secondID
         }
-      })
+      });
     },
     toBrand() {
-       this.$router.push({
-        path: '/activity/brand',
+      this.$router.push({
+        path: "/activity/brand",
         query: {
           actcode: this.brandID
         }
-      })
+      });
     }
   }
 };
@@ -1113,13 +1114,13 @@ li {
   margin: 0;
   padding: 0;
 }
-.more:hover{
+.more:hover {
   cursor: pointer;
 }
-.float-left{
+.float-left {
   float: left;
 }
-.float-right{
+.float-right {
   float: right;
 }
 .greenColor {
@@ -1150,9 +1151,9 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
-.height-auto{
+.height-auto {
   // min-height: 360px;
-  height: auto!important;
+  height: auto !important;
 }
 .active {
   background: #ff0036 !important;
@@ -1162,14 +1163,14 @@ li {
   color: #ffffff !important;
 }
 // 广告下方的图片
-.pic-link{
+.pic-link {
   .container-size(block, 1210px, 165px, 0 auto, 0px);
 }
-.pic-link img{
+.pic-link img {
   width: 298.5px;
   // height: 162px;
 }
-.pic-link img:hover{
+.pic-link img:hover {
   cursor: pointer;
 }
 /* 限时抢购 */
@@ -1187,7 +1188,7 @@ li {
   text-indent: 20px;
   color: #333333;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
   span {
     float: right;
@@ -1251,7 +1252,7 @@ li {
   font-size: 16px;
   color: #333333;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .brand-text {
@@ -1379,7 +1380,7 @@ li {
   line-height: 50px;
   font-size: 22px;
   font-weight: bold;
-  a{
+  a {
     float: right;
     font-size: 16px;
     font-weight: normal;
@@ -1396,10 +1397,10 @@ li {
   margin-bottom: 20px;
 }
 // 一块购
-.onek-card:hover{
-   box-shadow: 0px 0px 30px 10px #e0e0e0;
+.onek-card:hover {
+  box-shadow: 0px 0px 30px 10px #e0e0e0;
 }
-.imme-btn:hover{
+.imme-btn:hover {
   cursor: pointer;
 }
 .onek-text {
@@ -1423,51 +1424,51 @@ li {
         width: 225px;
         height: 310px;
         padding: 0px;
-        .onek-box{
-          .container-size(block,223px,158px,0px,0px);
-          .onek-price{
-            .p-size(30px,30px,16px,left,7px,#ed3025);
+        .onek-box {
+          .container-size(block, 223px, 158px, 0px, 0px);
+          .onek-price {
+            .p-size(30px, 30px, 16px, left, 7px, #ed3025);
             font-weight: bold;
-            del{
+            del {
               float: right;
               font-size: 14px;
               margin-right: 15px;
-              color: #999999!important;
+              color: #999999 !important;
               font-weight: normal;
             }
           }
-          .goods-name{
-            .p-size(25px,25px,14px,left,10px,#333333);
+          .goods-name {
+            .p-size(25px, 25px, 14px, left, 10px, #333333);
             width: 100%;
-             overflow: hidden;
-              text-overflow:ellipsis;
-              white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
-          .goods-manu{
-             .p-size(25px,25px,13px,left,10px,#999999);
-             width: 100%;
-              overflow: hidden;
-              text-overflow:ellipsis;
-              white-space: nowrap;
+          .goods-manu {
+            .p-size(25px, 25px, 13px, left, 10px, #999999);
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
-          .goods-state{
-            .p-size(25px,25px,13px,left,10px,#999999);
+          .goods-state {
+            .p-size(25px, 25px, 13px, left, 10px, #999999);
           }
-          .goods-btn{
-            .p-size(50px,50px,13px,left,10px,#999999);
+          .goods-btn {
+            .p-size(50px, 50px, 13px, left, 10px, #999999);
             border: 1px solid #ed3025;
-            button{
+            button {
               float: right;
               width: 72px;
               height: 48px;
               line-height: 48px;
-              border:1px solid #ed3025;
+              border: 1px solid #ed3025;
               background: #ed3025;
               color: #ffffff;
             }
           }
-          .goods-success{
-            .p-size(27px,27px,13px,left,10px,#999999);
+          .goods-success {
+            .p-size(27px, 27px, 13px, left, 10px, #999999);
           }
         }
         .onek-pic {
@@ -1482,7 +1483,7 @@ li {
 .brand-hall .brand-hall-title {
   height: 50px;
   line-height: 50px;
-  background: #f8f8f8;
+  background: #f2f2f2;
   font-size: 22px;
   font-weight: bold;
   color: #333333;
@@ -1622,71 +1623,70 @@ li {
   line-height: 321px;
   text-align: center;
 }
-.notice-box{
+.notice-box {
   float: right;
   width: 210px;
   height: 413px;
   margin: 0 auto;
   // border: 1px solid #e0e0e0;
-  .login-tips{
+  .login-tips {
     .container-size(block, 200px, 100px, 0 auto, 0px);
     border: 1px solid #f2f2f2;
-    h3{
+    h3 {
       .p-size(40px, 40px, 12px, center, 0px, #333333);
     }
-    p{
+    p {
       .p-size(40px, 40px, 14px, center, 0px, #333333);
-       padding: 0 10px;
-       overflow: hidden; 
-       text-overflow:ellipsis;
-       white-space: nowrap;
-       button{
-         .button-size(82px,28px,28px,14px,0px,3px);
-       }
+      padding: 0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      button {
+        .button-size(82px, 28px, 28px, 14px, 0px, 3px);
+      }
     }
   }
-  .every-day{
+  .every-day {
     .p-size(40px, 40px, 14px, left, 20px, #333333);
   }
-  .sign-btn{
-    .button-display(block,0 auto);
-    .button-size(195px,37px,37px,14px,0px,5px);
-    .button-color(1px solid transparent,#FF0036,#ffffff);
+  .sign-btn {
+    .button-display(block, 0 auto);
+    .button-size(195px, 37px, 37px, 14px, 0px, 5px);
+    .button-color(1px solid transparent, #ff0036, #ffffff);
   }
-  .line{
+  .line {
     .container-size(block, 195px, 10px, 0 auto, 0px);
     border-bottom: 1px solid #e0e0e0;
     margin-bottom: 10px;
   }
-  img{
+  img {
     display: block;
     width: 200px;
     height: 119px;
     margin: 0 auto;
     border: 1px solid transparent;
   }
-  .notice-content{
+  .notice-content {
     .container-size(block, 200px, 190px, 0 auto, 0px);
     border: 1px solid #f2f2f2;
-    .title{
+    .title {
       width: 200px;
       .p-size(40px, 40px, 14px, left, 20px, #333333);
       border-top: 1px solid #f2f2f2;
       border-bottom: 1px solid #f2f2f2;
       padding-right: 20px;
-      .more{
-        color: #999999!important;
+      .more {
+        color: #999999 !important;
       }
     }
-    .notice-text{
+    .notice-text {
       width: 200px;
       .p-size(35px, 35px, 14px, left, 5px, #666);
       overflow: hidden;
-      text-overflow:ellipsis;
+      text-overflow: ellipsis;
       white-space: nowrap;
-
     }
-    .notice-text:hover{
+    .notice-text:hover {
       color: #ed3025;
       cursor: pointer;
     }
@@ -1748,53 +1748,53 @@ li {
   width: 135px;
   height: 132px;
   margin: 0 auto;
-  margin-bottom:  9px;
-  margin-top:  9px;
+  margin-bottom: 9px;
+  margin-top: 9px;
 }
-.top-img{
+.top-img {
   position: absolute;
   top: 5px;
   left: 5px;
   width: 30px;
   height: 40px;
 }
-.height80{
+.height80 {
   position: relative;
   top: 0px;
   left: 0px;
-  height: 80px!important;
-  line-height: 80px!important;
+  height: 80px !important;
+  line-height: 80px !important;
 }
-.see-wholes{
+.see-wholes {
   // float: right;
   font-size: 16px;
   font-weight: normal;
 }
-.discount-num{
-  .position(absolute,-20px,260px);
+.discount-num {
+  .position(absolute, -20px, 260px);
   display: inline-block;
   width: 220px;
   height: 20px;
   font-size: 14px;
 }
-.discount-num span{
+.discount-num span {
   display: inline-block;
   width: 30px;
   height: 30px;
 }
-.person-num{
-  .position(absolute,20px,260px);
+.person-num {
+  .position(absolute, 20px, 260px);
   display: inline-block;
   width: 220px;
   height: 20px;
   font-size: 14px;
 }
-.person-num span{
+.person-num span {
   display: inline-block;
   width: 30px;
   height: 30px;
 }
-.ant-progress-inner{
+.ant-progress-inner {
   background-color: #ffffff;
 }
 
@@ -1808,11 +1808,11 @@ li {
 
 .sider-meun .right-meun {
   width: 50px;
-  height: 50px;   
+  height: 50px;
   line-height: 50px;
   text-align: center;
   background: #666;
-  border-top: 1px #ffffff solid
+  border-top: 1px #ffffff solid;
 }
 
 .right-meun a {
@@ -1826,7 +1826,7 @@ li {
   height: 28px;
   margin: 11px auto;
 }
-.menu-cur-nav .color-base{
+.menu-cur-nav .color-base {
   background-color: #ff0036 !important;
   a {
     color: #ffffff !important;
@@ -1834,48 +1834,89 @@ li {
 }
 
 .menu-cur-nav .color-pink {
-  background-color: #EA5F8D !important;
+  background-color: #ea5f8d !important;
   a {
     color: #ffffff !important;
   }
 }
 
 .menu-cur-nav .color-blue {
-  background-color: #0AA6E8 !important;
+  background-color: #0aa6e8 !important;
   a {
     color: #ffffff !important;
   }
 }
 
 .menu-cur-nav .color-green {
-  background-color: #64C333 !important;
+  background-color: #64c333 !important;
   a {
     color: #ffffff !important;
   }
 }
 
+.menu-cur-nav .color-khaki {
+  background-color: #F0E68C !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
+.menu-cur-nav .color-purple {
+  background-color: #800080 !important;
+  a {
+    color: #ffffff !important;
+  }
+}
+
+
 .menu-cur-nav .color-beige {
-  background-color: #6B8E23 !important;
+  background-color: #6b8e23 !important;
   a {
     color: #ffffff !important;
   }
 }
 
 .menu-cur-nav .color-wheat {
-  background-color: #EE1289 !important;
+  background-color: #ee1289 !important;
   a {
     color: #ffffff !important;
   }
 }
-
 
 .menu-cur-nav .color-indigo {
-  background-color: #4B0082 !important;
+  background-color: #4b0082 !important;
   a {
     color: #ffffff !important;
   }
 }
-.margin-bottom10{
+.margin-bottom10 {
   margin-bottom: 10px;
+}
+/* For demo */
+.ant-carousel > .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel > .custom-slick-arrow {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #fff;
+  background-color: rgba(31, 45, 61, 0.11);
+  opacity: 0.3;
+}
+.ant-carousel > .custom-slick-arrow:before {
+  display: none;
+}
+.ant-carousel > .custom-slick-arrow:hover {
+  opacity: 0.5;
+}
+
+.ant-carousel > .slick-slide h3 {
+  color: #fff;
 }
 </style>

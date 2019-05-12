@@ -2,19 +2,19 @@
   <div>
     <div class="right-menu">
       <div class="card-box">
-        <div class="card-icon">
+        <div class="card-icon" @click="toPage('shoppingCart')">
           <a-icon type="shopping-cart"/>
           <p>采购单</p>
-          <span class="count">20</span>
+          <span class="count">{{ cartList.length }}</span>
         </div>
         <div class="menu-box">
-          <a-tooltip placement="left" @click="toCollection()">
+          <a-tooltip placement="left" @click="toPage('collection')">
             <template slot="title">
               <span>收藏</span>
             </template>
             <a-icon type="heart"/>
           </a-tooltip>
-          <a-tooltip placement="left" @click="toCenter()">
+          <a-tooltip placement="left" @click="toPage('personal')">
             <template slot="title">
               <span>我的一块</span>
             </template>
@@ -36,18 +36,58 @@
 <script>
 export default {
   name: "f-space-right",
+  computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    },
+  },
   data() {
-    return {};
+    return {
+      cartList: [],
+    };
+  },
+  mounted() {
+    if (this.isLogin) {
+      this.getShoppingCartList();
+    }
   },
   methods: {
-    toCollection() {
-      this.$router.push({
-        path: "/user/personal/collection"
+    async getShoppingCartList() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "queryUnCheckShopCartList";
+      iRequest.param.json = JSON.stringify({
+        compid: this.storeInfo.comp.storeId
       });
+      console.log(
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535)
+      );
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            if (result.data) {
+              _this.cartList = result.data;
+              _this.cartList.forEach(item => {
+                item.checked ? false : true;
+              });
+            }
+          }
+        })
+      );
     },
-    toCenter() {
+    isLogin() {
+      return this.$store.state.userStatus;
+    },
+    toPage(name) {
       this.$router.push({
-        path: "/user/personal"
+        name: name
       });
     },
     toBackTop() {
@@ -56,7 +96,7 @@ export default {
         document.documentElement.scrollTop ||
         document.body.scrollTop;
         if (Top > 0) {
-          window.scrollTo(0, Top - 20);
+          window.scrollTo(0, Top - 100);
         } else {
           window.clearInterval(scrollToTop);
         }
