@@ -156,7 +156,8 @@ export default {
 .i-right{
   float: right;
   margin-top: 20px;
-  font-size: 16px;
+  margin-right: 10px;
+  font-size: 14px;
 }
 .hover-show {
   position: absolute;

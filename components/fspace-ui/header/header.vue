@@ -410,7 +410,8 @@ export default {
         document.body.scrollTop;
       var home = this.$refs.home.style;
       var nameBox = this.$refs.nameBox.style;
-      if (scrollTop >= 170) {
+      console.log(scrollTop)
+      if (scrollTop >= 600) {
         home.position = "fixed";
         home.top = "0px";
         home.opacity = "1";
@@ -920,7 +921,8 @@ li {
   background: #db2920;
   line-height: 40px;
   padding-left: 20px;
-  font-size: 16px;
+  margin-right: 35px;
+  font-size: 15px;
   color: #ffffff;
   a:hover {
     color: #ffffff;
@@ -931,7 +933,7 @@ li {
   height: 40px;
   line-height: 40px;
   margin-right: 30px;
-  font-size: 16px;
+  font-size: 15px;
   color: #ffffff;
 }
 // .nav-box a:hover {
