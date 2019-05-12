@@ -453,7 +453,7 @@ export default {
         if (item.payway == 5 && item.ostatus === 1 && times < thirtyMin) {
             return true
         }
-        if (item.ostatus === 0 && item.payway === -1) {
+        if (item.ostatus === 0 && item.payway == -1) {
             return true
         }
       },
@@ -487,10 +487,10 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "TranOrderOptModule";
-      if (item.payway == 4 || item.payway == 5){
-          iRequest.method = "cancelOffLineOrder";
-      } else {
+      if (item.ostatus === 0 && item.payway == -1) {
           iRequest.method = "cancelOrder";
+      } else {
+          iRequest.method = "cancelOffLineOrder";
       }
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
