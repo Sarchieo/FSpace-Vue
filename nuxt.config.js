@@ -59,11 +59,8 @@ module.exports = {
       }
     },
     filenames: {
-      manifest: 'manifest.js?v=[hash:7]',
-      vendor: 'vendor.js?v=[hash:7]',
-      app: 'app.js?v=[chunkhash:7]',
       //- `chunk` build vue-server-renderer.patch.js 解决
-      // chunk: '[name].js?v=[chunkhash:7]'
+      chunk: '[name].[contenthash].js'
     }
   }
 }

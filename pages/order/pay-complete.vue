@@ -164,7 +164,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
+            
             if (result.code === 200) {
                 // console.log("--- " + JSON.stringify(result.data))
               _this.info = result.data

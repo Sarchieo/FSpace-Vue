@@ -47,7 +47,7 @@
               <!-- {{ storeInfo.comp.storeName }} -->
               <p
                 v-if="userStatus && storeInfo.comp && storeInfo.comp.storeName"
-              >您好，{{ storeInfo.comp.storeName }}</p>
+              >您好 (缓存测试)，{{ storeInfo.comp.storeName }}</p>
               <p v-if="!userStatus">
                 <nuxt-link to="/user/login">
                   <a-button class="float-left">登录</a-button>
