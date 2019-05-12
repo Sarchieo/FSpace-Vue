@@ -1616,7 +1616,7 @@ li {
 }
 .banner-pic {
   width: 804px;
-  height: 413px;
+  height: 412px;
 }
 .binnar-box {
 float: left;

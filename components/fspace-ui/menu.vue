@@ -189,6 +189,7 @@ export default {
   width: 140px;
   height: 40px;
   text-align: left;
+  text-indent: 20px;
   line-height: 40px;
   font-weight: bold;
   font-size: 14px;
