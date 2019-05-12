@@ -79,8 +79,9 @@
           </p>
           <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
           <!-- v-if="item.ostatus === 3" -->
+          <p class="detail" @click="confirmReceipt(item)" v-if="item.ostatus == 3">确认签收</p>
           <p class="detail" @click="afterApply(item)" v-if="item.ostatus == 3">申请售后</p>
-          <p @click="toEvaluate(item)" v-if="item.ostatus === 3" ref="toevaluate">
+          <p @click="toEvaluate(item)" v-if="item.ostatus === 4 && (item.cstatus&128) === 0" ref="toevaluate">
             <a>评论</a>
           </p>
           <p
@@ -384,7 +385,7 @@ export default {
       var routeData = this.$router.resolve({
         path: "/user/evaluate",
         query: {
-          orderno: value.orderno,
+          orderno: value.orderno
         }
       });
       window.open(routeData.href, "_blank");
@@ -431,8 +432,10 @@ export default {
       setstatusText(settstatus) {
           if (settstatus===0) {
               return "未结算"
-          } else {
+          } else if (settstatus===1) {
               return "已结算"
+          } else {
+              return "已退款";
           }
       },
     isShowCancel() {
@@ -482,6 +485,44 @@ export default {
         })
       );
     },
+      // 确认签收
+      confirmReceipt(item) {
+          let _this = this;
+          this.$confirm({
+              title: "是否要确认签收?",
+              okText: "确定",
+              okType: "danger",
+              cancelText: "取消",
+              onOk() {
+                  _this.conReceipt(item);
+              },
+              onCancel() {}
+          });
+      },
+      //确认签收
+      conReceipt(item) {
+          let _this = this;
+          let iRequest = new inf.IRequest();
+          iRequest.cls = "OrderOptModule";
+          iRequest.method = "confirmReceipt";
+          iRequest.param.token = localStorage.getItem("identification");
+          iRequest.param.json = JSON.stringify({
+              orderno: item.orderno,
+              cusno: item.cusno
+          });
+          this.$refcallback(
+              this,
+              "orderServer" +
+              Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+              iRequest,
+              new this.$iceCallback(function result(result) {
+                  if (result.code === 200) {
+                      _this.$message.success(result.message);
+                      _this.queryOrderList();
+                  }
+              })
+          );
+      },
     // 取消订单
     cancelOrder(item) {
       let _this = this;
