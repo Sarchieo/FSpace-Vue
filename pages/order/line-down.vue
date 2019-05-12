@@ -13,8 +13,8 @@
           </a-steps>
         </div>
         <div class="qr-code">
-          <h2 v-if="type == 'zz'">您的订单已收到，请耐心等待客服审核！</h2>
-          <h2 v-if="type == 'hdfk'">下单成功！</h2>
+          <h2 v-if="type == 4">您的订单已收到，请耐心等待客服审核！</h2>
+          <h2 v-if="type == 5">下单成功！</h2>
           <p>
             <span class="title">订单号</span>
             <span class="order-no bold">{{ orderno }}</span>
@@ -25,13 +25,13 @@
             <span class="title">订单金额</span>
             <span class="price">￥{{ info.payamt }}</span>
             <span class="title">支付方式</span>
-            <span class="bold">{{ type == 'zz' ? '线下支付' : '线下到付' }}</span>
+            <span class="bold">{{ type == 4 ? '线下支付' : '线下到付' }}</span>
           </p>
         </div>
-        <div class="invo-box" v-if="type == 'zz'">
+        <div class="invo-box" v-if="type == 4">
           <img src="../../assets/img/invo.jpg" alt>
         </div>
-        <div class="invo-text" v-if="type == 'zz'">
+        <div class="invo-text" v-if="type == 4">
           <p class="invo-title">
             <span class="text">转账说明</span>
           </p>

@@ -282,7 +282,6 @@ export default {
         })
       );
     },
-    // 获取楼层显示状态
     async checkStoreLoginStatus() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -296,6 +295,9 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            if(result.data) {
+              _this.getBasicInfo()
+            }
             _this.$store
               .dispatch("setUserStatus", {
                 context: _this,
@@ -305,6 +307,27 @@ export default {
               .catch(err => {
                 console.log(err);
               });
+          }
+        })
+      );
+    },
+    getBasicInfo() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "LoginRegistrationModule";
+      iRequest.method = "getStoreSession";
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "userServer",
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$store.dispatch("setUser", {
+              context: _this,
+              user: result.data
+            });
+          
           }
         })
       );
@@ -483,25 +506,6 @@ export default {
       this.$router.push({
         path: "/user/personal/collection"
       });
-    },
-    async getBasicInfo() {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "getStoreSession";
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "userServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            // 设置登录
-            _this.$store.dispatch("setUserState");
-            localStorage.setItem("storeInfo", result.data);
-          }
-        })
-      );
     },
     // 退出登录
     logout() {

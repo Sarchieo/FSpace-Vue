@@ -111,29 +111,17 @@
             <div class="carousel">
               <div class="like-box">
                 <div
-                  v-for="(item,i) in likeList"
+                  v-for="(j, i) in likeList"
                   :key="i"
                   style="display: inline-block;"
-                  @click="toDetail(item)"
+                  @click="toDetail(j)"
                 >
                   <a-card hoverable class="meal-card">
-                    <img v-lazy="item.imgURl" slot="cover">
+                    <img v-lazy="j.imgURl" slot="cover">
                     <div slot="cover">
-                      <p class="meal-price">¥{{item.mp}}</p>
-                      <p class="meal-name">{{item.prodname}}</p>
+                      <p class="meal-price">¥{{j.mp}}</p>
+                      <p class="meal-name">{{j.prodname}}</p>
                     </div>
-                  </a-card>
-                </div>
-                <div v-for="(item,index) in likeList" :key="index" style="padding-left: 6.5%;" @click="toDetail(item)">
-                  <a-card
-                    hoverable
-                    class="meal-card"
-                    v-for="(items,i) in item.list"
-                    :key="i"
-                  >
-                    <img v-lazy="items.imgURl" slot="cover">
-                    <p class="meal-price">${{items.mp}}</p>
-                    <p class="meal-name">{{items.prodname}}</p>
                   </a-card>
                 </div>
               </div> 
@@ -161,7 +149,6 @@ export default {
       loading: false,
       maximum: 1, // 最大库存
       timeoutflag: null,
-      checked: false,
       discount: 100,
       cartList: [],
       likeList: []
@@ -206,8 +193,9 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.cartList = result.data;
+              console.log(_this.cartList)
               _this.cartList.forEach((item) => {
-                item.checked ? false : true
+                _this.$set(item, 'checked', item.checked === 0 ? false : true)
                 if(item.limitnum > item.inventory) {
                   item.maximum = item.inventory
                 } else {
@@ -245,7 +233,8 @@ export default {
           if (result.code === 200) {
             _this.cartList = result.data;
              _this.cartList.forEach((item) => {
-                 item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
+                _this.$set(item, 'checked', item.checked === 0 ? false : true)
+                item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
                 if(item.checked) {
                   _this.amt = item.amt
                 }
@@ -357,6 +346,7 @@ export default {
       );
     },
     addCount(index, item) {
+      
       let _this = this;
       // 限购数量
       if(item.num >= item.maximum) {
@@ -408,7 +398,6 @@ export default {
             if(result.data.length > 5) {
               _this.likeList = result.data.slice(0, 5);
             }
-            console.log(_this.likeList);
             _this.fsGeneralMethods.addImages(
               _this,
               _this.likeList,

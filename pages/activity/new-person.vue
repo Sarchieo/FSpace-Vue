@@ -37,14 +37,14 @@
                   <span class="float-right">已售{{item.sales}}{{item.unitName}}</span>
                 </p>
                 <p class="limit">
-                  <span>限购{{item.limits}} {{item.unitName}}</span>
+                  <span v-if="item.limits !== 0">限购{{item.limits}} {{item.unitName}}</span>
                   <span class="float-right">库存{{item.store}} {{item.unitName}}</span>
                 </p>
                 <p class="p-btn">
                   <button class="small-btn">-</button>
                   <input type="text" v-model="count" readonly="readonly">
                   <button class="small-btn">+</button>
-                  <button class="add-cart">加入采购单</button>
+                  <button class="add-cart"  @click.stop="addCart(item)">加入采购单</button>
                 </p>
                 <!-- <button @click="toDetails()">查看详情</button> -->
               </a-card>
@@ -69,6 +69,9 @@ export default {
     FSpaceFooter
   },
   computed: {
+    storeInfo() {
+      return this.$store.state.user;
+    },
     userStatus() {
       return this.$store.state.userStatus;
     }
@@ -104,6 +107,35 @@ export default {
           spu: item.spu
         }
       });
+    },
+     // 加入购物车
+    addCart(item) {
+      if(item.store === 0) {
+        this.$message.error('商品库存不足')
+        return
+      }
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "saveShopCart";
+      iRequest.param.json = JSON.stringify({
+        pdno: item.sku,
+        pnum: 1,
+        checked: 0,
+        compid: _this.storeInfo.comp.storeId
+      })
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code === 200) {
+              _this.$message.success(result.message);
+            }
+          }
+        ));
     },
     // 新人专享活动页面数据请求
     //获取新人专享列表

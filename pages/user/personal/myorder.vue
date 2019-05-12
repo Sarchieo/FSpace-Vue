@@ -440,7 +440,6 @@ export default {
     },
       //是否可以取消订单
       canCancel(item) {
-        console.log("item---- " + JSON.stringify(item))
         let date = item.odate + " " + item.otime;
         date = date.substring(0,19);
         date = date.replace(/-/g,'/');
@@ -448,13 +447,13 @@ export default {
         var timestampNow = parseInt(new Date().getTime());    // 当前时间戳
         var times = timestampNow - timestamp;
         var thirtyMin = 30 * 60 * 1000;
-        if (item.payway == 4 && times < thirtyMin){
+        if (item.payway == 4 && item.ostatus ===0 && times < thirtyMin){
             return true
         }
         if (item.payway == 5 && item.ostatus === 1 && times < thirtyMin) {
             return true
         }
-        if (item.ostatus === 0 && item.payway === -1) {
+        if (item.ostatus === 0 && item.payway == -1) {
             return true
         }
       },
@@ -488,7 +487,11 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "TranOrderOptModule";
-      iRequest.method = "cancelOrder";
+      if (item.ostatus === 0 && item.payway == -1) {
+          iRequest.method = "cancelOrder";
+      } else {
+          iRequest.method = "cancelOffLineOrder";
+      }
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
         orderno: item.orderno,

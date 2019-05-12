@@ -48,7 +48,7 @@
               <!-- {{ storeInfo.comp.storeName }} -->
               <p
                 v-if="userStatus && storeInfo.comp && storeInfo.comp.storeName"
-              >您好，{{ storeInfo.comp.storeName }}</p>
+              >您好 (缓存测试)，{{ storeInfo.comp.storeName }}</p>
               <p v-if="!userStatus">
                 <nuxt-link to="/user/login">
                   <a-button class="float-left">登录</a-button>
@@ -459,7 +459,7 @@
                     />
                     <p class="surplus">
                       还剩{{items.surplusstock}}{{items.unitName}}
-                      <span>限购{{items.actlimit}}{{items.unitName}}</span>
+                      <span v-if="item.limits !== 0">限购{{items.actlimit}}{{items.unitName}}</span>
                     </p>
 
                     <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->

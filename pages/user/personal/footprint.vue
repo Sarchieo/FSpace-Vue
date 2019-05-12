@@ -55,6 +55,10 @@ export default {
   methods: {
     // 加入采购单
     addCart(items) {
+      if(item.store === 0) {
+        this.$message.error('商品库存不足')
+        return
+      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
