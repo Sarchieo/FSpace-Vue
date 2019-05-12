@@ -133,7 +133,7 @@
           </div>
           <div class="nav-box" v-show="isShowHeader">
             <div>
-              <span href class="goods-type" @mouseover="showMenu()" @mouseleave="hiddenMenu()"> <a-icon type="bars" class="bars"/>商品分类  <f-space-menu></f-space-menu></span>
+              <span href="javascript:;" class="goods-type" @mouseover="seover()" @mouseleave="leave()"> <a-icon type="bars" class="bars"/>商品分类 <f-space-menu :isMouseover="isMouseover" :isShowMenu="isShowMenu" ></f-space-menu></span>
               <a href="javascript:;" @click="toNewPerson()">新人专享</a>
               <a href="javascript:;" @click="toNewGoods()">新品上线</a>
               <a href="javascript:;" @click="toHotGoods()">热销商品</a>
@@ -229,6 +229,7 @@ export default {
       locale: {
         emptyText: '暂无消息'
       },
+      isMouseover: false,
       isShowMenu: false,
       confirmLoading: false,
       ModalText: "您确定要退出登录吗?",
@@ -244,6 +245,7 @@ export default {
     };
   },
   mounted() {
+    this.isShowMenu = this.$route.name === 'index' ? true : false
     this.init();
     this.checkStoreLoginStatus();
     this.usualKeyword();
@@ -536,11 +538,11 @@ export default {
         }
       });
     },
-    showMenu() {
-      this.isShowMenu = true;
+    seover() {
+      this.isMouseover = true
     },
-    hiddenMenu() {
-      this.isShowMenu = false;
+    leave() {
+      this.isMouseover = false
     }
   },
   watch: {

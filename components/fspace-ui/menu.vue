@@ -1,5 +1,5 @@
 <template>
-  <ul class="sider-menu" ref="siderui">
+  <ul class="sider-menu" ref="siderui" v-if="isShowMenu || isMouseover">
     <li
       v-for="(i,index) in list"
       :key="index"
@@ -30,6 +30,7 @@
 <script>
 export default {
   name: "f-space-menu",
+  props: ['isShowMenu', 'isMouseover'],
   data() {
     return {
       list: []
@@ -37,7 +38,7 @@ export default {
   },
   mounted() {
     this.getProduceClasses();
-    this.compLiHeight();
+    // this.compLiHeight();
   },
   methods: {
     compLiHeight() {
@@ -46,7 +47,6 @@ export default {
      for(var i = 0;i<siderLi.length;i++){
        siderLi[i].style.height = siderui/siderLi.length
      }
-      console.log(siderLi)
     },
     toCategory(index) {
       // console.log(index)
