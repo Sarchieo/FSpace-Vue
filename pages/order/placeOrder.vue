@@ -73,19 +73,22 @@
                 <!-- 现金券 -->
                 <div class="coupon" v-if="item.brulecode === 2110">
                   <div class="coupon-num">
+                    <!-- <span v-if="item.ctype === 3">111</span> -->
                     <p class="coupon-title">{{ item.rulename }}</p>
-                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p>
+                    <p v-if="item.ctype === 3"><span class="fuhao">￥</span><span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span></p>
+                    <div v-if="item.ctype !== 3"><p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p></div>
                   </div>
-                  <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked"  @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom"> <span v-if="item.ctype === 3">永久有效</span><span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span> <a-checkbox v-model="item.isChecked"  @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                 </div>
 
                 <!-- 包邮券 -->
                 <div class="coupon" v-if="item.brulecode === 2120">
                   <div class="coupon-num">
+                    <p v-if="item.ctype === 3"><span class="fuhao">￥</span><span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span></p>
                     <p class="coupon-title">{{ item.rulename }}</p>
-                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p>
+                    <div v-if="item.ctype !==3"><p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p></div>
                   </div>
-                  <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom"><span v-if="item.ctype === 3">永久有效</span><span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>  <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
                 </div>
                 <!-- 折扣券 -->
                 <div class="coupon" v-if="item.brulecode === 2130">
@@ -289,6 +292,7 @@ export default {
                 item.isChecked = false
               })
               _this.couponList = result.data
+              console.log(_this.couponList)
             }
           }
         )
@@ -507,6 +511,12 @@ li {
 }
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
+}
+.fuhao {
+  font-size: 16px;
+}
+.money{
+  font-size: 30px;
 }
 .receiving {
   .container-size(block, 1190px, 280px, 20px auto 20px auto, 0px);

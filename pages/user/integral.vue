@@ -281,8 +281,8 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            this.getQueryCouponExcgPub();
             _this.$message.success(result.message);
+            this.getQueryCouponExcgPub();
           }
         })
       );
