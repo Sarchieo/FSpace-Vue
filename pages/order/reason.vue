@@ -35,7 +35,7 @@
                   <a-textarea v-model="content" class="evaluate-text" maxlength="300"/>
                   <!-- <a-textarea v-model="content" class="evaluate-text" maxlength="300"/> -->
                 </a-form-item>
-                <p class="limit">{{content.length}}/300</p>
+                <p class="limit">{{content.length}}/200</p>
 
                 <!-- <a-upload
                                   style="display: inline-block;margin-top:10px;"
