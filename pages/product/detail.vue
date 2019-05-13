@@ -20,7 +20,7 @@
             <div class="goods-big-pic">
               <!-- <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom> -->
               <!-- <img v-lazy="imgUrl" slot="cover"> -->
-              <f-space-pic-zoom v-if="isShowPic" :imgUrl="imgUrl" />
+              <f-space-pic-zoom v-if="isShowPic" :imgUrl="imgUrl"/>
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
               <p v-if="this.isShowCollec === false">
                 <span @click="addCollec()">
@@ -33,22 +33,31 @@
                   <a-icon type="star" class="collection"/>取消收藏
                 </span>
               </p>
-               <p>
+              <p>
                 <span v-clipboard:copy="shareURl" v-clipboard:success="onShare">
-                  <a-icon type="share-alt" class="collection"/> 分享
+                  <a-icon type="share-alt" class="collection"/>分享
                 </span>
-               </p>
+              </p>
             </div>
             <div class="goods-info">
-              <p class="goods-name">{{prodDetail.brandName}} {{ prodDetail.prodname }} {{prodDetail.spec}}</p>
-              <p
-                class="rush-time"
-                v-if="rulecode == 1113 && isSecondkill"
-              >限时抢购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒 <span @click="toLimited()">更多抢购 ></span></p>
-              <p
-                class="rush-time"
-                v-if="rulecode == 1133"
-              >一块购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒 <span @click="toBuying()">查看更多 ></span></p>
+              <p class="goods-name">
+                <img src="../../assets/img/otc-red.png" alt v-if="prodDetail.rx === 2">
+                <img src="../../assets/img/otc-green.png" alt v-if="prodDetail.rx === 1">
+                <img src="../../assets/img/rx.png" alt v-if="prodDetail.rx === 3">
+                {{prodDetail.brandName}} {{ prodDetail.prodname }} {{prodDetail.spec}}
+              </p>
+              <p class="rush-time" v-if="rulecode == 1113 && isSecondkill">
+                限时抢购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒
+                <span
+                  @click="toLimited()"
+                >更多抢购 ></span>
+              </p>
+              <p class="rush-time" v-if="rulecode == 1133">
+                一块购 距离结束还剩 {{ flashSale.h }} 小时 {{ flashSale.m }} 分钟 {{ flashSale.s }} 秒
+                <span
+                  @click="toBuying()"
+                >查看更多 ></span>
+              </p>
               <div class="price-server">
                 <p class="onek-person" v-if="rulecode == 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.offer / 10 }}</span>
@@ -56,7 +65,7 @@
                 </p>
                 <a-progress
                   v-if="rulecode === 1113 || rulecode === 1133"
-                  :percent="discount.currNums / ladnum * 100" 
+                  :percent="discount.currNums / ladnum * 100"
                   style="width: 295px;height: 8px;margin-left: 20px;"
                   :showInfo="false"
                   status="exception"
@@ -70,22 +79,65 @@
                   <span>限购{{ discount.limits }}支</span>
                 </p>
 
-                <p class="price" v-if="rulecode == 1113">
+                <div class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ discount.killPrice }}</span>
                   <del>{{ prodDetail.mp }}</del>
-                </p>
+                </div>
                 <!-- <p class="price" v-else-if="rulecode === 1133">
                   <span class="price-title">价格</span>
                   <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
                   <span class="money-count" v-else>￥认证后可见</span>
-                </p> -->
-                <p class="price" v-else>
-                  <span class="price-title">价格</span>
-                  <span class="money-count" v-if="prodDetail.vatp != -1">￥{{ prodDetail.vatp }}</span>
-                  <span class="money-count" v-else>￥认证后可见</span>
-                  <del v-if="prodDetail.vatp != -1">{{ prodDetail.mp }}</del>
-                </p>
+                </p>-->
+                <div class="price" v-else>
+                  <p>
+                    <span class="price-title">采购价:</span>
+                    <span class="money-count" v-if="prodDetail.vatp != -1">
+                      <span class="font-size14">￥</span>
+                      {{ prodDetail.vatp }}
+                    </span>
+                    <span class="money-count" v-else>￥认证后可见</span>
+                    <span class="price-title">市场价:</span>
+                    <del v-if="prodDetail.vatp != -1">
+                      <span class="font-size14"> ￥</span>
+                      {{ prodDetail.mp }}
+                    </del>
+                    <span class="price-title">毛利润：</span>
+                    <span>{{Math.ceil((((prodDetail.mp - prodDetail.vatp) / prodDetail.vatp)*100))}}%</span>
+                  </p>
+                  <p class="folding">
+                    <span>折后约:</span>
+                    <span class="folding-price">
+                      <span class="font-size14">￥</span>
+                      {{ prodDetail.minPrice }}
+                      <a-tooltip placement="bottom" style="width: 20px;height: 20px;border-radius: 50%;">
+                        <template slot="title">
+                          <span>商品折后价为叠加所有可用优惠券后的最优购买单价,达到品种优惠条件或者领券且满足用券条件后，商品结算价格可低至该最优购买单价</span>
+                        </template>
+                        <a-tag color="orange">?</a-tag>
+                      </a-tooltip>
+                    </span>
+
+                    <span>零售价:</span>
+                    <span class="folding-price">
+                      <span class="font-size14">￥</span>
+                      {{ prodDetail.rrp }}
+                    </span>
+                  </p>
+                  <div class="promotion" v-if="rulecode !== 0">
+                    <span class="promotion-text">促 &nbsp 销:</span>
+                    <div class="promotion-list" v-if="rulecode === 1110 || rulecode === 1120 || rulecode === 1130 || rulecode === 1113 || rulecode === 1133">
+                      <a-tag color="pink">满减</a-tag>
+                      <!-- <span>满 800 减 40</span> -->
+                      <span class="see-more">查看更多商品</span>
+                    </div>
+                    <div class="promotion-list" v-if="rulecode === 1210 || rulecode === 1220 || rulecode === 1230 || rulecode === 1240 || rulecode === 2110 || rulecode === 2120 || rulecode === 2130 || rulecode === 2140">
+                      <a-tag color="pink">满赠</a-tag>
+                      <!-- <span>满 800 赠 40元优惠券</span> -->
+                      <span class="see-more">查看更多商品</span>
+                    </div>
+                  </div>
+                </div>
                 <!-- 积分 -->
                 <!-- <p class="price">
                   <span>购买得50积分</span>
@@ -97,14 +149,14 @@
                   <span>48小时快速退款</span>
                   <a-icon type="check-circle"/>
                   <span>满88元免邮费</span>
-                </p> -->
+                </p>-->
               </div>
               <div class="manufacturer">
                 <p class="packing">
                   <span>规格/包装：</span>
                   <span class="margin-right190">{{ prodDetail.spec }}</span>
-                  <!-- <span>剂 型：</span> -->
-                  <!-- <span>瓶装</span> -->
+                  <span>剂 型：</span>
+                  <span>瓶装</span>
                 </p>
                 <p class="packing">
                   <span>批准文号：</span>
@@ -115,17 +167,21 @@
                 <p class="packing">
                   <span>生产厂家：</span>
                   <span class="margin-right190">{{ prodDetail.manuName }}</span>
-                  <span class="medpacknum-text">中包装量：</span><span>{{prodDetail.medpacknum}}</span> <span>{{prodDetail.unitName}}</span>
+                  <span class="medpacknum-text">中包装量：</span>
+                  <span>{{prodDetail.medpacknum}}</span>
+                  <span>{{prodDetail.unitName}}</span>
                 </p>
-                <p class="packing">
+                <!-- <p class="packing">
                   <span>生产日期：</span>
                   <span
                     class="margin-right190"
                   >{{ prodDetail.prodsdate + ' ~ ' + prodDetail.prodedate}}</span>
-                </p>
+                </p> -->
                 <p class="packing">
                   <span>有效期至：</span>
                   <span>{{ prodDetail.vaildsdate }} ~ {{ prodDetail.vaildedate }}</span>
+                  <span class="store-num">库存：</span>
+                  <span>{{storeNum(prodDetail.store)}}</span>
                 </p>
                 <!-- <div class="packing">
                   <span>配送至</span>
@@ -253,7 +309,7 @@
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                   </div>
                 </div>
-              </div> -->
+              </div>-->
               <!-- <div class="coupon-boxs" v-for="(item, index) in couponPub" :key="index">
                 <div class="coupon-card" v-if="item.brulecode === 2110" @click="revCoupon(item)">
                   <div class="coupon-left">
@@ -271,7 +327,7 @@
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                   </div>
                 </div>
-              </div> -->
+              </div>-->
             </div>
           </div>
           <!-- 一块购 -->
@@ -295,18 +351,21 @@
                     <p>
                       <span class="title-left">品牌：</span>
                       {{prodDetail.brandName}}
-                      <span class="right-text">{{prodDetail.spec}}</span>
+                      <span
+                        class="right-text"
+                      >{{prodDetail.spec}}</span>
                       <span class="title-right">规格：</span>
                     </p>
                     <p>
                       <span class="title-left">生产厂商：</span>
                       {{prodDetail.manuName}}
-                      
                     </p>
                     <p>
                       <span class="title-left">批准文号：</span>
                       {{prodDetail.standarNo}}
-                      <span class="right-text">{{prodDetail.rxName}}</span>
+                      <span
+                        class="right-text"
+                      >{{prodDetail.rxName}}</span>
                       <span class="title-right">产品类型：</span>
                     </p>
                     <p>
@@ -361,19 +420,29 @@
                 <a-tab-pane tab="药品评价" key="2" forceRender>
                   <div class="evaluate-box">
                     <div class="evaluate-list">
-                      <a-comment v-for="(item,index) in appriseArr" :key="index" class="evaluate-boxs">
+                      <p class="no-evaluate" v-if="appriseArr.length === 0">药品暂无评价！</p>
+                      <a-comment
+                        v-for="(item,index) in appriseArr"
+                        :key="index"
+                        class="evaluate-boxs"
+                      >
                         <a style="color: orange">{{item.compName}}</a>
-                       
+
                         <p>
-                           综合评分：
+                          综合评分：
                           <a-rate allowHalf :defaultValue="item.compEval" disabled/>
                         </p>
                         <p class="comment-text">{{item.content}}</p>
                         <p class="time-text">评价时间: {{item.createtdate}}&nbsp {{item.createtime}}</p>
                       </a-comment>
+                      <a-pagination
+                        :defaultCurrent="currentIndex"
+                        :total="total"
+                        @change="pageNumber"
+                        v-if="appriseArr.length !== 0"
+                      />
                     </div>
                   </div>
-                  <a-pagination :defaultCurrent="currentIndex" :total="total" @change="pageNumber"/>
                 </a-tab-pane>
               </a-tabs>
             </div>
@@ -427,7 +496,7 @@ export default {
   data() {
     return {
       compEval: 4.7,
-      shareURl: '',
+      shareURl: "",
       appriseArr: [], //评价列表
       evaluateVal: 0, // 药店评价商品的分数
       currentIndex: 1, // 第几页
@@ -507,7 +576,8 @@ export default {
       tabStyle: {
         color: "black",
         fontSize: "26px",
-        backgroundColor: "#f8f8f8"
+        backgroundColor: "#f8f8f8",
+        margin: "0px"
       },
       count: 1
     };
@@ -519,6 +589,7 @@ export default {
     // 获取商品详情
     this.getProd();
     this.getImgUrl();
+    this.getLadoff();
     this.$nextTick(() => {
       this.isShowPic = true;
     });
@@ -528,6 +599,17 @@ export default {
       this.currentIndex = pageNumber;
       // 再重新调一次请求评价列表方法
       this.getGoodsApprise();
+    },
+    storeNum(val) {
+      let text = "";
+      if (val >= 100) {
+        text = "有货";
+      } else if (val === 0) {
+        text = "已售完";
+      } else {
+        text = val;
+      }
+      return text;
     },
     //获取评价列表
     getGoodsApprise() {
@@ -545,14 +627,12 @@ export default {
         this,
         "goodsServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.appriseArr = result.data;
-              _this.total = result.total;
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.appriseArr = result.data;
+            _this.total = result.total;
           }
-        )
+        })
       );
     },
     // 新增采购数量
@@ -568,6 +648,27 @@ export default {
         return;
       }
       this.inventory--;
+    },
+    // 获取活动阶梯值
+    getLadoff() {
+      debugger
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "CalculateModule";
+      iRequest.method = "getLadoff";
+      iRequest.param.arrays = [this.sku];
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            console.log(result.data)
+          }
+        })
+      );
     },
     // 获取药品活动类型
     getActivitiesBySKU() {
@@ -585,12 +686,13 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
+            console.log(_this.activitiesBySKU[0].brulecode)
             // 如果存在活动 取库存与活动库存最小值
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
               _this.rulecode = _this.activitiesBySKU[0].brulecode;
-              _this.unqid = _this.activitiesBySKU[0].unqid
-              if(_this.rulecode === 1113) {
+              _this.unqid = _this.activitiesBySKU[0].unqid;
+              if (_this.rulecode === 1113) {
                 _this.beforeSecKill();
               }
               _this.queryActiveType(_this.activitiesBySKU[0].unqid);
@@ -603,13 +705,13 @@ export default {
     addCart() {
       if (!this.userStatus) {
         this.$router.push({
-          path: '/user/login'
-        })
-        return
+          path: "/user/login"
+        });
+        return;
       }
-      if(!this.inventory > 0 || this.inventory > this.maximum) {
+      if (!this.inventory > 0 || this.inventory > this.maximum) {
         this.$message.warning("库存不足或超出限购数量");
-        return
+        return;
       }
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -627,13 +729,11 @@ export default {
         "orderServer" +
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.$message.success(result.message);
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
           }
-        )
+        })
       );
     },
     beforeSecKill() {
@@ -651,19 +751,17 @@ export default {
         "orderServer" +
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.unqid2 = result.data;
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.unqid2 = result.data;
           }
-        )
+        })
       );
     },
     attendSecKill() {
       if (this.storeInfo.comp.authenticationStatus !== 256) {
-        this.$message.error('下单失败, 当前企业未进行认证审核')
-        return
+        this.$message.error("下单失败, 当前企业未进行认证审核");
+        return;
       }
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -681,24 +779,25 @@ export default {
         "orderServer" +
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.$route.path.replace();
-              result.data.forEach((item) => {
-                  item.actcode = _this.unqid
-              })
-              sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
-              _this.$router.push({
-                name: "order-placeOrder",
-                query: {
-                  placeType: 1,
-                  orderType: 1
-                }
-              });
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$route.path.replace();
+            result.data.forEach(item => {
+              item.actcode = _this.unqid;
+            });
+            sessionStorage.setItem(
+              "placeOrderList",
+              JSON.stringify(result.data)
+            );
+            _this.$router.push({
+              name: "order-placeOrder",
+              query: {
+                placeType: 1,
+                orderType: 1
+              }
+            });
           }
-        )
+        })
       );
     },
     // 猜你喜欢列表
@@ -714,13 +813,11 @@ export default {
         "orderServer" +
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.queryCouponPub();
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.queryCouponPub();
           }
-        )
+        })
       );
     },
     // 获取待领取优惠券
@@ -738,14 +835,11 @@ export default {
         this,
         "discountServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            
-            if (result.code === 200) {
-              _this.couponPub = result.data;
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.couponPub = result.data;
           }
-        )
+        })
       );
     },
     // 查询商品活动类型
@@ -761,12 +855,14 @@ export default {
         "orderServer" +
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
+        new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
-              _this.ladnum = _this.discount.ladoffs[_this.discount.ladoffs.length -1].ladnum
+              _this.ladnum =
+                _this.discount.ladoffs[
+                  _this.discount.ladoffs.length - 1
+                ].ladnum;
               // 设置倒计时
               _this.secondKill(
                 _this.stringToDate(_this.discount.currentDate),
@@ -798,7 +894,12 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotList = result.data.slice(0, 5);
-            _this.fsGeneralMethods.addImages(_this, _this.hotList, 'sku', 'spu')
+            _this.fsGeneralMethods.addImages(
+              _this,
+              _this.hotList,
+              "sku",
+              "spu"
+            );
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
           }
@@ -819,10 +920,9 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            
             if (result.data) {
               _this.prodDetail = result.data;
-              if(_this.userStatus) {
+              if (_this.userStatus) {
                 // 上传足迹
                 _this.getFoot();
                 // 获取优惠券
@@ -860,11 +960,10 @@ export default {
       this.$refcallback(
         this,
         "orderServer" +
-          Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            
           }
         })
       );
@@ -933,7 +1032,7 @@ export default {
       this.$refcallback(
         this,
         "orderServer" +
-        Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
@@ -946,16 +1045,16 @@ export default {
     placeOrder() {
       if (!this.userStatus) {
         this.$router.push({
-          path: '/user/login'
-        })
-        return
+          path: "/user/login"
+        });
+        return;
       }
 
-      if(!this.inventory > 0 || this.inventory > this.maximum) {
+      if (!this.inventory > 0 || this.inventory > this.maximum) {
         this.$message.warning("库存不足或超出限购数量");
-        return
+        return;
       }
-      
+
       this.loading = true;
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -979,27 +1078,28 @@ export default {
         "orderServer" +
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            _this.loading = false;
-            if (result.code === 200) {
-              _this.$route.path.replace();
-              if (_this.unqid > 0) {
-                  result.data.forEach((item) => {
-                    item.actcode = [_this.unqid]
-                  })
-                }
-              sessionStorage.setItem('placeOrderList', JSON.stringify(result.data));
-              _this.$router.push({
-                name: "order-placeOrder",
-                query: {
-                  placeType: 1,
-                  orderType: 0
-                }
+        new this.$iceCallback(function result(result) {
+          _this.loading = false;
+          if (result.code === 200) {
+            _this.$route.path.replace();
+            if (_this.unqid > 0) {
+              result.data.forEach(item => {
+                item.actcode = [_this.unqid];
               });
             }
+            sessionStorage.setItem(
+              "placeOrderList",
+              JSON.stringify(result.data)
+            );
+            _this.$router.push({
+              name: "order-placeOrder",
+              query: {
+                placeType: 1,
+                orderType: 0
+              }
+            });
           }
-        )
+        })
       );
     },
     getImgUrl() {
@@ -1084,8 +1184,7 @@ export default {
       }
     },
     onShare(e) {
-      console.log(e)
-      this.$message.success('商品链接已复制至剪贴板')
+      this.$message.success("商品链接已复制至剪贴板");
     },
     like() {
       this.likes = 1;
@@ -1099,19 +1198,19 @@ export default {
     },
     toLimited() {
       this.$router.push({
-        path: '/activity/limited',
+        path: "/activity/limited",
         query: {
           actcode: this.unqid
         }
-      })
+      });
     },
     toBuying() {
       this.$router.push({
-        path: '/activity/buying',
+        path: "/activity/buying",
         query: {
           actcode: this.unqid
         }
-      })
+      });
     },
     dislike() {
       this.likes = 0;
@@ -1342,25 +1441,83 @@ li {
   width: 80px;
   height: 80px;
 }
+.folding {
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  color: #666;
+}
+del {
+  font-size: 16px;
+  color: #999999 !important;
+}
+.store-num {
+  margin-left: 20px;
+}
+.price-title {
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  color: #666;
+}
+.font-size14 {
+  font-size: 14px !important;
+}
+.promotion {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  margin-top: 5px;
+}
+.promotion-text {
+  display: inline-block;
+  font-size: 16px;
+  color: #666;
+}
+.see-more {
+  margin-left: 5px;
+  color: #3189f5;
+}
+.see-more:hover {
+  cursor: pointer;
+}
+.promotion-list {
+  float: right;
+  width: 575px;
+  height: auto;
+  margin-bottom: 5px;
+}
+.folding-price {
+  margin-right: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(247, 37, 38);
+}
 .goods-info {
   float: right;
   position: relative;
   top: 0px;
   left: 0px;
   width: 657px;
-  height: 485px;
+  height: 490px;
+  overflow: auto;
 }
 .surplus {
   text-indent: 20px;
 }
 .goods-name {
-  height: 40px;
-  line-height: 40px;
+  height: 45px;
+  line-height: 45px;
   font-size: 24px;
   font-weight: bold;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
+}
+.goods-name img {
+  display: inline-block;
+  width: 50px;
+  height: 25px;
 }
 .rush-time {
   height: 40px;
@@ -1370,13 +1527,13 @@ li {
   font-size: 20px;
   color: #ffffff;
 }
-.rush-time span{
+.rush-time span {
   float: right;
   margin-right: 10px;
   font-size: 14px;
   color: #ffffff;
 }
-.rush-time span:hover{
+.rush-time span:hover {
   cursor: pointer;
 }
 .price-server {
@@ -1392,21 +1549,22 @@ li {
   width: 50px;
 }
 .price-server .price {
-  height: 42px;
-  line-height: 42px;
-  text-indent: 20px;
-  font-size: 16px;
-  color: #666666;
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  background: #f8f8f8;
+  padding: 10px 0px 10px 20px;
 }
 .price-server .price del {
+  margin-right: 15px;
   font-weight: bold;
 }
 .price-server .price .integral {
   margin-right: 5px;
 }
 .money-count {
-  margin-right: 5px;
-  font-size: 24px;
+  margin-right: 25px;
+  font-size: 20px;
   font-weight: bold;
   color: rgb(247, 37, 38);
 }
@@ -1567,10 +1725,10 @@ li {
   width: 900px;
   height: 1600px;
   padding-left: 50px;
-  /* overflow: auto; */
+  overflow: auto;
 }
 .explain {
-  width: 900px;
+  width: 850px;
   height: auto;
   padding: 20px 0;
   font-size: 16px;
@@ -1599,13 +1757,25 @@ li {
   width: 903px;
   height: 1600px;
   margin-bottom: 20px;
-  /* border-left: 1px solid rgb(238, 238, 238); */
-  border-bottom: 1px solid rgb(238, 238, 238);
+  margin-top: 20px;
+}
+.no-evaluate {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 20px;
+  color: #999;
 }
 .evaluate-box .praise {
   display: block;
   width: 750px;
   height: 160px;
+}
+.ant-pagination {
+  text-align: center;
+}
+.ant-tabs-bar {
+  margin: 0 !important;
 }
 .probability {
   float: left;
@@ -1660,9 +1830,9 @@ li {
   font-size: 12px;
 }
 .evaluate-list {
-  border-top: 1px solid rgb(238, 238, 238);
+  /* border-top: 1px solid rgb(238, 238, 238); */
 }
-.evaluate-boxs{
+.evaluate-boxs {
   width: 100%;
   border-bottom: 1px solid #f2f2f2;
   padding-bottom: 10px;
@@ -1901,6 +2071,7 @@ li {
   width: 800px;
   height: 170px;
   margin: 0 auto;
+  margin-top: 20px;
   margin-bottom: 20px;
   padding: 17px 30px;
   background: #f7f7f7;
@@ -1929,11 +2100,11 @@ li {
   font-size: 18px;
   font-weight: bold;
 }
-.ant-input-number-input{
-  width: 75%!important;
+.ant-input-number-input {
+  width: 75% !important;
 }
-.medpacknum-text{
+.medpacknum-text {
   display: inline-block;
-  margin-right: 20px;
+  /* margin-right: 20px; */
 }
 </style>

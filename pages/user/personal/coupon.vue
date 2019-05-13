@@ -6,11 +6,13 @@
           <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
             <div class="discount" v-if="item.brulecode === 2110">
               <p class="discount-count" v-if="item.ctype !==3">{{ item.rulename }}</p>
-              <p class="exchange-title" v-if="item.ctype ===3"><span>{{ item.rulename }}</span> <span class="permanent">永久有效</span></p>
-              <span class="symbol" v-if="item.ctype ===3">￥</span>
-              <span class="inte-coupon" v-if="item.ctype ===3">20</span>
-              <span class="texts" v-if="item.ctype ===3">无门槛通用券</span>
-              <span class="every-texts" v-if="item.ctype ===3">选购商城任意商品可使用</span>
+              <div v-for="(j, i) in item.ladderVOS" :key="i">
+                <p class="exchange-title" v-if="item.ctype ===3"><span>{{ item.rulename }}</span> <span class="permanent">永久有效</span></p>
+                <span class="symbol" v-if="item.ctype ===3">￥</span>
+                <span class="inte-coupon" v-if="item.ctype ===3">{{j.offer}}</span>
+                <span class="texts" v-if="item.ctype ===3">无门槛通用券</span>
+                <span class="every-texts" v-if="item.ctype ===3">选购商城任意商品可使用</span>
+              </div>             
               <!-- ctype=== 3 为兑换券 -->
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
                 <span v-if="item.ctype !== 3">满</span>
@@ -25,17 +27,20 @@
             </div>
 
             <div class="discount" v-if="item.brulecode === 2120">
-              <p class="exchange-title" v-if="item.ctype ===3"><span>{{ item.rulename }}</span> <span class="permanent">永久有效</span></p>
-              <span class="symbol" v-if="item.ctype ===3">￥</span>
-              <span class="inte-coupon" v-if="item.ctype ===3">20</span>
-              <span class="texts" v-if="item.ctype ===3">无门槛通用券</span>
-              <span class="every-texts" v-if="item.ctype ===3">选购商城任意商品可使用</span>
-              <p class="discount-count margin-bottom35">{{ item.rulename }}</p>
+              <div v-for="(j, i) in item.ladderVOS" :key="i">
+                <p class="exchange-title" v-if="item.ctype ===3"><span>{{ item.rulename }}</span> <span class="permanent">永久有效</span></p>
+                <span class="symbol" v-if="item.ctype ===3">￥</span>
+                <span class="inte-coupon" v-if="item.ctype ===3">{{item.ladder.offer}}</span>
+                <span class="texts" v-if="item.ctype ===3">无门槛通用券</span>
+                <span class="every-texts" v-if="item.ctype ===3">选购商城任意商品可使用</span>
+              </div>
+             
+              <p class="discount-count margin-bottom35" v-if="item.ctype !==3">{{ item.rulename }}</p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
-                满
-                <span>{{ j.ladamt }}</span>包邮
+                <span v-if="item.ctype !==3">满</span>  
+                <span v-if="item.ctype !==3">{{ j.ladamt }}</span>包邮
               </p>
-              <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
+              <p class="validity" v-if="item.ctype !==3">有效期:{{item.startdate}}至{{item.enddate}}</p>
               <img class="state-pic" src="../../../assets/img/already.png" alt="">
             </div>
 
@@ -60,37 +65,43 @@
         <div class="haved-coupon">
           <div class="condition-price" v-for="(item, index) in usedCouponList" :key="index">
             <div class="discount" v-if="item.brulecode === 2110">
-              <p class="exchange-title" v-if="item.ctype ===3"><span>{{ item.rulename }}</span> <span class="permanent">永久有效</span></p>
-              <span class="symbol" v-if="item.ctype ===3">￥</span>
-              <span class="inte-coupon" v-if="item.ctype ===3">20</span>
-              <span class="texts" v-if="item.ctype ===3">无门槛通用券</span>
-              <span class="every-texts" v-if="item.ctype ===3">选购商城任意商品可使用</span>
-              <p class="discount-count">
+              <div v-for="(j, i) in item.ladderVOS" :key="i">
+                <p class="exchange-title" v-if="item.ctype ===3"><span>{{ item.rulename }}</span> <span class="permanent">永久有效</span></p>
+                <span class="symbol" v-if="item.ctype ===3">￥</span>
+                <span class="inte-coupon" v-if="item.ctype ===3">{{j.offer}}</span>
+                <span class="texts" v-if="item.ctype ===3">无门槛通用券</span>
+                <span class="every-texts" v-if="item.ctype ===3">选购商城任意商品可使用</span>
+              </div>
+              
+              <p class="discount-count" v-if="item.ctype !==3">
                 {{ item.rulename }}
                 <span class="term">有效期 {{ item.validday }} 天</span>
               </p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
-                满
-                <span>{{ j.ladamt }}</span> 减
-                <span>{{ j.offer}}</span>
+                <span v-if="item.ctype !==3">满</span>
+                <span v-if="item.ctype !==3">{{ j.ladamt }}</span> <span v-if="item.ctype !==3">减</span>
+                <span v-if="item.ctype !==3">{{ j.offer}}</span>
               </p>
                <img class="state-pic" src="../../../assets/img/invalied.png" alt>
               <!-- <p>有效期:{{item.startdate}}至{{item.enddate}}</p> -->
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
             </div>
             <div class="discount" v-if="item.brulecode === 2120">
-              <p class="exchange-title" v-if="item.ctype ===3"><span>{{ item.rulename }}</span> <span class="permanent">永久有效</span></p>
-              <span class="symbol" v-if="item.ctype ===3">￥</span>
-              <span class="inte-coupon" v-if="item.ctype ===3">20</span>
-              <span class="texts" v-if="item.ctype ===3">无门槛通用券</span>
-              <span class="every-texts" v-if="item.ctype ===3">选购商城任意商品可使用</span>
-              <p class="discount-count margin-bottom35">
+              <div  v-for="(j, i) in item.ladderVOS" :key="i">
+                 <p class="exchange-title" v-if="item.ctype ===3"><span>{{ item.rulename }}</span> <span class="permanent">永久有效</span></p>
+                <span class="symbol" v-if="item.ctype ===3">￥</span>
+                <span class="inte-coupon" v-if="item.ctype ===3">{{j.offer}}</span>
+                <span class="texts" v-if="item.ctype ===3">无门槛通用券</span>
+                <span class="every-texts" v-if="item.ctype ===3">选购商城任意商品可使用</span>
+              </div>
+             
+              <p class="discount-count margin-bottom35" v-if="item.ctype !==3">
                 {{ item.rulename }}
                 <span class="term">有效期 {{ item.validday }} 天</span>
               </p>
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
-                满
-                <span>{{ j.ladamt }}</span>包邮
+                <span v-if="item.ctype !==3">满</span>
+                <span v-if="item.ctype !==3">{{ j.ladamt }}包邮</span>
               </p>
                <img class="state-pic" src="../../../assets/img/invalied.png" alt>
             </div>
@@ -236,6 +247,7 @@ export default {
   methods: {
     // 获取我的优惠券
     queryRevCouponList(ctype) {
+      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";
