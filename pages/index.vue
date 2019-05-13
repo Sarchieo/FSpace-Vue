@@ -64,6 +64,7 @@
                 <span class="float-left">公告</span>
                 <span class="float-right more">更多</span>
               </p>
+              <p v-if="noticeList.length === 0" class="no-ntice">暂无公告！</p>
               <p
                 class="notice-text"
                 v-for="(item,index) in noticeList"
@@ -1160,6 +1161,9 @@ li {
 .height-auto {
   // min-height: 360px;
   height: auto !important;
+}
+.no-ntice{
+  .p-size(50px, 50px, 16px, center, 0px, #999999);
 }
 .active {
   background: #ff0036 !important;
