@@ -363,13 +363,12 @@
                     <div class="evaluate-list">
                       <a-comment v-for="(item,index) in appriseArr" :key="index" class="evaluate-boxs">
                         <a style="color: orange">{{item.compName}}</a>
-                       
                         <p>
                            综合评分：
                           <a-rate allowHalf :defaultValue="item.compEval" disabled/>
                         </p>
                         <p class="comment-text">{{item.content}}</p>
-                        <p class="time-text">评价时间: {{item.createtdate}}&nbsp {{item.createtime}}</p>
+                        <p class="time-text">评价时间: {{item.createtdate}}  {{item.createtime}}</p>
                       </a-comment>
                     </div>
                   </div>

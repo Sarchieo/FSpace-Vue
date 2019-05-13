@@ -69,6 +69,26 @@ function refcallback(context, moduleName,_IRequest, callback) {
         } else {
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         }
+        if(result.flag && context.$store.state.userStatus) {
+          let ice_callback = new Ice.Class(inf.PushMessageClient, {
+            receive: function(message, current) {
+              try{
+                let result = JSON.parse(message)
+              } catch(err){
+                context.$store
+                  .dispatch("setNoticeList", { message: message.replace('sys:', '') })
+                  .then(res => {
+                    
+                  })
+                  .catch(err => {
+                    
+                  });
+              }
+            }
+          })
+          // websocket 上线
+          context.$initIceLong('orderServer', context.storeInfo.comp.storeId, new ice_callback());
+        }
       }
     )
     .exception(

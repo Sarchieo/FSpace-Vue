@@ -153,30 +153,18 @@ export default {
     },
     // 为你精选数据
     getSelects() {
-      let _this = this;
-      _this.selectedList = []
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "chooseForYouSearch";
-      iRequest.param.pageIndex = this.currentIndex;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({
-        keyword: this.keyword,
-      });
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.selectedList = result.data;
-            _this.total = result.total;
-            _this.currentIndex = result.pageNo
-            _this.fsGeneralMethods.addImages(_this, _this.selectedList, 'sku', 'spu')
-          }
-        })
-      );
+       this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "chooseForYouSearch", {
+            keyword: this.keyword
+          })
+          .then(result => {
+            if (result.code === 200) {
+              this.selectedList = result.data;
+              this.total = result.total;
+              this.currentIndex = result.pageNo
+              this.fsGeneralMethods.addImages(this, this.selectedList, 'sku', 'spu')
+            }
+          });
     },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber;

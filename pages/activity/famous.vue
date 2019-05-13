@@ -7,22 +7,12 @@
             <img src="../../assets/banner/brands.jpg" alt="">
          </div>
         <div class="limited-box">
-          <!-- 活动文案=》未定 -->
-          
-          <!-- <div class="person-num">
-             <div class="person-left">
-                 商品累计拼团人数/折扣 描述方式待定
-             </div>
-             <div class="person-right">
-                 距团购活动时间还剩    05 时 12 分 12  秒  <span>9</span>
-             </div>
-          </div>-->
           <div class="limited-goods">
             <p class="search-p">
               <input v-model="keyword" type="text" placeholder="在结果中搜索">
-              <button @click="getBrand()">搜索</button>
+              <button @click="getFamousPrescriptionFloor()">搜索</button>
             </p>
-            <div class="goods-box" v-for="(item,index) in brandList" :key="index">
+            <div class="goods-box" v-for="(item,index) in famousList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
                 <span class="collec">
                   收藏
@@ -89,19 +79,17 @@ export default {
       count: 1,
       total: 0,
       currentIndex: 1,
-      actcode: 0,
       current: 1,
       tabStyle: {
         color: "#c40000",
         background: "black"
       },
-      brandList: [],
+      famousList: [],
       keyword: ''
     };
   },
   mounted() {
-    this.getBrand();
-    this.actcode = this.$route.query.actcode;
+    this.getFamousPrescriptionFloor();
   },
   methods: {
      // 加入购物车
@@ -133,9 +121,6 @@ export default {
           })
         );
     },
-    callback(key) {
-      console.log(key);
-    },
     toDetails(item) {
       this.$router.push({
         path: "/product/detail",
@@ -147,35 +132,28 @@ export default {
     },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber
-      this.getBrand()
+      this.getFamousPrescriptionFloor()
     },
-    // 品牌专区数据请求
-    getBrand() {
-      let _this = this;
-      _this.brandList = []
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "brandMallSearch";
-      iRequest.param.pageIndex = this.currentIndex;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({
-        keyword: this.keyword,
-        actcode: this.actcode
-      });
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.brandList = result.data;
-            _this.total = result.total
-            _this.currentIndex = result.pageNo
-            _this.fsGeneralMethods.addImages(_this, _this.brandList, 'sku', 'spu')
-          }
+    // 中华名方
+    getFamousPrescriptionFloor() {
+      this.famousList = []
+      this.fsGeneralMethods
+        .request(this, "goodsServer", "ProdModule", "famousPrescriptionSearch", {
+          keyword: this.keyword
         })
-      );
+        .then(result => {
+          if (result.code === 200) {
+            this.famousList = result.data;
+            this.total = result.total;
+            this.currentIndex = result.pageNo
+            this.fsGeneralMethods.addImages(
+              this,
+              this.famousPrescription,
+              "sku",
+              "spu"
+            );
+          }
+      });
     }
   }
 };

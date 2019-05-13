@@ -36,7 +36,7 @@
                 ></a-checkbox>
                 <!-- <input type="radio" class="pick-input"> -->
                 <img @click="toDetail(item)" v-lazy="item.imgURl">  
-                <p class="goods-name" @click="toDetail(item)">{{ item.ptitle }}</p>
+                <p class="goods-name" @click="toDetail(item)">{{ item.brand }}{{ item.ptitle }}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
                 <p class="icon" v-if="item.rule.length > 0">
@@ -193,10 +193,9 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.cartList = result.data;
-              console.log(_this.cartList)
               _this.cartList.forEach((item) => {
                 _this.$set(item, 'checked', item.checked === 0 ? false : true)
-                if(item.limitnum > item.inventory) {
+                if(item.limitnum > item.inventory || item.limitnum === 0) {
                   item.maximum = item.inventory
                 } else {
                   item.maximum = item.limitnum

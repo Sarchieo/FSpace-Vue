@@ -24,7 +24,7 @@
                 <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
-                <p class="goods-price" v-if="item.vatp != -1">限时价￥{{item.vatp}}元</p>
+                <p class="goods-price" v-if="item.vatp != -1">￥{{item.vatp}}元</p>
                 <p class="goods-price" v-else>￥认证后可见</p>
                 <button @click="toDetails(item)">查看详情</button>
               </a-card>
