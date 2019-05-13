@@ -100,6 +100,7 @@ var fsGeneralMethods = {
           new context.$iceCallback(
             function result(result) {
               if (result.code === 200) {
+                let date = new Date()
                 result.data.goodsFilePathList.forEach((c, index, list) => {
                   _this.$set(
                     arr[index],
@@ -109,7 +110,7 @@ var fsGeneralMethods = {
                     "/" +
                     arr[index][skuName] +
                     "-" + imageType + ".jpg" +
-                    '?' + Math.round(Math.random() * 10)
+                    '?' + date.getMonth() + date.getDay() + date.getMinutes() + date.getSeconds()
                   );
                 });
               }

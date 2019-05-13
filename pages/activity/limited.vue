@@ -11,7 +11,7 @@
           
           <div class="limited-goods">
             <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle" size="large">
-              <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.edate">
+              <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.sdate + '~' + item.edate">
                 <div class="goods-box" v-for="(item,index) in goodsList.list" :key="index">
                   <img v-lazy="item.imgURl" alt class="goods-pic">
                   <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
@@ -24,8 +24,8 @@
                   />
                   <p class="goods-surplus">还剩{{item.surplusstock}}{{item.unitName}}</p>
                   <p class="goods-price" v-if="item.vatp != -1">
-                    限时价￥{{item.actprize}}元
-                    <del>  原价￥{{item.mp}}元</del>
+                    ￥{{item.vatp}}元
+                    <del>  原价￥{{item.rrp}}元</del>
                   </p>
                   <p class="goods-price" v-else>
                     ￥认证后可见

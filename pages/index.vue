@@ -48,7 +48,7 @@
               <!-- {{ storeInfo.comp.storeName }} -->
               <p
                 v-if="userStatus && storeInfo.comp && storeInfo.comp.storeName"
-              >您好 (缓存测试)，{{ storeInfo.comp.storeName }}</p>
+              >您好，{{ storeInfo.comp.storeName }}</p>
               <p v-if="!userStatus">
                 <nuxt-link to="/user/login">
                   <a-button class="float-left">登录</a-button>
@@ -64,7 +64,7 @@
                 <span class="float-left">公告</span>
                 <span class="float-right more">更多</span>
               </p>
-              <p v-if="noticeList.length === 0" class="no-ntice">暂无公告！</p>
+              <p v-if="noticeList.length === 0" class="no-ntice">暂无公告</p>
               <p
                 class="notice-text"
                 v-for="(item,index) in noticeList"
@@ -332,23 +332,21 @@
           </div>
           <!-- 暂无数据接口 -->
           <!-- 中华名方 -->
-          <!-- <div class="brand-hall" v-if="item.unqid === 64">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 64 && famousPrescription.length > 5">
             <p class="brand-hall-title">
               中华名方
-              <a href="javascript:;" @click="toNewPerson()">查看全部<a-icon type="right"/>
+              <a href="javascript:;" @click="toFamous()">查看全部<a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
               <ul class="brand-right hot-width">
-                <li v-for="(item,index) in famousList" :key="index">
+                <li v-for="(item,index) in famousPrescription" :key="index">
                   <a-card hoverable class="card" @click="toDetail(item)">
-                    <img v-if="index < 3" class="top-img" :src="item.top" slot="cover">
                     <img class="card-img" v-lazy="item.imgURl" slot="cover">
                     <p class="surplus top185">{{item.brandName}}</p>
                     <p class="validity">有效期至{{item.vaildedate}}</p>
-                    <p class="card-price top165">
-                      ￥{{item.vatp}}
-                    </p>
+                    <p class="card-price top165" v-if="item.vatp != -1">￥{{item.vatp}}</p>
+                    <p class="card-price top165" v-else>￥认证后可见</p>
                     <p class="specifications">{{item.spec}}</p>
                     <p class="manufacturer">{{item.manuName}}</p>
                     <p class="sold">已售{{item.sales}}{{item.unitName}}</p>
@@ -356,7 +354,7 @@
                 </li>
               </ul>
             </div>
-          </div>-->
+          </div>
           <!-- 为你精选 -->
           <!-- v-if="item.unqid === 128 && selectedList.length > 5" -->
           <div
@@ -543,7 +541,6 @@ export default {
       newGoodsID: 0,
       newPersonID: 0,
       hotGoodsID: 0,
-      famousId: 0,
       secondId: 0,
       brandID: 0,
       teamBuyList: [],
@@ -553,9 +550,9 @@ export default {
       selectedList: [], // 为你精选
       newPersonList: [], // 新人专享列表
       postList: [], // 包邮专区
-      famousList: [], // 中华名方
       secondList: [], // 秒杀专区
       brandList: [], // 品牌专区
+      famousPrescription: [], // 中华名方
       isShow: false,
       imgSrc:
         "//img.alicdn.com/imgextra/i1/2928278102/O1CN01Yg8eie29ilQSi2xt1_!!0-item_pic.jpg_160x160q90.jpg",
@@ -641,6 +638,8 @@ export default {
                   value.color = "color-pink";
                   break;
                 case 64: // 中华名方 暂未提供接口
+                floorList.push(this.getFamousPrescriptionFloor());
+                  value.color = "color-indigo";
                   break;
                 case 128: // 为你精选
                   floorList.push(this.getSelects());
@@ -752,31 +751,25 @@ export default {
           });
       });
     },
-    // 中华名方 -- 暂时没接口
-    //  async getExemPostMallFloor() {
-    //   let _this = this;
-    //   let iRequest = new inf.IRequest();
-    //   iRequest.cls = "ProdModule";
-    //   iRequest.method = "getExemPostMallFloor";
-    //   iRequest.param.pageIndex = 1;
-    //   iRequest.param.pageNumber = 10;
-    //   iRequest.param.json = JSON.stringify({});
-    //   iRequest.param.token = localStorage.getItem("identification");
-    //   this.$refcallback(
-    //     "goodsServer",
-    //     iRequest,
-    //     new this.$iceCallback(function result(result) {
-    //       if (result.code === 200) {
-    //         result.data.list = result.data.list.slice(0, 5)
-    //         _this.famousList = result.data
-    //         _this.famousId = result.data.actcode
-    //         _this.getImgUrl(_this.famousList.list)
-    //       } else {
-    //         ;
-    //       }
-    //     })
-    //   );
-    // },
+    // 中华名方
+    async getFamousPrescriptionFloor() {
+      return new Promise((resolve, reject) => {
+        this.fsGeneralMethods
+          .request(this, "goodsServer", "ProdModule", "getFamousPrescriptionFloor")
+          .then(result => {
+            resolve();
+            if (result.code === 200 && result.data.length > 4) {
+              this.famousPrescription = result.data.slice(0, 5);
+              this.fsGeneralMethods.addImages(
+                this,
+                this.famousPrescription,
+                "sku",
+                "spu"
+              );
+            }
+          });
+      });
+    },
     //获取新人专享列表
     getNewPersonList() {
       return new Promise((resolve, reject) => {
@@ -1003,6 +996,11 @@ export default {
         query: {
           actcode: this.limitedID
         }
+      });
+    },
+    toFamous() {
+      this.$router.push({
+        path: "/activity/famous"
       });
     },
     toNewPerson() {
@@ -1493,7 +1491,7 @@ li {
 .brand-hall .brand-hall-title {
   height: 50px;
   line-height: 50px;
-  background: #f2f2f2;
+  background: #f8f8f8;
   font-size: 22px;
   font-weight: bold;
   color: #333333;

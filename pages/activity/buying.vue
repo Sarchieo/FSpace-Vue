@@ -36,8 +36,8 @@
                   <span>{{item.surplusstock}}</span>{{item.unitName}}成团
                 </p>
                 <p class="goods-price" v-if="item.vatp != -1">
-                  限时价￥{{item.actprize}}元
-                  <del>￥{{item.mp}}元</del>
+                  ￥{{item.vatp}}元
+                  <del>￥{{item.rrp}}元</del>
                 </p>
                 <p class="goods-price" v-else>
                   ￥认证后可见

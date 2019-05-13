@@ -33,7 +33,7 @@
                 </a-select>
               </a-form-item>
               <a-form-item label="原因描述" :label-col="{ span: 2 }" :wrapper-col="{ span: 16 }">
-                <a-textarea v-model="content" class="evaluate-text" maxlength="300"/>
+                <a-textarea v-model="content" class="evaluate-text" maxlength="200"/>
               </a-form-item>
               <!-- <p class="limit">{{content.length}}/300</p>
               <p class="upload">上传相片</p>
