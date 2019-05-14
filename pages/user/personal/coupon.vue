@@ -247,7 +247,7 @@ export default {
   methods: {
     // 获取我的优惠券
     queryRevCouponList(ctype) {
-      debugger
+      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";
@@ -267,7 +267,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            console.log(result.data);
             if (result.data.length > 0) {
               switch (ctype) {
                 case 0:
@@ -305,7 +304,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.couponPub = result.data;
-            console.log(_this.couponPub);
           }
         })
       );

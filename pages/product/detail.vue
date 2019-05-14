@@ -91,7 +91,7 @@
                 </p>-->
                 <div class="price" v-else>
                   <p>
-                    <span class="price-title">采购价:</span>
+                    <span class="price-title" v-if="rulecode !== 1113 || rulecode !== 1133">采购价:</span>
                     <span class="money-count" v-if="prodDetail.vatp != -1">
                       <span class="font-size14">￥</span>
                       {{ prodDetail.vatp }}
@@ -651,7 +651,6 @@ export default {
     },
     // 获取活动阶梯值
     getLadoff() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CalculateModule";
@@ -665,13 +664,13 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            console.log(result.data)
           }
         })
       );
     },
     // 获取药品活动类型
     getActivitiesBySKU() {
+      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CalculateModule";
@@ -686,7 +685,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
-            console.log(_this.activitiesBySKU[0].brulecode)
             // 如果存在活动 取库存与活动库存最小值
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {

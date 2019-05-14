@@ -114,7 +114,6 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend: function extend(config, ctx) {
-      // console.log('webpack config:', config)
       if (ctx.isClient) {
         config.module.unknownContextCritical = false;
       }

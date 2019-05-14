@@ -307,7 +307,7 @@ export default {
               })
               .then(res => {})
               .catch(err => {
-                console.log(err);
+
               });
           }
         })
@@ -381,7 +381,7 @@ export default {
                 }, 500);
               })
               .catch(err => {
-                console.log(err);
+
               });
           } else {
             _this.$store
@@ -397,7 +397,7 @@ export default {
                 }, 500);
               })
               .catch(err => {
-                console.log(err);
+
               });
           }
         })
@@ -410,7 +410,6 @@ export default {
         document.body.scrollTop;
       var home = this.$refs.home.style;
       var nameBox = this.$refs.nameBox.style;
-      console.log(scrollTop)
       if (scrollTop >= 600) {
         home.position = "fixed";
         home.top = "0px";
@@ -555,7 +554,7 @@ export default {
             
           })
           .catch(err => {
-            console.log(err);
+            
           });
       }
     }
@@ -728,7 +727,7 @@ li {
   height: 80px;
 }
 .spike {
-  margin-top: 15px;
+  margin-top: 2px;
   margin-bottom: 15px;
   text-indent: 27.4%;
 }

@@ -29,7 +29,6 @@ export function accDiv(arg1,arg2){
     var num = parseFloat(arg1/arg2)+ "";
     var str = [];
     str = num.split(".");
-    // console.log("num=====  " + str.length)
     if (str.length > 1) {
         return str[0] + "." + str[1].substring(0,2);
     }

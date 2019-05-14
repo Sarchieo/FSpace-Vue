@@ -28,7 +28,6 @@
         </li>
       </ul>
     </div>
-    <!-- <a-pagination :total="total" @change="onChange" /> -->
   </div>
 </template>
 <script>
@@ -142,9 +141,6 @@ export default {
           }
         })
       );
-    },
-    onChange(pageNumber) {
-      console.log(pageNumber)
     }
   }
 };

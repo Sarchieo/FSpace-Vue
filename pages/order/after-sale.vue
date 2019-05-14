@@ -89,8 +89,6 @@ export default {
        item.inventory = item.pnum
        item.price = item.payamt
       })
-    //
-    // console.log("goodsArrqweqweqw1111--- " + JSON.stringify(this.goodsArr));
   },
   methods: {
     reduce(item) {
@@ -157,7 +155,6 @@ export default {
           })
         }
       }
-      // console.log("fillOrderReason--- " + JSON.stringify(arr))
       sessionStorage.setItem("fillOrderReason", JSON.stringify(arr));
       this.$router.push({
         path: "/order/reason",

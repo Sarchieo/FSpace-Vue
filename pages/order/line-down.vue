@@ -120,10 +120,6 @@ export default {
         path: "/"
       });
     },
-    // 监听单选框的值发生变化
-    onChange(e) {
-      console.log(e);
-    },
     toSuccess() {
       this.$router.push({
         path: "/order/pay-complete",

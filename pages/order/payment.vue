@@ -79,7 +79,6 @@ export default {
                   })
                 }
             } catch(err){
-              console.log(message)
             }
         }
       })
@@ -109,10 +108,6 @@ export default {
           }
         )
       );
-    },
-      // 监听单选框的值发生变化
-    onChange (e) {
-      console.log(e)
     },
     toSuccess() {
       this.$router.push({

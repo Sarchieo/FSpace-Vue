@@ -216,14 +216,10 @@ export default {
       this.currentIndex = pageNumber;
       this.queryOrderList();
     },
-    onChange(val) {
-      console.log(val);
-    },
     afterApply(item) {
       this.isApply = true;
       this.goodsArr = item.goods;
       this.orderno = item.orderno;
-      // console.log("goods--- " +  JSON.stringify(item.goods))
     },
     pickCancel() {
       this.isApply = false;
@@ -548,7 +544,6 @@ export default {
         orderno: this.cancelOrderNo.orderno,
         cusno: this.storeInfo.comp.storeId
       });
-      // console.log("json--- " + iRequest.param.json )
       this.$refcallback(
         this,
         "orderServer" +

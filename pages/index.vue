@@ -332,7 +332,7 @@
           </div>
           <!-- 暂无数据接口 -->
           <!-- 中华名方 -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 64 && famousPrescription.length > 5">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 64 && famousPrescription.length > 3">
             <p class="brand-hall-title">
               中华名方
               <a href="javascript:;" @click="toFamous()">查看全部<a-icon type="right"/>
@@ -757,7 +757,9 @@ export default {
         this.fsGeneralMethods
           .request(this, "goodsServer", "ProdModule", "getFamousPrescriptionFloor")
           .then(result => {
+            
             resolve();
+            
             if (result.code === 200 && result.data.length > 4) {
               this.famousPrescription = result.data.slice(0, 5);
               this.fsGeneralMethods.addImages(

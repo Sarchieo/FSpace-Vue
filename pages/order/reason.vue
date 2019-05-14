@@ -157,7 +157,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.reprreason = JSON.parse(result.data).reprreason;
-            // console.log("dict---  " + JSON.stringify(_this.reprreason))
           }
         })
       );
@@ -263,7 +262,6 @@ export default {
     },
     handleChangeUpload({ file, fileList, event }) {
       this.fileList = fileList;
-      // console.log("value-- " + this.reasonType)
     }
   }
 };

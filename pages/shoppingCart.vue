@@ -291,7 +291,6 @@ export default {
       this.queryCheckShopCartList();
     },
     inputChange(index, item) {
-      console.log(item);
     },
     toPlaceOrder() {
       this.loading = true;

@@ -112,7 +112,6 @@ export default {
   mounted() {
       this.orderno = this.$route.query.orderno
       this.goods = JSON.parse(sessionStorage.getItem("evaluateGoods"));
-      // console.log("goods--- " + JSON.stringify(this.goods))
       for (let i = 0; i < this.goods.length; i++) {
           this.appriseArr.push({
               orderno:this.goods[i].orderno,
@@ -134,7 +133,6 @@ export default {
           const iRequest = new inf.IRequest();
           iRequest.cls = "OrderOptModule";
           iRequest.method = "insertApprise";
-          console.log("appriseArr-- " + JSON.stringify(this.appriseArr));
           iRequest.param.json = JSON.stringify({
               orderno: this.orderno,
               compid: this.storeInfo.comp.storeId,

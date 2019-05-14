@@ -191,7 +191,6 @@ export default {
   },
   mounted() {
     this.detail = JSON.parse(this.$route.query.detail)
-    console.log(this.detail)
     this.getImgUrl()
     this.getFilePathPrev()
   },  
@@ -286,12 +285,10 @@ export default {
     },
     // 取消订单
     hideModal() {
-      console.log(12121)
     },
     showFoot(key) {
         
         var foot = this.$refs['foot']
-        console.log(foot)
     }
   }
 };

@@ -47,9 +47,7 @@ export default {
     };
   },
   mounted() {
-    
     this.notice = JSON.parse(this.$route.query.notice)
-    console.log(this.notice)
   },
   methods: {
 

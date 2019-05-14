@@ -134,7 +134,6 @@ export default {
         );
     },
     callback(key) {
-      console.log(key);
     },
     toDetails(item) {
       this.$router.push({

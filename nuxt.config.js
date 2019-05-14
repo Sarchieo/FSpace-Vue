@@ -48,8 +48,8 @@ module.exports = {
   ],
 
   build: {
+    extractCSS: true,
     vendor: ['vue-lazyload'],
-    analyze: true,
     loaders: {
       less: {
         modifyVars: {

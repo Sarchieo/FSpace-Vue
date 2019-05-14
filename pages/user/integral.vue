@@ -53,12 +53,14 @@
           <!-- <p class="moon-data"> <span>4.23</span><span>4.24</span><span>4.25</span><span>4.26</span><span>4.27</span><span>4.28</span><span>4.29</span></p> -->
           <div class="coupon-box">
             <p v-if="exchangeList.length === 0" class="no-data">暂无优惠券！</p>
-            <div class="coupon-card" v-for="(item,index) in exchangeList" :key="index" @click="receiveCoupon(item)">
+            <div
+              class="coupon-card"
+              v-for="(item,index) in exchangeList"
+              :key="index"
+              @click="receiveCoupon(item)"
+            >
               <div class="coupon-left" v-if="item.brulecode === 2110">
-                <div
-                  v-for="(items,index1) in item.ladderVOS"
-                  :key="index1"
-                >
+                <div v-for="(items,index1) in item.ladderVOS" :key="index1">
                   <p class="coupon-type">
                     <span class="float-left">{{item.rulename}}</span>
                     <span class="float-right">永久有效</span>
@@ -67,9 +69,11 @@
                   <span class="offer">{{items.offer}}</span>
                   <span class="text">无门槛通用券</span>
                   <p class="every-text">选购商城任意商品可使用</p>
-                  <p class="counts"><span class="jifen">{{items.offer*1000}}</span> <span class="exchange">积分兑换</span></p>
+                  <p class="counts">
+                    <span class="jifen">{{items.offer*1000}}</span>
+                    <span class="exchange">积分兑换</span>
+                  </p>
                 </div>
-                
               </div>
               <div class="coupon-left" v-if="item.brulecode === 2120">
                 <div
@@ -85,17 +89,18 @@
                   <span class="offer">{{items.offer}}</span>
                   <span class="text">无门槛通用券</span>
                   <p class="every-text">邮费根据系统计算自动得出</p>
-                  <p class="counts"><span class="jifen">{{items.offer*1000}}</span> <span class="exchange">积分兑换</span></p>
+                  <p class="counts">
+                    <span class="jifen">{{items.offer*1000}}</span>
+                    <span class="exchange">积分兑换</span>
+                  </p>
                 </div>
-                
               </div>
               <div class="coupon-right">
                 <img class="state-pic" src="../../assets/img/imme.png" alt>
               </div>
-              
             </div>
           </div>
-          <div class="whole-coupon">
+          <div class="whole-coupon" id="navBar">
             <p class="title">领券中心</p>
             <div class="whole-box">
               <p v-if="couponPub.length === 0" class="no-data">暂无优惠券！</p>
@@ -113,7 +118,6 @@
                     <span>{{ j.offer/10}}</span>折
                   </p>
                   <p class="validity">有效期:{{item.validday}}天</p>
-                 
                 </div>
                 <div class="discount" v-if="item.brulecode === 2110">
                   <p class="discount-count">{{ item.rulename }}</p>
@@ -123,7 +127,6 @@
                     <span>{{ j.offer}}</span>
                   </p>
                   <p class="validity">有效期:{{item.validday}}天</p>
-                  
                 </div>
                 <div class="discount" v-if="item.brulecode === 2120">
                   <p class="discount-count">{{ item.rulename }}</p>
@@ -138,9 +141,7 @@
             </div>
           </div>
         </div>
-        <div class="text-box">
-
-        </div>
+        <div class="text-box"></div>
       </div>
       <f-space-footer></f-space-footer>
     </a-layout>
@@ -171,12 +172,21 @@ export default {
     };
   },
   mounted() {
+    this.$nextTick(() => {
+      this.scrollTop = Number(this.$route.query.scrollTop);
+      this.toCouponScroll();
+    });
     this.getIntegralNum();
     this.getMember();
     this.getQueryCouponExcgPub();
     this.queryCouponPub();
   },
   methods: {
+    toCouponScroll() {
+      if (this.scrollTop === 1) {
+        document.body.scrollTop = document.documentElement.scrollTop = 2100;
+      }
+    },
     // 点击签到
     signIn() {
       let _this = this;
@@ -307,33 +317,31 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.couponPub = result.data;
-            console.log(_this.couponPub);
           }
         })
       );
     },
-        // 领取优惠券
+    // 领取优惠券
     revCoupon(item) {
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";
       iRequest.method = "revCoupon";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.json = JSON.stringify(item)
+      iRequest.param.json = JSON.stringify(item);
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.$message.success(result.message);
-              _this.queryCouponPub()
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$message.success(result.message);
+            _this.queryCouponPub();
           }
-        )
+        })
       );
-    },
+    }
   }
 };
 </script>
@@ -607,26 +615,25 @@ export default {
 .validity {
   .p-size(30px, 30px, 14px, left, 20px, #666666);
 }
-.counts{
+.counts {
   .position(absolute, 165px, 0px);
   width: 100%;
   text-align: center;
-  color: #333333!important;
-  .exchange{
-    
-    color: #a14e37!important;
+  color: #333333 !important;
+  .exchange {
+    color: #a14e37 !important;
   }
-  .jifen{
-    font-size: 16px!important;
-    color: #eea30d!important;
+  .jifen {
+    font-size: 16px !important;
+    color: #eea30d !important;
   }
 }
-.no-data{
+.no-data {
   .p-size(50px, 50px, 18px, center, 0px, #333333);
 }
-.text-box{
+.text-box {
   .container-size(block, 1255px, 780px, 0 auto, 0px);
-   background: url("../../assets/img/jifen-rule.png") no-repeat;
-   margin-bottom: 50px;
+  background: url("../../assets/img/jifen-rule.png") no-repeat;
+  margin-bottom: 50px;
 }
 </style>

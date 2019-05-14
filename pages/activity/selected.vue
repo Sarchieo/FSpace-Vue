@@ -110,9 +110,6 @@ export default {
     this.actcode = this.$route.query.actcode;
   },
   methods: {
-    callback(key) {
-      console.log(key);
-    },
     toDetails(item) {
       this.$router.push({
         path: "/product/detail",

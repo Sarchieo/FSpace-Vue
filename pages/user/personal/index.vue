@@ -17,7 +17,6 @@
             class="city"
             :disabled="!isEditor"
             :options="cascaderData"
-            @change="onChange"
             :loadData="loadData"
             placeholder="请选择省市区"
             v-decorator="[
@@ -280,9 +279,6 @@ export default {
     remove(file) {
       this.uploadList[file.uid].fileList = [];
       this.uploadList[file.uid].url = "";
-    },
-    onChange(value) {
-      console.log(value);
     },
     handlePreview(file) {
       this.previewImage = file.url || file.thumbUrl;

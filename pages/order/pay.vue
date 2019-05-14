@@ -27,7 +27,7 @@
               <p class="pay-title">请选择支付方式</p>
               <div class="pay-pick">
                   <p>
-                    <a-radio-group @change="onChange" v-model="value">
+                    <a-radio-group v-model="value">
                       <a-radio :value="1"><a-icon type="alipay-circle" class="blue"/></a-radio>
                       <a-radio :value="2"><a-icon type="wechat" class="green"/></a-radio>
                       <a-radio :value="3" class="line-down">线下转账</a-radio>
@@ -246,10 +246,6 @@ export default {
           _this.isPay = false
         }
       }
-    },
-      // 监听单选框的值发生变化
-    onChange (e) {
-      console.log(e)
     }
   }
 };

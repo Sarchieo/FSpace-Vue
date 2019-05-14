@@ -60,10 +60,6 @@ export default {
       iRequest.param.json = JSON.stringify({
         compid: this.storeInfo.comp.storeId
       });
-      console.log(
-        "orderServer" +
-          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535)
-      );
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,

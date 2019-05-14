@@ -55,9 +55,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.informationList = result.data;
-            console.log(_this.informationList)
             _this.total = result.total
-            // console.log('查询收藏成功')
           } else {
           }
         })

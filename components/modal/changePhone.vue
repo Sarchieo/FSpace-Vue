@@ -143,8 +143,6 @@ export default {
     },
     infoPhone() {
       this.oldPhone = this.storeInfo.phone;
-      // console.log(this.storeInfo)
-      // console.log(this.form)
     },
     handleSubmitOld(e) {
       e.preventDefault();
