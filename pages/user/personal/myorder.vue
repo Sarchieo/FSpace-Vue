@@ -92,7 +92,7 @@
           <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
           <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
            <!-- v-if="item.ostatus == 3" -->
-          <p @click="toSuppInvo(item)" class="supplement" v-if="item.ostatus == 3 || item.ostatus == 4">补开发票</p>
+          <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)===0">补开发票</p>
         </div>
         <div style="clear: both;"></div>
       </li>
