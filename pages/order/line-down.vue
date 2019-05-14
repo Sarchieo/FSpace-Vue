@@ -25,7 +25,7 @@
             <span class="title">订单金额</span>
             <span class="price">￥{{ info.payamt }}</span>
             <span class="title">支付方式</span>
-            <span class="bold">{{ type == 4 ? '线下支付' : '线下到付' }}</span>
+            <span class="bold">{{ type == 4 ? '线下即付' : '线下到付' }}</span>
           </p>
         </div>
         <div class="invo-box" v-if="type == 4">
