@@ -8,13 +8,13 @@
           <span class="count">{{ cartList.length }}</span>
         </div>
         <div class="menu-box">
-          <a-tooltip placement="left" @click="toPage('collection')">
+          <a-tooltip placement="left" @click="toPage('user-personal-collection')">
             <template slot="title">
               <span>收藏</span>
             </template>
             <a-icon type="heart"/>
           </a-tooltip>
-          <a-tooltip placement="left" @click="toPage('personal')">
+          <a-tooltip placement="left" @click="toPage('user-personal')">
             <template slot="title">
               <span>我的一块</span>
             </template>
@@ -82,6 +82,7 @@ export default {
       return this.$store.state.userStatus;
     },
     toPage(name) {
+      
       this.$router.push({
         name: name
       });

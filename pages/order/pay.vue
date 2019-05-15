@@ -18,7 +18,7 @@
         </div>
           <div class="pay-info">
               <p class="pay-text">订单提交成功，请尽快付款！订单号：<span>{{ orderno }}</span></p>
-              <p class="urge">请您在1小时内完成支付，否则订单会被自动取消。</p>
+              <p class="urge">请您在半小时内完成支付，否则订单会被自动取消。</p>
               <div class="actual-pay">
                   <span>实付：</span> ￥ {{ payamt }}元
               </div>

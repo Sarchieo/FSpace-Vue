@@ -59,7 +59,7 @@
                 >查看更多 ></span>
               </p>
               <div class="price-server">
-                <p class="onek-person" v-if="rulecode == 1133">
+                <!-- <p class="onek-person" v-if="rulecode == 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.offer / 10 }}</span>
                   <span>折</span>
                 </p>
@@ -73,7 +73,7 @@
                 <p class="onek-person" v-if="rulecode === 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.ladnum }}</span>
                   <span>人</span>
-                </p>
+                </p> -->
                 <p class="surplus" v-if="rulecode == 1113">
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>

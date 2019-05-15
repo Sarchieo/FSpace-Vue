@@ -61,7 +61,6 @@ function refcallback(context, moduleName,_IRequest, callback) {
           context.$router.push({
             path: '/user/personal'
           })
-          context.$message.error(success.message, 3);
         } else if (success.code === -1){
           context.$message.error(success.message);
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
@@ -116,6 +115,7 @@ function initIceLong(serverName, compid, callback) {
             function (adapter) {
               var r = new Ice.Identity();
               r.name = compid + ''
+              r.category = "web"
               adapter.add(callback, r)
               proxy.ice_getCachedConnection().setAdapter(adapter);
               if(server.online) {
