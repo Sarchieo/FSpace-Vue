@@ -1,41 +1,41 @@
 <template>
-    <a-layout-footer class="footer">
-        <div class="footer-message">
-            <div class="footer-content">
-                <ul class="footer-left">
-                    <li class="law">
-                        <p class="title">法律服务</p>
-                        <span>法律声明</span>
-                        <span>服务协议</span>
-                        <span>隐私协议</span>
-                    </li>
-                    <li class="help">
-                        <p class="title">帮助</p>
-                        <span>网站操作流程</span>
-                        <span>APP操作流程</span>
-                        <span>售后服务</span>
-                    </li>
-                    <li class="sale">
-                        <p class="title">售后投诉</p>
-                        <span>固定电话: 0731-88159987</span>
-                        <span>药监局投诉电话：12331</span>
-                    </li>
-                    <li class="service">
-                        <p class="title">售后客服</p>
-                        <span>客服电话：0731-88159987</span>
-                    </li>
-                </ul>
-                <div class="footer-right">
-                    <div>
-                        <img src="http://119.23.203.132/download/wlq_app.png" alt="">
-                        <p>一块物流APP</p>
-                    </div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-            <!-- <div class="footer-message-item">
+  <a-layout-footer class="footer">
+    <div class="footer-message">
+      <div class="footer-content">
+        <ul class="footer-left">
+          <li class="law">
+            <p class="title">法律服务</p>
+            <span @click="toLaw()">法律声明</span>
+            <span @click="toService()">服务协议</span>
+            <span @click="toPrivacy()">隐私协议</span>
+          </li>
+          <li class="help">
+            <p class="title">帮助</p>
+            <span @click="web()">网站操作流程</span>
+            <span @click="app()">APP操作流程</span>
+            <span>售后服务</span>
+          </li>
+          <li class="sale">
+            <p class="title">售后投诉</p>
+            <span>固定电话: 0731-88159987</span>
+            <span>药监局投诉电话：12331</span>
+          </li>
+          <li class="service">
+            <p class="title">售后客服</p>
+            <span>客服电话：0731-88159987</span>
+          </li>
+        </ul>
+        <div class="footer-right">
+          <div>
+            <img src="http://119.23.203.132/download/wlq_app.png" alt>
+            <p>一块物流APP</p>
+          </div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+      <!-- <div class="footer-message-item">
               <p class="footer-message-p">客户服务</p>
               <div class="footer-message-box">
                 <div class="footer-message-box-item">
@@ -65,41 +65,70 @@
                 <p>关注一块物流</p>
                 <p>微信公众号</p>
               </div>
-            </div> -->
-        </div>
-        <div class="footer-box">
-            <p>
-                <img src="../../assets/img/zhengpin.png" alt="">
-                正品保证,带票销售
-            </p>
-            <p>
-                <img src="../../assets/img/pinzhong.png" alt="">
-                品类丰富，自由搭配
-            </p>
-            <p>
-                <img src="../../assets/img/yunshu.png" alt="">
-                舒心采购，运输无忧
-            </p>
-            <p>
-                <img src="../../assets/img/fuwu.png" alt="">
-                专业服务，开店无忧
-            </p>
-        </div>
+      </div>-->
+    </div>
+    <div class="footer-box">
+      <p>
+        <img src="../../assets/img/zhengpin.png" alt>
+        正品保证,带票销售
+      </p>
+      <p>
+        <img src="../../assets/img/pinzhong.png" alt>
+        品类丰富，搭配自由
+      </p>
+      <p>
+        <img src="../../assets/img/yunshu.png" alt>
+        舒心采购，准时送达
+      </p>
+      <p>
+        <img src="../../assets/img/fuwu.png" alt>
+        专业服务，开店无忧
+      </p>
+    </div>
 
-        <h4 class="footer-copyright">Copyright@2015-2019 一块医药v1.0.0.2019050901 湖南空间折叠互联网科技有限公司版权所有</h4>
-
-    </a-layout-footer>
+    <h4 class="footer-copyright">Copyright@2015-2019 一块医药v1.0.0.2019051301 湖南空间折叠互联网科技有限公司版权所有</h4>
+  </a-layout-footer>
 </template>
 <script>
-    export default {
-        name: "f-space-footer"
-    };
+export default {
+  name: "f-space-footer",
+  data() {
+    return {};
+  },
+  methods: {
+    toLaw() {
+      this.$router.push({
+        path: "/user/help/law"
+      });
+    },
+    toService() {
+      this.$router.push({
+        path: "/user/help/service"
+      });
+    },
+    toPrivacy() {
+      this.$router.push({
+        path: "/user/help/privacy"
+      });
+    },
+    web() {
+       this.$router.push({
+        path: "/user/help/web-operation"
+      });
+    },
+    app() {
+       this.$router.push({
+        path: "/user/help/app-operation"
+      });
+    }
+  }
+};
 </script>
 <style lang='less' scoped>
-.law span:hover{
+.law span:hover {
   cursor: pointer;
 }
-.help span:hover{
+.help span:hover {
   cursor: pointer;
 }
 .footer {
@@ -155,7 +184,7 @@
 .width250 {
   display: block;
   margin: 0 auto;
-  width: 300px!important
+  width: 300px !important;
 }
 .footer-message-box-item i {
   width: 50%;
@@ -194,26 +223,26 @@
   color: #555555;
 }
 .p-left {
-  width: 90px!important;
-  text-align: center!important;
+  width: 90px !important;
+  text-align: center !important;
 }
 .ant-layout-footer {
-  padding: 0px!important;
+  padding: 0px !important;
 }
-.footer-message-box-item:hover{
+.footer-message-box-item:hover {
   cursor: pointer;
 }
-.footer-content{
+.footer-content {
   width: 1190px;
   height: 220px;
   margin: 0 auto;
 
-  .footer-left{
+  .footer-left {
     float: left;
     width: 720px;
     height: 220px;
     padding: 40px 0px;
-    li .title{
+    li .title {
       height: 50px;
       line-height: 50px;
       text-align: left;
@@ -221,7 +250,7 @@
       font-weight: bold;
       color: #333333;
     }
-    li span{
+    li span {
       display: inline-block;
       width: 100%;
       height: 30px;
@@ -229,44 +258,41 @@
       text-align: left;
       color: #999999;
     }
-    .law{
+    .law {
       float: left;
       width: 140px;
       height: 140px;
     }
-    .help{
+    .help {
       float: left;
       width: 140px;
       height: 140px;
-
     }
-    .sale{
+    .sale {
       float: left;
       width: 200px;
       height: 140px;
-
     }
-    .service{
+    .service {
       float: left;
       width: 200px;
       height: 140px;
-
     }
   }
-  .footer-right{
+  .footer-right {
     float: right;
     width: 440px;
     height: 220px;
     padding: 50px 0px;
-    div{
+    div {
       float: right;
       width: 90px;
       height: 125px;
-      img{
+      img {
         width: 90px;
         height: 90px;
       }
-      p{
+      p {
         height: 30px;
         line-height: 30px;
         text-align: center;

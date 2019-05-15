@@ -284,7 +284,7 @@ export default {
   margin-top: 90px;
   background: #ffffff;
   padding: 20px 0px;
-  padding-left: 10px;
+  padding-left: 45px;
   padding-right: 20px;
 }
 .user-login {
@@ -296,7 +296,7 @@ export default {
 }
 .login-btn {
   margin-right: 20px;
-  .button-size(252px, 50px, 50px, 16px, 0px, 5px);
+  .button-size(228px, 50px, 50px, 16px, 0px, 5px);
   .button-color(1px solid transparent, #317ff5, #ffffff);
 }
 .login-btn :hover {
