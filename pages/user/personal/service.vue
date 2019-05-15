@@ -108,9 +108,9 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-            
           if (result.code === 200) {
             _this.list = result.data
+            console.log(_this.list)
             _this.total = result.total
             _this.currentIndex = result.pageNo
             _this.fsGeneralMethods.addImages(_this, _this.list, 'pdno', 'spu')

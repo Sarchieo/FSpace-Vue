@@ -337,12 +337,28 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data) {
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
             });
-          
+            let ice_callback = new Ice.Class(inf.PushMessageClient, {
+              receive: function(message, current) {
+                try{
+                  let result = JSON.parse(message)
+                } catch(err){
+                  _this.$store
+                    .dispatch("setNoticeList", { message: message.replace('sys:', '') })
+                    .then(res => {
+                      
+                    })
+                    .catch(err => {
+                      
+                    });
+                }
+              }})
+            // websocket 上线
+            _this.$initIceLong('orderServer', _this.storeInfo.comp.storeId, new ice_callback());
           }
         })
       );
@@ -464,6 +480,7 @@ export default {
         })
       );
     },
+    
     handleOk() {
       // 跳转企业中心页面
       this.$router.push({

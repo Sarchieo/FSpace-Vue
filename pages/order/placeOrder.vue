@@ -6,35 +6,37 @@
         <div class="stets">
           <a-steps :current="1">
             <a-step>
-              <template slot="title">
-                我的采购单
-              </template>
+              <template slot="title">我的采购单</template>
               <span slot="description"></span>
             </a-step>
-            <a-step title="采购单信息" />
-            <a-step title="采购单付款" />
-            <a-step title="采购单完成" />
+            <a-step title="采购单信息"/>
+            <a-step title="采购单付款"/>
+            <a-step title="采购单完成"/>
           </a-steps>
         </div>
         <div class="receiving">
           <p class="receiving-address">收货地址</p>
-           <p class="tips">
-              <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 0731-88159987
-            </p>
+          <p class="tips">
+            <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 0731-88159987
+          </p>
           <div>
             <p class="address-info">
-              <span>联系人：</span>{{ consignee }} <span @click="editorAddress()" class="edit">编辑</span> 
+              <span>联系人：</span>
+              {{ consignee }}
+              <span @click="editorAddress()" class="edit">编辑</span>
             </p>
             <p class="address-info">
-              <span>联系方式：</span>{{ contact }}
+              <span>联系方式：</span>
+              {{ contact }}
+            </p>
 
-            </p>
-
             <p class="address-info">
-              <span>收货门店：</span>{{ this.storeInfo.comp.storeName }}
+              <span>收货门店：</span>
+              {{ this.storeInfo.comp.storeName }}
             </p>
             <p class="address-info">
-              <span>收货地址：</span>{{ storeInfo.comp.addressCodeStr }} {{ this.storeInfo.comp.address }}
+              <span>收货地址：</span>
+              {{ storeInfo.comp.addressCodeStr }} {{ this.storeInfo.comp.address }}
             </p>
           </div>
         </div>
@@ -67,12 +69,39 @@
         </div>
         <div class="go-pay">
           <div class="select-invo-box">
-             <p class="title">发票信息</p>
-             <p class="select-invo">是否开票： <a-select defaultValue="开发票" style="width: 120px" @change="handleChange">
-                            <a-select-option :value="1">不开发票</a-select-option>
-                            <a-select-option :value="2">开发票</a-select-option>
-                          </a-select>
-              </p>
+            <p class="title">发票信息</p>
+            <p class="address-info">
+              <span>公司名称: </span>
+              {{ this.storeInfo.comp.storeName }}
+            </p>
+            <p class="address-info">
+              <span>公司注册地址:</span>
+              {{ storeInfo.comp.addressCodeStr }} {{ this.storeInfo.comp.address }}
+            </p>
+
+            <p class="address-info">
+              <span>纳税人识别号:</span>
+              {{ invoice.taxpayer }}
+            </p>
+            <p class="address-info" v-if="invoiceCode === 2">
+              <span>注册电话:</span>
+              {{ invoice.tel }}
+            </p>
+            <p class="address-info">
+              <span>开户银行:</span>
+              {{ invoice.bankers }}
+            </p>
+            <p class="address-info">
+              <span>银行账号:</span>
+              {{ invoice.account }}
+            </p>
+            <p class="select-invo">
+              开票信息：
+              <a-select defaultValue="开发票" @change="handleChange">
+                <a-select-option :value="1">普通发票</a-select-option>
+                <a-select-option :value="2">增值税发票</a-select-option>
+              </a-select>
+            </p>
           </div>
           <div class="discount" v-if="couponList.length > 0">
             <p class="use-coupon">使用平台优惠券</p>
@@ -83,39 +112,87 @@
                   <div class="coupon-num">
                     <!-- <span v-if="item.ctype === 3">111</span> -->
                     <p class="coupon-title">{{ item.rulename }}</p>
-                    <p v-if="item.ctype === 3"><span class="fuhao">￥</span><span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span></p>
-                    <div v-if="item.ctype !== 3"><p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}} </p></div>
+                    <p v-if="item.ctype === 3">
+                      <span class="fuhao">￥</span>
+                      <span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span>
+                    </p>
+                    <div v-if="item.ctype !== 3">
+                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}}</p>
+                    </div>
                   </div>
-                  <p class="coupon-bottom"> <span v-if="item.ctype === 3">永久有效</span><span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span> <a-checkbox v-model="item.isChecked"  @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom">
+                    <span v-if="item.ctype === 3">永久有效</span>
+                    <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
+                    <a-checkbox
+                      v-model="item.isChecked"
+                      @change="onChange(item, index)"
+                      class="coupon-check"
+                    ></a-checkbox>
+                  </p>
                 </div>
 
                 <!-- 包邮券 -->
                 <div class="coupon" v-if="item.brulecode === 2120">
                   <div class="coupon-num">
-                    <p v-if="item.ctype === 3"><span class="fuhao">￥</span><span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span></p>
+                    <p v-if="item.ctype === 3">
+                      <span class="fuhao">￥</span>
+                      <span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span>
+                    </p>
                     <p class="coupon-title">{{ item.rulename }}</p>
-                    <div v-if="item.ctype !==3"><p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮 </p></div>
+                    <div v-if="item.ctype !==3">
+                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮</p>
+                    </div>
                   </div>
-                  <p class="coupon-bottom"><span v-if="item.ctype === 3">永久有效</span><span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>  <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom">
+                    <span v-if="item.ctype === 3">永久有效</span>
+                    <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
+                    <a-checkbox
+                      v-model="item.isChecked"
+                      @change="onChange(item, index)"
+                      class="coupon-check"
+                    ></a-checkbox>
+                  </p>
                 </div>
                 <!-- 折扣券 -->
                 <div class="coupon" v-if="item.brulecode === 2130">
                   <div class="coupon-num">
                     <p class="coupon-title">{{ item.rulename }}</p>
-                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折 </p>
+                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折</p>
                   </div>
-                  <p class="coupon-bottom">有效期至 {{ item.enddate }} <a-checkbox v-model="item.isChecked" @change="onChange(item, index)" class="coupon-check"></a-checkbox></p>
+                  <p class="coupon-bottom">
+                    有效期至 {{ item.enddate }}
+                    <a-checkbox
+                      v-model="item.isChecked"
+                      @change="onChange(item, index)"
+                      class="coupon-check"
+                    ></a-checkbox>
+                  </p>
                 </div>
               </div>
             </div>
           </div>
           <div class="pay" v-if="cartList.length > 0">
-            <p> <span class="price-span">￥{{ selectCounpon.tprice }}</span><span class="title">商品合计：</span></p>
-            <p><span class="price-span">￥ {{  cartList[0].freight }}</span><span class="title">运费：</span></p>
-            <p><span class="price-span">￥ {{ selectCounpon.tdiscount  }}</span><span class="title">优惠：</span></p>
-            <p><span class="price-span"> ￥ {{ selectCounpon.debal  }}</span><span class="title">余额：</span></p>
+            <p>
+              <span class="price-span">￥{{ selectCounpon.tprice }}</span>
+              <span class="title">商品合计：</span>
+            </p>
+            <p>
+              <span class="price-span">￥ {{ cartList[0].freight }}</span>
+              <span class="title">运费：</span>
+            </p>
+            <p>
+              <span class="price-span">￥ {{ selectCounpon.tdiscount }}</span>
+              <span class="title">优惠：</span>
+            </p>
+            <p>
+              <span class="price-span">￥ {{ selectCounpon.debal }}</span>
+              <span class="title">余额：</span>
+            </p>
             <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
-            <p class="price"> <span class="price-span">￥ {{ selectCounpon.acpay }}</span><span class="title">应付金额：</span></p>
+            <p class="price">
+              <span class="price-span">￥ {{ selectCounpon.acpay }}</span>
+              <span class="title">应付金额：</span>
+            </p>
 
             <a-button class="pay-btn" @click="toPay()">去付款</a-button>
           </div>
@@ -124,20 +201,9 @@
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
-    <a-modal
-      title="收货人编辑"
-      v-model="visible"
-      :footer= "null"
-    >
-     <a-form
-        :form="form"
-        @submit="handleSubmit"
-      >
-       <a-form-item
-          label="收货人姓名："
-          :label-col="{ span: 5 }"
-          :wrapper-col="{ span: 12 }"
-        >
+    <a-modal title="收货人编辑" v-model="visible" :footer="null">
+      <a-form :form="form" @submit="handleSubmit">
+        <a-form-item label="收货人姓名：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
             v-decorator="[
               'contactname',
@@ -145,12 +211,7 @@
             ]"
           />
         </a-form-item>
-        <a-form-item
-          label="收货人电话："
-          :label-col="{ span: 5 }"
-          :wrapper-col="{ span: 12 }"
-        >
-    
+        <a-form-item label="收货人电话：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
             v-decorator="[
               'contactphone',
@@ -158,17 +219,9 @@
             ]"
           />
         </a-form-item>
-        <a-form-item
-          :wrapper-col="{ span: 12, offset: 8 }"
-        >
-        </a-form-item>
-        <a-button
-          class="save-btn"
-          type="primary"
-          html-type="submit">
-          保存
-        </a-button>
-     </a-form>
+        <a-form-item :wrapper-col="{ span: 12, offset: 8 }"></a-form-item>
+        <a-button class="save-btn" type="primary" html-type="submit">保存</a-button>
+      </a-form>
     </a-modal>
   </div>
 </template>
@@ -195,12 +248,12 @@ export default {
       goodsArr: [],
       couponList: [],
       couponCode: 0, // 选中优惠券ID
-      unqid: 0,//优惠券领取表id
+      unqid: 0, //优惠券领取表id
       coupNum: 0,
       isPostal: false, // 是否使用包邮券
       receiverList: [],
-      consignee: '',
-      contact: '',
+      consignee: "",
+      contact: "",
       shipid: 0,
       selectCounpon: {
         acvalue: 0, // 活动优惠
@@ -210,24 +263,55 @@ export default {
         tdiscount: 0, // 总共优惠
         tprice: 0, // 总计金额
         acpay: 0
-      }
+      },
+      invoice: {},
+      invoiceCode: 1 // 1普通发票 2增值税发票
     };
   },
   mounted() {
-    this.cartList = JSON.parse(sessionStorage.getItem('placeOrderList'));
-    this.placeType = this.$route.query.placeType
-    this.orderType = this.$route.query.orderType
-    this.actcode =  this.$route.query.actcode || 0
+    this.cartList = JSON.parse(sessionStorage.getItem("placeOrderList"));
+    this.placeType = this.$route.query.placeType;
+    this.orderType = this.$route.query.orderType;
+    this.actcode = this.$route.query.actcode || 0;
     // 获取优惠券信息
-    this.queryActCouponList()
+    this.queryActCouponList();
     // 加载图片
-    this.fsGeneralMethods.addImages(this, this.cartList, 'pdno', 'spu')
+    this.fsGeneralMethods.addImages(this, this.cartList, "pdno", "spu");
     // 获取联系人信息
-    this.queryMyConsignee()
+    this.queryMyConsignee();
     // 获取金额
-    this.couponCalculate()
+    this.couponCalculate();
+    // 获取发票信息
+    this.getInvoice();
   },
   methods: {
+    // 获取发票信息
+    getInvoice() {
+      let _this = this;
+      this.fsGeneralMethods
+        .request(this, "userServer", "MyInvoiceModule", "getInvoice")
+        .then(result => {
+          if (result.code === 200 && result.data.length > 0) {
+            this.invoice = result.data[0];
+            debugger
+          } else {
+            this.$confirm({
+              title: "提示",
+              content: "当前药店未填写开票信息, 无法进行下单, 前往录入开票信息",
+              okText: "确定",
+              cancelText: "取消",
+              cancelButtonProps: {
+                props: { disabled: true }
+              },
+              onOk() {
+                _this.$router.push({
+                  path: "/user/personal/invoice"
+                });
+              }
+            });
+          }
+        });
+    },
     queryMyConsignee() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -235,39 +319,37 @@ export default {
       iRequest.method = "queryMyConsignee";
       iRequest.param.json = JSON.stringify({
         compid: _this.storeInfo.comp.storeId
-      })
-      iRequest.param.token = localStorage.getItem("identification")
+      });
+      iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
         "userServer",
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if(result.code === 200) {
-              if(result.data && result.data.length > 0) {
-                _this.receiverList = result.data
-                let number = 0
-                for (let i = 0; i < _this.receiverList.length; i++) {
-                    if ((_this.receiverList[i].cstatus & 2) > 0) {
-                        _this.consignee = _this.receiverList[i].contactname
-                        _this.contact = _this.receiverList[i].contactphone
-                        _this.shipid = _this.receiverList[i].shipid
-                        number ++;
-                    }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            if (result.data && result.data.length > 0) {
+              _this.receiverList = result.data;
+              let number = 0;
+              for (let i = 0; i < _this.receiverList.length; i++) {
+                if ((_this.receiverList[i].cstatus & 2) > 0) {
+                  _this.consignee = _this.receiverList[i].contactname;
+                  _this.contact = _this.receiverList[i].contactphone;
+                  _this.shipid = _this.receiverList[i].shipid;
+                  number++;
                 }
-                if (number === 0) {
-                    _this.consignee = _this.receiverList[0].contactname
-                    _this.contact = _this.receiverList[0].contactphone
-                    _this.shipid = _this.receiverList[0].shipid
-                }
-              } else {
-                _this.visible = true
               }
-            }else {
-             _this.visible = true
+              if (number === 0) {
+                _this.consignee = _this.receiverList[0].contactname;
+                _this.contact = _this.receiverList[0].contactphone;
+                _this.shipid = _this.receiverList[0].shipid;
+              }
+            } else {
+              _this.visible = true;
             }
+          } else {
+            _this.visible = true;
           }
-        )
+        })
       );
     },
     queryActCouponList() {
@@ -275,34 +357,36 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";
       iRequest.method = "queryActCouponList";
-      let arr = this.cartList.map((value) => {
+      let arr = this.cartList.map(value => {
         return {
           pdno: value.pdno,
           pnum: value.num,
           compid: _this.storeInfo.comp.storeId,
           price: value.pdprice,
-          amt: value.pdprice *  value.num,
-          samt: value.acamt +  value.amt,
+          amt: value.pdprice * value.num,
+          samt: value.acamt + value.amt,
           flag: value.oflag ? 1 : 0
-        }
-      })
+        };
+      });
       iRequest.param.json = JSON.stringify(arr);
-      iRequest.param.token = localStorage.getItem("identification")
+      iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-
-            if (result.code === 200 && result.data !== undefined && result.data.length > 0) {
-              result.data.forEach((item) => {
-                item.isChecked = false
-              })
-              _this.couponList = result.data
-            }
+        new this.$iceCallback(function result(result) {
+          if (
+            result.code === 200 &&
+            result.data !== undefined &&
+            result.data.length > 0
+          ) {
+            result.data.forEach(item => {
+              item.isChecked = false;
+            });
+            _this.couponList = result.data;
           }
-        )
+        })
       );
     },
     couponCalculate(item) {
@@ -310,30 +394,29 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "CouponRevModule";
       iRequest.method = "CouponCalculate";
-      let arr = this.cartList.map((value) => {
+      let arr = this.cartList.map(value => {
         return {
           pdno: value.pdno,
           pnum: value.num,
           compid: _this.storeInfo.comp.storeId,
           price: value.pdprice,
-          amt: value.pdprice *  value.num,
+          amt: value.pdprice * value.num,
           coupon: _this.unqid,
           shipfee: _this.cartList[0].freight
-        }
-      })
+        };
+      });
       iRequest.param.json = JSON.stringify(arr);
-      iRequest.param.token = localStorage.getItem("identification")
+      iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.selectCounpon = result.data
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.selectCounpon = result.data;
           }
-        )
+        })
       );
     },
     showModal() {
@@ -350,21 +433,21 @@ export default {
       const iRequest = new inf.IRequest();
       iRequest.cls = "TranOrderOptModule";
       iRequest.method = "placeOrder";
-      let goodsArr = this.cartList.map((value) => {
+      let goodsArr = this.cartList.map(value => {
         return {
           pdno: value.pdno,
           pnum: value.num,
           pdprice: value.pdprice,
           actcode: JSON.stringify(value.actcode)
-        }
-      })
+        };
+      });
       iRequest.param.json = JSON.stringify({
         placeType: this.placeType,
         coupon: this.couponCode, // 优惠券码
         unqid: this.unqid,
         orderObj: {
           cusno: this.storeInfo.comp.storeId,
-          busno: 536862720,//自营暂时写死
+          busno: 536862720, //自营暂时写死
           consignee: this.consignee,
           contact: this.contact,
           rvaddno: this.storeInfo.comp.addressCode,
@@ -374,27 +457,26 @@ export default {
         orderType: this.orderType,
         actcode: this.cartList[0].actcode
       });
-      iRequest.param.token = localStorage.getItem("identification")
+      iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
+        "orderServer" +
+          Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
-        new this.$iceCallback(
-          function result(result) {
-            if (result.code === 200) {
-              _this.$router.push({
-                path: "/order/pay",
-                query: {
-                  orderno: result.data.orderno
-                }
-              });
-            }
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.$router.push({
+              path: "/order/pay",
+              query: {
+                orderno: result.data.orderno
+              }
+            });
           }
-        )
+        })
       );
     },
     // 新增收货人
-    handleSubmit (e) {
+    handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -407,63 +489,66 @@ export default {
             contactname: values.contactname,
             contactphone: values.contactphone,
             shipid: _this.shipid
-          })
-          iRequest.param.token = localStorage.getItem("identification")
+          });
+          iRequest.param.token = localStorage.getItem("identification");
           this.$refcallback(
             this,
             "userServer",
             iRequest,
-            new this.$iceCallback(
-              function result(result) {
-                if(result.code === 200) {
-                  _this.queryMyConsignee()
-                  _this.visible = false
-                }else {
-
-                }
+            new this.$iceCallback(function result(result) {
+              if (result.code === 200) {
+                _this.queryMyConsignee();
+                _this.visible = false;
               }
-            )
+            })
           );
         }
       });
     },
     editorAddress() {
-      this.visible = true
+      this.visible = true;
       setTimeout(() => {
         this.form.setFieldsValue({
           contactname: this.consignee,
           contactphone: this.contact
         });
-      },500)
+      }, 500);
     },
     validatePhone(rule, value, callback) {
       let _this = this;
       const form = this.form;
       if (value && /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/.test(value)) {
-        callback()
+        callback();
       } else {
-        this.sendAuthCode = false
-        callback('收货人手机号码有误');
+        this.sendAuthCode = false;
+        callback("收货人手机号码有误");
       }
     },
     onChange(item, index) {
-      if(item.isChecked) {
-        this.unqid =  item.unqid
-        this.couponCode = item.coupno
-        this.coupNum = item.offerAmt
-        item.brulecode === 2120 ? this.isPostal = true : this.isPostal = false
-      }else {
-        this.unqid =  0
-        this.couponCode = 0
-        this.coupNum = 0
-        this.isPostal = false
+      if (item.isChecked) {
+        this.unqid = item.unqid;
+        this.couponCode = item.coupno;
+        this.coupNum = item.offerAmt;
+        item.brulecode === 2120
+          ? (this.isPostal = true)
+          : (this.isPostal = false);
+      } else {
+        this.unqid = 0;
+        this.couponCode = 0;
+        this.coupNum = 0;
+        this.isPostal = false;
       }
       this.couponList.forEach((item, i) => {
-        if(index !== i) {
-          item.isChecked = false
+        if (index !== i) {
+          item.isChecked = false;
         }
-      })
-      this.couponCalculate()
+      });
+      this.couponCalculate();
+    },
+    handleChange(value) {
+      console.log(value);
+      
+      this.invoiceCode = value
     }
   }
 };
@@ -516,25 +601,25 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
-.edit{
-  color: #3189f5!important;
+.edit {
+  color: #3189f5 !important;
 }
-.edit:hover{
+.edit:hover {
   cursor: pointer;
 }
 .fuhao {
   font-size: 16px;
 }
-.money{
+.money {
   font-size: 30px;
 }
-.select-invo-box{
-  .container-size(block, 1190px, 105px, 0 auto, 0px);
+.select-invo-box {
+  .container-size(block, 1190px, auto, 0 auto, 0px);
   border-bottom: 1px solid #e0e0e0;
-  .title{
+  .title {
     .p-size(50px, 50px, 16px, left, 20px, #999999);
   }
-  .select-invo{
+  .select-invo {
     .p-size(50px, 50px, 16px, left, 20px, #999999);
   }
 }
@@ -600,7 +685,7 @@ li {
   .container-size(inline-block, 450px, 120px, 0, 0);
   position: relative;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .goods-name img {
@@ -646,14 +731,14 @@ li {
 }
 .discount-pay {
   .container-size(block, 1190px, 310px, 0, 0);
-
 }
 .discount {
   float: left;
   .container-size(block, 1190px, auto, 0, 0);
+  border-bottom: 1px solid #e0e0e0;
   .use-coupon {
     .p-size(40px, 40px, 16px, left, 20px, #999999);
-    span{
+    span {
       color: #ed2f26;
     }
   }
@@ -682,13 +767,13 @@ li {
 .pay p {
   .p-size(40px, 40px, 16px, right, 0px, #666666);
   padding-right: 45px;
-  .title{
+  .title {
     float: right;
     width: 100px;
     height: 40px;
-    text-align: right!important;
+    text-align: right !important;
   }
-  .price-span{
+  .price-span {
     float: right;
     width: 150px;
     height: 40px;
@@ -747,54 +832,54 @@ li {
 .coupon-back {
   color: #fdf4e9;
 }
-.coupon-box{
+.coupon-box {
   .container-size(block, 1190px, auto, 0, 0);
 
-  .coupon{
+  .coupon {
     .container-size(inline-block, 270px, 180px, 0, 0);
     margin-left: 22px;
     // background: pink;
-    .coupon-num{
+    .coupon-num {
       .container-size(inline-block, 268px, 145px, 0, 0);
-      background:url('../../assets/img/quan-bg.png')
+      background: url("../../assets/img/quan-bg.png");
     }
-    p{
-      .p-size(30px,30px,14px,left,20px,#ffffff);
-      .coupon-check{
+    p {
+      .p-size(30px, 30px, 14px, left, 20px, #ffffff);
+      .coupon-check {
         float: right;
         margin-right: 20px;
       }
     }
-    .coupon-title{
-      text-indent: 80px!important;
+    .coupon-title {
+      text-indent: 80px !important;
       font-weight: bold;
-      font-size: 16px!important;
-      color:#ffffff;
+      font-size: 16px !important;
+      color: #ffffff;
     }
   }
 }
-.coupon-bottom{
+.coupon-bottom {
   width: 268px;
-  color: #999999!important;
+  color: #999999 !important;
   border-right: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
   border-left: 1px solid #e0e0e0;
 }
-.stets{
+.stets {
   .container-size(block, 600px, 100px, 0 auto, 0);
   margin-top: 30px;
 }
 .ant-input {
   height: 32px;
   border: 1px solid #e0e0e0;
-  border-radius: 0px!important;
-  -moz-border-radius:0px!important;
-  -webkit-border-radius:0px!important;
+  border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  -webkit-border-radius: 0px !important;
 }
-.save-btn{
-  .button-size(90px,36px,36px,14px,0px,3px);
-  .button-display(block,0 auto);
-  .button-color(1px solid transparent,#ed2f26,#ffffff);
+.save-btn {
+  .button-size(90px, 36px, 36px, 14px, 0px, 3px);
+  .button-display(block, 0 auto);
+  .button-color(1px solid transparent, #ed2f26, #ffffff);
   margin-top: 10px;
 }
 </style>

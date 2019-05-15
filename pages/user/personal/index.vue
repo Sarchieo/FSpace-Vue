@@ -104,8 +104,8 @@
     <f-space-modal-pwd :visible="isChangePwd" @changePwdCancel="changePwdCancel"></f-space-modal-pwd>
     <f-space-modal-phone
       :isChangePhone="isChangePhone"
-      @handleCancel="changePhoneCancel"
-      @handleSussece="changePhoneSussece"
+      @changePhoneCancel="changePhoneCancel"
+      @changePhoneSussece="changePhoneSussece"
     ></f-space-modal-phone>
   </div>
 </template>
@@ -326,15 +326,15 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.getFilePathPrev(true);
+          if (result.code === 200 && result.data) {
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
+            }).then((res) => {
+              _this.getFilePathPrev(true);
             });
             _this.authenticationStatus = result.data.comp.authenticationStatus;
             _this.code = [];
-           
             _this.authenticationMessage =
               result.data.comp.authenticationMessage;
             _this.isEditor = _this.isRelated;
@@ -343,6 +343,7 @@ export default {
               _this.getAncestors(result.data.comp.addressCode);
             }
           } else {
+            _this.$message.error('没有企业信息, 请关联企业')
             _this.isEditor = true;
           }
         })
@@ -420,7 +421,7 @@ export default {
               xhr.setRequestHeader("ergodic-sub", "false");
               xhr.send(null);
             }else {
-              _this.uploads()
+              _this.uploads();
             }
           }
         })
@@ -447,7 +448,7 @@ export default {
           upload(options, function(success) {
             // 这里有不确定性 先这样吧
             if(index === 2) {
-              _this.getFilePathPrev(true)
+              _this.getBasicInfo()
             }
           });
         }

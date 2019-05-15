@@ -34,7 +34,6 @@ const actions = {
     store.commit(types.SET_LOGIN_STATE, saveUserStatus(false, context))
   },
   async setNoticeList(store, { message }) {
-
     store.commit(types.IS_NEW_NOTICE, true)
     let list = store.state.noticeList
     list.push({

@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="修改绑定手机" v-model="isChangePhone" :footer="null" @cancel="changePwdCancel">
+  <a-modal title="修改绑定手机" v-model="isVisible" :footer="null" @cancel="changePhoneCancel">
     <a-form :form="form" @submit="handleSubmitOld" v-show="!isShowNewPhone">
       <a-form-item v-bind="formItemLayout" label="旧手机号" has-feedback>
         <a-input v-model="oldPhone" :disabled="isDisabled" id="validating"></a-input>
@@ -95,6 +95,9 @@ export default {
   computed: {
     storeInfo() {
       return this.$store.state.user;
+    },
+    isVisible: function() {
+      return this.isChangePhone
     }
   },
   data() {
@@ -164,7 +167,7 @@ export default {
           if (result.code === 200) {
             // 回到登录页面
              _this.$message.success(result.message);
-            _this.$emit(changePhoneCancel);
+            _this.$emit('changePhoneSussece');
            
           }
         })
