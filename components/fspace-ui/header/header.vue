@@ -17,7 +17,9 @@
              <a href="javascript:;" @click="downloadHtml()"> 桌面快捷</a>
             <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
           </div>
+          
           <div class="header-right">
+            <a @click="toHelp()">帮助中心</a>
             <!-- <a>帮助中心</a> -->
             <!-- <a class="margin-left0">在线客服</a> -->
             <!-- 我的消息 -->
@@ -43,6 +45,7 @@
                   </a-list-item>
                 </a-list>
               </template>
+               
               <a-badge :dot="isNewNotice" class="margin-top15">
                   <a href="#">我的消息</a>
                 </a-badge>
@@ -53,6 +56,7 @@
              
             </a> -->
             <a v-if="isLogin" @click="toMyOrder()">我的订单</a>
+           
             <a-dropdown v-if="isLogin">
               <a class="ant-dropdown-link" href="#">
                 我的医药
@@ -498,6 +502,11 @@ export default {
     hideList() {
       this.isShowCartList = false;
     },
+    toHelp() {
+      this.$router.push({
+        path: '/user/help/web-operation'
+      })
+    },
     toInformation() {
       this.$router.push({
         path: "/user/personal/information"
@@ -632,7 +641,7 @@ li {
 }
 .header-title span {
   float: right;
-  margin-right: 25px;
+  // margin-right: 25px;
 }
 .header-left {
   display: inline-block;

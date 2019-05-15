@@ -18,26 +18,12 @@
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
+               <img class="shortage" src="../../assets/img/shortage.png" slot="cover" v-if="prodDetail.store === 0">
               <!-- <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom> -->
               <!-- <img v-lazy="imgUrl" slot="cover"> -->
               <f-space-pic-zoom v-if="isShowPic" :imgUrl="imgUrl"/>
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
-              <p v-if="this.isShowCollec === false">
-                <span @click="addCollec()">
-                  <a-icon type="star" class="collection"/>收藏
-                </span>
-              </p>
-              <!-- 已收藏的class为collection -->
-              <p v-if="this.isShowCollec === true">
-                <span @click="delCollec()">
-                  <a-icon type="star" class="collection"/>取消收藏
-                </span>
-              </p>
-              <p>
-                <span v-clipboard:copy="shareURl" v-clipboard:success="onShare">
-                  <a-icon type="share-alt" class="collection"/>分享
-                </span>
-              </p>
+              <p class="remind"><span>温馨提示：</span> 部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准</p>
             </div>
             <div class="goods-info">
               <p class="goods-name">
@@ -77,7 +63,7 @@
                 <p class="surplus" v-if="rulecode == 1113">
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
-                </p>
+                </p> -->
 
                 <div class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
@@ -89,23 +75,37 @@
                   <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
                   <span class="money-count" v-else>￥认证后可见</span>
                 </p>-->
+
+                <div class="price">
+                  <!-- 显示采购价 -->
+                  <p v-if="prodDetail.vatp !== -1">
+                    <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="price-title">采购价:</span>
+                    <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="money-count">
                 <div class="price" v-else>
                   <p>
                     <span class="price-title" v-if="rulecode !== 1113 || rulecode !== 1133">采购价:</span>
                     <span class="money-count" v-if="prodDetail.vatp != -1">
                       <span class="font-size14">￥</span>
-                      {{ prodDetail.vatp }}
+                        {{ prodDetail.vatp }}
                     </span>
-                    <span class="money-count" v-else>￥认证后可见</span>
                     <span class="price-title">市场价:</span>
-                    <del v-if="prodDetail.vatp != -1">
+                    <del>
                       <span class="font-size14"> ￥</span>
                       {{ prodDetail.mp }}
                     </del>
                     <span class="price-title">毛利润：</span>
                     <span>{{Math.ceil((((prodDetail.mp - prodDetail.vatp) / prodDetail.vatp)*100))}}%</span>
                   </p>
-                  <p class="folding">
+
+                  <p v-else>
+                    <span class="price-title">采购价:</span>
+                    <span class="money-count">
+                      <span class="font-size14">￥</span>
+                        认证后可见
+                    </span>
+                  </p>
+
+                  <p class="folding" v-if="prodDetail.vatp !== -1">
                     <span>折后约:</span>
                     <span class="folding-price">
                       <span class="font-size14">￥</span>
@@ -128,7 +128,16 @@
                     <span class="promotion-text">促 &nbsp 销:</span>
                     <div class="promotion-list" v-if="rulecode === 1110 || rulecode === 1120 || rulecode === 1130 || rulecode === 1113 || rulecode === 1133">
                       <a-tag color="pink">满减</a-tag>
-                      <!-- <span>满 800 减 40</span> -->
+                      <!-- offercode -->
+                      <span v-for="(item,index) in discountLadoff" :key="index">
+                         <span>满</span>
+                         <!-- <span>每满</span>  -->
+                         {{item.ladamt}}
+                         <span>减 </span>
+                         <span>{{item.offer}}</span>
+                         <!-- <span>送</span> -->
+                         <!-- <span>{{item.fiftList}}</span> -->
+                      </span>
                       <span class="see-more">查看更多商品</span>
                     </div>
                     <div class="promotion-list" v-if="rulecode === 1210 || rulecode === 1220 || rulecode === 1230 || rulecode === 1240 || rulecode === 2110 || rulecode === 2120 || rulecode === 2130 || rulecode === 2140">
@@ -156,7 +165,7 @@
                   <span>规格/包装：</span>
                   <span class="margin-right190">{{ prodDetail.spec }}</span>
                   <span>剂 型：</span>
-                  <span>瓶装</span>
+                  <span>{{prodDetail.formName}}</span>
                 </p>
                 <p class="packing">
                   <span>批准文号：</span>
@@ -226,6 +235,22 @@
                     @click="attendSecKill()"
                     v-if="rulecode === 1113 && isSecondkill"
                   >立即抢购</a-button>
+                  <span class="collect-box margin-right100">
+                    <span v-clipboard:copy="shareURl" v-clipboard:success="onShare">
+                      <a-icon type="share-alt" class="collection"/>分享
+                    </span>
+                  </span>
+                  <span v-if="this.isShowCollec === false" class="collect-box">
+                    <span @click="addCollec()">
+                      <a-icon type="star" class="collection"/>收藏
+                    </span>
+                  </span>
+                  <span v-if="this.isShowCollec === true" class="collect-box">
+                    <span @click="delCollec()">
+                      <a-icon type="star" class="collection"/>取消收藏
+                    </span>
+                  </span>
+
                 </p>
               </div>
             </div>
@@ -565,6 +590,7 @@ export default {
           id: 6
         }
       ],
+      discountLadoff: [],
       ladnum: 0,
       discount: {},
       likes: 0,
@@ -651,6 +677,7 @@ export default {
     },
     // 获取活动阶梯值
     getLadoff() {
+      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CalculateModule";
@@ -659,18 +686,22 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" +
-          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+        "orderServer" + Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
+            // _this.discountLadoff = result.data
+            result.data.forEach((item) => {
+              _this.discountLadoff = item
+            })
+            console.log(888)
+            console.log(_this.discountLadoff)
           }
         })
       );
     },
     // 获取药品活动类型
     getActivitiesBySKU() {
-      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CalculateModule";
@@ -685,6 +716,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
+            console.log(_this.activitiesBySKU[0].brulecode)
             // 如果存在活动 取库存与活动库存最小值
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
@@ -935,6 +967,8 @@ export default {
                 _this.$nextTick(function() {
                   _this.getGoodsApprise();
                 });
+                // 活动阶梯值
+                 _this.getLadoff();
               }
               _this.maximum = _this.prodDetail.store;
               _this.details = JSON.parse(_this.prodDetail.detail);
@@ -1283,6 +1317,18 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.remind{
+  width: 100%;
+  font-size: 14px;
+  color: #999;
+}
+.collect-box{
+  float: right;
+  margin-top: 10px;
+}
+.margin-right100{
+  margin-right: 100px;
+}
 /* 优惠券 */
 .coupon-box {
   display: block;
@@ -1387,11 +1433,22 @@ li {
   margin: 0 auto;
   padding-top: 20px;
 }
+.shortage{
+  position: absolute;
+  top: 100px;
+  left: 150px;
+  width: 200px!important;
+  height: 200px!important;
+  z-index: 2;
+}
 .goods-exhibition .crumbs {
   margin: 0 0 20px 0;
 }
 .goods-big-pic {
   display: inline-block;
+  position: relative;
+  top: 0px;
+  left: 0px;
   width: 490px;
   height: 485px;
 }
@@ -1402,13 +1459,13 @@ li {
   width: 490px;
   height: 430px;
 }
-.goods-big-pic p {
+/* .goods-big-pic p {
   text-align: left;
   font-size: 16px;
   color: #666666;
   width: 80px;
   float: left;
-}
+} */
 .goods-big-pic p span:hover {
   cursor: pointer;
   color: rgb(247, 37, 38);
@@ -2013,6 +2070,7 @@ del {
   width: 170px;
   height: 44px;
   line-height: 44px;
+  border-radius: 5px;
 }
 .add-cart i {
   font-size: 20px;

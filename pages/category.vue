@@ -91,6 +91,7 @@
         <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item)">
           <a-card hoverable class="card">
             <img class="card-img" v-lazy="item.imgURl" slot="cover">
+            <img class="card-img" src="../assets/img/shortage.png" slot="cover" v-if="item.store === 0">
             <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus === 1 || item.rulestatus === 2 || item.rulestatus === 4" alt="" slot="cover">
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName}} {{ item.prodname }} {{ item.spec }}</p>
@@ -202,52 +203,32 @@ export default {
   methods: {
     // 加入购物车
     addCart(item) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ShoppingCartModule";
-      iRequest.method = "saveShopCart";
-      iRequest.param.json = JSON.stringify({
-        pdno: item.sku,
-        pnum: 1,
-        checked: 0,
-        compid: _this.storeInfo.comp.storeId
-      })
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-              if (result.code === 200) {
-                  _this.$message.success(result.message);
-              }
-          })
-        );
+      this.fsGeneralMethods
+        .request(this, "orderServer", "ShoppingCartModule", "saveShopCart", {
+          pdno: item.sku,
+          pnum: 1,
+          checked: 0,
+          compid: this.storeInfo.comp.storeId
+        })
+        .then(result => {
+          if (result.code === 200) {
+            this.$message.success(result.message);
+          }
+        });
     },
     // 收藏
     addCollec(item) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "MyCollectModule";
-      iRequest.method = "add";
-      iRequest.param.json = JSON.stringify({
-        sku: item.sku,
-        prize: item.vatp,
-        promtype: 0
-      })
-      // 促销类型未传，暂定0，促销完善补上
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.$message.success(result.message);
-          }
+      this.fsGeneralMethods
+        .request(this, "orderServer", "MyCollectModule", "add", {
+          sku: item.sku,
+          prize: item.vatp,
+          promtype: 0
         })
-      );
+        .then(result => {
+          if (result.code === 200) {
+            this.$message.success(result.message);
+          }
+        });
     },
     // 药品厂商规格品牌
     getConditionByFullTextSearch() {
@@ -328,7 +309,7 @@ export default {
           function result(result) {
             if (result.code === 200) {
               _this.searchList = result.data;
-              
+
               _this.fsGeneralMethods.addImages(_this,_this.searchList, 'sku', 'spu' );
 
               if (_this.searchList.length === 0 || _this.searchList === null) {
@@ -338,7 +319,7 @@ export default {
               }
             }
           },
-          
+
         )
       );
     },
