@@ -92,7 +92,7 @@
           <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
           <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
            <!-- v-if="item.ostatus == 3" -->
-          <p @click="toSuppInvo(item)" class="supplement" v-if="item.ostatus == 3 || item.ostatus == 4">补开发票</p>
+          <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)===0">补开发票</p>
         </div>
         <div style="clear: both;"></div>
       </li>
@@ -216,14 +216,10 @@ export default {
       this.currentIndex = pageNumber;
       this.queryOrderList();
     },
-    onChange(val) {
-      console.log(val);
-    },
     afterApply(item) {
       this.isApply = true;
       this.goodsArr = item.goods;
       this.orderno = item.orderno;
-      // console.log("goods--- " +  JSON.stringify(item.goods))
     },
     pickCancel() {
       this.isApply = false;
@@ -548,7 +544,6 @@ export default {
         orderno: this.cancelOrderNo.orderno,
         cusno: this.storeInfo.comp.storeId
       });
-      // console.log("json--- " + iRequest.param.json )
       this.$refcallback(
         this,
         "orderServer" +

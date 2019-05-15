@@ -17,7 +17,6 @@
             class="city"
             :disabled="!isEditor"
             :options="cascaderData"
-            @change="onChange"
             :loadData="loadData"
             placeholder="请选择省市区"
             v-decorator="[
@@ -100,10 +99,10 @@
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
       <img alt="example" style="width: 100%" :src="previewImage">
     </a-modal>
-    <f-space-modal-pwd :visible="isChangePwd" @changePwdCancel="changePwdCancel()"></f-space-modal-pwd>
+    <f-space-modal-pwd :visible="isChangePwd" @changePwdCancel="changePwdCancel"></f-space-modal-pwd>
     <f-space-modal-phone
       :isChangePhone="isChangePhone"
-      @handleCancel="changePhoneCancel()"
+      @handleCancel="changePhoneCancel"
       @handleSussece="changePhoneSussece"
     ></f-space-modal-phone>
   </div>
@@ -208,7 +207,6 @@ export default {
     this.getBasicInfo();
     this.getNodes();
     this.$store.commit(types.SELECTED_KEYS, "/user/personal");
-    this.getFilePathPrev(false);
   },
   methods: {
     async getAncestors(code) {
@@ -281,9 +279,6 @@ export default {
       this.uploadList[file.uid].fileList = [];
       this.uploadList[file.uid].url = "";
     },
-    onChange(value) {
-      console.log(value);
-    },
     handlePreview(file) {
       this.previewImage = file.url || file.thumbUrl;
       this.previewVisible = true;
@@ -351,14 +346,14 @@ export default {
         })
       );
     },
-    getFilePathPrev(isDefault) {
+    getFilePathPrev(isDefault, compid) {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "FileInfoModule";
       iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.json = JSON.stringify({
-        compid: this.$store.state.user.comp.storeId || 0
+        compid: this.$store.state.user.comp.storeId || compid
       });
       this.$refcallback(
         this,
@@ -417,13 +412,13 @@ export default {
                     }
                   }
                 }
-                // 初次注册提交表单、没有企业id 图片表单提交暂时放到此处 ^ ^.
-                _this.uploads()
               };
               xhr.open("POST", path, true);
               xhr.setRequestHeader("specify-path", result.data.companyFilePath);
               xhr.setRequestHeader("ergodic-sub", "false");
               xhr.send(null);
+            }else {
+              _this.uploads()
             }
           }
         })
@@ -456,7 +451,6 @@ export default {
         }
       });
     },
-
     handleSubmit(e) {
       e.preventDefault();
       const { fileList } = this;
@@ -471,7 +465,7 @@ export default {
             }
             message = item.message
           })
-          if(!flag && _this.authenticationStatus > 0) {
+          if(!flag) {
             _this.$message.error('请提交药店资质图片')
             return
           }
@@ -492,7 +486,7 @@ export default {
             iRequest,
             new this.$iceCallback(function result(result) {
               if (result.code === 200) {
-                _this.getBasicInfo();
+                _this.getFilePathPrev(false, result.map.compid);
                 _this.setEditor();
                 _this.$success({
                   title: "提交成功",

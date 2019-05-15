@@ -45,7 +45,7 @@
                 >查看更多 ></span>
               </p>
               <div class="price-server">
-                <p class="onek-person" v-if="rulecode == 1133">
+                <!-- <p class="onek-person" v-if="rulecode == 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.offer / 10 }}</span>
                   <span>折</span>
                 </p>
@@ -59,18 +59,17 @@
                 <p class="onek-person" v-if="rulecode === 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.ladnum }}</span>
                   <span>人</span>
-                </p>
-                <!-- <p class="surplus" v-if="rulecode == 1113">
+                </p> -->
+                <p class="surplus" v-if="rulecode == 1113">
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
                 </p> -->
 
-                <!-- <div class="price" v-if="rulecode == 1113">
+                <div class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ discount.killPrice }}</span>
                   <del>{{ prodDetail.mp }}</del>
-                </div> -->
-
+                </div>
                 <!-- <p class="price" v-else-if="rulecode === 1133">
                   <span class="price-title">价格</span>
                   <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
@@ -82,6 +81,10 @@
                   <p v-if="prodDetail.vatp !== -1">
                     <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="price-title">采购价:</span>
                     <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="money-count">
+                <div class="price" v-else>
+                  <p>
+                    <span class="price-title" v-if="rulecode !== 1113 || rulecode !== 1133">采购价:</span>
+                    <span class="money-count" v-if="prodDetail.vatp != -1">
                       <span class="font-size14">￥</span>
                         {{ prodDetail.vatp }}
                     </span>
@@ -212,7 +215,6 @@
                   <button @click="addCount()">+</button>
                 </p>
                 <p class="cart">
-
                   <!-- <input type="text" readonly="readofnly" v-model="count" class="goods-count"> -->
                   <!-- <button class="addition width22" @click="addCount()">+</button> -->
                   <!-- <button class="reduce width22">-</button> -->
@@ -248,7 +250,7 @@
                       <a-icon type="star" class="collection"/>取消收藏
                     </span>
                   </span>
-                 
+
                 </p>
               </div>
             </div>
@@ -613,6 +615,7 @@ export default {
     // 获取商品详情
     this.getProd();
     this.getImgUrl();
+    this.getLadoff();
     this.$nextTick(() => {
       this.isShowPic = true;
     });
@@ -674,6 +677,7 @@ export default {
     },
     // 获取活动阶梯值
     getLadoff() {
+      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CalculateModule";

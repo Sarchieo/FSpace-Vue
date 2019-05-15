@@ -150,7 +150,6 @@
         // // 获取图片容器的宽和高
         // var r_objW = this.$refs.yuan_img.offsetWidth
         // var r_objh = this.$refs.yuan_img.offsetHeight
-        // console.log(this.objw,this.objH);
         this.right = rectRight-(this.objw/2)
         this.bottom = rectBottom-(this.objH/2)
         // 防止黑块偏移到容器外
@@ -168,12 +167,8 @@
         }
         // if (this.right-objw)
 
-        // console.log(this.right,this.bottom);
-        // console.log(x,y)
-        // console.log(document.querySelector('.yuan_img').getBoundingClientRect());
         // var top =x-document.querySelector('.yuan_img').getBoundingClientRect().top+document.documentElement.scrollleft
         // var left =y-document.querySelector('.yuan_img').getBoundingClientRect().left+document.documentElement.scrollTop
-        // console.log(rectLeft,rectRight-x, rectBottom-y, rectTop);
       },
       // 鼠标移入事件
       mouseover (e) {

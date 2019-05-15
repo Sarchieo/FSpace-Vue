@@ -300,7 +300,6 @@ export default {
                 item.isChecked = false
               })
               _this.couponList = result.data
-              console.log(_this.couponList)
             }
           }
         )
@@ -446,9 +445,6 @@ export default {
         this.sendAuthCode = false
         callback('收货人手机号码有误');
       }
-    },
-    handleOk() {
-      console.log(1);
     },
     onChange(item, index) {
       if(item.isChecked) {

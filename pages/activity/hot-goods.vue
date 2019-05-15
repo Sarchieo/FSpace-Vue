@@ -92,9 +92,6 @@ export default {
       this.currentIndex = pageNumber
       this.getHotGoods();
     },
-    callback(key) {
-        console.log(key)
-    },
     toDetail(item) {
       this.$router.push({
         path: "/product/detail",

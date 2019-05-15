@@ -385,7 +385,7 @@ export default {
               // 支付结果页面数据
             }
           } catch(err){
-            console.log(message)
+            
           }
         }
       });

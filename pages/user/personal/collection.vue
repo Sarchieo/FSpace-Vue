@@ -77,12 +77,10 @@ export default {
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
             _this.collecList = result.data;
-            console.log(_this.collecList)
               for (let i = 0; i < _this.collecList.length; i++) {
                   _this.collecList[i].spu = _this.collecList[i].info.spu
               }
             _this.fsGeneralMethods.addImages(_this, _this.collecList, "sku", "spu");
-            // console.log('查询收藏成功')
           } else {
             ;
           }
@@ -106,22 +104,16 @@ export default {
         "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          console.log(result)
           if (result.code === 200) {
             // _this.isCollec();
             _this.queryCollec();
             _this.$message.success(result.message);
-            console.log('取消收藏成功')
           }
         })
       );
     },
        // 加入采购单
     addCart(item) {
-      if(item.store === 0) {
-        this.$message.error('商品库存不足')
-        return
-      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";

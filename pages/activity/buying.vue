@@ -211,9 +211,6 @@ export default {
     this.currentIndex = pageNumber
     this.getTeamBuyMallFloor()
     },
-    callback(key) {
-      console.log(key);
-    },
     toDetails(item) {
       this.$router.push({
         path: "/product/detail",

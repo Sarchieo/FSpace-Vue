@@ -166,7 +166,6 @@ export default {
           function result(result) {
             
             if (result.code === 200) {
-                // console.log("--- " + JSON.stringify(result.data))
               _this.info = result.data
             }
           }

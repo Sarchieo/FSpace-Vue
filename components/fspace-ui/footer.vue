@@ -223,26 +223,26 @@ export default {
   color: #555555;
 }
 .p-left {
-  width: 90px !important;
-  text-align: center !important;
+  width: 90px!important;
+  text-align: center!important;
 }
 .ant-layout-footer {
-  padding: 0px !important;
+  padding: 0px!important;
 }
-.footer-message-box-item:hover {
+.footer-message-box-item:hover{
   cursor: pointer;
 }
-.footer-content {
+.footer-content{
   width: 1190px;
   height: 220px;
   margin: 0 auto;
 
-  .footer-left {
+  .footer-left{
     float: left;
     width: 720px;
     height: 220px;
     padding: 40px 0px;
-    li .title {
+    li .title{
       height: 50px;
       line-height: 50px;
       text-align: left;
@@ -250,7 +250,7 @@ export default {
       font-weight: bold;
       color: #333333;
     }
-    li span {
+    li span{
       display: inline-block;
       width: 100%;
       height: 30px;
@@ -258,41 +258,44 @@ export default {
       text-align: left;
       color: #999999;
     }
-    .law {
+    .law{
       float: left;
       width: 140px;
       height: 140px;
     }
-    .help {
+    .help{
       float: left;
       width: 140px;
       height: 140px;
+
     }
-    .sale {
+    .sale{
       float: left;
       width: 200px;
       height: 140px;
+
     }
-    .service {
+    .service{
       float: left;
       width: 200px;
       height: 140px;
+
     }
   }
-  .footer-right {
+  .footer-right{
     float: right;
     width: 440px;
     height: 220px;
     padding: 50px 0px;
-    div {
+    div{
       float: right;
       width: 90px;
       height: 125px;
-      img {
+      img{
         width: 90px;
         height: 90px;
       }
-      p {
+      p{
         height: 30px;
         line-height: 30px;
         text-align: center;

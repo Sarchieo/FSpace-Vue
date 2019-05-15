@@ -18,7 +18,7 @@
         </div>
           <div class="pay-info">
               <p class="pay-text">订单提交成功，请尽快付款！订单号：<span>{{ orderno }}</span></p>
-              <p class="urge">请您在1小时内完成支付，否则订单会被自动取消。</p>
+              <p class="urge">请您在半小时内完成支付，否则订单会被自动取消。</p>
               <div class="actual-pay">
                   <span>实付：</span> ￥ {{ payamt }}元
               </div>
@@ -27,7 +27,7 @@
               <p class="pay-title">请选择支付方式</p>
               <div class="pay-pick">
                   <p>
-                    <a-radio-group @change="onChange" v-model="value">
+                    <a-radio-group v-model="value">
                       <a-radio :value="1"><a-icon type="alipay-circle" class="blue"/></a-radio>
                       <a-radio :value="2"><a-icon type="wechat" class="green"/></a-radio>
                       <a-radio :value="3" class="line-down">线下转账</a-radio>
@@ -246,10 +246,6 @@ export default {
           _this.isPay = false
         }
       }
-    },
-      // 监听单选框的值发生变化
-    onChange (e) {
-      console.log(e)
     }
   }
 };

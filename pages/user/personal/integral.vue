@@ -112,8 +112,6 @@ export default {
           if (result.code === 200) {
             _this.data = result.data
             _this.total = result.total;
-            // console.log(result.data);
-            // _this.$message.success(result.message);
           }
         })
       );
@@ -136,8 +134,6 @@ export default {
           if (result.code === 200) {
             _this.integralNumber = result.data.balpoints;
             _this.expirepointNumber = result.data.expirepoint;
-            // console.log( result.data)
-            // _this.$message.success(result.message);
           }
         })
       );

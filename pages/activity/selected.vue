@@ -110,9 +110,6 @@ export default {
     this.actcode = this.$route.query.actcode;
   },
   methods: {
-    callback(key) {
-      console.log(key);
-    },
     toDetails(item) {
       this.$router.push({
         path: "/product/detail",
@@ -124,10 +121,6 @@ export default {
     },
      // 加入购物车
     addCart(item) {
-      if(item.store === 0) {
-        this.$message.error('商品库存不足')
-        return
-      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";

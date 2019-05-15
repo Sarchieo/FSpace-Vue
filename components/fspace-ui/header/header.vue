@@ -311,7 +311,7 @@ export default {
               })
               .then(res => {})
               .catch(err => {
-                console.log(err);
+
               });
           }
         })
@@ -385,7 +385,7 @@ export default {
                 }, 500);
               })
               .catch(err => {
-                console.log(err);
+
               });
           } else {
             _this.$store
@@ -401,7 +401,7 @@ export default {
                 }, 500);
               })
               .catch(err => {
-                console.log(err);
+
               });
           }
         })
@@ -563,7 +563,7 @@ export default {
             
           })
           .catch(err => {
-            console.log(err);
+            
           });
       }
     }

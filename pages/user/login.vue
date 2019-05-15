@@ -173,7 +173,6 @@ export default {
                   _this.getBasicInfo()
                 })
                 .catch(err => {
-                  console.log(err);
               });
             }else {
               _this.loading = false

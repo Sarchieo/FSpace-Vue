@@ -28,7 +28,6 @@
         </li>
       </ul>
     </div>
-    <!-- <a-pagination :total="total" @change="onChange" /> -->
   </div>
 </template>
 <script>
@@ -55,10 +54,6 @@ export default {
   methods: {
     // 加入采购单
     addCart(items) {
-      if(item.store === 0) {
-        this.$message.error('商品库存不足')
-        return
-      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -142,9 +137,6 @@ export default {
           }
         })
       );
-    },
-    onChange(pageNumber) {
-      console.log(pageNumber)
     }
   }
 };

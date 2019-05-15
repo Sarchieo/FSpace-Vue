@@ -50,7 +50,6 @@ export default {
      }
     },
     toCategory(index) {
-      // console.log(index)
       let routeData = this.$router.resolve({
         name: "category",
         query: {

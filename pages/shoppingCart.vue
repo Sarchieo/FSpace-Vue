@@ -28,7 +28,7 @@
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
                 <a-checkbox
-                  :disabled="item.status == 1 || item.status == 2 || item.status == 3"
+                  :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0"
                   @change="onChange"
                   :value="item"
                   v-model="item.checked"
@@ -52,10 +52,10 @@
                 <p class="old-price">￥ {{item.pdprice}}</p>
                 <p class="validity">有效期：{{item.vperiod}}</p>
                 <p class="btn-p">
-                  <button :disabled="item.status == 1" @click="reduceCount(index,item)">-</button>
+                  <button :disabled="item.status == 1 || item.maximum === 0" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
                   <a-input-number
-                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.checked"
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.checked || item.maximum === 0"
                     :min="1"
                     :max="item.maximum"
                     v-model="item.num"
@@ -63,7 +63,7 @@
                     readonly="readonly"
                   />
                   <button
-                    :disabled="item.status == 1 || item.status == 2 || item.status == 3"
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0"
                     @click="addCount(index,item)"
                   >+</button>
                   <!-- <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.maximum" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
@@ -98,9 +98,47 @@
             </li>
           </ul>
           <div class="whole-pick" v-if="this.cartList.length !== 0">
+             
+            <span style="color: red;" v-for="(item, index) in tips" :key="index">
+              <!-- 满减-现金 -->
+              <span v-if="String(item.offercode).substring(0,4) == 1110 ">
+                
+                <span v-if="item.offer > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag> 已满 {{ item.ladamt }}减 {{ item.offer }}元</span>
+                <span v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可减 {{ item.noffer }} 元</span>
+              </span>
+              <!-- 满减-包邮 -->
+              <span v-if="String(item.offercode).substring(0,4) == 1120 ">
+                当前 <a-tag color="red">{{ item.offername }}</a-tag> 满 {{ item.ladamt }} 包邮
+              </span>
+              <!-- 满减-折扣 -->
+              <span v-if="String(item.offercode).substring(0,4) == 1130 ">
+                <span v-if="item.offer > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag> 满 {{ item.ladamt }} 打 {{ item.offer }}折</span>
+                <span v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可打 {{ item.noffer }} 折</span>
+              </span>
+              <!-- 满赠-现金券 -->
+              <span v-if="String(item.offercode).substring(0,4) == 1210 ">
+                <span  v-if="item.offer > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag>  满 {{ item.ladamt }} 送 {{ item.offer }}元现金券</span>
+                <span  v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可送 {{ item.noffer }} 元现金券</span>
+              </span>
+              <!-- 满赠-包邮券 -->
+              <span v-if="String(item.offercode).substring(0,4) == 1220 ">
+                <span v-if="item.ladamt > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag>  满 {{ item.ladamt }} 送包邮券</span>
+                <span v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可送 {{ item.noffer }} 元包邮券</span>
+              </span>
+              <!-- 满赠-折扣券 -->
+              <span v-if="String(item.offercode).substring(0,4) == 1230 ">
+                <span v-if="item.offer > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag>  满 {{ item.ladamt }} 送 {{ item.offer }}折券</span>
+                <span v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可送 {{ item.noffer }}折券</span>
+              </span>
+              <!-- 满赠-赠品 -->
+              <span v-if="String(item.offercode).substring(0,4) == 1240 ">
+                <!-- 当前 <a-tag color="red">{{ item.offername }}</a-tag>  满 {{ item.ladamt }} 送 {{ item.offer }}折,  您还差{{ item.gapamt }}元 , 可打 {{ item.noffer }} 折 -->
+              </span>
+            </span>
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
               <span>活动优惠：￥{{amt}}</span>
+             
               <span class="total-price" v-if="total > 0">应付总金额：￥{{(total - amt).toFixed(2)}}</span>
               <span class="total-price" v-if="total == 0">应付总金额：￥{{total}}</span>
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
@@ -151,7 +189,8 @@ export default {
       timeoutflag: null,
       discount: 100,
       cartList: [],
-      likeList: []
+      likeList: [],
+      tips: []
       // acamt amt: 优惠总金额 checked 0未选中 discount: 商品优惠价（优惠多少） inventory 总库存 limitnum 限购 0 不限购 num 商品数量 pdno :sku
       // pdprice 🐤价格 ptitle 名称   rulename 活动名称 spec 规格 status  unqid 唯一id verdor 厂家 vperiod有效期
     };
@@ -175,6 +214,34 @@ export default {
     this.guessYouLikeArea();
   },
   methods: {
+    getOfferTip() {
+      let _this = this;
+      let iRequest = new inf.IRequest();
+      iRequest.cls = "ShoppingCartModule";
+      iRequest.method = "getOfferTip";
+      let arr = _this.cartList.map(value => {
+        return {
+          compid: _this.storeInfo.comp.storeId,
+          pdno: value.pdno,
+          pnum: value.num,
+          checked: value.checked ? 1 : 0,
+          unqid: value.unqid
+        };
+      });
+      iRequest.param.json = JSON.stringify(arr);
+      iRequest.param.token = localStorage.getItem("identification");
+      this.$refcallback(
+        this,
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(function result(result) {
+          if (result.code === 200) {
+            _this.tips = result.data
+          }
+        }
+       ));
+    },
     getShoppingCartList() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -193,7 +260,9 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.cartList = result.data;
+              _this.getOfferTip();
               _this.cartList.forEach((item) => {
+                item.limitnum = item.limitnum - item.limitsub
                 _this.$set(item, 'checked', item.checked === 0 ? false : true)
                 if(item.limitnum > item.inventory || item.limitnum === 0) {
                   item.maximum = item.inventory
@@ -233,11 +302,13 @@ export default {
             _this.cartList = result.data;
              _this.cartList.forEach((item) => {
                 _this.$set(item, 'checked', item.checked === 0 ? false : true)
+                item.limitnum = item.limitnum - item.limitsub
                 item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
                 if(item.checked) {
                   _this.amt = item.amt
                 }
               })
+            _this.getOfferTip();
           }
         })
       );
@@ -291,7 +362,6 @@ export default {
       this.queryCheckShopCartList();
     },
     inputChange(index, item) {
-      console.log(item);
     },
     toPlaceOrder() {
       this.loading = true;
