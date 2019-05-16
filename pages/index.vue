@@ -81,12 +81,12 @@
         </div>
         <div class="pic-link">
           <nuxt-link to="/user/personal/coupon">
-            <img src="../assets/img/coupon.png" alt>
+            <img src="../assets/img/coupon.png">
           </nuxt-link>
 
-          <img src="../assets/img/sign.png" @click="toIntegral()" alt>
-          <img src="../assets/img/brand.png" alt>
-          <img src="../assets/img/type.png" @click="toCategory()" alt>
+          <img src="../assets/img/sign.png" @click="toIntegral()">
+          <img src="../assets/img/brand.png" @click='toBrand()'>
+          <img src="../assets/img/type.png" @click="toCategory()">
         </div>
         <div v-for="(item,index) in list" :key="index" style="height: auto;">
           <!-- 新品专区 -->
@@ -1093,6 +1093,9 @@ export default {
           actcode: this.brandID
         }
       });
+    },
+    toBrands() {
+      this.$message.success('当前功能正在建设中...')
     }
   }
 };
