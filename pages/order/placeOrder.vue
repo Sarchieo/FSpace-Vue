@@ -3,7 +3,7 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
-        <div class="stets">
+        <!-- <div class="stets">
           <a-steps :current="1">
             <a-step>
               <template slot="title">我的采购单</template>
@@ -13,65 +13,38 @@
             <a-step title="采购单付款"/>
             <a-step title="采购单完成"/>
           </a-steps>
-        </div>
-        <div class="receiving">
-          <p class="receiving-address">收货地址</p>
-          <p class="tips">
-            <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 0731-88159987
-          </p>
-          <div>
-            <p class="address-info">
-              <span>联系人：</span>
-              {{ consignee }}
-              <span @click="editorAddress()" class="edit">编辑</span>
-            </p>
-            <p class="address-info">
-              <span>联系方式：</span>
-              {{ contact }}
-            </p>
-
-            <p class="address-info">
-              <span>收货门店：</span>
-              {{ this.storeInfo.comp.storeName }}
-            </p>
-            <p class="address-info">
-              <span>收货地址：</span>
-              {{ storeInfo.comp.addressCodeStr }} {{ this.storeInfo.comp.address }}
-            </p>
-          </div>
-        </div>
-        <div class="goods-list">
-          <ul class="goods-title">
-            <li>
-              <div class="goods-info">商品信息</div>
-              <div>单价</div>
-              <div>数量</div>
-              <div>小计</div>
-            </li>
-          </ul>
-          <ul class="goods-table">
-            <p class="goods-table-name">
-              <a-icon type="shop"/>一块医药
-            </p>
-            <li v-for="(item,index) in cartList" :key="index">
-              <div class="goods-name">
-                <img v-lazy="item.imgURl" alt>
-                <p class="drugs-name">{{item.ptitle}}</p>
-                <p class="drugs-guige">{{item.spec}}</p>
-                <p class="drugs-comp">{{item.verdor}}</p>
-              </div>
-              <div class="goods-price">￥{{item.pdprice}}</div>
-              <div class="goods-price">{{item.num}}</div>
-              <div class="goods-price">￥{{(item.pdprice * item.num).toFixed(2)}}</div>
-            </li>
-            <!-- <p class="price-total">商品总计： ￥360元</p> -->
-          </ul>
-        </div>
+        </div>-->
         <div class="go-pay">
+          <div class="receiving">
+            <p class="receiving-address">收货人信息</p>
+            <p class="tips">
+              <a-icon type="exclamation-circle"/>温馨提示：GSP认证后，药店地址不可更改，如需更改请联系：客服 0731-88159987
+            </p>
+            <div>
+              <p class="address-info">
+                <span>联系人：</span>
+                {{ consignee }}
+                <span @click="editorAddress()" class="edit">编辑</span>
+              </p>
+              <p class="address-info">
+                <span>联系方式：</span>
+                {{ contact }}
+              </p>
+
+              <p class="address-info">
+                <span>收货门店：</span>
+                {{ this.storeInfo.comp.storeName }}
+              </p>
+              <p class="address-info">
+                <span>收货地址：</span>
+                {{ storeInfo.comp.addressCodeStr }} {{ this.storeInfo.comp.address }}
+              </p>
+            </div>
+          </div>
           <div class="select-invo-box">
             <p class="title">发票信息</p>
             <p class="address-info">
-              <span>公司名称: </span>
+              <span>公司名称:</span>
               {{ this.storeInfo.comp.storeName }}
             </p>
             <p class="address-info">
@@ -104,77 +77,132 @@
             </p>
           </div>
           <div class="discount" v-if="couponList.length > 0">
-            <p class="use-coupon">使用平台优惠券</p>
-            <div class="coupon-box">
-              <div v-for="(item, index) in couponList" :key="index">
-                <!-- 现金券 -->
-                <div class="coupon" v-if="item.brulecode === 2110">
-                  <div class="coupon-num">
-                    <!-- <span v-if="item.ctype === 3">111</span> -->
-                    <p class="coupon-title">{{ item.rulename }}</p>
-                    <p v-if="item.ctype === 3">
-                      <span class="fuhao">￥</span>
-                      <span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span>
-                    </p>
-                    <div v-if="item.ctype !== 3">
-                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}}</p>
+            <!-- <p class="use-coupon">
+              <a-button>使用优惠券</a-button>
+              <a-button>使用线下优惠券</a-button>
+            </p> -->
+            <a-tabs defaultActiveKey="1" @change="callback">
+              <a-tab-pane tab="使用优惠券" key="1">
+                <p v-if="couponList.length === 0" class="no-coupon">暂无优惠券可领取！</p>
+                <div class="coupon-box" v-if="couponList.length !== 0">
+                  
+                  <div v-for="(item, index) in couponList" :key="index">
+                    <!-- 现金券 -->
+                    <div class="coupon" v-if="item.brulecode === 2110">
+                      <div class="coupon-num">
+                        <!-- <span v-if="item.ctype === 3">111</span> -->
+                        <p class="coupon-title">{{ item.rulename }}</p>
+                        <p v-if="item.ctype === 3">
+                          <span class="fuhao">￥</span>
+                          <span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span>
+                        </p>
+                        <div v-if="item.ctype !== 3">
+                          <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 减 {{ j.offer}}</p>
+                        </div>
+                      </div>
+                      <p class="coupon-bottom">
+                        <span v-if="item.ctype === 3">永久有效</span>
+                        <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
+                        <a-checkbox
+                          v-model="item.isChecked"
+                          @change="onChange(item, index)"
+                          class="coupon-check"
+                        ></a-checkbox>
+                      </p>
                     </div>
-                  </div>
-                  <p class="coupon-bottom">
-                    <span v-if="item.ctype === 3">永久有效</span>
-                    <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
-                    <a-checkbox
-                      v-model="item.isChecked"
-                      @change="onChange(item, index)"
-                      class="coupon-check"
-                    ></a-checkbox>
-                  </p>
-                </div>
 
-                <!-- 包邮券 -->
-                <div class="coupon" v-if="item.brulecode === 2120">
-                  <div class="coupon-num">
-                    <p v-if="item.ctype === 3">
-                      <span class="fuhao">￥</span>
-                      <span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span>
-                    </p>
-                    <p class="coupon-title">{{ item.rulename }}</p>
-                    <div v-if="item.ctype !==3">
-                      <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮</p>
+                    <!-- 包邮券 -->
+                    <div class="coupon" v-if="item.brulecode === 2120">
+                      <div class="coupon-num">
+                        <p v-if="item.ctype === 3">
+                          <span class="fuhao">￥</span>
+                          <span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span>
+                        </p>
+                        <p class="coupon-title">{{ item.rulename }}</p>
+                        <div v-if="item.ctype !==3">
+                          <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }}包邮</p>
+                        </div>
+                      </div>
+                      <p class="coupon-bottom">
+                        <span v-if="item.ctype === 3">永久有效</span>
+                        <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
+                        <a-checkbox
+                          v-model="item.isChecked"
+                          @change="onChange(item, index)"
+                          class="coupon-check"
+                        ></a-checkbox>
+                      </p>
+                    </div>
+                    <!-- 折扣券 -->
+                    <div class="coupon" v-if="item.brulecode === 2130">
+                      <div class="coupon-num">
+                        <p class="coupon-title">{{ item.rulename }}</p>
+                        <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折</p>
+                      </div>
+                      <p class="coupon-bottom">
+                        有效期至 {{ item.enddate }}
+                        <a-checkbox
+                          v-model="item.isChecked"
+                          @change="onChange(item, index)"
+                          class="coupon-check"
+                        ></a-checkbox>
+                      </p>
                     </div>
                   </div>
-                  <p class="coupon-bottom">
-                    <span v-if="item.ctype === 3">永久有效</span>
-                    <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
-                    <a-checkbox
-                      v-model="item.isChecked"
-                      @change="onChange(item, index)"
-                      class="coupon-check"
-                    ></a-checkbox>
-                  </p>
                 </div>
-                <!-- 折扣券 -->
-                <div class="coupon" v-if="item.brulecode === 2130">
-                  <div class="coupon-num">
-                    <p class="coupon-title">{{ item.rulename }}</p>
-                    <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折</p>
-                  </div>
-                  <p class="coupon-bottom">
-                    有效期至 {{ item.enddate }}
-                    <a-checkbox
-                      v-model="item.isChecked"
-                      @change="onChange(item, index)"
-                      class="coupon-check"
-                    ></a-checkbox>
-                  </p>
-                </div>
-              </div>
-            </div>
+              </a-tab-pane>
+              <a-tab-pane tab="使用线下优惠券" key="2" forceRender>
+                <a-input v-model="lineCouponCode" placeholder="请输入券面明码" class="line-coupon"/>
+                <a-input v-model="couponPwd" placeholder="请输入密码" class="line-coupon"/>
+                <a-button class="line-btn">确定使用</a-button>
+              </a-tab-pane>
+            </a-tabs>
+            
           </div>
+          <div class="balance">
+            <p class="title">我的余额</p>
+            <p class="user-balance">账户余额：  <span>￥100</span>
+              <a-checkbox
+                class="pick-input"
+              >全部抵扣</a-checkbox>
+            </p>
+            <p class="title">备注留言</p>
+            <a-textarea placeholder="请填写您的备注留言" autosize class="leaving "/>
+          </div>
+          <ul class="goods-title">
+            
+            <li>
+              <div class="goods-info">商品信息</div>
+              <div>单价</div>
+              <div>数量</div>
+              <div>小计</div>
+            </li>
+          </ul>
+          <ul class="goods-table">
+            <p class="goods-table-name">
+             送货清单
+            </p>
+            <li v-for="(item,index) in cartList" :key="index">
+              <div class="goods-name">
+                <img v-lazy="item.imgURl" alt>
+                <p class="drugs-name">{{item.ptitle}}</p>
+                <p class="active"><a-tag color="red">满减</a-tag></p>
+                <p class="active"><a-tag color="red">满赠</a-tag></p>
+                <p class="drugs-guige">{{item.spec}}</p>
+                <p class="drugs-comp">{{item.verdor}}</p>
+              </div>
+              <div class="goods-price">￥{{item.pdprice}}</div>
+              <div class="goods-price">{{item.num}}</div>
+              <div class="goods-price">￥{{(item.pdprice * item.num).toFixed(2)}}</div>
+            </li>
+            <!-- <p class="price-total">商品总计： ￥360元</p> -->
+          </ul>
+
           <div class="pay" v-if="cartList.length > 0">
+            <p>共种商品多少多少，总件数多少多少， 商品总计：￥保留两位小数</p>
             <p>
               <span class="price-span">￥{{ selectCounpon.tprice }}</span>
-              <span class="title">商品合计：</span>
+              <span class="title">商品总金额：</span>
             </p>
             <p>
               <span class="price-span">￥ {{ cartList[0].freight }}</span>
@@ -182,11 +210,16 @@
             </p>
             <p>
               <span class="price-span">￥ {{ selectCounpon.tdiscount }}</span>
-              <span class="title">优惠：</span>
+              <span class="title">活动优惠：</span>
             </p>
             <p>
+              <span class="price-span">￥ 惠哥提供</span>
+              <span class="title">优惠券抵扣：</span>
+            </p>
+
+            <p>
               <span class="price-span">￥ {{ selectCounpon.debal }}</span>
-              <span class="title">余额：</span>
+              <span class="title">余额抵扣：</span>
             </p>
             <!-- 包邮 freepost:活动包邮 isPostal使用包邮券 -->
             <p class="price">
@@ -194,7 +227,7 @@
               <span class="title">应付金额：</span>
             </p>
 
-            <a-button class="pay-btn" @click="toPay()">去付款</a-button>
+            <a-button class="pay-btn" @click="toPay()">提交订单</a-button>
           </div>
           <div style="clear: both;"></div>
         </div>
@@ -240,6 +273,8 @@ export default {
   },
   data() {
     return {
+      lineCouponCode: '', // 线下券明码
+      couponPwd: '', // 线下券密码
       form: this.$form.createForm(this),
       orderType: 0,
       isCoupon: false,
@@ -546,8 +581,8 @@ export default {
     },
     handleChange(value) {
       console.log(value);
-      
-      this.invoiceCode = value
+
+      this.invoiceCode = value;
     }
   }
 };
@@ -600,6 +635,18 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.line-btn{
+  .button-size(98px,28px,28px,14px,0px,3px);
+  .button-color(1px solid transparent,#ed2f26,#fff);
+  margin-left: 20px;
+}
+.line-coupon{
+  display: inline-block;
+  width: 180px!important;
+  height: 30px!important;
+  margin-bottom: 10px;
+  margin-left: 18px;
+}
 .edit {
   color: #3189f5 !important;
 }
@@ -612,11 +659,43 @@ li {
 .money {
   font-size: 30px;
 }
+.goods-box {
+  background: #f2f2f2;
+}
+.no-coupon{
+  .p-size(50px, 50px, 16px, center, 0px, #999999);
+}
+.balance{
+  .container-size(block, 1190px, auto, 0 auto, 0px);
+  background: #fafafa;
+  margin-top: 20px;
+  border-bottom: 1px dashed #e0e0e0;
+  .title{
+    .p-size(50px, 50px, 16px, left, 20px, #999999);
+    background: #f2f2f2;
+  }
+  .user-balance{
+    .p-size(50px, 50px, 16px, left, 20px, #666);
+    border-bottom: 1px dashed #e0e0e0;
+    background: #fafafa;
+    span{
+      display: inline-block;
+      color: #ed2f26;
+    }
+  }
+  .leaving{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+}
 .select-invo-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px dashed #e0e0e0;
+  background: #fafafa;
   .title {
     .p-size(50px, 50px, 16px, left, 20px, #999999);
+    background: #f2f2f2;
   }
   .select-invo {
     .p-size(50px, 50px, 16px, left, 20px, #999999);
@@ -625,11 +704,12 @@ li {
 
 .receiving {
   .container-size(block, 1190px, 280px, 20px auto 20px auto, 0px);
-  .container-color(#ffffff, 1px solid #e0e0e0, #333333);
+  .container-color(#fafafa, 1px solid transparent, #333333);
+  border-bottom: 1px dashed #e0e0e0;
 }
 .receiving-address {
   .p-size(50px, 50px, 16px, left, 20px, #999999);
-  .p-color(#fafafa, none, #999);
+  .p-color(#f2f2f2, none, #999);
 }
 .tips {
   .p-size(50px, 50px, 16px, left, 10px, #ed2f26);
@@ -650,8 +730,8 @@ li {
   .p-color(#fff, 1px solid #3189f5, #3189f5);
 }
 .goods-list {
-  .container-size(block, 1190px, auto, 0 auto 20px auto, 0);
-  border-left: 1px solid #e0e0e0;
+  .container-size(block, 1189px, auto, 0 auto 20px auto, 0);
+  // border-left: 1px solid #e0e0e0;
   border-top: 1px solid #e0e0e0;
   border-right: 1px solid #e0e0e0;
   background: #ffffff;
@@ -659,7 +739,8 @@ li {
 }
 .goods-title {
   .container-size(inline-block, 1188px, 50px, 0, 0);
-  .container-color(#fafafa, none, #666);
+  .container-color(#f2f2f2, none, #666);
+  margin-top: 20px;
 }
 .goods-title li div {
   .container-size(inline-block, 240px, 50px, 0, 0);
@@ -670,14 +751,19 @@ li {
 }
 .goods-table {
   .container-size(block, 1190px, auto, 0 auto, 0);
+  background: #f2f2f2;
+  border-bottom: 1px dashed #e0e0e0;
+  margin-bottom: 20px;
 }
 .goods-table-name {
-  .p-size(50px, 50px, 16px, left, 10px, #666666);
+  .p-size(50px, 50px, 16px, left, 20px, #999);
+  background: #fafafa;
 }
 .goods-table li {
   .container-size(block, 1190px, 120px, 0, 0);
   border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
+  background: #fafafa;
+  // border-bottom: 1px solid #e0e0e0;
 }
 .goods-name {
   float: left;
@@ -693,16 +779,23 @@ li {
   margin: 20px 0 0 20px;
 }
 .drugs-name {
-  .position(absolute, 20px, 120px);
+  .position(absolute, 22px, 120px);
+  .container-size(inline-block, 330px, 20px, 0, 0);
+}
+.active{
+  .position(absolute, 93px, 120px);
   .container-size(inline-block, 330px, 20px, 0, 0);
 }
 .drugs-guige {
-  .position(absolute, 50px, 120px);
+  .position(absolute, 45px, 120px);
   .container-size(inline-block, 330px, 20px, 0, 0);
 }
 .drugs-comp {
-  .position(absolute, 75px, 120px);
+  .position(absolute, 70px, 120px);
   .container-size(inline-block, 330px, 20px, 0, 0);
+   overflow: hidden;
+   text-overflow:ellipsis;
+   white-space: nowrap;
 }
 .goods-price {
   float: left;
@@ -715,8 +808,8 @@ li {
   font-weight: bold;
 }
 .go-pay {
-  .container-size(block, 1190px, auto, 0 auto 80px auto, 0);
-  border: 1px solid #e0e0e0;
+  .container-size(block, 1190px, auto, 20px auto 80px auto, 0);
+  // border: 1px solid #e0e0e0;
 }
 .invoice {
   .container-size(block, 1190px, 90px, 0, 0);
@@ -732,13 +825,21 @@ li {
   .container-size(block, 1190px, 310px, 0, 0);
 }
 .discount {
-  float: left;
   .container-size(block, 1190px, auto, 0, 0);
-  border-bottom: 1px solid #e0e0e0;
+  // border-bottom: 1px solid #e0e0e0;
+  background: #f2f2f2;
+  margin-top: 20px;
+  border-bottom: 1px dashed #e0e0e0;
   .use-coupon {
-    .p-size(40px, 40px, 16px, left, 20px, #999999);
+    .p-size(50px, 50px, 16px, left, 22px, #999999);
     span {
       color: #ed2f26;
+    }
+    button {
+      .button-color(1px solid transparent, #ed2f26, #fff);
+      border-radius: 3px;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
     }
   }
   .pick-coupon {
@@ -760,7 +861,9 @@ li {
 }
 .pay {
   float: right;
-  .container-size(block, 595px, 310px, 0, 0);
+  .container-size(block, 100%, 310px, 0, 0);
+  background: #fafafa;
+  border-bottom: 1px dashed #e0e0e0;
 }
 
 .pay p {
@@ -812,6 +915,7 @@ li {
   .container-size(block, 700px, auto, 0, 0);
   overflow-x: auto;
   overflow: auto;
+  background: #f2f2f2;
   .coupon {
     .container-size(inline-block, 300px, 120px, 0, 0);
     margin: 0 24px;
@@ -833,7 +937,8 @@ li {
 }
 .coupon-box {
   .container-size(block, 1190px, auto, 0, 0);
-
+  background: #f2f2f2;
+  margin-top: 10px;
   .coupon {
     .container-size(inline-block, 270px, 180px, 0, 0);
     margin-left: 22px;
