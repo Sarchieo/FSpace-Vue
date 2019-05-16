@@ -187,7 +187,8 @@ export default {
       discount: 100,
       cartList: [],
       likeList: [],
-      tips: []
+      tips: [],
+      medpacknum: 5
       // acamt amt: 优惠总金额 checked 0未选中 discount: 商品优惠价（优惠多少） inventory 总库存 limitnum 限购 0 不限购 num 商品数量 pdno :sku
       // pdprice 🐤价格 ptitle 名称   rulename 活动名称 spec 规格 status  unqid 唯一id verdor 厂家 vperiod有效期
     };
@@ -414,33 +415,33 @@ export default {
     addCount(index, item) {
       let _this = this;
       // 限购数量
-      if(item.num >= item.maximum) {
+      if(item.num + this.medpacknum > item.maximum) {
         _this.$message.warning(item.ptitle + '限购' + item.maximum + '件')
         return
       }
       item.checked = true;
-      item.num += 1;
+      item.num += this.medpacknum;
 
       if (this.timeoutflag != null) {
         clearTimeout(this.timeoutflag);
       }
       this.timeoutflag = setTimeout(function() {
         _this.queryCheckShopCartList();
-      }, 1000);
+      }, 500);
     },
     reduceCount(index, item) {
-      if (item.num === 1) {
+      if (item.num - this.medpacknum <= 1) {
         return false;
       }
       let _this = this;
-      item.num--;
+      item.num-= this.medpacknum;
       item.checked = true;
       if (this.timeoutflag != null) {
         clearTimeout(this.timeoutflag);
       }
       this.timeoutflag = setTimeout(function() {
         _this.queryCheckShopCartList();
-      }, 1000);
+      }, 500);
     },
     // 猜你喜欢
     guessYouLikeArea() {

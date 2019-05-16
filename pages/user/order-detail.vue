@@ -256,7 +256,7 @@ export default {
   },
   methods: {
     getLogisticsInfo() {
-      debugger
+      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "OrderOptModule";

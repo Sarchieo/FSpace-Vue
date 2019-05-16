@@ -66,11 +66,11 @@
                 </p> -->
                 <!--</p>-->
 
-                <div class="price" v-if="rulecode == 1113">
+                <!-- <div class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
                   <span class="money-count">￥{{ discount.killPrice }}</span>
                   <del>{{ prodDetail.mp }}</del>
-                </div>
+                </div> -->
                 <!-- <p class="price" v-else-if="rulecode === 1133">
                   <span class="price-title">价格</span>
                   <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
@@ -559,6 +559,7 @@ export default {
         prodsdate: "",
         prodedate: ""
       },
+      // 药品详情
       details: [
         {
           name: "功能主治",
@@ -663,17 +664,17 @@ export default {
     },
     // 新增采购数量
     addCount() {
-      if (this.inventory > this.maximum) {
+      if (this.inventory + this.prodDetail.medpacknum > this.maximum) {
         this.$message.warning("库存不足或超出限购数量");
         return;
       }
-      this.inventory++;
+      this.inventory+= this.prodDetail.medpacknum;
     },
     reduceCount() {
-      if (this.inventory <= 1) {
+      if (this.inventory - this.prodDetail.medpacknum <= 1) {
         return;
       }
-      this.inventory--;
+      this.inventory-= this.prodDetail.medpacknum;
     },
     // 获取活动阶梯值
     getLadoff() {
@@ -693,8 +694,6 @@ export default {
             result.data.forEach((item) => {
               _this.discountLadoff = item
             })
-            console.log(888)
-            console.log(_this.discountLadoff)
           }
         })
       );
@@ -947,6 +946,8 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.prodDetail = result.data;
+              // 设置中包装数 商品数
+              _this.inventory = result.data.medpacknum
               if (_this.userStatus) {
                 // 上传足迹
                 _this.getFoot();
@@ -963,7 +964,7 @@ export default {
                   _this.getGoodsApprise();
                 });
                 // 活动阶梯值
-                 _this.getLadoff();
+                _this.getLadoff();
               }
               _this.maximum = _this.prodDetail.store;
               _this.details = JSON.parse(_this.prodDetail.detail);
@@ -1255,6 +1256,11 @@ export default {
         }
       });
       window.open(routeData.href, "_blank");
+    }
+  },
+  watch: {
+    inventory: function(newVal) {
+      this.inventory = parseInt(this.inventory/this.prodDetail.medpacknum) * this.prodDetail.medpacknum
     }
   },
   beforeDestroy() {

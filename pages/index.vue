@@ -894,18 +894,15 @@ export default {
     },
     // 获取公告消息列表
     getNotice() {
-      debugger
-      return new Promise((resolve, reject) => {
-        this.fsGeneralMethods
-          .request(this, "globalServer", "NoticeModule", "query")
-          .then(result => {
-            resolve();
-            if (result.code === 200) {
-              sessionStorage.setItem("noticeListAll",JSON.stringify(result.data));
-              this.noticeList = result.data.slice(0, 4);
-            }
-          });
-      });
+      this.fsGeneralMethods
+        .request(this, "globalServer", "NoticeModule", "query")
+        .then(result => {
+          resolve();
+          if (result.code === 200) {
+            sessionStorage.setItem("noticeListAll",JSON.stringify(result.data));
+            this.noticeList = result.data.slice(0, 4);
+          }
+        });
     },
     stringToDate(str) {
       var tempStrs = str.split(" ");
@@ -1072,7 +1069,7 @@ export default {
     },
     // 消息详情
     toNotice(index) {
-      debugger
+      
       this.$router.push({
         path: "/user/notice",
         query: {
