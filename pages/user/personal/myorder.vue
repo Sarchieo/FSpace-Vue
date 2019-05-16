@@ -13,13 +13,16 @@
       <a-tab-pane tab="取消交易" key="-4"></a-tab-pane>
     </a-tabs>
     <div class="screen">
-      <span>订单号:</span> <a-input v-model="ordernum" placeholder="输入订单号搜索" />
+      <span>订单号:</span> <a-input v-model="orderNo" placeholder="输入订单号搜索" />
       <span>下单时间：</span>
-       <el-date-picker
-      v-model="year"
-      type="year"
-      placeholder="选择年">
-      </el-date-picker>
+      <a-range-picker
+        :allowClear = false 
+        style="width: 300px;"
+        :placeholder="['开始日期', '结束日期']"
+         format="YYYY-MM-DD"
+        :value="monthValue"
+        @change="handlePanelChange"
+      />   
       <a-button class="search-btn" @click="queryOrderList()">搜索</a-button>
     </div>
     <p class="table-title">
@@ -65,6 +68,8 @@
               <!-- <span class="time">{{item.odate}}</span> -->
               <p class="order-info"><span>订单号：</span> <span>{{item.orderno}}</span></p>
               <p class="order-info"><span>下单时间：</span> <span>{{item.odate}} {{item.otime}}</span></p>
+              
+              
               <p class="order-info">订单内共{{item.totalNum}}件商品</p>
               <!-- <p class="goods-text" @click="toDetail(items)">{{items.pname}}</p>
               <p class="guige">规格：{{items.pspec}}</p>
@@ -212,7 +217,10 @@ export default {
   },
   data() {
     return {
-      ordernum: '', // 输入搜索订单
+      mode1: 'time',
+      mode2: ['month', 'month'],
+      monthValue: [],
+      orderNo: '', // 输入搜索订单
       cancelOrderNo: {},//要取消的订单
       asType: "2",
       isApply: false,
@@ -224,7 +232,11 @@ export default {
       ostatus: "", // 订单状态
       orderList: [],
       logistixs: [],
-      year: '2019'
+      year: '',
+      sDate: '',
+      eDate: '',
+      startValue: null,
+      endValue: null,
     };
   },
   mounted() {
@@ -279,7 +291,7 @@ export default {
       iRequest.cls = "OrderInfoModule";
       iRequest.method = "queryOrders";
       iRequest.param.token = localStorage.getItem("identification");
-      iRequest.param.arrays = [this.year,this.ostatus];
+      iRequest.param.arrays = [this.year,this.ostatus, this.orderNo, '', this.sDate, this.eDate];
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       this.$refcallback(
@@ -290,7 +302,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderList = result.data;
-            console.log(_this.orderList)
             _this.total = result.total;
             _this.currentIndex = result.pageNo;
             _this.orderList.forEach(item => {
@@ -580,6 +591,27 @@ export default {
           }
         })
       );
+    },
+    handlePanelChange (value, mode) {
+      this.startValue = value[0]
+      this.endValue = value[1]
+      this.year = new Date(value[0]).getFullYear()
+      let startDate = new Date(value[0])
+      let endDate = new Date(value[1])
+      console.log(startDate.getFullYear(), endDate.getFullYear() )
+      if(startDate.getFullYear() != endDate.getFullYear()) {
+        this.$message.error('结束年份必须为' + startDate.getFullYear())
+        return
+      }
+      this.sDate = startDate.getFullYear() + '-' + this.timeAdd0(startDate.getMonth()) + '-' + this.timeAdd0(startDate.getDay()) 
+      this.eDate = endDate.getFullYear() + '-' + this.timeAdd0(endDate.getMonth()) + '-' + this.timeAdd0(endDate.getDay())
+      this.monthValue = value
+    },
+    timeAdd0(str) {
+      if(String(str).length<=1){
+          str='0'+str;
+      }
+      return str
     },
     toPay(item) {
       var routeData = this.$router.resolve({

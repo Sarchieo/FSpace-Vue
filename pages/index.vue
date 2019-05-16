@@ -85,8 +85,8 @@
           </nuxt-link>
 
           <img src="../assets/img/sign.png" @click="toIntegral()">
-          <img src="../assets/img/brand.png" @click='toBrand()'>
-          <img src="../assets/img/type.png" @click="toCategory()">
+          <img src="../assets/img/brand.png" @click='toBrands()'>
+          <img src="../assets/img/type.png" @click="toBrands()">
         </div>
         <div v-for="(item,index) in list" :key="index" style="height: auto;">
           <!-- 新品专区 -->
@@ -1095,7 +1095,7 @@ export default {
       });
     },
     toBrands() {
-      this.$message.success('当前功能正在建设中...')
+      this.$message.success('🚜当前功能正在玩命建设中,敬请期待...')
     }
   }
 };

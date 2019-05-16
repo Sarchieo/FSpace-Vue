@@ -201,7 +201,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200 && result.data) {
-            
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
