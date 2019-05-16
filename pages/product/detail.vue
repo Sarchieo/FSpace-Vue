@@ -64,6 +64,13 @@
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
                 </p> -->
+                <!--</p>-->
+
+                <div class="price" v-if="rulecode == 1113">
+                  <span class="price-title">价格</span>
+                  <span class="money-count">￥{{ discount.killPrice }}</span>
+                  <del>{{ prodDetail.mp }}</del>
+                </div>
                 <!-- <p class="price" v-else-if="rulecode === 1133">
                   <span class="price-title">价格</span>
                   <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
@@ -706,7 +713,6 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
             // 如果存在活动 取库存与活动库存最小值
@@ -878,7 +884,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          
+
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;

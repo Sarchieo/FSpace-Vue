@@ -65,12 +65,15 @@
                 <span class="float-right more">更多</span>
               </p>
               <p v-if="noticeList.length === 0" class="no-ntice">暂无公告</p>
-              <p
+              <div v-else>
+                <p
                 class="notice-text"
                 v-for="(item,index) in noticeList"
                 :key="index"
-                @click="toNotice(item)"
+                @click="toNotice(index)"
               >{{item.type}}{{item.title}}</p>
+              </div>
+              
             </div>
           </div>
           </div>
@@ -519,7 +522,7 @@ export default {
   },
   data() {
     return {
-      // notice: '',
+      noticeIndex: '',
       noticeList: [], // 公告列表
       isCarousel: false,
       percentage: 0,
@@ -891,12 +894,14 @@ export default {
     },
     // 获取公告消息列表
     getNotice() {
+      debugger
       return new Promise((resolve, reject) => {
         this.fsGeneralMethods
           .request(this, "globalServer", "NoticeModule", "query")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.length > 4) {
+            if (result.code === 200) {
+              sessionStorage.setItem("noticeListAll",JSON.stringify(result.data));
               this.noticeList = result.data.slice(0, 4);
             }
           });
@@ -1066,11 +1071,12 @@ export default {
       });
     },
     // 消息详情
-    toNotice(item) {
+    toNotice(index) {
+      debugger
       this.$router.push({
         path: "/user/notice",
         query: {
-          notice: JSON.stringify(item)
+          noticeIndex: index,
         }
       });
     },

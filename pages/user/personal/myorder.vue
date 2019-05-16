@@ -7,92 +7,114 @@
       <a-tab-pane tab="待发货" key="1"></a-tab-pane>
       <a-tab-pane tab="已发货" key="2"></a-tab-pane>
       <a-tab-pane tab="已签收" key="3"></a-tab-pane>
-      <a-tab-pane tab="退货申请" key="-1"></a-tab-pane>
-      <a-tab-pane tab="退货中" key="-2"></a-tab-pane>
-      <a-tab-pane tab="已退货" key="-3"></a-tab-pane>
+      <a-tab-pane tab="售后" key="-1"></a-tab-pane>
+      <a-tab-pane tab="售后中" key="-2"></a-tab-pane>
+      <a-tab-pane tab="售后完成" key="-3"></a-tab-pane>
       <a-tab-pane tab="取消交易" key="-4"></a-tab-pane>
     </a-tabs>
     <p class="table-title">
-      <span class="width33">药品</span>
-      <span class="width13">单价</span>
-      <span class="width13">数量</span>
+       <!-- <a-checkbox
+        :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0"
+        @change="onChange"
+        :value="item"
+        v-model="item.checked"
+        class="pick-input"
+      ></a-checkbox> -->
+      <!-- <a-checkbox
+          @change="onChange"
+          class="pick-input margin-left12"
+      ></a-checkbox> <span>全选</span> -->
+      <span class="width45">订单详情</span>
+      <!-- <span class="width13">单价</span> -->
+      <!-- <span class="width13">数量</span> -->
       <!-- <span class="width11">订单操作</span> -->
-      <span class="width13">订单状态</span>
-      <span class="width13">结算状态</span>
-      <span class="width13">实付款</span>
-      <span class="width13">操作</span>
+      <span class="width10">订单状态</span>
+      <span class="width10">结算状态</span>
+      <span class="width15">金额</span>
+      <span class="width10">操作</span>
+     
     </p>
-    <div>
-      <el-date-picker
+    <div class="screen">
+      <span>订单号:</span> <a-input v-model="keyword" placeholder="输入订单号搜索" />
+      <span>下单时间：</span>
+       <el-date-picker
       v-model="year"
       type="year"
       placeholder="选择年">
-    </el-date-picker>
+      </el-date-picker>
+      <a-button class="search-btn" @click="queryOrderList()">搜索</a-button>
     </div>
     <ul class="order-box" v-if="this.orderList.length !== 0 ">
       <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
-        <p class="order-info-text">
+        <!-- <p class="order-info-text">
           <span class="time">{{item.odate}}</span>
           <span>订单号：{{item.orderno}}</span>
-          <!-- <span class="yikuai">一块医药</span>
-          <span class="contact">联系售后</span>-->
-          <!-- <a-tooltip class="share">
-                <template slot="title">分享</template>
-                <a-icon type="export"/>
-          </a-tooltip>-->
           <a-tooltip class="share">
             <template slot="title">删除</template>
             <a-icon type="delete" @click="showDeleteConfirm(item)"/>
           </a-tooltip>
-        </p>
+        </p> -->
         <div style="float:left;overflow: hidden;">
           <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
+             <!-- <a-checkbox
+                @change="onChange"
+                class="pick-input margin-left12 margin-top62"
+             ></a-checkbox> -->
             <div class="goods-pic">
               <img v-lazy="items.imgURl" @click="toDetail(items)">
-              <p class="goods-text" @click="toDetail(items)">{{items.pname}}</p>
+              <!-- <span class="time">{{item.odate}}</span> -->
+              <p class="order-info"><span>订单号：</span> <span>{{item.orderno}}</span></p>
+              <p class="order-info"><span>下单时间：</span> <span>{{item.odate}} {{item.otime}}</span></p>
+              <p class="order-info">订单内共{{item.totalNum}}件商品</p>
+              <!-- <p class="goods-text" @click="toDetail(items)">{{items.pname}}</p>
               <p class="guige">规格：{{items.pspec}}</p>
-              <p class="menu-name">{{items.manun}}</p>
+              <p class="menu-name">{{items.manun}}</p> -->
               <!-- <p class="date">有效期：2019-04-12</p> -->
             </div>
-            <div class="pay price-div">
-              <p class="price-p">￥{{items.pdprice}}</p>
-            </div>
-            <div class="pay count-div">
-              <p>{{items.pnum}}</p>
-            </div>
-            <div class="state">
+             <div class="state">
               <p class="sucess">{{statusText(item)}}</p>
             </div>
-            <div class="state">
+           
+             <div class="state">
               <p class="sucess">{{setstatusText(item.settstatus)}}</p>
             </div>
+            <!-- <div class="pay count-div">
+              <p>{{items.pnum}}</p>
+            </div> -->
+           
+            <!-- <div class="pay price-div">
+              <p class="price-p">￥{{items.pdprice}}</p>
+            </div> -->
             <div class="pay fact-div">
               <p class="shiji">￥{{item.payamt}}</p>
               <p class="freight">(含运费{{item.freight}}元)</p>
             </div>
+            <div class="operation">
+            <p class="button-p" v-if="item.ostatus === 0 && item.payway == -1">
+              <a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button>
+            </p>
+            <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
+            <!-- v-if="item.ostatus === 3" -->
+            <p class="detail" @click="confirmReceipt(item)" v-if="item.ostatus == 3">确认签收</p>
+            <p class="detail" @click="afterApply(item)" v-if="item.ostatus == 3">申请售后</p>
+            <p @click="toEvaluate(item)" v-if="item.ostatus === 4 && (item.cstatus&128) === 0" ref="toevaluate">
+              评论
+            </p>
+            <p
+              class="canle-order"
+              v-if="canCancel(item)"
+              @click="isShowCancel(item)">取消订单</p>
+            <p class="detail" @click="toDetails(item)">订单详情</p>
+            <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
+            <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
+            <p @click="deleteOrder(item)" class="del-order">删除此订单</p>
+            <!-- v-if="item.ostatus == 3" -->
+            <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)===0">补开发票</p>
           </div>
-        </div>
+          </div>
+        
 
-        <div class="operation">
-          <p class="button-p" v-if="item.ostatus === 0 && item.payway == -1">
-            <a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button>
-          </p>
-          <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
-          <!-- v-if="item.ostatus === 3" -->
-          <p class="detail" @click="confirmReceipt(item)" v-if="item.ostatus == 3">确认签收</p>
-          <p class="detail" @click="afterApply(item)" v-if="item.ostatus == 3">申请售后</p>
-          <p @click="toEvaluate(item)" v-if="item.ostatus === 4 && (item.cstatus&128) === 0" ref="toevaluate">
-            <a>评论</a>
-          </p>
-          <p
-            class="canle-order"
-            v-if="canCancel(item)"
-            @click="isShowCancel(item)">取消订单</p>
-          <p class="detail" @click="toDetails(item)">订单详情</p>
-          <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
-          <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
-           <!-- v-if="item.ostatus == 3" -->
-          <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)===0">补开发票</p>
+          
         </div>
         <div style="clear: both;"></div>
       </li>
@@ -190,6 +212,7 @@ export default {
   },
   data() {
     return {
+      keyword: '', // 输入搜索订单
       cancelOrderNo: {},//要取消的订单
       asType: "2",
       isApply: false,
@@ -267,6 +290,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.orderList = result.data;
+            console.log(_this.orderList)
             _this.total = result.total;
             _this.currentIndex = result.pageNo;
             _this.orderList.forEach(item => {
@@ -569,6 +593,9 @@ export default {
     saleAfter() {
       this.visible = true;
     },
+    onChange() {
+      console.log(1)
+    },
     toSuppInvo(item) {
       this.$router.push({
         path: "/order/patch-invo",
@@ -587,6 +614,9 @@ export default {
 .order-box-li:hover {
   border: 1px solid #e0e0e0;
 }
+.del-order:hover{
+  color: #ed3025;
+}
 .supplement:hover{
   cursor: pointer;
   color: #ed3025;
@@ -599,26 +629,58 @@ export default {
   cursor: pointer;
   color: #ed3025;
 }
-.width33 {
+.margin-left12{
+  margin-left:12px;
+}
+.margin-top62{
+  margin-top: 62px;
+}
+.screen{
+  .container-size(block, 960px, 55px, 0 auto, 0px);
+  padding-top: 8px;
+  line-height: 50px;
+}
+.ant-input{
+  width: 230px!important;
+  border: 1px solid #f2f2f2;
+  border-radius: 0px!important;
+}
+.search-btn{
+  .button-size(98px,36px,36px,14px,0px,3px);
+  .button-color(1px solid transparent,#ed3025,#ffffff);
+  margin-left: 30px;
+}
+.search-btn:hover{
+  cursor: pointer;
+}
+.width45 {
   // .position(relative, 0px, 0px);
   float: left;
-  width: 33%;
+  width: 44.6%;
   img {
-    // .position(absolute, 14px, 14px);
+    // .position(bsolute, 14px, 14px);
     float: left;
     width: 80px;
     height: 80px;
     margin-right: 10px;
   }
 }
-.width13 {
+.width10 {
   width: 10.8%;
 }
 .width11 {
   width: 13.5%;
 }
+.width15{
+  width: 15%;
+}
 .width12 {
   width: 13%;
+}
+.order-info{
+  float: left;
+  width: 250px;
+  .p-size(30px, 30px, 16px, left, 0px, #666666);
 }
 .table-title {
   .p-size(50px, 50px, 16px, center, 0px, #666666);
@@ -637,7 +699,7 @@ export default {
   .container-size(block, 985px, auto, 0 auto, 0px);
   overflow: auto;
   li {
-    .container-size(block, 945px, auto, 0 auto, 0px);
+    .container-size(block, 960px, auto, 0 auto, 0px);
     .container-color(#ffffff, 1px solid #f8f8f8, #666666);
     margin-top: 10px;
     margin-bottom: 10px;
@@ -666,24 +728,25 @@ export default {
     }
     .goods-box {
       // .container-size(inline-block, 820px, 108px, 0 auto, 0px);
-      width: 820px;
-      height: 108px;
+      width: 960px;
+      height: 140px;
       margin: 0px;
       border-top: 1px solid #f8f8f8;
       border-right: 1px solid #f8f8f8;
       div {
         display: inline-block;
-        height: 108px;
+        height: 140px;
       }
       .goods-pic {
         float: left;
-        width: 308px;
-        padding-top: 14px;
+        width: 470px;
+        height: 140px;
+        padding-top: 20px;
         padding-left: 10px;
         img {
           float: left;
-          width: 80px;
-          height: 80px;
+          width: 95px;
+          height: 95px;
           margin-right: 5px;
         }
         .goods-text {
@@ -753,17 +816,16 @@ export default {
       }
       .state {
         float: left;
-        width: 101px;
-        min-height: 108px;
-        height: auto;
-        padding-top: 42px;
+        width: 103px;
+        height: 140px;
+        line-height: 140px;
         border-left: 1px solid #f8f8f8;
         border-right: 1px solid #f8f8f8;
         .sucess {
           // .position(absolute, 28px, 0px);
           width: 100%;
           text-align: center;
-          color: #3189f5;
+          // color: #3189f5;
         }
         .detail {
           // .position(absolute, 56px, 0px);
@@ -797,8 +859,8 @@ export default {
 }
 .fact-div {
   float: left;
-  width: 100px;
-  padding: 32px 0px;
+  width: 144px;
+  padding: 60px 0px;
   p {
     text-align: center;
     color: #ed3025 !important;
@@ -875,14 +937,15 @@ export default {
 .operation {
   float: right;
   overflow: hidden;
-  width: 123px;
+  width: 103px;
   // height: 108px;
   // height: auto;
   // border-bottom: 1px solid #e0e0e0;
-  border-top: 1px solid #f8f8f8;
+  border-top: 1px solid #f2f2f2;
   padding-top: 4px;
   p {
     text-align: center;
+    color: #3189f5;
   }
 }
 .cancel-reason {
@@ -893,5 +956,8 @@ export default {
 }
 .a {
   width: 220px;
+}
+.pick-input{
+  float: left;
 }
 </style>
