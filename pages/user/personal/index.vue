@@ -3,7 +3,7 @@
     <div class="certificates-content">
       <h2 class="pharmacy-info">药店信息</h2>
       <a-form class="form-box" :form="form" @submit="handleSubmit">
-        <a-form-item label="所属药店：" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+        <a-form-item label="药店名称：" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
           <a-input
             :disabled="!isEditor"
             v-decorator="[
@@ -12,7 +12,7 @@
               ]"
           />
         </a-form-item>
-        <a-form-item label="地址" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+        <a-form-item label="药店地址" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-cascader
             class="city"
             :disabled="!isEditor"
@@ -25,7 +25,7 @@
             ]"
           />
         </a-form-item>
-        <a-form-item label="药店详细地址：" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+        <a-form-item label="详细地址：" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
           <a-textarea
             :disabled="!isEditor"
             placeholder="请填写营业执照上一致的药店地址"
@@ -44,6 +44,7 @@
           <span>{{ authenticationMessage }}</span>
         </p>
         <div>
+          <span class="tip">温馨提示：为确保您药店认证通过，请填写药店名称、 药店地址时请保持与《营业执照》一致</span>
           <h2 class="certificate-title">药店资质</h2>
           <a-form-item
             v-bind="formItemLayout"
@@ -72,6 +73,7 @@
                 </div>
               </a-upload>
             </div>
+            <p class="upload-p">{{ item.name }}</p>  
           </a-form-item>
         </div>
       </a-form>
@@ -90,7 +92,7 @@
         </li>
         <li class="one-line">
           <a-checkbox :checked="!isEditor">已设置</a-checkbox>
-          <span>所属药店</span>
+          <span>药店名称</span>
           <p>加入药店通过资质认证后可享受平台丰富的优惠活动</p>
           <a @click="setEditor">{{ isEditor ? '取消' : '修改' }}</a>
         </li>
@@ -102,8 +104,8 @@
     <f-space-modal-pwd :visible="isChangePwd" @changePwdCancel="changePwdCancel"></f-space-modal-pwd>
     <f-space-modal-phone
       :isChangePhone="isChangePhone"
-      @handleCancel="changePhoneCancel"
-      @handleSussece="changePhoneSussece"
+      @changePhoneCancel="changePhoneCancel"
+      @changePhoneSussece="changePhoneSussece"
     ></f-space-modal-phone>
   </div>
 </template>
@@ -324,15 +326,15 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
-            _this.getFilePathPrev(true);
+          if (result.code === 200 && result.data) {
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
+            }).then((res) => {
+              _this.getFilePathPrev(true);
             });
             _this.authenticationStatus = result.data.comp.authenticationStatus;
             _this.code = [];
-           
             _this.authenticationMessage =
               result.data.comp.authenticationMessage;
             _this.isEditor = _this.isRelated;
@@ -341,6 +343,7 @@ export default {
               _this.getAncestors(result.data.comp.addressCode);
             }
           } else {
+            _this.$message.error('没有企业信息, 请关联企业')
             _this.isEditor = true;
           }
         })
@@ -418,7 +421,7 @@ export default {
               xhr.setRequestHeader("ergodic-sub", "false");
               xhr.send(null);
             }else {
-              _this.uploads()
+              _this.uploads();
             }
           }
         })
@@ -445,7 +448,7 @@ export default {
           upload(options, function(success) {
             // 这里有不确定性 先这样吧
             if(index === 2) {
-              _this.getFilePathPrev(true)
+              _this.getBasicInfo()
             }
           });
         }
@@ -593,6 +596,11 @@ export default {
   width: 200px;
   margin-right: 8px;
 }
+.upload-p{
+  .p-size(30px, 30px, 14px, center, 0px, #333333);
+  float: left;
+  width: 105px;
+}
 .certificates-box {
   .container-size(block, 985px, 1015px, 0, 0px);
   padding: 40px 0;
@@ -692,6 +700,11 @@ export default {
   display: inline-block;
   width: 240px;
   height: 200px;
+}
+.tip {
+  color: #ed3025;
+  display: inline-block;
+  margin-top: 10px;
 }
 </style>
 

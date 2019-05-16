@@ -86,8 +86,9 @@
       </p>
     </div>
 
-    <h4 class="footer-copyright">Copyright@2015-2019 一块医药v1.0.0.2019051301 湖南空间折叠互联网科技有限公司版权所有</h4>
-  </a-layout-footer>
+        <h4 class="footer-copyright">Copyright@2015-2019 一块医药v1.0.0.2019051402 湖南空间折叠互联网科技有限公司版权所有</h4>
+
+    </a-layout-footer>
 </template>
 <script>
 export default {

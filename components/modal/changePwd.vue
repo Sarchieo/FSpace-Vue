@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="修改密码" v-model="visible" :footer="null" @cancel="handleCancel">
+  <a-modal title="修改密码" v-model="isVisible" :footer="null" @cancel="handleCancel">
     <a-form :form="form" @submit="handleSubmit">
       <a-form-item v-bind="formItemLayout" label="输入旧密码">
         <a-input
@@ -79,10 +79,14 @@ export default {
       form: this.$form.createForm(this)
     }
   },
+  computed:{
+    isVisible:function(){
+      return this.visible
+    }
+  },
   methods: {
-    handleOk() {},
     handleCancel() {
-      this.$emit('handleCancel')
+      this.$emit('changePwdCancel')
     },
     handleSubmit(e) {
       e.preventDefault();
@@ -108,7 +112,7 @@ export default {
               function result(result) {
                 if (result.code === 200) {
                   _this.$message.success(result.message)
-                  _this.$emit('handleCancel')
+                  _this.$emit('changePwdCancel')
                 }
               }
             )

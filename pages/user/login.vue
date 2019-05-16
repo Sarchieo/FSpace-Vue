@@ -180,8 +180,6 @@ export default {
                 _this.isCaptcha = true
                 _this.getCaptcha()
                 ;
-              } else {
-                ;
               }
             }
           },function error(error) {
@@ -202,7 +200,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data) {
             
             _this.$store.dispatch("setUser", {
               context: _this,

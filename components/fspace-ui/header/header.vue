@@ -85,11 +85,14 @@
         
         <div class="medicine-names" ref="home">
           <div class="medicine-name-box" ref="nameBox">
-            
-            <div class="medicine-name">
-              <img src="../../../assets/img/u49.png" alt>
+            <nuxt-link to="/">
+               <div class="medicine-name">
+                <img src="../../../assets/img/u49.png" alt>
               <p class="medicine-text"><span class="float-left">舒 心 购</span><span class="circle">•</span><span class="float-right">聚 划 算</span></p>
-            </div>
+              </div>
+            </nuxt-link>
+           
+            
             <div class="medicine-search">
               <div class="search-box">
                 <!-- <a-input
@@ -151,14 +154,17 @@
     <!-- 登录 -->
     <a-layout-header v-if="type === 'login'" class="login-header">
       <div class="ant-layout-header-login">
-        <div class="medicine-name-login">
-          <img src="../../../assets/img/u49.png" alt>
-        </div>
+         <nuxt-link to="/">
+          <div class="medicine-name-login">
+            <img src="../../../assets/img/u49.png" alt>
+          </div>
+         </nuxt-link>
+      
         <div class="ant-layout-header-back login-header-text">
           <nuxt-link to="/">
             <a class="back-index">返回首页</a>
           </nuxt-link>
-          <a class="service-phone">客服电话：88159987</a>
+          <a class="service-phone">客服电话：0731-88159987</a>
         </div>
         <div class="divider"></div>
       </div>
@@ -166,11 +172,14 @@
     <!-- 注册 -->
     <a-layout-header v-if="type === 'register'" class="login-header">
       <div class="ant-layout-header-login">
-        <div class="medicine-name-login">
-          <img src="../../../assets/img/u49.png" alt>
-        </div>
+        <nuxt-link to="/">
+          <div class="medicine-name-login">
+            <img src="../../../assets/img/u49.png" alt>
+          </div>
+        </nuxt-link>
+       
         <div class="ant-layout-header-back">
-          <a class="already">已有账号</a>
+          <span>已有账号</span>
           <nuxt-link to="/user/login">
             <a class="immediately">立即登录</a>
           </nuxt-link>
@@ -328,12 +337,28 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code === 200 && result.data) {
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
             });
-          
+            let ice_callback = new Ice.Class(inf.PushMessageClient, {
+              receive: function(message, current) {
+                try{
+                  let result = JSON.parse(message)
+                } catch(err){
+                  _this.$store
+                    .dispatch("setNoticeList", { message: message.replace('sys:', '') })
+                    .then(res => {
+                      
+                    })
+                    .catch(err => {
+                      
+                    });
+                }
+              }})
+            // websocket 上线
+            _this.$initIceLong('orderServer', _this.storeInfo.comp.storeId, new ice_callback());
           }
         })
       );
@@ -455,6 +480,7 @@ export default {
         })
       );
     },
+    
     handleOk() {
       // 跳转企业中心页面
       this.$router.push({
@@ -974,12 +1000,10 @@ li {
   }
   .ant-layout-header-back {
     float: right;
-    width: 200px;
+    // width: 200px;
+    height: 85px;
     font-size: 18px;
     margin-right: 5%;
-    a {
-      margin-right: 10%;
-    }
     a:nth-child(2) {
       color: #999999;
     }
@@ -994,15 +1018,16 @@ li {
   color: #999999;
 }
 .service-phone {
+  margin-left: 10px;
   font-size: 16px;
   color: #3189f5 !important;
 }
 .login-header {
   width: 100%;
 }
-.login-header-text {
-  width: 290px !important;
-}
+// .login-header-text {
+//   width: 290px !important;
+// }
 .searchs-input {
   width: 82% !important;
 }

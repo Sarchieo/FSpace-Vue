@@ -98,36 +98,34 @@
             </li>
           </ul>
           <div class="whole-pick" v-if="this.cartList.length !== 0">
-             
-            <span style="color: red;" v-for="(item, index) in tips" :key="index">
+            <span class="tip" v-for="(item, index) in tips" :key="index">
               <!-- 满减-现金 -->
               <span v-if="String(item.offercode).substring(0,4) == 1110 ">
-                
-                <span v-if="item.offer > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag> 已满 {{ item.ladamt }}减 {{ item.offer }}元</span>
-                <span v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可减 {{ item.noffer }} 元</span>
+                <span v-if="item.offer > 0"> <a-tag color="red">{{ item.offername }}</a-tag> 当前已满 {{ item.ladamt }}减 {{ item.offer }}元</span>
+                <span v-if="item.noffer > 0"> <a-tag color="red">{{ item.offername }}</a-tag> 您还差{{ Math.abs(item.gapamt) }}元 , 可减 {{ item.noffer }} 元</span>
               </span>
               <!-- 满减-包邮 -->
               <span v-if="String(item.offercode).substring(0,4) == 1120 ">
-                当前 <a-tag color="red">{{ item.offername }}</a-tag> 满 {{ item.ladamt }} 包邮
+               <a-tag color="red">{{ item.offername }}</a-tag> 当前 满 {{ item.ladamt }} 包邮
               </span>
               <!-- 满减-折扣 -->
               <span v-if="String(item.offercode).substring(0,4) == 1130 ">
-                <span v-if="item.offer > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag> 满 {{ item.ladamt }} 打 {{ item.offer }}折</span>
+                <span v-if="item.offer > 0"><a-tag color="red">{{ item.offername }}</a-tag> 当前已满 {{ item.ladamt }} 打 {{ item.offer }}折</span>
                 <span v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可打 {{ item.noffer }} 折</span>
               </span>
               <!-- 满赠-现金券 -->
               <span v-if="String(item.offercode).substring(0,4) == 1210 ">
-                <span  v-if="item.offer > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag>  满 {{ item.ladamt }} 送 {{ item.offer }}元现金券</span>
+                <span  v-if="item.offer > 0"> <a-tag color="red">{{ item.offername }}</a-tag> 当前已满 {{ item.ladamt }} 送 {{ item.offer }}元现金券</span>
                 <span  v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可送 {{ item.noffer }} 元现金券</span>
               </span>
               <!-- 满赠-包邮券 -->
               <span v-if="String(item.offercode).substring(0,4) == 1220 ">
-                <span v-if="item.ladamt > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag>  满 {{ item.ladamt }} 送包邮券</span>
+                <span v-if="item.ladamt > 0"> <a-tag color="red">{{ item.offername }}</a-tag>当前已满 {{ item.ladamt }} 送包邮券</span>
                 <span v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可送 {{ item.noffer }} 元包邮券</span>
               </span>
               <!-- 满赠-折扣券 -->
               <span v-if="String(item.offercode).substring(0,4) == 1230 ">
-                <span v-if="item.offer > 0">当前 <a-tag color="red">{{ item.offername }}</a-tag>  满 {{ item.ladamt }} 送 {{ item.offer }}折券</span>
+                <span v-if="item.offer > 0"><a-tag color="red">{{ item.offername }}</a-tag>当前已满 {{ item.ladamt }} 送 {{ item.offer }}折券</span>
                 <span v-if="item.noffer > 0">您还差{{ Math.abs(item.gapamt) }}元 , 可送 {{ item.noffer }}折券</span>
               </span>
               <!-- 满赠-赠品 -->
@@ -138,7 +136,6 @@
             <p class="summary">
               <span>商品合计：￥{{total}}</span>
               <span>活动优惠：￥{{amt}}</span>
-             
               <span class="total-price" v-if="total > 0">应付总金额：￥{{(total - amt).toFixed(2)}}</span>
               <span class="total-price" v-if="total == 0">应付总金额：￥{{total}}</span>
               <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
@@ -415,7 +412,6 @@ export default {
       );
     },
     addCount(index, item) {
-      
       let _this = this;
       // 限购数量
       if(item.num >= item.maximum) {
@@ -816,6 +812,11 @@ li {
 .like-box{
   padding-left: 12px;
   padding-right: 12px;
+}
+.tip {
+  color: red;
+  float:right; 
+  margin-right: 20px;
 }
 </style>
 

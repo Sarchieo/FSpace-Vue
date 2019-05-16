@@ -60,10 +60,11 @@
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.ladnum }}</span>
                   <span>人</span>
                 </p> -->
-                <p class="surplus" v-if="rulecode == 1113">
+                <!-- <p class="surplus" v-if="rulecode == 1113">
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
-                </p>
+                </p> -->
+                <!--</p>-->
 
                 <div class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
@@ -138,12 +139,12 @@
                          <!-- <span>送</span> -->
                          <!-- <span>{{item.fiftList}}</span> -->
                       </span>
-                      <span class="see-more">查看更多商品</span>
+                      <!-- <span class="see-more">查看更多商品</span> -->
                     </div>
                     <div class="promotion-list" v-if="rulecode === 1210 || rulecode === 1220 || rulecode === 1230 || rulecode === 1240 || rulecode === 2110 || rulecode === 2120 || rulecode === 2130 || rulecode === 2140">
                       <a-tag color="pink">满赠</a-tag>
                       <!-- <span>满 800 赠 40元优惠券</span> -->
-                      <span class="see-more">查看更多商品</span>
+                      <!-- <span class="see-more">查看更多商品</span> -->
                     </div>
                   </div>
                 </div>
@@ -615,7 +616,6 @@ export default {
     // 获取商品详情
     this.getProd();
     this.getImgUrl();
-    this.getLadoff();
     this.$nextTick(() => {
       this.isShowPic = true;
     });
@@ -715,7 +715,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.activitiesBySKU = result.data;
-            console.log(_this.activitiesBySKU[0].brulecode)
             // 如果存在活动 取库存与活动库存最小值
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
@@ -885,13 +884,10 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
+
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
-              _this.ladnum =
-                _this.discount.ladoffs[
-                  _this.discount.ladoffs.length - 1
-                ].ladnum;
               // 设置倒计时
               _this.secondKill(
                 _this.stringToDate(_this.discount.currentDate),
