@@ -63,7 +63,7 @@
                 <p class="surplus" v-if="rulecode == 1113">
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
-                </p> -->
+                </p>
 
                 <div class="price" v-if="rulecode == 1113">
                   <span class="price-title">价格</span>
@@ -78,11 +78,11 @@
 
                 <div class="price">
                   <!-- 显示采购价 -->
-                  <p v-if="prodDetail.vatp !== -1">
+                  <!-- <p v-if="prodDetail.vatp !== -1">
                     <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="price-title">采购价:</span>
-                    <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="money-count">
-                <div class="price" v-else>
-                  <p>
+                    <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="money-count"> -->
+                <!-- <div class="price" v-else> -->
+                  <p v-if="prodDetail.vatp !== -1">
                     <span class="price-title" v-if="rulecode !== 1113 || rulecode !== 1133">采购价:</span>
                     <span class="money-count" v-if="prodDetail.vatp != -1">
                       <span class="font-size14">￥</span>
@@ -677,7 +677,6 @@ export default {
     },
     // 获取活动阶梯值
     getLadoff() {
-      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "CalculateModule";

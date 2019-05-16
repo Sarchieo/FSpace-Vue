@@ -9,18 +9,18 @@
             <a href>网站公告</a>
           </a-breadcrumb-item>
         </a-breadcrumb>
-        <div>
-          <div class="notice-box">
-            <h1>{{notice.type}} {{notice.title}}</h1>
+        <div v-if="notice.length > 0">
+          <div class="notice-box" >
+            <h1>{{notice[noticeIndex].type}} {{notice[noticeIndex].title}}</h1>
           </div>
-          <p class="time">发布时间：{{notice.date}} {{notice.time}}</p>
+          <p class="time"> 发布时间：{{notice[noticeIndex].date}} {{notice[noticeIndex].time}}  <span>作者：</span><span>{{notice[noticeIndex].editor}}</span> </p>
           <div>
-            <img :src="notice.img" alt class="notice-pic">
+            <img :src="notice[noticeIndex].img" alt class="notice-pic">
           </div>
-          <!-- <p class="step">
-            <span class="previous">上一条</span>
-            <span class="next">下一条</span>
-          </p> -->
+          <p class="step">
+            <span class="previous" @click="toPage(noticeIndex-1)" v-if="noticeIndex !== 0">上一条</span>
+            <span class="next" v-if=" noticeIndex < notice.length-1" @click="toPage(noticeIndex+1)">下一条</span>
+          </p>
         </div>
       </a-layout-content>
 
@@ -43,14 +43,28 @@ export default {
   },
   data() {
     return {
-     notice: ''
+     notice: {},
+     noticeIndex: 0
     };
   },
   mounted() {
-    this.notice = JSON.parse(this.$route.query.notice)
+    
+    this.noticeIndex = Number(this.$route.query.noticeIndex)
+    this.notice = JSON.parse(sessionStorage.getItem("noticeListAll"))
+    console.log(this.notice)
   },
   methods: {
-
+    toPage(index) {
+      if(index <= 0 ){
+        this.noticeIndex = 0;
+      }
+      else if(index >= this.notice.length-1){
+        this.noticeIndex = this.notice.length-1;
+      }else{
+        this.noticeIndex=index;
+      }
+      
+    }
   }
 };
 </script>
@@ -98,12 +112,9 @@ export default {
   .p-size(40px, 40px, 14px, left, 10px, #999);
   background: #f8f8f8;
 }
-.notice-pic {
-  .container-size(block, 1190px, 600px, 0 auto, 0px);
-  img {
-    width: 100%;
-    height: 100%;
-  }
+img{
+  display: block;
+  margin: 0 auto;
 }
 .step {
   .container-size(block, 1190px, 40px, 0 auto, 0px);
