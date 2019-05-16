@@ -96,7 +96,7 @@
               <a-button class="again-pay" @click="reOrder(item)">再次购买</a-button>
             </li>
           </ul>
-          <div class="order-state float-left">
+          <!-- <div class="order-state float-left">
             <div class="state-box">
               <div class="state-box-content">
                 <p class="state-p" v-if="item.ostatus === 0">未付款</p>
@@ -143,13 +143,15 @@
                 </a-steps>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="order-state float-left" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node && logistixs.node.length > 0">
             <div class="logistixs-left">
+
               <div v-for="(items,index1) in logistixs" :key="index1">
+              <p>物流状态</p>
               <p>送货方式：普通快递</p>
-              <p>承运人： {{items.carriername}}</p>
-              <p>货运单号：{{ items.billno }}</p>
+              <p>配送方式： {{items.carriername}}</p>
+              <p>运单号：{{ items.billno }}</p>
               </div>
               
             </div>
@@ -252,11 +254,10 @@ export default {
     this.cusno = this.$route.query.cusno;
     this.queryOrderDetail();
     this.getLogisticsInfo();
-    this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}').data
+    // this.logistixs = JSON.parse('{"code":200,"message":"调用成功","requestOnline":false,"data":{"logictype":"0","node":[{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功签收","time":" 10:39:52","status":"签收完成"},{"date":"2019-04-24","des":"货物到达湖南长沙市岳麓区,已签收","time":"12:00:00","status":"已签收"},{"date":"2019-04-24","des":"货物到达湖南长沙市雨花区,送货中","time":"10:36:00","status":"送货中"},{"date":"2019-04-24","des":"司机(123456789-15211001123)在湖南省长沙市岳麓区文轩路41靠近上海浦东发展银行(麓谷科技支行)成功取货","time":" 10:37:25","status":"取货完成"}],"billno":"201904240000000281"}}').data
   },
   methods: {
     getLogisticsInfo() {
-      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "OrderOptModule";
@@ -273,7 +274,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            
             _this.logistixs = result.data;
           }
         })
@@ -576,7 +576,8 @@ export default {
     .container-size(block, 263px, 350px, 0 auto, 0px);
     padding: 10px 0px;
     p {
-      .p-size(31px, 31px, 16px, left, 5px, #666666);
+      .p-size(31px, 31px, 16px, left, 0px, #666666);
+      padding-left: 5px;
     }
     .address {
       height: auto !important;

@@ -293,7 +293,6 @@ export default {
         .then(result => {
           if (result.code === 200 && result.data.length > 0) {
             this.invoice = result.data[0];
-            
           } else {
             this.$confirm({
               title: "提示",

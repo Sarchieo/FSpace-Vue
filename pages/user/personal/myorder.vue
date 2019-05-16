@@ -12,6 +12,16 @@
       <a-tab-pane tab="售后完成" key="-3"></a-tab-pane>
       <a-tab-pane tab="取消交易" key="-4"></a-tab-pane>
     </a-tabs>
+    <div class="screen">
+      <span>订单号:</span> <a-input v-model="ordernum" placeholder="输入订单号搜索" />
+      <span>下单时间：</span>
+       <el-date-picker
+      v-model="year"
+      type="year"
+      placeholder="选择年">
+      </el-date-picker>
+      <a-button class="search-btn" @click="queryOrderList()">搜索</a-button>
+    </div>
     <p class="table-title">
        <!-- <a-checkbox
         :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0"
@@ -31,19 +41,9 @@
       <span class="width10">订单状态</span>
       <span class="width10">结算状态</span>
       <span class="width15">金额</span>
-      <span class="width10">操作</span>
+      <span class="width13">操作</span>
      
     </p>
-    <div class="screen">
-      <span>订单号:</span> <a-input v-model="keyword" placeholder="输入订单号搜索" />
-      <span>下单时间：</span>
-       <el-date-picker
-      v-model="year"
-      type="year"
-      placeholder="选择年">
-      </el-date-picker>
-      <a-button class="search-btn" @click="queryOrderList()">搜索</a-button>
-    </div>
     <ul class="order-box" v-if="this.orderList.length !== 0 ">
       <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
         <!-- <p class="order-info-text">
@@ -55,13 +55,13 @@
           </a-tooltip>
         </p> -->
         <div style="float:left;overflow: hidden;">
-          <div class="goods-box" v-for="(items,index1) in item.goods" :key="index1">
+          <div class="goods-box">
              <!-- <a-checkbox
                 @change="onChange"
                 class="pick-input margin-left12 margin-top62"
              ></a-checkbox> -->
             <div class="goods-pic">
-              <img v-lazy="items.imgURl" @click="toDetail(items)">
+              <img v-lazy="item.goods[0].imgURl" @click="toDetail(item)">
               <!-- <span class="time">{{item.odate}}</span> -->
               <p class="order-info"><span>订单号：</span> <span>{{item.orderno}}</span></p>
               <p class="order-info"><span>下单时间：</span> <span>{{item.odate}} {{item.otime}}</span></p>
@@ -96,7 +96,7 @@
             <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
             <!-- v-if="item.ostatus === 3" -->
             <p class="detail" @click="confirmReceipt(item)" v-if="item.ostatus == 3">确认签收</p>
-            <p class="detail" @click="afterApply(item)" v-if="item.ostatus == 3">申请售后</p>
+            <p class="detail" @click="afterApply(item)" v-if="item.ostatus === 3 || item.ostatus === 4">申请售后</p>
             <p @click="toEvaluate(item)" v-if="item.ostatus === 4 && (item.cstatus&128) === 0" ref="toevaluate">
               评论
             </p>
@@ -107,7 +107,7 @@
             <p class="detail" @click="toDetails(item)">订单详情</p>
             <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
             <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
-            <p @click="deleteOrder(item)" class="del-order">删除此订单</p>
+            <p @click="deleteOrder(item)" class="del-order">删除</p>
             <!-- v-if="item.ostatus == 3" -->
             <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)===0">补开发票</p>
           </div>
@@ -212,7 +212,7 @@ export default {
   },
   data() {
     return {
-      keyword: '', // 输入搜索订单
+      ordernum: '', // 输入搜索订单
       cancelOrderNo: {},//要取消的订单
       asType: "2",
       isApply: false,
@@ -637,7 +637,8 @@ export default {
 }
 .screen{
   .container-size(block, 960px, 55px, 0 auto, 0px);
-  padding-top: 8px;
+  // padding-top: 8px;
+  margin-bottom: 12px;
   line-height: 50px;
 }
 .ant-input{
@@ -653,10 +654,13 @@ export default {
 .search-btn:hover{
   cursor: pointer;
 }
+.width13{
+  width: 14%;
+}
 .width45 {
   // .position(relative, 0px, 0px);
   float: left;
-  width: 44.6%;
+  width: 49.2%;
   img {
     // .position(bsolute, 14px, 14px);
     float: left;
@@ -701,8 +705,8 @@ export default {
   li {
     .container-size(block, 960px, auto, 0 auto, 0px);
     .container-color(#ffffff, 1px solid #f8f8f8, #666666);
-    margin-top: 10px;
-    margin-bottom: 10px;
+    // margin-top: 10px;
+    // margin-bottom: 10px;
     .order-info-text {
       .p-size(45px, 45px, 16px, left, 20px, #666666);
       background: #f8f8f8;
@@ -729,19 +733,19 @@ export default {
     .goods-box {
       // .container-size(inline-block, 820px, 108px, 0 auto, 0px);
       width: 960px;
-      height: 140px;
+      height: 160px;
       margin: 0px;
       border-top: 1px solid #f8f8f8;
       border-right: 1px solid #f8f8f8;
       div {
         display: inline-block;
-        height: 140px;
+        height: 160px;
       }
       .goods-pic {
         float: left;
         width: 470px;
-        height: 140px;
-        padding-top: 20px;
+        height: 160px;
+        padding-top: 30px;
         padding-left: 10px;
         img {
           float: left;
@@ -817,7 +821,7 @@ export default {
       .state {
         float: left;
         width: 103px;
-        height: 140px;
+        height: 160px;
         line-height: 140px;
         border-left: 1px solid #f8f8f8;
         border-right: 1px solid #f8f8f8;
@@ -895,9 +899,6 @@ export default {
 .price-p {
   color: #ed3025 !important;
 }
-.sucess:hover{
-  cursor: pointer;
-}
 .retreat div:hover {
   cursor: pointer;
   border: 1px solid #ed3025;
@@ -937,7 +938,7 @@ export default {
 .operation {
   float: right;
   overflow: hidden;
-  width: 103px;
+  width: 135px;
   // height: 108px;
   // height: auto;
   // border-bottom: 1px solid #e0e0e0;

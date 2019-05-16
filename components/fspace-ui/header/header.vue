@@ -762,16 +762,25 @@ li {
   height: 80px;
 }
 .spike {
-  margin-top: 2px;
+  margin-top: 5px;
   margin-bottom: 15px;
-  text-indent: 27.4%;
+  text-indent: 25.4%;
 }
 .spike a {
+  display: inline-block;
+  width: 140px;
+  height: 26px;
+  line-height: 26px;
   padding: 0px 23px 0px 0px;
+  text-align: left;
+  text-indent: 0px!important;
   margin-left: 15px;
   margin-right: 15px;
   border-right: 2px solid #e0e0e0;
   color: #999999 !important;
+   overflow: hidden;
+ text-overflow:ellipsis;
+ white-space: nowrap;
 }
 .medicine-name-box .spike a:last-child{
   border: none!important;
