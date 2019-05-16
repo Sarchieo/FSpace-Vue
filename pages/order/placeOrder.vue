@@ -99,7 +99,7 @@
               开票信息：
               <a-select defaultValue="开发票" @change="handleChange">
                 <a-select-option :value="1">普通发票</a-select-option>
-                <a-select-option :value="2">增值税发票</a-select-option>
+                <!-- <a-select-option :value="2">增值税发票</a-select-option> -->
               </a-select>
             </p>
           </div>
