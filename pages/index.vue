@@ -894,7 +894,6 @@ export default {
     },
     // 获取公告消息列表
     getNotice() {
-      debugger
       return new Promise((resolve, reject) => {
         this.fsGeneralMethods
           .request(this, "globalServer", "NoticeModule", "query")
@@ -1072,7 +1071,6 @@ export default {
     },
     // 消息详情
     toNotice(index) {
-      debugger
       this.$router.push({
         path: "/user/notice",
         query: {

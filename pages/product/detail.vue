@@ -113,7 +113,7 @@
                       {{ prodDetail.minPrice }}
                       <a-tooltip placement="bottom" style="width: 20px;height: 20px;border-radius: 50%;">
                         <template slot="title">
-                          <span>商品折后价为叠加所有可用优惠券后的最优购买单价,达到品种优惠条件或者领券且满足用券条件后，商品结算价格可低至该最优购买单价</span>
+                          <span>商品折后价为叠加所有符合条件的有效促销活动后的最优购买单价。商品结算价格可低至该最优购买单价。</span>
                         </template>
                         <a-tag color="orange">?</a-tag>
                       </a-tooltip>
@@ -176,7 +176,7 @@
                 </p>
                 <p class="packing">
                   <span>生产厂家：</span>
-                  <span class="margin-right190">{{ prodDetail.manuName }}</span>
+                  <span class="brand-text margin-right190">{{ prodDetail.manuName }}</span>
                   <span class="medpacknum-text">中包装量：</span>
                   <span>{{prodDetail.medpacknum}}</span>
                   <span>{{prodDetail.unitName}}</span>
@@ -210,7 +210,7 @@
                     :min="1"
                     :max="maximum"
                     v-model="inventory"
-                    style="position:relative;top: 1px;left:0px;height: 30px;width: 50px;"
+                    style="position:relative;top: 1px;left:0px;height: 30px;width: 70px;"
                   />
                   <!-- <a-input-number :min="1" :max="maximum" v-model="inventory" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;"/> -->
                   <button @click="addCount()">+</button>
@@ -1311,6 +1311,13 @@ li {
 }
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
+}
+.brand-text{
+  display: inline-block;
+  width: 150px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .remind{
   width: 100%;
