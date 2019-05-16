@@ -1,15 +1,14 @@
 <template>
   <ul class="sider-menu" ref="siderui" v-if="isShowMenu || isMouseover">
-    
     <li
       v-for="(i,index) in list"
       :key="index"
       :ref="'li' + index"
       class="sider-menu-li"
-      @mouseover="showChildren(i, index,$event)"
+      @mouseover="showChildren(i, index, $event)"
       @mouseout="hideChildren(i)"
     >
-    <span class="iconfont">&#xe60d;</span>
+    <span class="iconfont" v-html="i.icon"></span>
     {{i.label}}
     <a-icon type="right" class="i-right"/>
       <!-- 弹出层  v-show="i.isActive"-->
@@ -82,8 +81,10 @@ export default {
               _this.list = JSON.parse(result.data);
               _this.list.forEach(element => {
                 _this.$set(element, "isActive", false);
-                if(element.value == 20) {
-                // _this.$set(element, "icon", '&#xe604);
+                switch(element.value) {
+                  case '20':
+                    _this.$set(element, "icon", '&#xe604')
+                  break
                 }
               });
             }

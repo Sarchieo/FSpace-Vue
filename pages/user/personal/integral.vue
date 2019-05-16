@@ -25,8 +25,8 @@ import * as types from "../../../store/mutation-types";
 const columns = [
   {
     title: "日期",
-    dataIndex: "createdate",
-    key: 'createdate',
+    dataIndex: "date",
+    key: 'date',
     columnWidth: '100px'
   },
   {
@@ -111,6 +111,9 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.data = result.data
+            _this.data.forEach((item) => {
+               item.date = item.createdate + ' ' + item.createtime
+            })
             _this.total = result.total;
           }
         })

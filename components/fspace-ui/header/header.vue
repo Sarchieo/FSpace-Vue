@@ -133,7 +133,6 @@
               </div>
             </div>
             <p class="spike" v-show="isShowHeader">
-              
               <a href="javascript:;" @click="toGoods(item)" v-for="(item, index) in keyWordList" :key="index">{{ item }} </a>
               <!--  -->
             </p>
