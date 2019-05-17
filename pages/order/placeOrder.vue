@@ -70,7 +70,7 @@
             </p>
             <p class="select-invo">
               开票信息：
-              <a-select defaultValue="开发票" @change="handleChange">
+              <a-select defaultValue="普通发票" @change="handleChange">
                 <a-select-option :value="1">普通发票</a-select-option>
                 <!-- <a-select-option :value="2">增值税发票</a-select-option> -->
               </a-select>
@@ -161,16 +161,15 @@
           </div>
           <div class="balance">
             <p class="title">我的余额</p>
-            <p class="user-balance">账户余额：  <span>￥100</span>
+            <p class="user-balance">账户余额：<span>￥100</span>
               <a-checkbox
                 class="pick-input"
               >全部抵扣</a-checkbox>
             </p>
             <p class="title">备注留言</p>
-            <a-textarea placeholder="请填写您的备注留言" autosize class="leaving "/>
+            <a-textarea v-model="remarks" placeholder="请填写您的备注留言" autosize class="leaving "/>
           </div>
           <ul class="goods-title">
-            
             <li>
               <div class="goods-info">商品信息</div>
               <div>单价</div>
@@ -186,8 +185,16 @@
               <div class="goods-name">
                 <img v-lazy="item.imgURl" alt>
                 <p class="drugs-name">{{item.ptitle}}</p>
-                <p class="active"><a-tag color="red">满减</a-tag></p>
-                <p class="active"><a-tag color="red">满赠</a-tag></p>
+                <!-- <p class="active"><a-tag color="red">满减</a-tag></p> -->
+                <p class="active">
+                   <a-tag
+                    color="red"
+                    v-for="(ruleItem, i) in item.rule"
+                    :key="i"
+                  >{{ ruleItem.rulename }}</a-tag>
+                </p>
+                
+                <!-- <p class="active"><a-tag color="red">满赠</a-tag></p> -->
                 <p class="drugs-guige">{{item.spec}}</p>
                 <p class="drugs-comp">{{item.verdor}}</p>
               </div>
@@ -199,12 +206,12 @@
           </ul>
 
           <div class="pay" v-if="cartList.length > 0">
-            <p>共种商品多少多少，总件数多少多少， 商品总计：￥保留两位小数</p>
+            <!-- <p>共{{ cartList.length }}种商品，总件数多少多少， 商品总计：￥保留两位小数</p> -->
             <p>
               <span class="price-span">￥{{ selectCounpon.tprice }}</span>
               <span class="title">商品总金额：</span>
             </p>
-            <p>
+            <p v-if="!selectCounpon.freeship">
               <span class="price-span">￥ {{ cartList[0].freight }}</span>
               <span class="title">运费：</span>
             </p>
@@ -213,7 +220,7 @@
               <span class="title">活动优惠：</span>
             </p>
             <p>
-              <span class="price-span">￥ 惠哥提供</span>
+              <span class="price-span">￥ {{ selectCounpon.cpvalue }}</span>
               <span class="title">优惠券抵扣：</span>
             </p>
 
@@ -273,6 +280,7 @@ export default {
   },
   data() {
     return {
+      remarks: '',
       lineCouponCode: '', // 线下券明码
       couponPwd: '', // 线下券密码
       form: this.$form.createForm(this),
@@ -449,6 +457,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.selectCounpon = result.data;
+            debugger
           }
         })
       );
@@ -480,6 +489,7 @@ export default {
         coupon: this.couponCode, // 优惠券码
         unqid: this.unqid,
         orderObj: {
+          remarks: this.remarks,
           cusno: this.storeInfo.comp.storeId,
           busno: 536862720, //自营暂时写死
           consignee: this.consignee,
@@ -889,7 +899,6 @@ li {
 .pay-btn {
   float: right;
   margin-right: 40px;
-  margin-top: 40px;
   .button-color(1px solid transparent, #ed2f26, #ffffff);
   .button-size(200px, 50px, 50px, 18px, 0, 5px);
 }

@@ -200,7 +200,6 @@
                    <p class="detail-p">实付金额：￥{{items.payamt}}</p>
                 </div>
               </li>
-              
             </ul>
           </div>
 

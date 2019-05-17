@@ -4,7 +4,7 @@ module.exports = {
   mode: 'universal',
   
   head: {
-    title: '一块医药',
+    title: '一块医药  舒心购・聚划算',
     meta: [
       { charset: 'utf-8' },
       { 'http-equiv': 'pragma', content: 'no-cache' },
