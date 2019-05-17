@@ -3,7 +3,7 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
-        <!-- <div class="stets">
+        <div class="stets">
           <a-steps :current="1">
             <a-step>
               <template slot="title">我的采购单</template>
@@ -13,7 +13,7 @@
             <a-step title="采购单付款"/>
             <a-step title="采购单完成"/>
           </a-steps>
-        </div>-->
+        </div>
         <div class="go-pay">
           <div class="receiving">
             <p class="receiving-address">收货人信息</p>
