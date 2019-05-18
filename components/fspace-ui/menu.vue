@@ -125,6 +125,9 @@ export default {
   font-weight: bold;
   color: rgb(255, 0, 54) !important;
 }
+.iconfont{
+  margin-right: 15px;
+}
 .two-type:hover {
   cursor: pointer;
 }
