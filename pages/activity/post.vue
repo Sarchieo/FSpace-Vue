@@ -94,6 +94,9 @@ export default {
     this.actcode = this.$route.query.actcode;
   },
   methods: {
+    addCart(item) {
+      this.fsGeneralMethods.addShoppingCart(this, item, 1)
+    },
     toDetails(item) {
       this.$router.push({
         path: "/product/detail",

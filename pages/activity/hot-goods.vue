@@ -27,7 +27,7 @@
                     v-model="item.goodsNum"
                   />
                     <button class="reduct-small" @click.stop="reduce(item)">-</button>
-                    <a-button class="add" @click.stop="addCart()">加入采购单</a-button>
+                    <a-button class="add" @click.stop="addCart(item)">加入采购单</a-button>
                   </p>
                   <!-- <button @click="toDetail(item)">查看详情</button> -->
                 </a-card>
@@ -75,6 +75,9 @@ export default {
     this.actcode = this.$route.query.actcode
   },
   methods: {
+    async addCart(item) {
+      this.fsGeneralMethods.addShoppingCart(this, item, 1)
+    },
      // 热销商品列表
     async getHotGoods() {
       let _this = this;

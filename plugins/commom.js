@@ -21,8 +21,10 @@ var fsGeneralMethods = {
           let iRequest = new inf.IRequest();
           iRequest.cls = cls;
           iRequest.method = method;
-          iRequest.param.json = JSON.stringify(params || {});
+          iRequest.param.pageIndex = params && params.pageIndex || 1;
+          iRequest.param.pageNumber = params && params.pageNumber || 10;
           iRequest.param.arrays = arr || []
+          iRequest.param.json = JSON.stringify(params || {});
           iRequest.param.token = localStorage.getItem("identification") || ""; // Fingerprintjs2 设备指纹采集器生成
           context.$refcallback(
             context,
@@ -110,13 +112,31 @@ var fsGeneralMethods = {
                     "/" +
                     arr[index][skuName] +
                     "-" + imageType + ".jpg" +
-                    '?' + date.getMonth() + date.getDay() + date.getMinutes() + date.getSeconds()
+                    '?' + date.getFullYear()  + date.getMonth() + date.getDay()
                   );
                 });
               }
             }
           )
         );
+      },
+      /**
+       * 商品添加购物车
+       * @param {*} context 
+       * @param {*} obj 
+       */
+      addShoppingCart(context, obj, num) {
+        this.request(context, "orderServer", "ShoppingCartModule", "saveShopCart", {
+          pdno: obj.sku,
+          pnum: num,
+          checked: 0,
+          compid: context.$store.state.user.comp.storeId
+        })
+        .then(result => {
+          if (result.code === 200) {
+            context.$message.success(result.message);
+          }
+        });
       }
     }
   }

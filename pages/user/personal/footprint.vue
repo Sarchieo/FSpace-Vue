@@ -54,28 +54,7 @@ export default {
   methods: {
     // 加入采购单
     addCart(items) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ShoppingCartModule";
-      iRequest.method = "saveShopCart";
-      iRequest.param.json = JSON.stringify({
-        pdno: items.sku,
-        pnum: 1,
-        checked: 0,
-        compid: _this.storeInfo.comp.storeId
-      })
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-          if (result.code === 200) {
-            _this.$message.success(result.message);
-          }
-        })
-      );
+     this.fsGeneralMethods.addShoppingCart(this, item, 1)
     },
     toDetail(items) {
       this.$router.push({

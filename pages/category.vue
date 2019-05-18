@@ -90,7 +90,7 @@
       <ul class="goods-list-box" v-show="!isGoods">
         <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item)">
           <a-card hoverable class="card">
-            <img class="card-img" v-lazy="item.imgURl" slot="cover">
+            <img class="card-img" v-lazy="item.imgURl" :key="item.imgURl" slot="cover">
             <img class="card-img" src="../assets/img/shortage.png" slot="cover" v-if="item.store === 0">
             <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus === 1 || item.rulestatus === 2 || item.rulestatus === 4" alt="" slot="cover">
             <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
@@ -203,18 +203,7 @@ export default {
   methods: {
     // 加入购物车
     addCart(item) {
-      this.fsGeneralMethods
-        .request(this, "orderServer", "ShoppingCartModule", "saveShopCart", {
-          pdno: item.sku,
-          pnum: 1,
-          checked: 0,
-          compid: this.storeInfo.comp.storeId
-        })
-        .then(result => {
-          if (result.code === 200) {
-            this.$message.success(result.message);
-          }
-        });
+     this.fsGeneralMethods.addShoppingCart(this, item, 1)
     },
     // 收藏
     addCollec(item) {
@@ -250,7 +239,6 @@ export default {
         new this.$iceCallback(
           function result(result) {
             if (result.code === 200) {
-              _this.brandnameList = [];
               _this.manunameList = [];
               _this.specList = [];
               _this.conditionList = result.data;

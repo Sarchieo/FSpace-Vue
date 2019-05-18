@@ -3,12 +3,12 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
-         <div class="buying-text">
-            <!-- <img src="../../assets/banner/brands.jpg" alt=""> -->
-         </div>
+        <div class="buying-text">
+          <!-- <img src="../../assets/banner/brands.jpg" alt=""> -->
+        </div>
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
-          
+
           <!-- <div class="person-num">
              <div class="person-left">
                  商品累计拼团人数/折扣 描述方式待定
@@ -17,22 +17,21 @@
                  距团购活动时间还剩    05 时 12 分 12  秒  <span>9</span>
              </div>
           </div>-->
-           <div class="search-div">
-              <span class="bland-list" v-for="(items,index1) in brandName" :key="index1">{{items}}</span>
-              <!-- <a-tag color="gray" v-for="(items,index1) in brandName" :key="index1">{{items}}</a-tag> -->
-              <!-- <input v-model="keyword" type="text" placeholder="在结果中搜索">
-              <button @click="getBrand()">搜索</button> -->
-              <div style="clear:both;"></div>
-            </div>
+          <div class="search-div">
+            <span class="bland-list" @click="selectBrand(item)" v-for="(item,index) in brands" :key="index">{{item.brandname}}</span>
+            <!-- <a-tag color="gray" v-for="(items,index1) in brandName" :key="index1">{{items}}</a-tag> -->
+            <!-- <input v-model="keyword" type="text" placeholder="在结果中搜索">
+            <button @click="getBrand()">搜索</button>-->
+            <div style="clear:both;"></div>
+          </div>
           <div class="limited-goods">
-           
             <div class="goods-box" v-for="(item,index) in brandList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
-                <span class="collec" @click.stop="addCollec(item)">
+                <!-- <span class="collec" @click.stop="addCollec(item)">
                   收藏
                   <a-icon type="star"/>
-                </span>
-                <img v-lazy="item.imgURl" alt class="goods-pic">
+                </span> -->
+                <img v-lazy="item.imgURl" :key="item.imgURl" alt class="goods-pic">
                 <p class="validity">有效期{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
@@ -41,9 +40,7 @@
                   ￥{{item.vatp}}元
                   <del>原价￥{{item.rrp}}元</del>
                 </p>
-                <p class="goods-price" v-else>
-                  ￥认证后可见
-                </p>
+                <p class="goods-price" v-else>￥认证后可见</p>
                 <p class="package">
                   <span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span>
                   <span class="float-right">已售{{item.sales}}{{item.unitName}}</span>
@@ -53,18 +50,15 @@
                   <span class="float-right">库存{{item.store}} {{item.unitName}}</span>
                 </p>
                 <p class="p-btn">
-                  <button class="small-btn">-</button>
-                  <input type="text" v-model="count" readonly="readonly">
-                  <button class="small-btn">+</button>
+                  <button class="small-btn" @click.stop="reduceCount(item)">-</button>
+                  <input type="number" v-model="item.pnum" @click.stop="">
+                  <button class="small-btn" @click.stop="addCount(item)">+</button>
                   <button class="add-cart" @click.stop="addCart(item)">加入采购单</button>
                 </p>
                 <!-- <button @click="toDetails()">查看详情</button> -->
               </a-card>
             </div>
-            <a-pagination
-              :total="total"
-               @change="onChangePage"
-            />
+            <a-pagination :total="total" @change="onChangePage"/>
           </div>
         </div>
       </a-layout-content>
@@ -90,7 +84,7 @@ export default {
   },
   data() {
     return {
-      brandName: [],
+      brands: [],
       count: 1,
       total: 0,
       currentIndex: 1,
@@ -101,41 +95,33 @@ export default {
         background: "black"
       },
       brandList: [],
-      keyword: ''
+      keyword: "",
+      brandno: ''
     };
   },
   mounted() {
-    this.getBrand();
+    this.getBrands();
+    this.getBrandList();
     this.actcode = this.$route.query.actcode;
   },
   methods: {
-     // 加入购物车
+    // 加入采购单
     addCart(item) {
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ShoppingCartModule";
-      iRequest.method = "saveShopCart";
-      iRequest.param.json = JSON.stringify({
-        pdno: item.sku,
-        pnum: 1,
-        checked: 0,
-        compid: _this.storeInfo.comp.storeId
-      })
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "orderServer" + Math.floor(_this.storeInfo.comp.storeId/8192%65535),
-        iRequest,
-        new this.$iceCallback(
-          function result(result) {
-              if (result.code === 200) {
-                  _this.$message.success(result.message);
-              }
-          })
-        );
+      this.fsGeneralMethods.addShoppingCart(this, item, item.pnum);
+    },
+    // 新增商品数量
+    addCount(item) {
+      item.pnum += 1
+    },
+    reduceCount(item) {
+      item.pnum > 1 ? item.pnum -- : item.pnum
+    },
+    selectBrand(item) {
+      this.brandno = item.brandno
+      this.getBrandList();
     },
     // 加入收藏
-   addCollec(item) {
+    addCollec(item) {
       this.fsGeneralMethods
         .request(this, "orderServer", "MyCollectModule", "add", {
           sku: item.sku,
@@ -148,52 +134,57 @@ export default {
           }
         });
     },
-    callback(key) {
-    },
     toDetails(item) {
       this.$router.push({
         path: "/product/detail",
         query: {
           sku: item.sku,
-          spu: item.spu,
+          spu: item.spu
         }
       });
     },
     onChangePage(pageNumber) {
-      this.currentIndex = pageNumber
-      this.getBrand()
+      this.currentIndex = pageNumber;
+      this.getBrandList();
     },
-    // 品牌专区数据请求
-    getBrand() {
-      debugger
-      let _this = this;
-      _this.brandList = []
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "ProdModule";
-      iRequest.method = "brandMallSearch";
-      iRequest.param.pageIndex = this.currentIndex;
-      iRequest.param.pageNumber = 10;
-      iRequest.param.json = JSON.stringify({
-        keyword: this.keyword,
-        actcode: this.actcode
-      });
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "goodsServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
+    // 获取品牌列表
+    getBrands() {
+      this.fsGeneralMethods
+        .request(this, 'goodsServer', 'ProdExtModule', 'queryBrandInfo')
+        .then(result => {
           if (result.code === 200) {
-            _this.brandList = result.data;
-            _this.brandList.forEach(item =>{
-              _this.brandName.push(item.brandName)
+            this.brands = result.data
+            this.brands.forEach(item => {
+              this.$set(item, 'isChecked', false)
             })
-            _this.total = result.total
-            _this.currentIndex = result.pageNo
-            _this.fsGeneralMethods.addImages(_this, _this.brandList, 'sku', 'spu')
           }
-        })
-      );
+        });
+    },
+    getBrandList() {
+      this.fsGeneralMethods
+      .request(this, 'goodsServer', 'ProdModule', 'brandMallSearch', {
+        keyword: this.keyword,
+        brandno: this.brandno,
+        pageIndex: this.currentIndex,
+        pageNumber: 10
+      })
+      .then(result => {
+        if (result.code === 200) {
+          
+          this.brandList = result.data;
+          this.brandList.forEach((item,index) => {
+            this.$set(item, 'pnum', 1)
+          });
+          this.total = result.total;
+          this.currentIndex = result.pageNo;
+          this.fsGeneralMethods.addImages(
+            this,
+            this.brandList,
+            "sku",
+            "spu"
+          );
+        }
+      });
     }
   }
 };
@@ -220,7 +211,7 @@ export default {
     .container-size(inline-block, 500px, 86px, 0 auto, 0px);
   }
 }
-.bland-list{
+.bland-list {
   float: left;
   padding: 10px 20px;
   margin-right: 5px;
@@ -231,7 +222,7 @@ export default {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
-.bland-list:hover{
+.bland-list:hover {
   cursor: pointer;
 }
 .card {
@@ -240,7 +231,7 @@ export default {
 .buying-text {
   .container-size(block, 1190px, 200px, 0 auto, 0px);
   background: #e0e0e0;
-  background: url('../../assets/banner/brands.jpg') no-repeat top center;
+  background: url("../../assets/banner/brands.jpg") no-repeat top center;
   p {
     .p-size(100px, 100px, 28px, center, 0px, #333333);
     font-weight: bold;
@@ -347,7 +338,7 @@ export default {
   .container-size(block, 1190px, auto, 0, 5px);
   min-height: 80px;
   padding: 10px 10px 5px 10px;
-  margin: 15px 0px; 
+  margin: 15px 0px;
   border: 1px solid #e0e0e0;
   box-shadow: 0px 0px 30px 0px #e0e0e0;
   input {
@@ -417,9 +408,9 @@ export default {
 .card:hover .collec {
   display: block;
 }
-.buying-text{
-   .container-size(block, 100%, 463px, 0, 0px);
-  img{
+.buying-text {
+  .container-size(block, 100%, 463px, 0, 0px);
+  img {
     width: 100%;
     height: 100%;
   }
