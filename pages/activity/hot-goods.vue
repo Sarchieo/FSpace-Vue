@@ -17,17 +17,17 @@
                   <img v-lazy="item.imgURl" class="goods-pic">
                   <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                   <p class="goods-surplus">{{item.manuName}} </p>
-                  <p class="goods-limit">还剩<span>{{item.store}}</span>盒</p>
+                  <p class="goods-limit">还剩<span>{{item.store}}</span>{{item.unitName}}</p>
                   <p class="goods-price" v-if="item.vatp != -1">单价￥{{item.vatp}}元 </p>
                   <p class="goods-price" v-else>￥认证后可见 </p>
+                  <!-- <p class="package">中包装数量 {{item.medpacknum}}{{item.unitName}}</p> -->
                   <p class="button-p">
-                    <button class="add-small" @click.stop="add()">+</button>
+                    <button class="add-small" @click.stop="add(item)">+</button>
                     <a-input
-                    v-model="goodsNum"
-                    readonly="true"
+                    v-model="item.goodsNum"
                   />
-                    <button class="reduct-small" @click.stop="reduce()">-</button>
-                    <a-button class="add">加入采购单</a-button>
+                    <button class="reduct-small" @click.stop="reduce(item)">-</button>
+                    <a-button class="add" @click.stop="addCart()">加入采购单</a-button>
                   </p>
                   <!-- <button @click="toDetail(item)">查看详情</button> -->
                 </a-card>
@@ -51,11 +51,13 @@ export default {
   computed: {
     userStatus() {
       return this.$store.state.userStatus;
-    }
+    },
+    storeInfo() {
+      return this.$store.state.user;
+    },
   },
   data() {
     return {
-      goodsNum: 1,
       total: 0,
       currentIndex: 1,
       current: 1,
@@ -94,6 +96,9 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.hotGoodsList = result.data
+            _this.hotGoodsList.forEach(item => {
+              _this.$set(item, 'goodsNum', item.goodsNum =1)
+            })
             _this.total = result.total
             _this.currentIndex = result.pageNo
             _this.fsGeneralMethods.addImages(_this, _this.hotGoodsList, 'sku', 'spu')
@@ -114,14 +119,15 @@ export default {
         }
       });
     },
-    add() {
-      this.goodsNum += 1
+    add(item) {
+      item.goodsNum ++
+      console.log(item)
     },
-    reduce() {
-      if(this.goodsNum === 1){
+    reduce(item) {
+      if(item.goodsNum === 1){
         return
       }
-      this.goodsNum -= 1
+      item.goodsNum --
     }
   }
 };
@@ -131,6 +137,9 @@ export default {
 @import "../../components/fspace-ui/button/index.less";
 .ant-layout-content {
   background: #f8f8f8;
+}
+.card:hover .button-p{
+  display: block;
 }
 .search-p {
   .p-size(60px, 60px, 14px, left, 8px, #666666);
@@ -201,6 +210,7 @@ export default {
    height: 123px;
 }
 .button-p{
+  display: none;
    .position(absolute,265px,0px);
   .p-size(40px, 40px, 14px, left, 8px, #666666);
    width: 100%;
@@ -215,8 +225,7 @@ export default {
   }
   .add{
     float: right;
-    margin-right: 5px;
-    margin-left: 5px;
+    margin: 2px 5px 0px 5px;
     .button-size( 95px,35px,35px,14px,0px,3px);
     .button-color(1px solid transparent,#ED2F26,#ffffff);
     
@@ -231,8 +240,18 @@ export default {
     background: #ffffff;
   }
 }
+.package{
+  .position(absolute,280px,0px);
+  width: 100%;
+  text-indent: 10px;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  color: #999;
+}
 .goods-name {
-  .position(absolute,183px,0px);
+  .position(absolute,188px,0px);
   width: 100%;
   text-indent: 10px;
   font-size: 14px;
@@ -244,7 +263,7 @@ export default {
   .position(absolute,50px,250px);
 }
 .goods-surplus {
-  .position(absolute,215px,0px);
+  .position(absolute,220px,0px);
   width: 100%;
   text-indent: 10px;
   overflow: hidden;
@@ -254,7 +273,7 @@ export default {
   color: #999999;
 }
 .goods-limit{
-  .position(absolute,235px,0px);
+  .position(absolute,240px,0px);
   width: 100%;
   text-indent: 10px;
   font-size: 14px;
@@ -264,7 +283,7 @@ export default {
   }
 }
 .goods-price {
-  .position(absolute,160px,0px);
+  .position(absolute,165px,0px);
   width: 100%;
    text-indent: 10px;
   font-size: 16px;

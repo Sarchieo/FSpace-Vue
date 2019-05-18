@@ -68,7 +68,7 @@
                 type="primary"
                 @click="offlinePay('5')"
                 v-if="this.value === 4"
-              >确定付款</a-button>
+              >确定购买</a-button>
             </p>
             <p class="surplus-time">
               剩余付款时间：
