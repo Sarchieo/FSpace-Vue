@@ -82,9 +82,26 @@ export default {
               _this.list.forEach(element => {
                 _this.$set(element, "isActive", false);
                 switch(element.value) {
+                  case '10':
+                    _this.$set(element,"icon",'&#xe60d')
+                    break
                   case '20':
+                    _this.$set(element, "icon", '&#xe61b')
+                  break
+                  case '21':
+                    _this.$set(element, "icon", '&#xe619')
+                  break
+                  case '30':
                     _this.$set(element, "icon", '&#xe604')
                   break
+                  case '50':
+                    _this.$set(element, "icon", '&#xe61a')
+                  break
+                  case '60':
+                    _this.$set(element, "icon", '&#xe63f')
+                  break
+                  case '61':
+                    _this.$set(element, "icon", '&#xe6fe')
                 }
               });
             }
@@ -107,6 +124,9 @@ export default {
   font-size: 16px!important;
   font-weight: bold;
   color: rgb(255, 0, 54) !important;
+}
+.iconfont{
+  margin-right: 15px;
 }
 .two-type:hover {
   cursor: pointer;

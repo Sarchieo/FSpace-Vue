@@ -4,7 +4,7 @@
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
          <div class="buying-text">
-            <img src="../../assets/banner/brands.jpg" alt="">
+            <!-- <img src="../../assets/banner/brands.jpg" alt=""> -->
          </div>
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
@@ -17,14 +17,18 @@
                  距团购活动时间还剩    05 时 12 分 12  秒  <span>9</span>
              </div>
           </div>-->
+           <div class="search-div">
+              <span class="bland-list" v-for="(items,index1) in brandName" :key="index1">{{items}}</span>
+              <!-- <a-tag color="gray" v-for="(items,index1) in brandName" :key="index1">{{items}}</a-tag> -->
+              <!-- <input v-model="keyword" type="text" placeholder="在结果中搜索">
+              <button @click="getBrand()">搜索</button> -->
+              <div style="clear:both;"></div>
+            </div>
           <div class="limited-goods">
-            <p class="search-p">
-              <input v-model="keyword" type="text" placeholder="在结果中搜索">
-              <button @click="getBrand()">搜索</button>
-            </p>
+           
             <div class="goods-box" v-for="(item,index) in brandList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
-                <span class="collec">
+                <span class="collec" @click.stop="addCollec(item)">
                   收藏
                   <a-icon type="star"/>
                 </span>
@@ -86,6 +90,7 @@ export default {
   },
   data() {
     return {
+      brandName: [],
       count: 1,
       total: 0,
       currentIndex: 1,
@@ -129,6 +134,20 @@ export default {
           })
         );
     },
+    // 加入收藏
+   addCollec(item) {
+      this.fsGeneralMethods
+        .request(this, "orderServer", "MyCollectModule", "add", {
+          sku: item.sku,
+          prize: item.vatp,
+          promtype: 0
+        })
+        .then(result => {
+          if (result.code === 200) {
+            this.$message.success(result.message);
+          }
+        });
+    },
     callback(key) {
     },
     toDetails(item) {
@@ -146,6 +165,7 @@ export default {
     },
     // 品牌专区数据请求
     getBrand() {
+      debugger
       let _this = this;
       _this.brandList = []
       let iRequest = new inf.IRequest();
@@ -165,6 +185,9 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.brandList = result.data;
+            _this.brandList.forEach(item =>{
+              _this.brandName.push(item.brandName)
+            })
             _this.total = result.total
             _this.currentIndex = result.pageNo
             _this.fsGeneralMethods.addImages(_this, _this.brandList, 'sku', 'spu')
@@ -197,12 +220,27 @@ export default {
     .container-size(inline-block, 500px, 86px, 0 auto, 0px);
   }
 }
+.bland-list{
+  float: left;
+  padding: 10px 20px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: #e0e0e0;
+  color: #333;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+.bland-list:hover{
+  cursor: pointer;
+}
 .card {
   .container-size(inline-block, 225px, 310px, 0px 0px, 0px);
 }
 .buying-text {
   .container-size(block, 1190px, 200px, 0 auto, 0px);
   background: #e0e0e0;
+  background: url('../../assets/banner/brands.jpg') no-repeat top center;
   p {
     .p-size(100px, 100px, 28px, center, 0px, #333333);
     font-weight: bold;
@@ -228,9 +266,9 @@ export default {
   background: #ffffff;
 }
 .goods-pic {
-  .position(absolute, 10px, 9px);
-  width: 206px;
-  height: 132px;
+  .position(absolute, 10px, 45px);
+  width: 135px;
+  height: 123px;
 }
 .goods-name {
   .position(absolute, 205px, 0px);
@@ -293,7 +331,8 @@ export default {
   line-height: 30px;
   width: 100%;
   padding: 0 10px;
-  background: #e0e0e0;
+  background: #f8f8f8;
+  text-align: center;
 }
 .package {
   .position(absolute, 278px, 0px);
@@ -304,9 +343,13 @@ export default {
   padding: 0 10px;
   color: #999999;
 }
-.search-p {
-  .p-size(60px, 60px, 14px, left, 0px, #666666);
-  padding-top: 10px;
+.search-div {
+  .container-size(block, 1190px, auto, 0, 5px);
+  min-height: 80px;
+  padding: 10px 10px 5px 10px;
+  margin: 15px 0px; 
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 0px 30px 0px #e0e0e0;
   input {
     width: 200px;
     height: 30px;
@@ -357,7 +400,8 @@ export default {
     background: #ffffff;
   }
   .add-cart {
-    .button-size(85px, 30px, 20px, 14px, 0px, 0px);
+    float: right;
+    .button-size(80px, 30px, 20px, 14px, 0px, 0px);
     .button-color(1px solid transparent, #ff0036, #ffffff);
   }
 }
@@ -368,6 +412,7 @@ export default {
   display: none;
   .position(absolute, 10px, 170px);
   color: #999999;
+  z-index: 99;
 }
 .card:hover .collec {
   display: block;

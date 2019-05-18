@@ -138,7 +138,7 @@
               <span>活动优惠：￥{{amt}}</span>
               <span class="total-price" v-if="total > 0">应付总金额：￥{{(total - amt).toFixed(2)}}</span>
               <span class="total-price" v-if="total == 0">应付总金额：￥{{total}}</span>
-              <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">下单</a-button>
+              <a-button :loading="loading" class="order-btn" @click="toPlaceOrder()">去购买</a-button>
             </p>
           </div>
           <div class="guess" v-if="likeList.length >= 5">
