@@ -28,7 +28,7 @@
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
                 <a-checkbox
-                  :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0"
+                  :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0 || item.num === 0"
                   @change="onChange"
                   :value="item"
                   v-model="item.checked"
@@ -39,10 +39,10 @@
                 <p class="goods-name" @click="toDetail(item)">{{ item.brand }}{{ item.ptitle }}</p>
                 <p class="goods-guige">{{item.spec}}</p>
                 <p class="manufactor">{{item.verdor}}</p>
-                <p class="icon" v-if="item.rule.length > 0">
+                <p class="icon">
                   <a-tag color="#999999" v-if="item.status == 1">秒杀商品无法从购物车购买</a-tag>
                   <a-tag color="#999999" v-if="item.status == 2">当前商品已下架</a-tag>
-                  <a-tag color="#999999" v-if="item.status == 3">商品库存不足</a-tag>
+                  <a-tag color="#999999" v-if="item.status == 3 || item.num === 0">商品库存不足</a-tag>
                   <a-tag
                     color="red"
                     v-for="(ruleItem, i) in item.rule"
@@ -55,7 +55,7 @@
                   <button :disabled="item.status == 1 || item.maximum === 0" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
                   <a-input-number
-                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.checked || item.maximum === 0"
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.checked || item.maximum === 0 || item.num === 0"
                     :min="1"
                     :max="item.maximum"
                     v-model="item.num"
@@ -63,7 +63,7 @@
                     readonly="readonly"
                   />
                   <button
-                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0"
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0 || item.num === 0"
                     @click="addCount(index,item)"
                   >+</button>
                   <!-- <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.maximum" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
@@ -187,8 +187,7 @@ export default {
       discount: 100,
       cartList: [],
       likeList: [],
-      tips: [],
-      medpacknum: 5
+      tips: []
       // acamt amt: 优惠总金额 checked 0未选中 discount: 商品优惠价（优惠多少） inventory 总库存 limitnum 限购 0 不限购 num 商品数量 pdno :sku
       // pdprice 🐤价格 ptitle 名称   rulename 活动名称 spec 规格 status  unqid 唯一id verdor 厂家 vperiod有效期
     };
@@ -415,12 +414,12 @@ export default {
     addCount(index, item) {
       let _this = this;
       // 限购数量
-      if(item.num + this.medpacknum > item.maximum) {
+      if(item.num + item.medpacknum > item.maximum) {
         _this.$message.warning(item.ptitle + '限购' + item.maximum + '件')
         return
       }
       item.checked = true;
-      item.num += this.medpacknum;
+      item.num += item.medpacknum;
 
       if (this.timeoutflag != null) {
         clearTimeout(this.timeoutflag);
@@ -430,11 +429,11 @@ export default {
       }, 500);
     },
     reduceCount(index, item) {
-      if (item.num - this.medpacknum <= 1) {
+      if (item.num - item.medpacknum <= 1) {
         return false;
       }
       let _this = this;
-      item.num-= this.medpacknum;
+      item.num-= item.medpacknum;
       item.checked = true;
       if (this.timeoutflag != null) {
         clearTimeout(this.timeoutflag);

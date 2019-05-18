@@ -290,6 +290,7 @@ export default {
       iRequest.method = "queryOrders";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.arrays = [this.year,this.ostatus, this.orderNo, '', this.sDate, this.eDate];
+      console.log(this.sDate, this.eDate)
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       this.$refcallback(
@@ -596,13 +597,12 @@ export default {
       this.year = new Date(value[0]).getFullYear()
       let startDate = new Date(value[0])
       let endDate = new Date(value[1])
-      console.log(startDate.getFullYear(), endDate.getFullYear() )
       if(startDate.getFullYear() != endDate.getFullYear()) {
         this.$message.error('结束年份必须为' + startDate.getFullYear())
         return
       }
-      this.sDate = startDate.getFullYear() + '-' + this.timeAdd0(startDate.getMonth()) + '-' + this.timeAdd0(startDate.getDay()) 
-      this.eDate = endDate.getFullYear() + '-' + this.timeAdd0(endDate.getMonth()) + '-' + this.timeAdd0(endDate.getDay())
+      this.sDate = startDate.getFullYear() + '-' + this.timeAdd0(startDate.getUTCMonth()+1) + '-' + this.timeAdd0(startDate.getUTCDate())
+      this.eDate = endDate.getFullYear() + '-' + this.timeAdd0(endDate.getUTCMonth()+1) + '-' + this.timeAdd0(endDate.getUTCDate())
       this.monthValue = value
     },
     timeAdd0(str) {

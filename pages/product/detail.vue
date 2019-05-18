@@ -45,7 +45,7 @@
                 >查看更多 ></span>
               </p>
               <div class="price-server">
-                <!-- <p class="onek-person" v-if="rulecode == 1133">
+                <p class="onek-person" v-if="rulecode == 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.offer / 10 }}</span>
                   <span>折</span>
                 </p>
@@ -58,8 +58,8 @@
                 />
                 <p class="onek-person" v-if="rulecode === 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.ladnum }}</span>
-                  <span>人</span>
-                </p> -->
+                  <span>件</span>
+                </p>
                 <!-- <p class="surplus" v-if="rulecode == 1113">
                   还剩{{ discount.limits }}支
                   <span>限购{{ discount.limits }}支</span>
@@ -542,7 +542,10 @@ export default {
       unqid2: 0, // 秒杀前生成的码
       loading: false,
       maximum: 1, // 最大库存
-      inventory: 1, // 当前库存
+      activeStore: 0, // 活动库存
+      store: 0,// 商品库存
+      activeLimits: 0, // 活动限购量
+      inventory: 1, // 当前商品数
       percentAge: 50,
       flashSale: {
         h: 0,
@@ -622,7 +625,7 @@ export default {
     });
   },
   methods: {
-    pageNumber(pageNumber) {
+    pageNumber(pageNumber) { 
       this.currentIndex = pageNumber;
       // 再重新调一次请求评价列表方法
       this.getGoodsApprise();
@@ -664,11 +667,9 @@ export default {
     },
     // 新增采购数量
     addCount() {
-      if (this.inventory + this.prodDetail.medpacknum > this.maximum) {
-        this.$message.warning("库存不足或超出限购数量");
-        return;
+      if(this.checkInventory()) {
+        this.inventory+= this.prodDetail.medpacknum;
       }
-      this.inventory+= this.prodDetail.medpacknum;
     },
     reduceCount() {
       if (this.inventory - this.prodDetail.medpacknum <= 1) {
@@ -690,7 +691,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            // _this.discountLadoff = result.data
             result.data.forEach((item) => {
               _this.discountLadoff = item
             })
@@ -698,6 +698,27 @@ export default {
         })
       );
     },
+    // // 获取药品活动
+    // getactivities() {
+    //   debugger
+    //   let _this = this;
+    //   let iRequest = new inf.IRequest();
+    //   iRequest.cls = "CalculateModule";
+    //   iRequest.method = "getactivities";
+    //   iRequest.param.arrays = [this.sku];
+    //   iRequest.param.token = localStorage.getItem("identification");
+    //   this.$refcallback(
+    //     this,
+    //     "orderServer" +
+    //       Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+    //     iRequest,
+    //     new this.$iceCallback(function result(result) {
+    //       debugger
+    //       if (result.code === 200) {
+    //       }
+    //     })
+    //   );
+    // },
     // 获取药品活动类型
     getActivitiesBySKU() {
       let _this = this;
@@ -734,10 +755,6 @@ export default {
         this.$router.push({
           path: "/user/login"
         });
-        return;
-      }
-      if (!this.inventory > 0 || this.inventory > this.maximum) {
-        this.$message.warning("库存不足或超出限购数量");
         return;
       }
       let _this = this;
@@ -869,6 +886,22 @@ export default {
         })
       );
     },
+    // 库存校验
+    checkInventory() {
+      if(this.store !==0 && this.inventory + this.prodDetail.medpacknum > this.store) {
+        this.$message.warning("当前商品库存不足");
+        return false;
+      }
+      if(this.activeStore !==0 && this.inventory + this.prodDetail.medpacknum > this.activeStore) {
+        this.$message.warning("当前商品活动库存不足");
+        return false;
+      }
+      if(this.activeLimits !==0 && this.inventory + this.prodDetail.medpacknum > this.activeLimits) {
+        this.$message.warning("当前商品限购量不足");
+        return false;
+      }
+      return true
+    },
     // 查询商品活动类型
     queryActiveType(unqid) {
       let _this = this;
@@ -883,7 +916,6 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-
           if (result.code === 200) {
             if (result.data) {
               _this.discount = result.data;
@@ -892,6 +924,7 @@ export default {
                 _this.stringToDate(_this.discount.currentDate),
                 _this.discount.endTime
               );
+              _this.activeLimits = _this.discount.limits;
               // 设置最大库存
               _this.maximum = _this.discount.limits;
             }
@@ -966,6 +999,7 @@ export default {
                 // 活动阶梯值
                 _this.getLadoff();
               }
+              _this.store = _this.prodDetail.store;
               _this.maximum = _this.prodDetail.store;
               _this.details = JSON.parse(_this.prodDetail.detail);
             }
@@ -1078,10 +1112,10 @@ export default {
         return;
       }
 
-      if (!this.inventory > 0 || this.inventory > this.maximum) {
-        this.$message.warning("库存不足或超出限购数量");
-        return;
-      }
+      // if (!this.inventory > 0 || this.inventory > this.maximum) {
+      //   this.$message.warning("库存不足或超出限购数量");
+      //   return;
+      // }
 
       this.loading = true;
       let _this = this;

@@ -21,9 +21,7 @@ module.exports = {
       // { src: 'https://www.onekdrug.com/iceInterfaces.js' }
     ] 
   },
-
   loading: { color: '#fff' },
-
   css: [
     'ant-design-vue/dist/antd.less',
     'element-ui/lib/theme-chalk/index.css',
@@ -36,7 +34,6 @@ module.exports = {
   plugins: [
     { src: '~/plugins/antd-ui.js', ssr: true },
     { src: '~/plugins/vue-lazyload.js', ssr: true },
-    { src: '~/plugins/element-ui', ssr: false },
     { src: '~/plugins/fs-plugin.js', ssr: false },
     { src: '~/plugins/fingerprint2.js', ssr: false },
     { src: '~/plugins/commom.js', ssr: false },

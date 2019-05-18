@@ -76,14 +76,14 @@
               </a-select>
             </p>
           </div>
-          <div class="discount" v-if="couponList.length > 0">
+          <div class="discount">
             <!-- <p class="use-coupon">
               <a-button>使用优惠券</a-button>
               <a-button>使用线下优惠券</a-button>
             </p> -->
-            <a-tabs defaultActiveKey="1" @change="callback">
+            <a-tabs defaultActiveKey="1">
               <a-tab-pane tab="使用优惠券" key="1">
-                <p v-if="couponList.length === 0" class="no-coupon">暂无优惠券可领取！</p>
+                <p v-if="couponList.length === 0" class="no-coupon">暂无优惠券可使用</p>
                 <div class="coupon-box" v-if="couponList.length !== 0">
                   
                   <div v-for="(item, index) in couponList" :key="index">
@@ -104,8 +104,8 @@
                         <span v-if="item.ctype === 3">永久有效</span>
                         <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
                         <a-checkbox
-                          v-model="item.isChecked"
-                          @change="onChange(item, index)"
+                          :checked="item.isChecked"
+                          @change="onChange(item, index, $event)"
                           class="coupon-check"
                         ></a-checkbox>
                       </p>
@@ -127,8 +127,8 @@
                         <span v-if="item.ctype === 3">永久有效</span>
                         <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
                         <a-checkbox
-                          v-model="item.isChecked"
-                          @change="onChange(item, index)"
+                          :checked="item.isChecked"
+                          @change="onChange(item, index, $evnet)"
                           class="coupon-check"
                         ></a-checkbox>
                       </p>
@@ -142,8 +142,8 @@
                       <p class="coupon-bottom">
                         有效期至 {{ item.enddate }}
                         <a-checkbox
-                          v-model="item.isChecked"
-                          @change="onChange(item, index)"
+                          :checked="item.isChecked"
+                          @change="onChange(item, index, $evnet)"
                           class="coupon-check"
                         ></a-checkbox>
                       </p>
@@ -152,17 +152,20 @@
                 </div>
               </a-tab-pane>
               <a-tab-pane tab="使用线下优惠券" key="2" forceRender>
-                <a-input v-model="lineCouponCode" placeholder="请输入券面明码" class="line-coupon"/>
-                <a-input v-model="couponPwd" placeholder="请输入密码" class="line-coupon"/>
-                <a-button class="line-btn">确定使用</a-button>
+                <a-input v-model="exno" placeholder="请输入券面明码" class="line-coupon"/>
+                <a-input v-model="pwd" placeholder="请输入密码" class="line-coupon"/>
+                <a-button class="line-btn" @click="useCoupon()">使用</a-button>
+                <span>{{ offlineCouponText }}</span>
               </a-tab-pane>
             </a-tabs>
-            
           </div>
           <div class="balance">
             <p class="title">我的余额</p>
-            <p class="user-balance">账户余额：<span>￥100</span>
+            <p class="user-balance">账户余额：<span>{{ selectCounpon.bal }}</span>
               <a-checkbox
+                v-if="selectCounpon.bal > 0"
+                :checked="isSelectBalway"
+                @change="onChangeBalWay"
                 class="pick-input"
               >全部抵扣</a-checkbox>
             </p>
@@ -281,8 +284,6 @@ export default {
   data() {
     return {
       remarks: '',
-      lineCouponCode: '', // 线下券明码
-      couponPwd: '', // 线下券密码
       form: this.$form.createForm(this),
       orderType: 0,
       isCoupon: false,
@@ -305,10 +306,15 @@ export default {
         payamt: 0, // 实付金额
         tdiscount: 0, // 总共优惠
         tprice: 0, // 总计金额
-        acpay: 0
+        acpay: 0,
+        bal: 0
       },
+      exno: '',
+      pwd: '',
       invoice: {},
-      invoiceCode: 1 // 1普通发票 2增值税发票
+      invoiceCode: 1, // 1普通发票 2增值税发票
+      isSelectBalway: true,
+      offlineCouponText: '', // 线下优惠券提示
     };
   },
   mounted() {
@@ -328,6 +334,54 @@ export default {
     this.getInvoice();
   },
   methods: {
+    useCoupon() {
+      if(this.exno === '') {
+        this.$message.error('请填写优惠券券码 ')
+        return
+      }
+      if(this.pwd === '') {
+        this.$message.error('请填写优惠券密码 ')
+        return
+      }
+      this.fsGeneralMethods
+        .request(this, "discountServer", "CouponManageModule", "revOfflineExcgCoupon", {
+          compid: this.storeInfo.comp.storeId,
+          exno: this.exno,
+          pwd: this.pwd
+        })
+        .then(result => {
+          if (result.code === 200 && result.data.unqid !== 0) {
+            this.offlineCouponCalculate(result.data.unqid)
+          }
+        });
+      
+    },
+    offlineCouponCalculate(unqid) {
+      let _this = this;
+      let arr = this.cartList.map(value => {
+        return {
+          pdno: value.pdno,
+          pnum: value.num,
+          compid: _this.storeInfo.comp.storeId,
+          price: value.pdprice,
+          amt: value.pdprice * value.num,
+          coupon: unqid,
+          shipfee: _this.cartList[0].freight,
+          balway: _this.isSelectBalway ? 1 : 0,
+        };
+      });
+      this.fsGeneralMethods
+        .request(this, "orderServer", "CouponRevModule", "offlineCouponCalculate" , arr)
+        .then(result => {
+          if (result.code === 200) {
+            this.$message.success(result.message)
+            this.selectCounpon = result.data;
+            this.offlineCouponText = this.selectCounpon.msg
+            this.unqid = unqid
+            this.queryActCouponList()
+          }
+        });
+    },
     // 获取发票信息
     getInvoice() {
       let _this = this;
@@ -407,7 +461,8 @@ export default {
           price: value.pdprice,
           amt: value.pdprice * value.num,
           samt: value.acamt + value.amt,
-          flag: value.oflag ? 1 : 0
+          flag: value.oflag ? 1 : 0,
+          balway: _this.isSelectBalway ? 1 : 0
         };
       });
       iRequest.param.json = JSON.stringify(arr);
@@ -424,7 +479,12 @@ export default {
             result.data.length > 0
           ) {
             result.data.forEach(item => {
-              item.isChecked = false;
+              if(item.unqid == _this.unqid) {
+                item.isChecked = true;
+              }else {
+                item.isChecked = false;
+              }
+             
             });
             _this.couponList = result.data;
           }
@@ -444,7 +504,8 @@ export default {
           price: value.pdprice,
           amt: value.pdprice * value.num,
           coupon: _this.unqid,
-          shipfee: _this.cartList[0].freight
+          shipfee: _this.cartList[0].freight,
+          balway: _this.isSelectBalway ? 1 : 0
         };
       });
       iRequest.param.json = JSON.stringify(arr);
@@ -457,7 +518,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.selectCounpon = result.data;
-            debugger
           }
         })
       );
@@ -486,6 +546,7 @@ export default {
       });
       iRequest.param.json = JSON.stringify({
         placeType: this.placeType,
+        balway: _this.isSelectBalway ? 1 : 0,
         coupon: this.couponCode, // 优惠券码
         unqid: this.unqid,
         orderObj: {
@@ -568,19 +629,21 @@ export default {
         callback("收货人手机号码有误");
       }
     },
-    onChange(item, index) {
+    onChange(item, index, e) {
       if (item.isChecked) {
-        this.unqid = item.unqid;
-        this.couponCode = item.coupno;
-        this.coupNum = item.offerAmt;
-        item.brulecode === 2120
-          ? (this.isPostal = true)
-          : (this.isPostal = false);
-      } else {
         this.unqid = 0;
         this.couponCode = 0;
         this.coupNum = 0;
         this.isPostal = false;
+        item.isChecked = false
+      } else {
+        this.unqid = item.unqid;
+        this.couponCode = item.coupno;
+        this.coupNum = item.offerAmt;
+        item.isChecked = true
+        item.brulecode === 2120
+          ? (this.isPostal = true)
+          : (this.isPostal = false);
       }
       this.couponList.forEach((item, i) => {
         if (index !== i) {
@@ -590,9 +653,11 @@ export default {
       this.couponCalculate();
     },
     handleChange(value) {
-      console.log(value);
-
       this.invoiceCode = value;
+    },
+    onChangeBalWay(e) {
+      this.isSelectBalway = e.target.checked
+      this.couponCalculate()
     }
   }
 };
