@@ -3,8 +3,8 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
-        <div class="binnar-box">
-            <img src="../../assets/banner/limited.jpg" alt="">
+        <div class="buying-text">
+            <!-- <img src="../../assets/banner/limited.jpg" alt=""> -->
           </div>
         <div class="limited-box">
           <!-- 广告位 -->
@@ -186,9 +186,11 @@ export default {
   background: #ffffff;
 }
 // 广告位样式
-.binnar-box {
+.buying-text {
   .container-size(block, 100%, 463px, 0, 0px);
-  img{
+  background: url("../../assets/banner/limited.jpg") no-repeat top center;
+  margin-bottom: 20px;
+  img {
     width: 100%;
     height: 100%;
   }

@@ -4,7 +4,7 @@
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
           <div class="buying-text">
-            <img src="../../assets/banner/onek.jpg" alt="">
+            <!-- <img src="../../assets/banner/onek.jpg" alt=""> -->
          </div>
         <div class="limited-box">
           <!-- 活动文案=》未定 -->
@@ -367,9 +367,11 @@ export default {
 .ant-pagination{
   text-align: center;
 }
-.buying-text{
-   .container-size(block, 100%, 463px, 0, 0px);
-  img{
+.buying-text {
+  .container-size(block, 100%, 463px, 0, 0px);
+  background: url("../../assets/banner/onek.jpg") no-repeat top center;
+  margin-bottom: 20px;
+  img {
     width: 100%;
     height: 100%;
   }

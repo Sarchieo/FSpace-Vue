@@ -90,8 +90,14 @@
                 <span>{{item.contact}}</span>
               </p>
               <p class="address">
-                <span>收货地址:</span>
-                <span>{{item.areaAllName}}{{ storeInfo.comp.address }}</span>
+                <span class="title">收货地址:</span>
+                <span class="content">{{item.areaAllName}}{{ storeInfo.comp.address }}</span>
+                <div style="clear: both;"></div>
+              </p>
+              <p class="address">
+                <span class="title">备&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp注:</span>
+                <span class="contents">{{item.remarks}}</span>
+                <div style="clear: both;"></div>
               </p>
               <a-button class="again-pay" @click="reOrder(item)">再次购买</a-button>
             </li>
@@ -181,7 +187,7 @@
                   <img :src="items.imgURl" class="goods-img" alt="">
                   <p>{{items.pname}}{{items.brandn}}</p>
                   <p>{{items.pspec}}</p>
-                  <p v-if="items.standarNo === ''">{{items.standarNo}}</p>
+                  <p v-if="items.standarNo !== ''">{{items.standarNo}}</p>
                   <p>{{items.manun}}</p>
                 </div>
                 <div class="width11 padding40">
@@ -196,7 +202,7 @@
                 </div>
                  <div class="width28 detail-div">
                    <p class="detail-p">优惠金额：￥{{items.distprice}}</p>
-                   <p class="detail-p">余额抵扣：暂未返回</p>
+                   <p class="detail-p">余额抵扣：￥{{items.balamt}}</p>
                    <p class="detail-p">实付金额：￥{{items.payamt}}</p>
                 </div>
               </li>
@@ -580,6 +586,26 @@ export default {
     }
     .address {
       height: auto !important;
+      .title{
+         float: left;
+         width: 70px;
+         height: 30px;
+         line-height: 30px;
+      }
+      .content{
+         float: right;
+         width: 180px;
+         height: auto;
+         line-height: 30px;
+      }
+      .contents{
+         float: right;
+         width: 180px;
+         height: auto;
+         overflow: hidden;
+         text-overflow:ellipsis;
+        //  white-space: nowrap;
+      }
     }
     .again-pay {
       .button-display(block, 0 auto);
