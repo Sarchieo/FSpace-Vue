@@ -34,9 +34,9 @@
                 <p class="goods-price" v-else>￥认证后可见</p>
                 <p class="package">中包装{{item.medpacknum}}{{item.unitName}} <span class="float-right">已售{{item.sales}}{{item.unitName}}</span></p>
                 <p class="button-p">
-                  <button class="add-small" @click.stop="add(item)">+</button>
-                  <input type="number" v-model="item.goodsNum" @click.stop="">
-                  <button class="reduct-small" @click.stop="reduce(item)">-</button>
+                  <button class="add-small" @click.stop="addCount(item)">+</button>
+                  <input type="number" v-model="item.pnum" @click.stop="">
+                  <button class="reduct-small" @click.stop="reduceCount(item)">-</button>
                   <a-button class="add" @click.stop="addCart(item)">加入采购单</a-button>
                 </p>
               </a-card>
@@ -107,7 +107,15 @@ export default {
     },
      // 加入购物车
     addCart(item) {
-      this.fsGeneralMethods.addShoppingCart(this, item, 1)
+      this.fsGeneralMethods.addShoppingCart(this, item, item.pnum)
+    },
+    // 新增商品数量
+    addCount(item) {
+      debugger
+      item.pnum += 1
+    },
+    reduceCount(item) {
+      item.pnum > 1 ? item.pnum -- : item.pnum
     },
     // 为你精选数据
     getSelects() {
@@ -118,8 +126,8 @@ export default {
           .then(result => {
             if (result.code === 200) {
               this.selectedList = result.data;
-               this.selectedList.forEach(item => {
-              this.$set(item, "goodsNum", (item.goodsNum = 1));
+              this.selectedList.forEach(item => {
+              this.$set(item, "pnum", 1);
             });
               this.total = result.total;
               this.currentIndex = result.pageNo
@@ -139,16 +147,6 @@ export default {
             this.$message.success(result.message);
           }
         });
-    },
-        add(item) {
-      item.goodsNum++;
-      console.log(item);
-    },
-    reduce(item) {
-      if (item.goodsNum === 1) {
-        return;
-      }
-      item.goodsNum--;
     },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber;

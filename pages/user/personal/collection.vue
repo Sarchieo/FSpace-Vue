@@ -113,7 +113,7 @@ export default {
       );
     },
     addCart(item) {
-      this.fsGeneralMethods.addShoppingCart(this, item, 1)
+      this.fsGeneralMethods.addShoppingCart(this, item, item.pnum)
     },
     // 跳转详情
     toDetail(item) {

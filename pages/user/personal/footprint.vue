@@ -54,7 +54,7 @@ export default {
   methods: {
     // 加入采购单
     addCart(items) {
-     this.fsGeneralMethods.addShoppingCart(this, item, 1)
+     this.fsGeneralMethods.addShoppingCart(this, item, item.pnum)
     },
     toDetail(items) {
       this.$router.push({
@@ -81,7 +81,6 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            console.log(result.data)
             _this.footList = result.data;
                 _this.footList.forEach(item => {
               _this.fsGeneralMethods.addImages(
