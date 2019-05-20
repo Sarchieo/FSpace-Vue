@@ -10,7 +10,7 @@
           <div class="limited-goods">
             <p class="search-p">
               <input v-model="keyword" type="text" placeholder="在结果中搜索">
-              <button @click="getHotGoods()">搜索</button>
+              <button @click="getNewGoods()">搜索</button>
             </p>
             <div class="goods-box" v-for="(item,index) in newGoodsList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
@@ -35,7 +35,7 @@
                 <p class="package">中包装{{item.medpacknum}}{{item.unitName}} <span class="float-right">已售{{item.sales}}{{item.unitName}}</span></p>
                 <p class="button-p">
                   <button class="add-small" @click.stop="add(item)">+</button>
-                  <input type="number" v-model="item.goodsNum" @click.stop="">
+                  <input type="number" v-model="item.pnum" @click.stop="">
                   <button class="reduct-small" @click.stop="reduce(item)">-</button>
                   <a-button class="add" @click.stop="addCart(item)">加入采购单</a-button>
                 </p>
@@ -95,6 +95,9 @@ export default {
         }
       });
     },
+    async addCart(item) {
+       this.fsGeneralMethods.addShoppingCart(this, item, item.pnum);
+    },
     async getNewGoods() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -114,7 +117,7 @@ export default {
           if (result.code === 200) {
             _this.newGoodsList = result.data;
               _this.newGoodsList.forEach(item => {
-              _this.$set(item, "goodsNum", (item.goodsNum = 1));
+            _this.$set(item, "pnum", 1);
             });
             _this.total = result.total;
             _this.currentIndex = result.pageNo
@@ -136,15 +139,11 @@ export default {
           }
         });
     },
-       add(item) {
-      item.goodsNum++;
-      console.log(item);
+    add(item) {
+      item.pnum += 1
     },
     reduce(item) {
-      if (item.goodsNum === 1) {
-        return;
-      }
-      item.goodsNum--;
+      item.pnum > 1 ? item.pnum -- : item.pnum
     },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber;
