@@ -119,7 +119,7 @@ export default {
       iRequest.cls = "ProdModule";
       // 登录账号没有新人专享数据 ，暂时用的热销数据 作为样式测试
       // iRequest.method = "newMemberSearch";
-      iRequest.method = "hotProdSearch";
+      iRequest.method = "newMemberSearch";
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({

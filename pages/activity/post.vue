@@ -125,7 +125,7 @@ export default {
       iRequest.cls = "ProdModule";
       // 包邮活动未新增，暂用热销商品接口数据测试样式
       // iRequest.method = "getExemPostMallFloor";
-      iRequest.method = "hotProdSearch";
+      iRequest.method = "getExemPostMallFloor";
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       iRequest.param.json = JSON.stringify({
