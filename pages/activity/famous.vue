@@ -3,8 +3,7 @@
     <a-layout>
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
-         <div class="buying-text">
-            <img src="../../assets/banner/brands.jpg" alt="">
+         <div class="buying-text"> 
          </div>
         <div class="limited-box">
           <div class="limited-goods">
@@ -12,39 +11,32 @@
               <input v-model="keyword" type="text" placeholder="在结果中搜索">
               <button @click="getFamousPrescriptionFloor()">搜索</button>
             </p>
-            <div class="goods-box" v-for="(item,index) in famousList" :key="index">
+             <div class="goods-box" v-for="(item,index) in famousList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
-                <span class="collec">
+                 <span class="collec" @click.stop="addCollec(item)">
                   收藏
                   <a-icon type="star"/>
                 </span>
-                <img v-lazy="item.imgURl" alt class="goods-pic">
+                <img v-lazy="item.imgURl" class="goods-pic">
                 <p class="validity">有效期{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
-                <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
+                <p class="goods-limit">
+                  <span>限购{{item.limits}} {{item.unitName}}</span>
+                  <span class="float-right margin-right10">库存{{item.store}}{{item.unitName}}</span>
+                </p>
                 <p class="goods-price" v-if="item.vatp != -1">
                   ￥{{item.vatp}}元
                   <del>原价￥{{item.rrp}}元</del>
                 </p>
-                <p class="goods-price" v-else>
-                  ￥认证后可见
+                <p class="goods-price" v-else>￥认证后可见</p>
+                <p class="package">中包装{{item.medpacknum}}{{item.unitName}} <span class="float-right">已售{{item.sales}}{{item.unitName}}</span></p>
+                <p class="button-p">
+                  <button class="add-small" @click.stop="addCount(item)">+</button>
+                  <input type="number" v-model="item.pnum" @click.stop="">
+                  <button class="reduct-small" @click.stop="reduceCount(item)">-</button>
+                  <a-button class="add" @click.stop="addCart(item)">加入采购单</a-button>
                 </p>
-                <p class="package">
-                  <span class="float-left">中包装{{item.medpacknum}}{{item.unitName}}</span>
-                  <span class="float-right">已售{{item.sales}}{{item.unitName}}</span>
-                </p>
-                <p class="limit">
-                  <span v-if="item.limits !== 0">限购{{item.limits}} {{item.unitName}}</span>
-                  <span class="float-right">库存{{item.store}} {{item.unitName}}</span>
-                </p>
-                <p class="p-btn">
-                  <button class="small-btn">-</button>
-                  <input type="text" v-model="count" readonly="readonly">
-                  <button class="small-btn">+</button>
-                  <button class="add-cart" @click.stop="addCart(item)">加入采购单</button>
-                </p>
-                <!-- <button @click="toDetails()">查看详情</button> -->
               </a-card>
             </div>
             <a-pagination
@@ -92,9 +84,29 @@ export default {
     this.getFamousPrescriptionFloor();
   },
   methods: {
+    // 新增商品数量
+    addCount(item) {
+      item.pnum += 1
+    },
+    reduceCount(item) {
+      item.pnum > 1 ? item.pnum -- : item.pnum
+    },
      // 加入购物车
     addCart(item) {
-      this.fsGeneralMethods.addShoppingCart(this, item, 1)
+      this.fsGeneralMethods.addShoppingCart(this, item, item.pnum)
+    },
+    addCollec(item) {
+      this.fsGeneralMethods
+        .request(this, "orderServer", "MyCollectModule", "add", {
+          sku: item.sku,
+          prize: item.vatp,
+          promtype: 0
+        })
+        .then(result => {
+          if (result.code === 200) {
+            this.$message.success(result.message);
+          }
+        });
     },
     toDetails(item) {
       this.$router.push({
@@ -119,11 +131,14 @@ export default {
         .then(result => {
           if (result.code === 200) {
             this.famousList = result.data;
+             this.famousList.forEach(item => {
+              this.$set(item, "pnum", 1);
+            });
             this.total = result.total;
             this.currentIndex = result.pageNo
             this.fsGeneralMethods.addImages(
               this,
-              this.famousPrescription,
+              this.famousList,
               "sku",
               "spu"
             );
@@ -139,6 +154,58 @@ export default {
 .ant-layout-content {
   background: #f8f8f8;
 }
+.search-p {
+  .p-size(60px, 60px, 14px, left, 8px, #666666);
+  padding-top: 10px;
+  background: #f8f8f8 !important;
+  input {
+    width: 200px;
+    height: 30px;
+    border: 1px solid #e0e0e0;
+    text-indent: 10px;
+    margin-right: 10px;
+  }
+  button {
+    .button-size(120px, 30px, 30px, 14px, 0px, 5px);
+    .button-color(1px solid transparent, #ff0036, #ffffff);
+  }
+}
+.buying-text {
+  .container-size(block, 100%, 463px, 0, 0px);
+  background: url("../../assets/banner/zhonghua.jpg") no-repeat top center;
+  margin-bottom: 20px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.card:hover .button-p {
+  display: block;
+}
+.card:hover .package{
+  display: none;
+}
+.card:hover .goods-surplus{
+  display: none;
+}
+.card:hover .goods-limit{
+  display: block;
+}
+.float-right{
+  float: right;
+}
+.margin-right10{
+  margin-right: 10px;
+}
+  .validity {
+    .position(absolute, 143px, 0px);
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    padding: 0 10px;
+    background: #f8f8f8;
+    text-align: center;
+  }
 .person-num {
   .container-size(block, 1190px, 86px, 0 auto, 0px);
   line-height: 86px;
@@ -158,20 +225,12 @@ export default {
 .card {
   .container-size(inline-block, 225px, 310px, 0px 0px, 0px);
 }
-.buying-text {
-  .container-size(block, 1190px, 200px, 0 auto, 0px);
-  background: #e0e0e0;
-  p {
-    .p-size(100px, 100px, 28px, center, 0px, #333333);
-    font-weight: bold;
-  }
-}
 .limited-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
-  background: #f8f8f8;
+  background: #ffffff;
 }
 .limited-goods {
-  .container-size(block, 1210px, auto, 0 auto, 0px);
+  .container-size(block, 1190px, auto, 0 auto, 0px);
   min-height: 400px;
   margin-bottom: 20px;
   background: #f8f8f8;
@@ -181,21 +240,69 @@ export default {
   height: auto;
 }
 .goods-box {
-  .container-size(inline-block, 225px, 310px, 0px 16.3px 16px 0px, 0px);
+  .container-size(inline-block, 225px, 310px, 10px 6.5px, 0px);
   .position(relative, 0px, 0px);
   background: #ffffff;
 }
 .goods-pic {
-  .position(absolute, 10px, 9px);
-  width: 206px;
-  height: 132px;
+  .position(absolute, 15px, 45px);
+  width: 135px;
+  height: 123px;
+}
+.button-p {
+  display: none;
+  .position(absolute, 265px, 0px);
+  .p-size(40px, 40px, 14px, left, 8px, #666666);
+  width: 100%;
+  padding-left: 5px;
+  input {
+    float: left;
+    width: 45px;
+    height: 34px;
+    line-height: 34px;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    margin-top: 3px;
+  }
+  .add {
+    float: right;
+    margin: 2px 5px 0px 5px;
+    .button-size(95px, 34px, 34px, 14px, 0px, 3px);
+    .button-color(1px solid transparent, #ed2f26, #ffffff);
+  }
+  .add-small,
+  .reduct-small {
+    float: left;
+    width: 30px;
+    height: 34px;
+    line-height: 35px;
+    margin-top: 3px;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+  }
+}
+.package {
+  display: block;
+  .position(absolute, 278px, 0px);
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  text-indent: 10px;
+  border-top: 1px solid #e0e0e0;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #999;
+  span{
+    margin-right: 10px;
+  }
 }
 .goods-name {
   .position(absolute, 205px, 0px);
   width: 100%;
   text-indent: 12px;
   font-size: 14px;
-  color: #333333;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -204,137 +311,56 @@ export default {
   .position(absolute, 50px, 250px);
 }
 .goods-surplus {
+  display: block;
+  .position(absolute, 230px, 0px);
+  width: 100%;
+  text-indent: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #999999;
+}
+.goods-limit {
+  display: none;
   .position(absolute, 230px, 0px);
   width: 100%;
   text-indent: 10px;
   font-size: 14px;
   color: #999999;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.goods-limit {
-  .position(absolute, 235px, 0px);
-  width: 100%;
-  text-indent: 10px;
-  font-size: 14px;
-  color: #999999;
-  span {
-    color: #ed2f26;
-  }
 }
 .goods-price {
   .position(absolute, 180px, 0px);
   width: 100%;
   text-indent: 10px;
+  font-weight: bold;
   font-size: 14px;
   color: #ed2f26;
   del {
+    font-weight: normal;
     color: #666666;
   }
 }
 .card:hover {
   box-shadow: 0px 0px 30px 10px #e0e0e0;
 }
-.card:hover .package {
-  display: none;
+.one-day {
+  .p-size(115px, 115px, 30px, center, 0px, #333333);
+  font-weight: bold;
 }
-.card:hover .goods-surplus {
-  display: none;
+.margin-bottom30 {
+  margin-bottom: 30px;
 }
 .ant-pagination {
   text-align: center;
-}
-.validity {
-  .position(absolute, 143px, 0px);
-  height: 30px;
-  line-height: 30px;
-  width: 100%;
-  padding: 0 10px;
-  background: #e0e0e0;
-}
-.package {
-  .position(absolute, 278px, 0px);
-  width: 100%;
-  height: 30px;
-  line-height: 30px;
-  border-top: 1px solid #e0e0e0;
-  padding: 0 10px;
-  color: #999999;
-}
-.search-p {
-  .p-size(60px, 60px, 14px, left, 0px, #666666);
-  padding-top: 10px;
-  input {
-    width: 200px;
-    height: 30px;
-    border: 1px solid #e0e0e0;
-    text-indent: 10px;
-    margin-right: 10px;
-  }
-  button {
-    .button-size(120px, 30px, 30px, 14px, 0px, 5px);
-    .button-color(1px solid transparent, #ff0036, #ffffff);
-  }
-}
-.float-left {
-  float: left;
-}
-.float-right {
-  float: right;
-}
-.limit {
-  display: none;
-  .position(absolute, 225px, 0px);
-  width: 100%;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 12px;
-  color: #999999;
-}
-.card:hover .limit {
-  display: block;
-}
-.p-btn {
-  display: none;
-  .position(absolute, 270px, 0px);
-  width: 100%;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 12px;
-  color: #999999;
-  input {
-    width: 45px;
-    height: 30px;
-    border: 1px solid #e0e0e0;
-    text-align: center;
-  }
-  .small-btn {
-    .button-size(30px, 30px, 20px, 14px, 0px, 0px);
-    border: 1px solid #e0e0e0;
-    background: #ffffff;
-  }
-  .add-cart {
-    .button-size(85px, 30px, 20px, 14px, 0px, 0px);
-    .button-color(1px solid transparent, #ff0036, #ffffff);
-  }
-}
-.card:hover .p-btn {
-  display: block;
 }
 .collec {
   display: none;
   .position(absolute, 10px, 170px);
   color: #999999;
+  z-index: 99;
 }
 .card:hover .collec {
   display: block;
-}
-.buying-text{
-   .container-size(block, 100%, 463px, 0, 0px);
-  img{
-    width: 100%;
-    height: 100%;
-  }
 }
 </style>

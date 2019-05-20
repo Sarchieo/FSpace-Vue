@@ -219,7 +219,7 @@
               <span class="title">运费：</span>
             </p>
             <p>
-              <span class="price-span">￥ {{ selectCounpon.tdiscount }}</span>
+              <span class="price-span">￥ {{ selectCounpon.acvalue }}</span>
               <span class="title">活动优惠：</span>
             </p>
             <p>
@@ -351,7 +351,9 @@ export default {
         })
         .then(result => {
           if (result.code === 200 && result.data.unqid !== 0) {
+
             this.offlineCouponCalculate(result.data.unqid)
+            console.log(result)
           }
         });
       

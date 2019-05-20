@@ -86,7 +86,7 @@
 
           <img src="../assets/img/sign.png" @click="toIntegral()">
           <img src="../assets/img/brand.png" @click='toBrands()'>
-          <img src="../assets/img/type.png" @click="toBrands()">
+          <img src="../assets/img/zhonghua.png" @click="toZhonghua()">
         </div>
         <div v-for="(item,index) in list" :key="index" style="height: auto;">
           <!-- 新品专区 -->
@@ -546,6 +546,7 @@ export default {
       hotGoodsID: 0,
       secondId: 0,
       brandID: 0,
+      famousID: 0,
       teamBuyList: [],
       limitedList: [], // 限时抢购
       newGoodsList: [], // 新品商品列表
@@ -765,6 +766,7 @@ export default {
             
             if (result.code === 200 && result.data.length > 4) {
               this.famousPrescription = result.data.slice(0, 5);
+              // this.famousID = result.data.actcode;
               this.fsGeneralMethods.addImages(
                 this,
                 this.famousPrescription,
@@ -1096,6 +1098,14 @@ export default {
     },
     toBrands() {
       this.$message.success('当前功能正在玩命建设中,敬请期待...')
+    },
+    toZhonghua() {
+        this.$router.push({
+        path: "/activity/famous",
+        // query: {
+        //   actcode: this.famousID
+        // }
+      });
     }
   }
 };
@@ -1393,8 +1403,8 @@ li {
   color: #999;
 }
 .elaborate-title {
-  height: 50px;
-  line-height: 50px;
+  // height: 50px;
+  // line-height: 50px;
   font-size: 22px;
   font-weight: bold;
   a {

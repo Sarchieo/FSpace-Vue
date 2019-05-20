@@ -257,6 +257,7 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.cartList = result.data;
+              console.log(_this.cartList)
               _this.getOfferTip();
               _this.cartList.forEach((item) => {
                 item.limitnum = item.limitnum - item.limitsub

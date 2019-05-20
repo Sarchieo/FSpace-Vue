@@ -4,40 +4,26 @@
       <f-space-header type="home"></f-space-header>
       <a-layout-content>
         <div class="buying-text">
-          <!-- <img src="../../assets/banner/brands.jpg" alt=""> -->
         </div>
         <div class="limited-box">
-          <!-- 活动文案=》未定 -->
-
-          <!-- <div class="person-num">
-             <div class="person-left">
-                 商品累计拼团人数/折扣 描述方式待定
-             </div>
-             <div class="person-right">
-                 距团购活动时间还剩    05 时 12 分 12  秒  <span>9</span>
-             </div>
-          </div>-->
           <div class="search-div">
             <span class="bland-list" @click="selectBrand(item)" v-for="(item,index) in brands" :key="index">{{item.brandname}}</span>
-            <!-- <a-tag color="gray" v-for="(items,index1) in brandName" :key="index1">{{items}}</a-tag> -->
-            <!-- <input v-model="keyword" type="text" placeholder="在结果中搜索">
-            <button @click="getBrand()">搜索</button>-->
             <div style="clear:both;"></div>
           </div>
           <div class="limited-goods">
             <div class="goods-box" v-for="(item,index) in brandList" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
-                <!-- <span class="collec" @click.stop="addCollec(item)">
+                <span class="collec" @click.stop="addCollec(item)">
                   收藏
                   <a-icon type="star"/>
-                </span> -->
+                </span>
                 <img v-lazy="item.imgURl" :key="item.imgURl" alt class="goods-pic">
                 <p class="validity">有效期{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">{{item.least}}盒起拼, 还剩<span>{{item.most}}</span>盒</p> -->
                 <p class="goods-price" v-if="item.vatp != -1">
-                  ￥{{item.vatp}}元
+                  <span>￥{{item.vatp}}元</span>
                   <del>原价￥{{item.rrp}}元</del>
                 </p>
                 <p class="goods-price" v-else>￥认证后可见</p>
@@ -46,7 +32,8 @@
                   <span class="float-right">已售{{item.sales}}{{item.unitName}}</span>
                 </p>
                 <p class="limit">
-                  <span v-if="item.limits !== 0">限购{{item.limits}} {{item.unitName}}</span>
+                  <!-- v-if="item.limits !== 0" -->
+                  <span>限购{{item.limits}} {{item.unitName}}</span>
                   <span class="float-right">库存{{item.store}} {{item.unitName}}</span>
                 </p>
                 <p class="p-btn">
@@ -55,7 +42,6 @@
                   <button class="small-btn" @click.stop="addCount(item)">+</button>
                   <button class="add-cart" @click.stop="addCart(item)">加入采购单</button>
                 </p>
-                <!-- <button @click="toDetails()">查看详情</button> -->
               </a-card>
             </div>
             <a-pagination :total="total" @change="onChangePage"/>
@@ -172,6 +158,7 @@ export default {
         if (result.code === 200) {
           
           this.brandList = result.data;
+          console.log(this.brandList)
           this.brandList.forEach((item,index) => {
             this.$set(item, 'pnum', 1)
           });
@@ -277,7 +264,7 @@ export default {
 .goods-surplus {
   .position(absolute, 230px, 0px);
   width: 100%;
-  text-indent: 10px;
+  text-indent: 12px;
   font-size: 14px;
   color: #999999;
   overflow: hidden;
@@ -300,6 +287,9 @@ export default {
   text-indent: 10px;
   font-size: 14px;
   color: #ed2f26;
+  span{
+    font-weight: bold;
+  }
   del {
     color: #666666;
   }
@@ -339,8 +329,8 @@ export default {
   min-height: 80px;
   padding: 10px 10px 5px 10px;
   margin: 15px 0px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0px 0px 30px 0px #e0e0e0;
+  // border: 1px solid #e0e0e0;
+  // box-shadow: 0px 0px 30px 0px #e0e0e0;
   input {
     width: 200px;
     height: 30px;
@@ -381,18 +371,18 @@ export default {
   color: #999999;
   input {
     width: 45px;
-    height: 30px;
+    height: 33px;
     border: 1px solid #e0e0e0;
     text-align: center;
   }
   .small-btn {
-    .button-size(30px, 30px, 20px, 14px, 0px, 0px);
+    .button-size(30px, 34px, 20px, 14px, 0px, 0px);
     border: 1px solid #e0e0e0;
     background: #ffffff;
   }
   .add-cart {
     float: right;
-    .button-size(80px, 30px, 20px, 14px, 0px, 0px);
+    .button-size(80px, 34px, 20px, 14px, 0px, 2px);
     .button-color(1px solid transparent, #ff0036, #ffffff);
   }
 }

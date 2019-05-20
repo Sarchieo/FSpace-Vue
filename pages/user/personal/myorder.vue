@@ -64,7 +64,8 @@
                 class="pick-input margin-left12 margin-top62"
              ></a-checkbox> -->
             <div class="goods-pic">
-              <img v-lazy="item.goods[0].imgURl" @click="toDetail(item)">
+              <!-- <img v-lazy="item.goods[0].imgURl" @click="toDetail(item)"> -->
+              <img v-lazy="item.imgURl" @click="toDetail(item)">
               <!-- <span class="time">{{item.odate}}</span> -->
               <p class="order-info"><span>订单号：</span> <span>{{item.orderno}}</span></p>
               <p class="order-info"><span>下单时间：</span> <span>{{item.odate}} {{item.otime}}</span></p>

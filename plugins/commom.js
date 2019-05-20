@@ -126,6 +126,10 @@ var fsGeneralMethods = {
        * @param {*} obj 
        */
       addShoppingCart(context, obj, num) {
+        if(!context.$store.state.userStatus) {
+          context.$message.error('当前未登录')
+          return 
+        }
         this.request(context, "orderServer", "ShoppingCartModule", "saveShopCart", {
           pdno: obj.sku,
           pnum: num,
