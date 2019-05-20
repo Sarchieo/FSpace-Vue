@@ -32,33 +32,23 @@
             </div>
 
             <div class="line"></div>
-            <div class="step-right">
-               <p class="speed progress">售后信息</p>
-              <p class="consi-p"><span class="title">售后类型：</span><span class="content"> {{ detail.astype | asTypeFormat }}</span> <span class="title">申请时间：</span> <span class="content">{{ detail.apdata }}</span></p>
-              <p class="consi-p"><span class="title">申请单号：</span><span class="content">{{ detail.asno }}</span> <span class="title">联系人：</span> <span class="content">{{ storeInfo.comp.storeName }}</span></p>
-              <p class="consi-p"><span class="title">订单号：</span><span class="content">{{ detail.orderno }}</span> <span class="title">手机号：</span> <span class="content">{{ storeInfo.phone }}</span></p>
-            </div>
             <!-- 订单状态 -->
-            <!-- <div class="step-right">
+            <div class="step-right">
               <a-steps class="setps-box" :current="steps">
                 <a-step title="提交申请" >
                   <a-icon type="profile" slot="icon"/>
                 </a-step>
-                <a-step title="客服受理">
+                <a-step title="平台受理">
                   <a-icon type="user" slot="icon"/>
                 </a-step>
-                <a-step title="寄回商品">
+                <a-step title="等待审核">
                   <a-icon type="car" slot="icon"/>
                 </a-step>
-                <a-step title="平台收货">
-                  <a-icon type="solution" slot="icon"/>
-                </a-step>
-
-                <a-step title="完成">
+                <a-step title="完成售后">
                   <a-icon type="check-square" slot="icon"/>
                 </a-step>
               </a-steps>
-            </div> -->
+            </div>
           </div>
           <!-- <div class="logistics-box-info">
               <p class="speed">退货进度</p>
@@ -70,21 +60,58 @@
                   </a-steps>
               </div>
           </div> -->
-          <!-- <div class="consignee-info">
-           
-               <p class="speed progress">售后信息</p>
-              <p class="consi-p"><span class="title">售后类型：</span><span class="content"> {{ detail.astype | asTypeFormat }}</span> <span class="title">申请时间：</span> <span class="content">{{ detail.apdata }}</span></p>
-              <p class="consi-p"><span class="title">申请单号：</span><span class="content">{{ detail.asno }}</span> <span class="title">联系人：</span> <span class="content">{{ storeInfo.comp.storeName }}</span></p>
-              <p class="consi-p"><span class="title">订单号：</span><span class="content">{{ detail.orderno }}</span> <span class="title">手机号：</span> <span class="content">{{ storeInfo.phone }}</span></p>
+          <div class="consignee-info">
+              <div class="consignee-left">
+                <p class="speed progress">售后信息</p>
+                <p class="consi-p"><span class="title">售后类型：</span>
+                <span class="content"> {{ detail.astype | asTypeFormat }}</span> 
+                <span class="title">申请时间：</span>
+                <span class="content">{{ detail.apdata }} {{detail.aptime}}</span>
+                </p>
+                <p class="consi-p">
+                  <span class="title">申请单号：</span>
+                  <span class="content">{{ detail.asno }}</span> 
+                  <span class="title">联系人：</span> 
+                  <span class="content">{{ storeInfo.comp.storeName }}</span>
+                </p>
+                <p class="consi-p">
+                  <span class="title">订单号：</span>
+                  <span class="content">{{ detail.orderno }}</span> 
+                  <span class="title">手机号：</span> 
+                  <span class="content">{{ storeInfo.phone }}</span>
+                </p>
+              </div>
+              <div class="consignee-right">
+                <p class="speed progress">申请说明</p>
+                <p class="consi-p"><span class="title width60">原因：</span>{{ detail.reasonName }}</p>
+                <p class="consi-p"><span class="title width60">描述：</span>{{ detail.apdesc }}</p>
+                <div class="pic-div"><span>图片：</span>
+                   
+                    <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
+                    <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
+                    <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
+                    <div style="clear: both;"></div>
+                </div>
+
+              </div>
             
            
-          </div> -->
+          </div>
+          <div class="invo-box">
+            <div class="invo-left">
+
+            </div>
+            <div class="invo-right">
+
+            </div>
+          </div>
           <p class="goods-title">
-            <span class="width40 float-left">药品信息</span>
-            <!-- <span class="width15 float-left">单价</span> -->
-            <span class="width45 float-left">数量</span>
-            <!-- <span class="width15 float-left">实付</span> -->
-            <span class="width15 float-right">退款金额</span>
+            <span class="width37 float-left">药品信息</span>
+            <span class="width12 float-left">单价</span>
+            <span class="width15 float-left">价格明细</span>
+            <span class="width12 float-left ">采购数量</span>
+            <span class="width12 float-left">退货数量</span>
+            <span class="width12 float-right">退款金额</span>
           </p>
           <div class="goods-list-box">
             <table>
@@ -107,27 +134,25 @@
                       <span>{{ detail.manuname }}</span>
                     </div>
                   </td>
-                  <!-- <td class="count td-center">单价</td> -->
-                  <td class="count td-center" style="width: 380px;">{{detail.asnum}}</td>
-                  <!-- <td class="count td-center">￥{{ detail.refamt }}</td> -->
-                  <!-- <td class="subtotal widths15 td-center padding-left10">￥100</td> -->
+                  <td class="price width142">
+                    <p class="text-align-center">￥</p>
+                    <p class="text-align-center"><del>￥</del></p>
+                  </td>
+                  <td class="price-detail width178">
+                    <p class="text-align-center">优惠金额: <span>1</span></p>
+                    <p class="text-align-center">余额抵扣:<span>2</span></p>
+                    <p class="text-align-center">实付金额:<span>￥3</span></p>
+                  </td>
+                  <td class="purchase-count width142 text-align-center line-height119">采购数量</td>
+                  <td class="retreat-count width142 text-align-center line-height119">退货数量</td>
+                  <td class="retreat-price">￥{{ detail.refamt }}</td>
                 </tr>
-            
-                <div class="total td-center padding-left15">￥{{ detail.refamt }}</div>
+                
+                <!-- <div class="total td-center padding-left15">￥{{ detail.refamt }}</div> -->
               </tbody>
-              <tfoot class="t-footer" ref="foot">
-                <p class="ant-dropdown-link"> 申请售后原因 </p>
-                <p class="dropdown-p">原因：{{ detail.reasonName }}</p>
-                <p class="dropdown-p">描述：{{ detail.apdesc }}</p>
-                <p class="dropdown-p">图片：</p>
-                <div>
-                    <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic">
-                    <!-- <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" alt="" class="question-pic">
-                    <img src="//img.alicdn.com/imgextra/i3/TB1uSnvNFXXXXb8aXXXXXXXXXXX_!!0-item_pic.jpg_160x160q90.jpg" alt="" class="question-pic"> -->
-                </div>
-              </tfoot>
             </table>
           </div>
+
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
@@ -193,6 +218,7 @@ export default {
     this.detail = JSON.parse(this.$route.query.detail)
     this.getImgUrl()
     this.getFilePathPrev()
+    console.log(this.detail)
   },  
   methods: {
      // 获取售后图片
@@ -323,8 +349,40 @@ export default {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.width60{
+  width: 60px!important;
+}
+.float-right{
+  float: right;
+}
 .count{
   width: 175px;
+}
+.width142{
+  width: 142px;
+}
+.width178{
+  width: 172px;
+}
+.line-height119{
+  line-height: 119px;
+}
+.text-align-center{
+  text-align: center;
+}
+.retreat-price{
+  width: 135px;
+  text-align: center;
+  line-height: 119px;
+  font-size: 16px;
+  color: #ed3025;
+  font-weight: bold;
+}
+.price-detail p{
+  .p-size(36px, 36px, 16px, center, 0px, #999);
+}
+.price-detail p span{
+  color: #333!important;
 }
 .address {
   height: auto !important;
@@ -339,6 +397,15 @@ export default {
     vertical-align: top;
   }
 }
+.pic-div{
+  font-size: 16px;
+  color: #333;
+  span{
+    float: left;
+    height: 40px;
+    line-height: 40px;
+  }
+}
 .float-left {
   float: left;
 }
@@ -351,27 +418,21 @@ export default {
   margin-bottom: 10px;
   text-align: center;
 }
-.float-left{
-  float: left;
-}
-.widths40 {
-  width: 44%;
-}
-.widths15 {
-  width: 18%;
-}
-
-.width40 {
-  width: 40%;
+.width37 {
+  width: 37%;
 }
 .width15 {
   width: 15%;
 }
-.width45{
-  width: 32%;
+.width12 {
+  width: 12%;
 }
 .height220 {
   height: 220px !important;
+}
+.texts{
+  height: 25px!important;
+  line-height: 25px!important;
 }
 .line {
   .container-size(inline-block, 1px, 170px, 0 auto, 0px);
@@ -388,7 +449,7 @@ export default {
   .container-size(block, 1190px, 220px, 0 auto, 0px);
   border-top: 3px solid #ed3025;
   margin-bottom: 20px;
-  border: 1px solid #f8f8f8;
+  border-top: 3px solid #e0e0e0;
   .step-left {
     float: left;
     .container-size(inline-block, 300px, 220px, 0 auto, 0px);
@@ -452,29 +513,17 @@ export default {
   .container-size(block, 1190px, 230px, 0 auto, 0px);
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid #f8f8f8;
-  .consignee-left,
-  .consignee-middle,
-  .consignee-right {
-    .container-size(inline-block, 389px, 255px, 0 auto, 0px);
-    padding-top: 20px;
-    h3 {
-      .p-size(30px, 30px, 14px, center, 0px, #666666);
-      font-weight: bold;
-    }
-    p {
-      .p-size(30px, 30px, 14px, left, 20px, #999999);
-      span {
-        display: inline-block;
-        width: 120px;
-      }
-      .three {
-        width: 85px !important;
-      }
-    }
+  border-top: 3px solid #e0e0e0;
+
+  .consignee-left {
+    float: left;
+    width: 730px;
+    height: 200px;
   }
-  .consignee-middle {
-    margin-left: 10px;
+  .consignee-right {
+    float: right;
+    width: 410px;
+    height: 200px;
   }
 }
 .goods-title {
@@ -492,9 +541,10 @@ export default {
 }
 .goods-list-box {
   .container-size(block, 1190px, auto, 0 auto, 0px);
-  min-height: 380px;
   margin-bottom: 15px;
-  border: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
+  border-left: 1px solid #eeeeee;
+  border-right: 1px solid #eeeeee;
   table {
     .container-size(block, 1190px, auto, 0 auto, 0px);
     .ablock {
@@ -511,8 +561,8 @@ export default {
       .container-size(block, 1190px, auto, 0 auto, 0px);
       min-height: 120px;
       .goods-list {
-        .container-size(inline-block, 1012px, 120px, 0 auto, 0px);
-        border-right: 1px solid #e0e0e0;
+        .container-size(inline-block, 1190px, 120px, 0 auto, 0px);
+        // border-right: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
         .td-center {
           text-align: center;
@@ -538,7 +588,7 @@ export default {
         .pic-box {
           display: table;
           float: left;
-          width: 476px;
+          width: 440px;
           div {
             display: table-cell;
             width: 452px!important;
@@ -563,11 +613,12 @@ export default {
         }
         .price {
           float: left;
+          padding-top: 40px;
         }
       }
       .total {
         float: right;
-        width: 178px;
+        width: 142px;
         height: 100%;
         text-align: center;
         padding-top: 48px;
@@ -617,7 +668,6 @@ export default {
 }
 .speed{
     .p-size(40px, 40px, 16px, left, 245px, #333333);
-    margin-top: 15px;
     font-weight: bold;
 }
 .progress{
@@ -649,7 +699,7 @@ export default {
 }
 .reason-pic{
   display: inline-block;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
 }
 </style>

@@ -153,11 +153,11 @@
           <div class="order-state float-left" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node && logistixs.node.length > 0">
             <div class="logistixs-left">
 
-              <div v-for="(items,index1) in logistixs" :key="index1">
-              <p>物流状态</p>
-              <p>送货方式：普通快递</p>
-              <p>配送方式： {{items.carriername}}</p>
-              <p>运单号：{{ items.billno }}</p>
+              <div v-for="(items,index1) in logistixs.data" :key="index1">
+                <p>物流状态</p>
+                <p>送货方式：普通快递</p>
+                <p>配送方式： {{items.carriername}}</p>
+                <p>运单号：{{ items.billno }}</p>
               </div>
               
             </div>
