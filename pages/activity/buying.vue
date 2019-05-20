@@ -28,7 +28,7 @@
           <div class="limited-goods">
             <div class="goods-box" v-for="(item,index) in teamBuyList.list" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
-                <img v-lazy="item.imgURl" alt class="goods-pic">
+                <img v-lazy="item.imgURl" :key="item.imgURl" alt class="goods-pic">
                 <p class="goods-name">{{item.prodname}} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <p class="goods-limit">
@@ -105,7 +105,6 @@ export default {
     // 获取一块购数据
     async getTeamBuyMallFloor() {
       let _this = this;
-      _this.teamBuyList = [];
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getAllTeamBuy";

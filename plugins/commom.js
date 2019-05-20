@@ -25,6 +25,7 @@ var fsGeneralMethods = {
           iRequest.param.pageNumber = params && params.pageNumber || 10;
           iRequest.param.arrays = arr || []
           iRequest.param.json = JSON.stringify(params || {});
+          
           iRequest.param.token = localStorage.getItem("identification") || ""; // Fingerprintjs2 设备指纹采集器生成
           context.$refcallback(
             context,
@@ -35,26 +36,26 @@ var fsGeneralMethods = {
                 // 权限判断
                 // 错误提示
                 // 消息上线
-                if(result.flag && context.$store.state.userStatus) {
-                  let ice_callback = new Ice.Class(inf.PushMessageClient, {
-                    receive: function(message, current) {
-                      try{
-                        let result = JSON.parse(message)
-                      } catch(err){
-                        context.$store
-                          .dispatch("setNoticeList", { message: message.replace('sys:', '') })
-                          .then(res => {
+                // if(result.flag && context.$store.state.userStatus) {
+                //   let ice_callback = new Ice.Class(inf.PushMessageClient, {
+                //     receive: function(message, current) {
+                //       try{
+                //         let result = JSON.parse(message)
+                //       } catch(err){
+                //         context.$store
+                //           .dispatch("setNoticeList", { message: message.replace('sys:', '') })
+                //           .then(res => {
                             
-                          })
-                          .catch(err => {
-                            console.log(err);
-                          });
-                      }
-                    }
-                  })
-                  // websocket 上线
-                  context.$initIceLong('orderServer', context.storeInfo.comp.storeId, new ice_callback());
-                }
+                //           })
+                //           .catch(err => {
+                //             console.log(err);
+                //           });
+                //       }
+                //     }
+                //   })
+                //   // websocket 上线
+                //   context.$initIceLong('orderServer', context.storeInfo.comp.storeId, new ice_callback());
+                // }
                 resolve(result)
               },
               function error(e) {

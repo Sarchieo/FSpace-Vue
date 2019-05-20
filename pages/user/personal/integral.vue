@@ -13,6 +13,7 @@
       :dataSource="data"
       bordered
       style="display: block;width: 935px;margin: 0 auto;margin-top: 25px;"
+      @change="handleTableChange"
     >
       <template slot="name" slot-scope="text">
         <a href="javascript:;">{{text}}</a>
@@ -82,15 +83,24 @@ export default {
       columns,
       total: 0,
       integralNumber: 0, //可用积分
-      expirepointNumber: 0 // 过期积分
+      expirepointNumber: 0, // 过期积分
+      pagination: {}
     };
   },
   mounted() {
+    this.$store.commit(types.SELECTED_KEYS, "/user/personal/integral");
+    this.pagination.current = 1;
+    this.pagination.pageSize = 10;
     this.getIntegralList();
     this.getMember();
-    this.$store.commit(types.SELECTED_KEYS, "/user/personal/integral");
   },
   methods: {
+    handleTableChange (pagination, filters, sorter) {
+      const pager = { ...this.pagination };
+      pager.current = pagination.current;
+      this.pagination = pager;
+      this.getIntegralList()
+    },
     // 获取积分列表
     getIntegralList() {
       let _this = this;
@@ -99,8 +109,8 @@ export default {
       iRequest.method = "myIntegralDetail";
       iRequest.param.json = JSON.stringify({
         compid: this.storeInfo.comp.storeId,
-        pageNo: 1,
-        pageSize: 10
+        pageNo: this.pagination.current,
+        pageSize: this.pagination.pageSize
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -114,7 +124,7 @@ export default {
             _this.data.forEach((item) => {
                item.date = item.createdate + ' ' + item.createtime
             })
-            _this.total = result.total;
+            _this.pagination.total = result.total;
           }
         })
       );

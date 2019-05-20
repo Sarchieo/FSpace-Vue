@@ -542,9 +542,9 @@ export default {
       unqid2: 0, // 秒杀前生成的码
       loading: false,
       maximum: 1, // 最大库存
-      activeStore: 0, // 活动库存
+      activeStore: null, // 活动库存
       store: 0,// 商品库存
-      activeLimits: 0, // 活动限购量
+      activeLimits: null, // 活动限购量
       inventory: 1, // 当前商品数
       percentAge: 50,
       flashSale: {
@@ -734,7 +734,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
-            _this.activitiesBySKU = result.data;
+            _this.activitiesBySKU = result.data.discounts;
             // 如果存在活动 取库存与活动库存最小值
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
@@ -744,6 +744,15 @@ export default {
                 _this.beforeSecKill();
               }
               _this.queryActiveType(_this.activitiesBySKU[0].unqid);
+              // 最小限购量
+              _this.activeLimits = result.data.minLimit;
+              //最小活动库存
+              _this.activeStore = result.data.minStock;
+              if(result.data.minStock > result.data.minLimit) {
+                 _this.maximum =  result.data.minLimit;
+              }else {
+                 _this.maximum =  result.data.minStock;
+              }
             }
           }
         })
@@ -888,15 +897,15 @@ export default {
     },
     // 库存校验
     checkInventory() {
-      if(this.store !==0 && this.inventory + this.prodDetail.medpacknum > this.store) {
+      if(this.inventory + this.prodDetail.medpacknum > this.store) {
         this.$message.warning("当前商品库存不足");
         return false;
       }
-      if(this.activeStore !==0 && this.inventory + this.prodDetail.medpacknum > this.activeStore) {
+      if(this.activeStore !== null && this.inventory + this.prodDetail.medpacknum > this.activeStore) {
         this.$message.warning("当前商品活动库存不足");
         return false;
       }
-      if(this.activeLimits !==0 && this.inventory + this.prodDetail.medpacknum > this.activeLimits) {
+      if(this.activeLimits !== null && this.activeLimits !==0 && this.inventory + this.prodDetail.medpacknum > this.activeLimits) {
         this.$message.warning("当前商品限购量不足");
         return false;
       }
@@ -924,9 +933,6 @@ export default {
                 _this.stringToDate(_this.discount.currentDate),
                 _this.discount.endTime
               );
-              _this.activeLimits = _this.discount.limits;
-              // 设置最大库存
-              _this.maximum = _this.discount.limits;
             }
           }
         })
@@ -1112,10 +1118,15 @@ export default {
         return;
       }
 
-      // if (!this.inventory > 0 || this.inventory > this.maximum) {
-      //   this.$message.warning("库存不足或超出限购数量");
-      //   return;
-      // }
+      if (!this.inventory > 0) {
+        this.$message.warning("库存不足或超出限购数量");
+        return;
+      }
+
+      if(this.inventory > this.maximum) {
+         this.$message.warning("超出限购数量");
+        return;
+      }
 
       this.loading = true;
       let _this = this;

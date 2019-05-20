@@ -18,7 +18,7 @@
                   收藏
                   <a-icon type="star"/>
                 </span>
-                <img v-lazy="item.imgURl" class="goods-pic">
+                <img v-lazy="item.imgURl" :key="item.imgURl" class="goods-pic">
                 <p class="validity">有效期{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
@@ -98,7 +98,6 @@ export default {
     // 热销商品列表
     async getHotGoods() {
       let _this = this;
-      this.hotGoodsList = [];
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "hotProdSearch";

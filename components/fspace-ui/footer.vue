@@ -86,7 +86,7 @@
       </p>
     </div>
 
-        <h4 class="footer-copyright">Copyright@2015-2019 一块医药v1.0.0.2019051601 湖南空间折叠互联网科技有限公司版权所有 湘ICP备19007477号-1</h4>
+        <h4 class="footer-copyright">Copyright@2015-2019 一块医药v1.0.0.2019052001 湖南空间折叠互联网科技有限公司版权所有 湘ICP备19007477号-1</h4>
 
     </a-layout-footer>
 </template>

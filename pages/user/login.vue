@@ -170,7 +170,7 @@ export default {
               _this.$store
                 .dispatch("setUserStatus", { context: _this, status: result.data })
                 .then(res => {
-                  _this.getBasicInfo()
+                  _this.getBasicInfo();
                 })
                 .catch(err => {
               });
@@ -178,8 +178,7 @@ export default {
               _this.loading = false
               if(result && result.map && result.map.index >= 3) {
                 _this.isCaptcha = true
-                _this.getCaptcha()
-                ;
+                _this.getCaptcha();
               }
             }
           },function error(error) {

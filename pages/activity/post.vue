@@ -18,7 +18,7 @@
                   收藏
                   <a-icon type="star"/>
                 </span>
-                <img v-lazy="item.imgURl" class="goods-pic">
+                <img v-lazy="item.imgURl" :key="item.imgURl" class="goods-pic">
                 <p class="validity">有效期{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
@@ -120,7 +120,6 @@ export default {
   //  请求数据 
     getPost() {
       let _this = this;
-      _this.postList = [];
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       // 包邮活动未新增，暂用热销商品接口数据测试样式
