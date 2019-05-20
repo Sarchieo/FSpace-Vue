@@ -17,7 +17,7 @@
           <div class="limited-goods">
             <div class="goods-box" v-for="(item,index) in secondList.list" :key="index">
               <a-card hoverable class="card" @click="toDetails(item)">
-                <img v-lazy="item.imgURl" alt class="goods-pic">
+                <img v-lazy="item.imgURl" :key="item.imgURl" alt class="goods-pic">
                 <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
                 <!-- <p class="goods-limit">
@@ -93,7 +93,6 @@ export default {
   // 获取秒杀数据
     async getSeckillMallFloor() {
       let _this = this;
-      _this.secondList = [];
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getSeckillMallFloor";

@@ -13,7 +13,7 @@
             <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle" size="large">
               <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.sdate + '~' + item.edate">
                 <div class="goods-box" v-for="(item,index) in goodsList.list" :key="index">
-                  <img v-lazy="item.imgURl" alt class="goods-pic">
+                  <img v-lazy="item.imgURl" :key="item.imgURl" alt class="goods-pic">
                   <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                   <p class="goods-adv">{{item.spec}}</p>
                   <a-progress
@@ -79,7 +79,6 @@ export default {
     // 获取限时抢购数据
     async getAllDiscount() {
       let _this = this;
-      _this.goodsList = [];
       let iRequest = new inf.IRequest();
       iRequest.cls = "ProdModule";
       iRequest.method = "getAllDiscount";

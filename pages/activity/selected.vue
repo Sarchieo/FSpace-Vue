@@ -18,7 +18,7 @@
                   收藏
                   <a-icon type="star"/>
                 </span>
-                <img v-lazy="item.imgURl" class="goods-pic">
+                <img v-lazy="item.imgURl" :key="item.imgURl" class="goods-pic">
                 <p class="validity">有效期{{item.vaildedate}}</p>
                 <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                 <p class="goods-surplus">{{item.manuName}}</p>
@@ -111,7 +111,6 @@ export default {
     },
     // 新增商品数量
     addCount(item) {
-      debugger
       item.pnum += 1
     },
     reduceCount(item) {
@@ -121,7 +120,9 @@ export default {
     getSelects() {
        this.fsGeneralMethods
           .request(this, "goodsServer", "ProdModule", "chooseForYouSearch", {
-            keyword: this.keyword
+            keyword: this.keyword,
+            pageIndex: this.currentIndex,
+            pageNumber: 10
           })
           .then(result => {
             if (result.code === 200) {
