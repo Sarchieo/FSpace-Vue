@@ -170,7 +170,7 @@
               >全部抵扣</a-checkbox>
             </p>
             <p class="title">备注留言</p>
-            <a-textarea v-model="remarks" placeholder="请填写您的备注留言" autosize class="leaving "/>
+            <a-textarea :maxlength="50"  v-model="remarks" placeholder="请填写您的备注留言" autosize class="leaving "/>
           </div>
           <ul class="goods-title">
             <li>
@@ -319,7 +319,7 @@ export default {
   },
   mounted() {
     this.cartList = JSON.parse(sessionStorage.getItem("placeOrderList"));
-    debugger
+
     this.placeType = this.$route.query.placeType;
     this.orderType = this.$route.query.orderType;
     this.actcode = this.$route.query.actcode || 0;
