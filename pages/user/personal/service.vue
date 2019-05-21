@@ -99,7 +99,8 @@ export default {
         case 1:
           text = "审核通过";
           break;
-       
+        case 200:
+          text= "售后完成"
       }
       return text;
     }

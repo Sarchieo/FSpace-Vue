@@ -442,13 +442,13 @@ export default {
           text = "已完成";
           break;
         case -1:
-          text = "退货申请";
+          text = "申请售后";
           break;
         case -2:
-          text = "退货中";
+          text = "申请售后中";
           break;
         case -3:
-          text = "已退货";
+          text = "售后完成";
           break;
         case -4:
           text = "已取消";

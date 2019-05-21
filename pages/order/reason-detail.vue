@@ -23,6 +23,7 @@
               <p class="pay-success" v-if="detail.ckstatus === -1">拒绝</p>
               <p class="pay-success" v-if="detail.ckstatus === 0">未审核</p>
               <p class="pay-success" v-if="detail.ckstatus === -2">取消售后</p>
+              <p class="pay-success" v-if="detail.ckstatus === 200">售后完成</p>
               <!-- <p class="pay-success">补票中</p>
               <p class="pay-success">退货中</p>
                -->
@@ -234,6 +235,9 @@ export default {
       break
       case 1:
       this.steps = 3
+      break
+      case 200:
+      this.steps = 4
       break
     }
     this.getImgUrl()

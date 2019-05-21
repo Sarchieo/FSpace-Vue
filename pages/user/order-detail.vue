@@ -35,9 +35,9 @@
                 <span v-if="item.ostatus === -4">交易取消</span>
                 <span v-if="item.ostatus === 1 && item.opayway != 4 && item.opayway != 5">付款成功</span>
                 <span v-if="item.ostatus === 1 && (item.opayway == 4 || item.opayway == 5)">待发货</span>
-                <span v-if="item.ostatus === -1">退货申请</span>
-                <span v-if="item.ostatus === -2">退货中</span>
-                <span v-if="item.ostatus === -3">已退货</span>
+                <span v-if="item.ostatus === -1">申请售后</span>
+                <span v-if="item.ostatus === -2">售后中</span>
+                <span v-if="item.ostatus === -3">完成售后</span>
               </p>
               <p>
                 <span>发票信息:</span>
