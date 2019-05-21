@@ -26,7 +26,7 @@
           <div class="pic-box">
             <img v-lazy="item.imgURl" class="service-pic" alt>
             <p class="name">订单号：{{item.orderno}}</p>
-            <p class="name-num">订单内共1件商品</p>
+            <p class="name-num">订单内共{{item.asnum}}件商品</p>
             <!-- <p class="name">{{item.brandname}} {{ item.prodname }} {{item.spec}}</p>
             <p class="guige">{{ item.manuname }}</p> -->
           </div>
@@ -34,7 +34,7 @@
         <div class="complete">
           <p class="price service-type">{{ item.ckstatus | stateTypeFormat }}</p>
           <!-- 退款有？ -->
-          <p class="price" v-if="(item.astype == 0 || item.astype == 1) && item.ckstatus == 200">实退：￥{{item.refamt}}</p>
+          <p class="price" v-if="(item.astype == 1 || item.astype == 2) && item.ckstatus == 200">实退：￥{{item.refamt}}</p>
         </div>
         <div class="see-detail" @click="seeDetail(item)">查看详情</div>
         <div style="clear: both;"></div>

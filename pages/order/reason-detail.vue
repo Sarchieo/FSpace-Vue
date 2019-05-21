@@ -87,7 +87,7 @@
                 <p class="speed progress">申请说明</p>
                 <p class="consi-p"><span class="title width60">原因：</span>{{ detail.reasonName }}</p>
                 <p class="consi-p"><span class="title width60">描述：</span>{{ detail.apdesc }}</p>
-                <div class="pic-div"><span>图片：</span>
+                <div class="pic-div" v-if="detail.astype == 1 || detail.astype == 2"><span>图片：</span>
                     <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
                     <!-- <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
                     <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left"> -->
@@ -99,20 +99,21 @@
            
           </div>
           <!-- 如果是补开发票就显示invo-box -->
-          <div class="invo-box" v-if="detail.astype !== 3">
+          <div class="invo-box" v-if="detail.astype == 3">
             <div class="invo-left">
               <p class="speed progress">发票信息</p>
-              <p><span>公司名称：</span></p>
-              <p><span>注册地址：</span></p>
-              <p><span>纳税人识别号：</span></p>
-              <p><span>开户银行：</span></p>
-              <p><span>银行账号：</span></p>
+              <p><span>公司名称：</span>{{detail.invoice.invoiceInfo.compName}}</p>
+              <p><span>注册地址：</span>{{detail.invoice.invoiceInfo.address}}</p>
+              <!-- <p><span>公司注册电话：</span>{{detail.invoice.invoiceInfo.tel}}</p> -->
+              <p><span>纳税人识别号：</span>{{detail.invoice.invoiceInfo.taxpayer}}</p>
+              <p><span>开户银行：</span>{{detail.invoice.invoiceInfo.bankers}}</p>
+              <p><span>银行账号：</span>{{detail.invoice.invoiceInfo.account}}</p>
             </div>
             <div class="invo-right">
               <p class="speed progress">收件信息</p>
-              <p><span>收件人：</span></p>
-              <p><span>收件电话：</span></p>
-              <p><span>收件地址：</span></p>
+              <p><span>收件人：</span>{{detail.invoice.address.consignee}}</p>
+              <p><span>收件电话：</span>{{detail.invoice.address.contact}}</p>
+              <p><span>收件地址：</span>{{detail.invoice.address.address}}</p>
             </div>
           </div>
           <p class="goods-title" v-if="detail.astype !== 3">
@@ -224,6 +225,8 @@ export default {
   },
   mounted() {
     this.detail = JSON.parse(this.$route.query.detail)
+    this.detail.invoice = JSON.parse(this.detail.invoice)
+    console.log(this.detail.invoice)
     switch(this.detail.ckstatus) {
       case -2:
       this.steps = 3
@@ -397,14 +400,14 @@ export default {
   text-align: center;
 }
 .invo-box{
-  .container-size(block, 1190px, 230px, 0 auto, 0px);
+  .container-size(block, 1190px, auto, 0 auto, 0px);
   padding: 10px 20px;
   margin-bottom: 20px;
   border-top: 3px solid #e0e0e0;
   .invo-left{
     float: left;
     width: 550px;
-    height: 210px;
+    height: auto;
 
     p{
       .p-size(36px, 36px, 16px, left, 0px, #333);
