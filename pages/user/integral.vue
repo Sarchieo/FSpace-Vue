@@ -633,7 +633,7 @@ export default {
 }
 .text-box {
   .container-size(block, 1255px, 780px, 0 auto, 0px);
-  background: url("../../assets/img/jifen-rule.png") no-repeat;
+  background: url("../../assets/img/jifen.png") no-repeat;
   margin-bottom: 50px;
 }
 </style>

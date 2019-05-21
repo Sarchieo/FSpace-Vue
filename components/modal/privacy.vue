@@ -3,11 +3,15 @@
     title="用户隐私协议"
     cancelText="取消"
     okText="确定"
+    :closable=false
     width="1190px"
     v-model="isPrivacy"
-    @cancel="handleCancelPrivacy"
-    @ok="handleCancelPrivacy"
   >
+   <template slot="footer">
+        <a-button key="submit" type="primary" :loading="loading" @click="handleCancelPrivacy">
+          确定
+        </a-button>
+      </template>
     <div class="privacy-box">
       <h2>用户注册及隐私协议</h2>
       <p class="content">欢迎访问一块医药！</p>
