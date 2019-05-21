@@ -26,7 +26,6 @@
           <div class="pic-box">
             <img v-lazy="item.imgURl" class="service-pic" alt>
             <p class="name">订单号：{{item.orderno}}</p>
-            <p class="name-num">下单时间：</p>
             <p class="name-num">订单内共1件商品</p>
             <!-- <p class="name">{{item.brandname}} {{ item.prodname }} {{item.spec}}</p>
             <p class="guige">{{ item.manuname }}</p> -->

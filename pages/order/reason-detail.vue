@@ -86,10 +86,9 @@
                 <p class="consi-p"><span class="title width60">原因：</span>{{ detail.reasonName }}</p>
                 <p class="consi-p"><span class="title width60">描述：</span>{{ detail.apdesc }}</p>
                 <div class="pic-div"><span>图片：</span>
-                   
                     <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
-                    <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
-                    <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
+                    <!-- <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left">
+                    <img v-for="(item, index) in fileList" :key="index" :src="item.url" class="reason-pic float-left"> -->
                     <div style="clear: both;"></div>
                 </div>
 
@@ -97,7 +96,7 @@
             
            
           </div>
-          <div class="invo-box">
+          <div class="invo-box" v-if="detail.astype !== 3">
             <div class="invo-left">
 
             </div>
@@ -105,7 +104,7 @@
 
             </div>
           </div>
-          <p class="goods-title">
+          <p class="goods-title" v-if="detail.astype !== 3">
             <span class="width37 float-left">药品信息</span>
             <span class="width12 float-left">单价</span>
             <span class="width15 float-left">价格明细</span>
@@ -113,7 +112,7 @@
             <span class="width12 float-left">退货数量</span>
             <span class="width12 float-right">退款金额</span>
           </p>
-          <div class="goods-list-box">
+          <div class="goods-list-box" v-if="detail.astype !== 3">
             <table>
               <thead class="ablock">
                 <p>
@@ -135,16 +134,16 @@
                     </div>
                   </td>
                   <td class="price width142">
-                    <p class="text-align-center">￥</p>
-                    <p class="text-align-center"><del>￥</del></p>
+                    <p class="text-align-center">￥{{ detail.pdprice }}</p>
+                    <!-- <p class="text-align-center"><del>￥</del></p> -->
                   </td>
                   <td class="price-detail width178">
-                    <p class="text-align-center">优惠金额: <span>1</span></p>
-                    <p class="text-align-center">余额抵扣:<span>2</span></p>
-                    <p class="text-align-center">实付金额:<span>￥3</span></p>
+                    <p class="text-align-center">优惠券金额: <span>￥{{ detail.coupamt }}</span></p>
+                    <p class="text-align-center">余额抵扣:<span>￥{{ detail.balamt }}</span></p>
+                    <p class="text-align-center">实付金额:<span>￥{{ detail.payamt }}</span></p>
                   </td>
-                  <td class="purchase-count width142 text-align-center line-height119">采购数量</td>
-                  <td class="retreat-count width142 text-align-center line-height119">退货数量</td>
+                  <td class="purchase-count width142 text-align-center line-height119">{{ detail.pnum }}</td>
+                  <td class="retreat-count width142 text-align-center line-height119">{{ detail.asnum }}</td>
                   <td class="retreat-price">￥{{ detail.refamt }}</td>
                 </tr>
                 
@@ -152,12 +151,10 @@
               </tbody>
             </table>
           </div>
-
         </div>
       </a-layout-content>
       <f-space-footer></f-space-footer>
     </a-layout>
-
     <a-modal title="提示" v-model="visible" @ok="hideModal" okText="提交" cancelText="再想想">
       <p>订单取消成功后将无法恢复</p>
       <p>优惠券可能不再返还，支付优惠也将一并取消</p>
@@ -216,6 +213,20 @@ export default {
   },
   mounted() {
     this.detail = JSON.parse(this.$route.query.detail)
+    switch(this.detail.ckstatus) {
+      case -2:
+      this.steps = 3
+      break
+      case -1:
+      this.steps = 3
+      break
+      case 0:
+      this.steps = 0
+      break
+      case 1:
+      this.steps = 3
+      break
+    }
     this.getImgUrl()
     this.getFilePathPrev()
     console.log(this.detail)
@@ -247,6 +258,7 @@ export default {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                   var data = xhr.responseText;
                   data = JSON.parse(data).data.sort();
+                  
                   if (data.length > 0) {
                     _this.fileList.push({
                       uid: 0,

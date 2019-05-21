@@ -94,7 +94,7 @@
           <div
             :ref="item.unqid"
             class="elaborate"
-            v-if="item.unqid === 1 && newGoodsList.length > 4"
+            v-if="item.unqid === '1' && newGoodsList.length > 4"
           >
             <p class="elaborate-title">
               新品专区
@@ -126,7 +126,7 @@
           <div
             :ref="item.unqid"
             class="brand-hall height-auto"
-            v-if="item.unqid === 2 && hotGoodsList.length > 9"
+            v-if="item.unqid === '2' && hotGoodsList.length > 9"
           >
             <p class="brand-hall-title">
               热销专区
@@ -160,7 +160,7 @@
           <div
             :ref="item.unqid"
             class="brand-hall height-auto"
-            v-if="item.unqid === 4 && secondList.length > 4"
+            v-if="item.unqid === '4' && secondList.length > 4"
           >
             <div class="brand-hall-title height80">
               秒杀专区
@@ -206,7 +206,7 @@
           <div
             :ref="item.unqid"
             class="brand-hall height-auto"
-            v-if="item.unqid === 8 && teamBuyList.length > 4"
+            v-if="item.unqid === '8' && teamBuyList.length > 4"
           >
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
@@ -277,7 +277,7 @@
           </div>
           <!-- 包邮专区 -->
           <!-- v-if="item.unqid === 16 && postList.length > 4" -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 16 && postList.length > 4">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === '16' && postList.length > 4">
             <p class="brand-hall-title">
               包邮专区
               <!-- <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
@@ -306,7 +306,7 @@
           <div
             :ref="item.unqid"
             class="brand-hall"
-            v-if="item.unqid === 32 && newPersonList.length > 4"
+            v-if="item.unqid === '32' && newPersonList.length > 4"
           >
             <p class="brand-hall-title">
               新人专享
@@ -335,7 +335,7 @@
           </div>
           <!-- 暂无数据接口 -->
           <!-- 中华名方 -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === 64 && famousPrescription.length > 3">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === '64' && famousPrescription.length > 3">
             <p class="brand-hall-title">
               中华名方
               <a href="javascript:;" @click="toFamous()">查看全部<a-icon type="right"/>
@@ -363,7 +363,7 @@
           <div
             :ref="item.unqid"
             class="elaborate"
-            v-if="item.unqid === 128 && selectedList.length > 5"
+            v-if="item.unqid === '128' && selectedList.length > 5"
           >
             <p class="elaborate-title">
               为你精选
@@ -394,7 +394,7 @@
           <div
             :ref="item.unqid"
             class="brand-hall"
-            v-if="item.unqid === 256 && brandList.length > 4"
+            v-if="item.unqid === '256' && brandList.length > 4"
           >
             <p class="brand-hall-title">
               品牌专区
@@ -425,7 +425,7 @@
           <div
             :ref="item.unqid"
             class="brand-hall"
-            v-if="item.unqid === 512 && limitedList.length > 3"
+            v-if="item.unqid === '512' && limitedList.length > 3"
           >
             <p class="brand-hall-title">
               限时折扣
@@ -616,44 +616,44 @@ export default {
             let floorList = []; // 需要加载的楼层
             this.list.map((value, index) => {
               switch (value.unqid) {
-                case 1: // 新品专区
+                case '1': // 新品专区
                   floorList.push(this.getNewGoods());
                   value.color = "color-purple";
                   break;
-                case 2: // 热销专区
+                case '2': // 热销专区
                   floorList.push(this.getHotGoods());
                   value.color = "color-wheat";
                   break;
-                case 4: // 秒杀专区
+                case '4': // 秒杀专区
                   floorList.push(this.getSeckillMallFloor());
                   value.color = "color-blue";
                   break;
-                case 8: // 一块购
+                case '8': // 一块购
                   floorList.push(this.getTeamBuyMallFloor());
                   value.color = "color-pink";
                   value.fname = "一块购区";
                   break;
-                case 16: // 包邮专区
+                case '16': // 包邮专区
                   floorList.push(this.getExemPostMallFloor());
                   value.color = "color-beige";
                   break;
-                case 32: // 新人专享
+                case '32': // 新人专享
                   floorList.push(this.getNewPersonList());
                   value.color = "color-pink";
                   break;
-                case 64: // 中华名方 暂未提供接口
+                case '64': // 中华名方 暂未提供接口
                 floorList.push(this.getFamousPrescriptionFloor());
                   value.color = "color-indigo";
                   break;
-                case 128: // 为你精选
+                case '128': // 为你精选
                   floorList.push(this.getSelects());
                   value.color = "color-green";
                   break;
-                case 256: // 品牌专区
+                case '256': // 品牌专区
                   floorList.push(this.getBrandMallFloor());
                   value.color = "color-indigo";
                   break;
-                case 512: // 限时抢购
+                case '512': // 限时抢购
                   floorList.push(this.getDiscountMallFloor());
                   value.color = "color-khaki";
                   break;
@@ -858,6 +858,7 @@ export default {
           )
           .then(result => {
             resolve();
+            
             if (result.code === 200 && result.data.length > 6) {
               this.selectedList = result.data.slice(0, 6);
               this.fsGeneralMethods.addImages(

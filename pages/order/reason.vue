@@ -73,6 +73,7 @@
                     <div class="ant-upload-text">商品图片</div>
                   </div>
                 </a-upload>
+
                 <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
                   <img alt="example" style="width: 100%" :src="previewImage">
                 </a-modal>
@@ -119,32 +120,37 @@ export default {
       reprreason: [],
       goodsArr: [],
       orderno: 0,
-      imgURl: '',
-      pName: '',
-      pspec: '',
-      pdprice: '',
-      reasonType: '',
+      imgURl: "",
+      pName: "",
+      pspec: "",
+      pdprice: "",
+      reasonType: "",
       asType: 0,
       headers: {
         "specify-path": "",
         "specify-filename": ""
       },
-      goodsObj:{},
+      goodsObj: {}
     };
   },
   mounted() {
     this.asType = this.$route.query.asType;
     this.orderno = this.$route.query.orderno;
     this.goodsArr = JSON.parse(sessionStorage.getItem("fillOrderReason"));
-    this.imgURl = this.goodsArr[0].imgURl
-    this.pName = this.goodsArr[0].pname
-    this.pspec = this.goodsArr[0].pspec
-    this.pdprice = this.goodsArr[0].pdprice
+    this.imgURl = this.goodsArr[0].imgURl;
+    this.pName = this.goodsArr[0].pname;
+    this.pspec = this.goodsArr[0].pspec;
+    this.pdprice = this.goodsArr[0].pdprice;
     // 获取字典
     this.queryDictList();
     this.getFilePathPrev();
   },
   methods: {
+    setUploadIndex(index) {
+      this.headers["specify-filename"] = index + ".jpg";
+      this.headers["specify-path"] = this.uploadInfo.companyFilePath;
+      this.uploadIndex = index;
+    },
     queryDictList() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -163,10 +169,10 @@ export default {
     },
     //提交售后
     afterSaleApp() {
-        if (this.reasonType === '') {
-            this.$message.warning("请选择退款/退货原因")
-            return
-        }
+      if (this.reasonType === "") {
+        this.$message.warning("请选择退款/退货原因");
+        return;
+      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "OrderOptModule";
@@ -222,16 +228,16 @@ export default {
               _this.headers["specify-filename"] =
                 _this.fileList.length + ".jpg";
               _this.headers["specify-path"] = _this.uploadInfo.orderFilePath;
-              _this.headers["tailor-list"] = "200x200,400x400,600x600";
+              _this.headers["tailor-list"] = "600x600";
             }
           },
-          function error(error) {
-            ;
-          }
+          function error(error) {}
         )
       );
     },
     beforeUpload(file) {
+      this.headers["specify-filename"] =
+                this.fileList.length + ".jpg";
       const isJPG = file.type;
       if (isJPG !== "image/jpeg" && isJPG !== "image/png") {
         this.$message.error("图片支持只jpg，png两种格式。!");
@@ -244,9 +250,9 @@ export default {
       return isJPG && isLt2M;
     },
     remove(file) {
-      for(let i = 0; i< this.fileList.length; i++) {
-        if(this.fileList[i].uid === file.uid) {
-          this.fileList.splice(i,1);
+      for (let i = 0; i < this.fileList.length; i++) {
+        if (this.fileList[i].uid === file.uid) {
+          this.fileList.splice(i, 1);
         }
       }
     },

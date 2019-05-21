@@ -52,27 +52,27 @@
             v-for="(item, index) in uploadList"
             :key="index"
           >
-            <div @click="setUploadIndex(index)">
-              <a-upload
-                :disabled="!isEditor"
-                :fileList="item.fileList"
-                :headers="headers"
-                listType="picture-card"
-                class="avatar-uploader"
-                :showUploadList="showUpload"
-                :action="uploadInfo.upUrl"
-                :beforeUpload="beforeUpload"
-                :supportServerRender="true"
-                :remove="remove"
-                @change="handleChange"
-                @preview="handlePreview"
-              >
-                <div v-if="item.fileList.length < 1">
-                  <a-icon :type="loading ? 'loading' : 'plus'"/>
-                  <div class="ant-upload-text">{{ item.name }}</div>
-                </div>
-              </a-upload>
-            </div>
+          <div @click="setUploadIndex(index)">
+             <a-upload
+              :disabled="!isEditor"
+              :fileList="item.fileList"
+              :headers="headers"
+              listType="picture-card"
+              class="avatar-uploader"
+              :showUploadList="showUpload"
+              :action="uploadInfo.upUrl"
+              :beforeUpload="beforeUpload"
+              :supportServerRender="true"
+              :remove="remove"
+              @change="handleChange"
+              @preview="handlePreview"
+            >
+              <div v-if="item.fileList.length < 1">
+                <a-icon :type="loading ? 'loading' : 'plus'"/>
+                <div class="ant-upload-text">{{ item.name }}</div>
+              </div>
+            </a-upload>
+          </div>
             <p class="upload-p">{{ item.name }}</p>  
           </a-form-item>
         </div>

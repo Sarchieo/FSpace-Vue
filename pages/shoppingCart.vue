@@ -106,7 +106,10 @@
               </span>
               <!-- 满减-包邮 -->
               <span v-if="String(item.offercode).substring(0,4) == 1120 ">
-               <a-tag color="red">{{ item.offername }}</a-tag> 当前 满 {{ item.ladamt }} 包邮
+               <!-- <a-tag color="red">{{ item.offername }}</a-tag> 当前 满 {{ item.ladamt }} 包邮
+               您还差{{ Math.abs(item.gapamt) }}元 , 可包邮</span> -->
+                <span v-if="item.gapamt === 0"><a-tag color="red">{{ item.offername }}</a-tag> 当前已满 {{ item.ladamt }}  包邮</span>
+                <span v-if="item.gapamt < 0"><a-tag color="red">{{ item.offername }}</a-tag> 您还差{{ Math.abs(item.gapamt) }}元 , 可包邮</span>
               </span>
               <!-- 满减-折扣 -->
               <span v-if="String(item.offercode).substring(0,4) == 1130 ">
@@ -216,14 +219,17 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "getOfferTip";
-      let arr = _this.cartList.map(value => {
-        return {
-          compid: _this.storeInfo.comp.storeId,
-          pdno: value.pdno,
-          pnum: value.num,
-          checked: value.checked ? 1 : 0,
-          unqid: value.unqid
-        };
+      let arr = []
+      _this.cartList.map(value => {
+         if(value.checked) {
+           arr.push( {
+              compid: _this.storeInfo.comp.storeId,
+              pdno: value.pdno,
+              pnum: value.num,
+              checked: 1,
+              unqid: value.unqid
+          })
+        }
       });
       iRequest.param.json = JSON.stringify(arr);
       iRequest.param.token = localStorage.getItem("identification");
@@ -235,6 +241,8 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code === 200) {
             _this.tips = result.data
+          }else {
+            _this.tips = []
           }
         }
        ));
@@ -257,16 +265,28 @@ export default {
           if (result.code === 200) {
             if (result.data) {
               _this.cartList = result.data;
-              console.log(_this.cartList)
               _this.getOfferTip();
               _this.cartList.forEach((item) => {
-                item.limitnum = item.limitnum - item.limitsub
                 _this.$set(item, 'checked', item.checked === 0 ? false : true)
-                if(item.limitnum > item.inventory || item.limitnum === 0) {
-                  item.maximum = item.inventory
-                } else {
+                // actstock limitnum inventory
+                item.maximum = item.inventory
+
+                if(item.limitnum !==0 && item.limitnum < item.maximum) {
                   item.maximum = item.limitnum
                 }
+
+                if(item.actstock < item.maximum) {
+                  item.maximum = item.actstock
+                }
+
+
+                // item.limitnum = item.limitnum - item.limitsub
+             
+                // if(item.limitnum > item.inventory || item.limitnum === 0) {
+                //   item.maximum = item.inventory
+                // } else {
+                //   item.maximum = item.limitnum
+                // }
               })
               _this.fsGeneralMethods.addImages(_this, _this.cartList, 'pdno', 'spu')
             }
@@ -300,8 +320,17 @@ export default {
             _this.cartList = result.data;
              _this.cartList.forEach((item) => {
                 _this.$set(item, 'checked', item.checked === 0 ? false : true)
-                item.limitnum = item.limitnum - item.limitsub
-                item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
+                // item.limitnum = item.limitnum - item.limitsub
+                // item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
+                item.maximum = item.inventory
+
+                if(item.limitnum !==0 && item.limitnum < item.maximum) {
+                  item.maximum = item.limitnum
+                }
+
+                if(item.actstock < item.maximum) {
+                  item.maximum = item.actstock
+                }
                 if(item.checked) {
                   _this.amt = item.amt
                 }
@@ -498,6 +527,16 @@ export default {
           }
         })
       );
+    }
+  },
+  watch: {
+    cartList: {
+      handler(newValue, oldValue) {
+        newValue.forEach(item => {
+           item.num = parseInt(item.num/item.medpacknum) * item.medpacknum
+        })
+　　　　},
+      deep: true
     }
   }
 };

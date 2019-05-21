@@ -46,7 +46,7 @@
               </p>
               <div class="price-server">
                 <p class="onek-person" v-if="rulecode == 1133">
-                  <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.offer / 10 }}</span>
+                  <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.offer }}</span>
                   <span>折</span>
                 </p>
                 <a-progress
@@ -503,6 +503,7 @@ import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
 import FSpacePicZoom from "../../components/fspace-ui/piczoom";
 
+
 export default {
   components: {
     FSpaceHeader,
@@ -700,7 +701,7 @@ export default {
     },
     // // 获取药品活动
     // getactivities() {
-    //   debugger
+    //   
     //   let _this = this;
     //   let iRequest = new inf.IRequest();
     //   iRequest.cls = "CalculateModule";
@@ -713,7 +714,7 @@ export default {
     //       Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
     //     iRequest,
     //     new this.$iceCallback(function result(result) {
-    //       debugger
+    //       
     //       if (result.code === 200) {
     //       }
     //     })
@@ -745,13 +746,13 @@ export default {
               }
               _this.queryActiveType(_this.activitiesBySKU[0].unqid);
               // 最小限购量
-              _this.activeLimits = result.data.minLimit;
-              //最小活动库存
-              _this.activeStore = result.data.minStock;
+              _this.activeLimits =  (result.data.minLimit - result.data.maxBuyed) > 0 ? result.data.minLimit - result.data.maxBuyed : null;
+              //最小活动库存  
+              _this.activeStore = result.data.minStock
               if(result.data.minStock > result.data.minLimit) {
-                 _this.maximum =  result.data.minLimit;
+                _this.maximum =  _this.activeLimits
               }else {
-                 _this.maximum =  result.data.minStock;
+                _this.maximum =  _this.activeStore
               }
             }
           }
@@ -905,7 +906,7 @@ export default {
         this.$message.warning("当前商品活动库存不足");
         return false;
       }
-      if(this.activeLimits !== null && this.activeLimits !==0 && this.inventory + this.prodDetail.medpacknum > this.activeLimits) {
+      if(this.activeLimits !== null && this.inventory + this.prodDetail.medpacknum > this.activeLimits) {
         this.$message.warning("当前商品限购量不足");
         return false;
       }
@@ -987,6 +988,7 @@ export default {
               _this.prodDetail = result.data;
               // 设置中包装数 商品数
               _this.inventory = result.data.medpacknum
+              
               if (_this.userStatus) {
                 // 上传足迹
                 _this.getFoot();
