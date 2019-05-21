@@ -96,12 +96,21 @@
             
            
           </div>
+          <!-- 如果是补开发票就显示invo-box -->
           <div class="invo-box" v-if="detail.astype !== 3">
             <div class="invo-left">
-
+              <p class="speed progress">发票信息</p>
+              <p><span>公司名称：</span></p>
+              <p><span>注册地址：</span></p>
+              <p><span>纳税人识别号：</span></p>
+              <p><span>开户银行：</span></p>
+              <p><span>银行账号：</span></p>
             </div>
             <div class="invo-right">
-
+              <p class="speed progress">收件信息</p>
+              <p><span>收件人：</span></p>
+              <p><span>收件电话：</span></p>
+              <p><span>收件地址：</span></p>
             </div>
           </div>
           <p class="goods-title" v-if="detail.astype !== 3">
@@ -258,7 +267,7 @@ export default {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                   var data = xhr.responseText;
                   data = JSON.parse(data).data.sort();
-                  
+
                   if (data.length > 0) {
                     _this.fileList.push({
                       uid: 0,
@@ -381,6 +390,30 @@ export default {
 }
 .text-align-center{
   text-align: center;
+}
+.invo-box{
+  .container-size(block, 1190px, 230px, 0 auto, 0px);
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-top: 3px solid #e0e0e0;
+  .invo-left{
+    float: left;
+    width: 550px;
+    height: 210px;
+
+    p{
+      .p-size(36px, 36px, 16px, left, 0px, #333);
+    }
+  }
+  .invo-right{
+     float: right;
+    width: 550px;
+    height: 210px;
+
+     p{
+      .p-size(36px, 36px, 16px, left, 0px, #333);
+    }
+  }
 }
 .retreat-price{
   width: 135px;
