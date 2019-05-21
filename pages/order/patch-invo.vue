@@ -385,7 +385,7 @@ export default {
               // 支付结果页面数据
             }
           } catch(err){
-            
+
           }
         }
       });
@@ -435,14 +435,15 @@ export default {
       } else {
         this.asType = 4;
       }
+      debugger
       this.invoice = {
         invoiceInfo: {
           compName: this.comp.storeName,
           address: this.comp.address,
-          bankers: this.bankers, //开户行
-          account: this.account, //开户行账号
-          taxpayer: this.taxpayer, //纳税人识别号
-          tel: this.tel //注册电话
+          bankers: this.invoice.bankers, //开户行
+          account: this.invoice.account, //开户行账号
+          taxpayer: this.invoice.taxpayer, //纳税人识别号
+          tel: this.invoice.tel //注册电话
         },
         address: {
           consignee: this.consignee,
