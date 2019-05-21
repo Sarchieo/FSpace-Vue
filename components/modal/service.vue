@@ -1,5 +1,16 @@
 <template>
-  <a-modal title="用户服务协议" cancelText="取消" okText="确定" v-model="isService" width="1190px" @cancel="handleCancelService" @ok="handleCancelService">
+  <a-modal title="用户服务协议" 
+    cancelText="取消" 
+    okText="确定"
+    :closable=false
+    v-model="isService" 
+    width="1190px" 
+    >
+     <template slot="footer">
+        <a-button key="submit" type="primary" :loading="loading" @click="handleCancelService">
+          确定
+        </a-button>
+      </template>
      <div class="service-box">
          <h2>用户服务协议</h2>
          <p>此份协议是用户接受“一块医药”网站相关服务时适用的通用条款。请您在注册成为用户前或接受服务之前，详细地阅读本用户协议的所有内容。</p>

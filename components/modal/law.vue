@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="用户隐私协议"
+    title="法律声明"
     cancelText="取消"
     okText="确定"
     width="1190px"

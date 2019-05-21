@@ -17,18 +17,19 @@
             />
             <a-button
               class="captcha"
+              :disabled="isCodeBtn"
               :loading="sendAuthCodeLoading"
               @click="getAuthCode()"
             >{{sendAuthCodeText}}</a-button>
           </a-form-item>
-          </a-col>
-          </a-row>
-          <a-row :gutter="8">
-          <a-col :span="24">
-              <a-form-item v-bind="formItemLayout" label="新手机号" has-feedback>
-                <a-input
-                  v-model="newPhone"
-                  v-decorator="[
+        </a-col>
+      </a-row>
+      <a-row :gutter="8">
+        <a-col :span="24">
+          <a-form-item v-bind="formItemLayout" label="新手机号" has-feedback>
+            <a-input
+              v-model="newPhone"
+              v-decorator="[
                     'phone',
                     {
                       rules: [ {
@@ -36,13 +37,13 @@
                       }],
                     }
                   ]"
-                  id="validating"
-                  placeholder="请输入您新的手机号码"
-                ></a-input>
-              </a-form-item>
-            </a-col>
-          </a-row>
-      
+              id="validating"
+              placeholder="请输入您新的手机号码"
+            ></a-input>
+          </a-form-item>
+        </a-col>
+      </a-row>
+
       <a-form-item v-bind="tailFormItemLayout">
         <a-button type="primary" html-type="submit" class="register-btn" block>确定</a-button>
       </a-form-item>
@@ -97,11 +98,12 @@ export default {
       return this.$store.state.user;
     },
     isVisible: function() {
-      return this.isChangePhone
+      return this.isChangePhone;
     }
   },
   data() {
     return {
+      isCodeBtn: false,
       isDisabled: true,
       oldPhone: "",
       newPhone: "",
@@ -149,29 +151,36 @@ export default {
     },
     handleSubmitOld(e) {
       e.preventDefault();
-      let _this = this;
-      let iRequest = new inf.IRequest();
-      iRequest.cls = "LoginRegistrationModule";
-      iRequest.method = "changeUserInfo";
-      iRequest.param.json = JSON.stringify({
-        oldPhone: this.oldPhone,
-        newPhone: this.newPhone,
-        smsCode: this.verification
-      });
-      iRequest.param.token = localStorage.getItem("identification");
-      this.$refcallback(
-        this,
-        "userServer",
-        iRequest,
-        new this.$iceCallback(function result(result) {
-          if (result.code == 200) {
-            // 回到登录页面
-             _this.$message.success(result.message);
-            _this.$emit('changePhoneSussece');
-           
+      this.fsGeneralMethods
+        .request(
+          this,
+          "userServer",
+          "LoginRegistrationModule",
+          "changeUserInfo",
+          {
+            oldPhone: this.oldPhone,
+            newPhone: this.newPhone,
+            smsCode: this.verification
           }
-        })
-      );
+        )
+        .then(result => {
+          if (result.code === 200) {
+            try {
+              this.$store
+              .dispatch("setLogout", { context: this })
+              .then(res => {
+                this.$router.push({
+                  path: "/user/login"
+                });
+              })
+              .catch(err => {});
+            } catch (error) {
+
+            }
+          }else {
+            this.$message.error(result.data);
+          }
+        });
     },
     handleOk() {},
     // 验证手机号码是否已被注册
@@ -228,11 +237,13 @@ export default {
             _this.auth_time = 60;
             _this.$message.success("短信发送成功");
             let auth_timetimer = setInterval(() => {
+              _this.isCodeBtn = true;
               _this.sendAuthCodeLoading = false;
               _this.sendAuthCode = false;
               _this.auth_time--;
               _this.sendAuthCodeText = _this.auth_time + "s";
               if (_this.auth_time <= 0) {
+                _this.isCodeBtn = false;
                 _this.sendAuthCode = true;
                 _this.sendAuthCodeText = "获取验证码";
                 clearInterval(auth_timetimer);
@@ -300,7 +311,7 @@ export default {
     //         iRequest,
     //         new this.$iceCallback(
     //           function result(result) {
-    //             if (result.code == 200) {
+    //             if (result.code === 200) {
     //               _this.$message.success(result.message);
     //               _this.isShowNewPhone = true;
     //               // _this.$emit("handleCancel");
@@ -342,7 +353,7 @@ export default {
     //         iRequest,
     //         new this.$iceCallback(
     //           function result(result) {
-    //             if (result.code == 200) {
+    //             if (result.code === 200) {
     //               _this.$message.success(result.message);
     //               _this.$emit("handleCancel");
     //             } else {
