@@ -56,7 +56,7 @@
               <span>纳税人识别号:</span>
               {{ invoice.taxpayer }}
             </p>
-            <p class="address-info" v-if="invoiceCode === 2">
+            <p class="address-info" v-if="invoiceCode == 2">
               <span>注册电话:</span>
               {{ invoice.tel }}
             </p>
@@ -83,16 +83,16 @@
             </p> -->
             <a-tabs defaultActiveKey="1">
               <a-tab-pane tab="使用优惠券" key="1">
-                <p v-if="couponList.length === 0" class="no-coupon">暂无优惠券可使用</p>
+                <p v-if="couponList.length == 0" class="no-coupon">暂无优惠券可使用</p>
                 <div class="coupon-box" v-if="couponList.length !== 0">
                   
                   <div v-for="(item, index) in couponList" :key="index">
                     <!-- 现金券 -->
-                    <div class="coupon" v-if="item.brulecode === 2110">
+                    <div class="coupon" v-if="item.brulecode == 2110">
                       <div class="coupon-num">
-                        <!-- <span v-if="item.ctype === 3">111</span> -->
+                        <!-- <span v-if="item.ctype == 3">111</span> -->
                         <p class="coupon-title">{{ item.rulename }}</p>
-                        <p v-if="item.ctype === 3">
+                        <p v-if="item.ctype == 3">
                           <span class="fuhao">￥</span>
                           <span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span>
                         </p>
@@ -101,7 +101,7 @@
                         </div>
                       </div>
                       <p class="coupon-bottom">
-                        <span v-if="item.ctype === 3">永久有效</span>
+                        <span v-if="item.ctype == 3">永久有效</span>
                         <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
                         <a-checkbox
                           :checked="item.isChecked"
@@ -112,9 +112,9 @@
                     </div>
 
                     <!-- 包邮券 -->
-                    <div class="coupon" v-if="item.brulecode === 2120">
+                    <div class="coupon" v-if="item.brulecode == 2120">
                       <div class="coupon-num">
-                        <p v-if="item.ctype === 3">
+                        <p v-if="item.ctype == 3">
                           <span class="fuhao">￥</span>
                           <span v-for="(j, i) in item.ladderVOS" :key="i" class="money">{{j.offer}}</span>
                         </p>
@@ -124,7 +124,7 @@
                         </div>
                       </div>
                       <p class="coupon-bottom">
-                        <span v-if="item.ctype === 3">永久有效</span>
+                        <span v-if="item.ctype == 3">永久有效</span>
                         <span v-if="item.ctype !== 3">有效期至 {{ item.enddate }}</span>
                         <a-checkbox
                           :checked="item.isChecked"
@@ -134,7 +134,7 @@
                       </p>
                     </div>
                     <!-- 折扣券 -->
-                    <div class="coupon" v-if="item.brulecode === 2130">
+                    <div class="coupon" v-if="item.brulecode == 2130">
                       <div class="coupon-num">
                         <p class="coupon-title">{{ item.rulename }}</p>
                         <p v-for="(j, i) in item.ladderVOS" :key="i">满{{ j.ladamt }} 打 {{ j.offer/10}}折</p>
@@ -319,6 +319,7 @@ export default {
   },
   mounted() {
     this.cartList = JSON.parse(sessionStorage.getItem("placeOrderList"));
+    debugger
     this.placeType = this.$route.query.placeType;
     this.orderType = this.$route.query.orderType;
     this.actcode = this.$route.query.actcode || 0;
@@ -335,11 +336,11 @@ export default {
   },
   methods: {
     useCoupon() {
-      if(this.exno === '') {
+      if(this.exno == '') {
         this.$message.error('请填写优惠券券码 ')
         return
       }
-      if(this.pwd === '') {
+      if(this.pwd == '') {
         this.$message.error('请填写优惠券密码 ')
         return
       }
@@ -350,7 +351,7 @@ export default {
           pwd: this.pwd
         })
         .then(result => {
-          if (result.code === 200 && result.data.unqid !== 0) {
+          if (result.code == 200 && result.data.unqid !== 0) {
 
             this.offlineCouponCalculate(result.data.unqid)
             console.log(result)
@@ -375,7 +376,7 @@ export default {
       this.fsGeneralMethods
         .request(this, "orderServer", "CouponRevModule", "offlineCouponCalculate" , arr)
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.$message.success(result.message)
             this.selectCounpon = result.data;
             this.offlineCouponText = this.selectCounpon.msg
@@ -390,7 +391,7 @@ export default {
       this.fsGeneralMethods
         .request(this, "userServer", "MyInvoiceModule", "getInvoice")
         .then(result => {
-          if (result.code === 200 && result.data.length > 0) {
+          if (result.code == 200 && result.data.length > 0) {
             this.invoice = result.data[0];
           } else {
             this.$confirm({
@@ -424,7 +425,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             if (result.data && result.data.length > 0) {
               _this.receiverList = result.data;
               let number = 0;
@@ -436,7 +437,7 @@ export default {
                   number++;
                 }
               }
-              if (number === 0) {
+              if (number == 0) {
                 _this.consignee = _this.receiverList[0].contactname;
                 _this.contact = _this.receiverList[0].contactphone;
                 _this.shipid = _this.receiverList[0].shipid;
@@ -476,7 +477,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (
-            result.code === 200 &&
+            result.code == 200 &&
             result.data !== undefined &&
             result.data.length > 0
           ) {
@@ -518,7 +519,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.selectCounpon = result.data;
           }
         })
@@ -572,7 +573,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$router.push({
               path: "/order/pay",
               query: {
@@ -604,7 +605,7 @@ export default {
             "userServer",
             iRequest,
             new this.$iceCallback(function result(result) {
-              if (result.code === 200) {
+              if (result.code == 200) {
                 _this.queryMyConsignee();
                 _this.visible = false;
               }
@@ -644,7 +645,7 @@ export default {
         this.couponCode = item.coupno;
         this.coupNum = item.offerAmt;
         item.isChecked = true
-        item.brulecode === 2120
+        item.brulecode == 2120
           ? (this.isPostal = true)
           : (this.isPostal = false);
       }

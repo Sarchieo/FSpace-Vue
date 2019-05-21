@@ -1,7 +1,7 @@
 <template>
   <div class="header-box">
     <!-- 首页 -->
-    <a-layout-header v-if="type === 'home'">
+    <a-layout-header v-if="type == 'home'">
      
       <f-space-right></f-space-right>
       <div>
@@ -46,9 +46,9 @@
                 </a-list>
               </template>
                
-              <a-badge :dot="isNewNotice" class="margin-top15">
-                  <a href="#">我的消息</a>
-                </a-badge>
+              <a-badge v-if="isLogin" :dot="isNewNotice" class="margin-top15">
+                <a href="#">我的消息</a>
+              </a-badge>
             </a-popover>
             <!-- 签到有礼 -->
             <!-- <a v-if="isLogin" class="sign" @click="toIntegral()">
@@ -151,7 +151,7 @@
       </div>
     </a-layout-header>
     <!-- 登录 -->
-    <a-layout-header v-if="type === 'login'" class="login-header">
+    <a-layout-header v-if="type == 'login'" class="login-header">
       <div class="ant-layout-header-login">
          <nuxt-link to="/">
           <div class="medicine-name-login">
@@ -169,7 +169,7 @@
       </div>
     </a-layout-header>
     <!-- 注册 -->
-    <a-layout-header v-if="type === 'register'" class="login-header">
+    <a-layout-header v-if="type == 'register'" class="login-header">
       <div class="ant-layout-header-login">
         <nuxt-link to="/">
           <div class="medicine-name-login">
@@ -257,7 +257,7 @@ export default {
     };
   },
   mounted() {
-    this.isShowMenu = this.$route.name === 'index' ? true : false
+    this.isShowMenu = this.$route.name == 'index' ? true : false
     this.init();
     this.checkStoreLoginStatus();
     this.usualKeyword();
@@ -286,7 +286,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.keyWordList = result.data
             if(_this.keyWordList.length > 3) {
               _this.keyWordList.splice(0,3)
@@ -308,7 +308,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             if(result.data) {
               _this.getBasicInfo()
             }
@@ -336,7 +336,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data) {
+          if (result.code == 200 && result.data) {
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
@@ -376,7 +376,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.autoResult = result.data
           }
         })
@@ -394,7 +394,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success(result.data);
             _this.$store
               .dispatch("setLogout", { context: _this })
@@ -471,7 +471,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success("购物车移除成功~");
             _this.cartList.splice(index, 1);
             if (_this.cartList.length > 0) _this.getShoppingCartList();
@@ -500,7 +500,7 @@ export default {
       });
     },
     toGoods(keyword) {
-      if (keyword === "") {
+      if (keyword == "") {
         return;
       }
       // this.$store.commit('KEY_WORD', keyword)

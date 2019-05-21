@@ -101,7 +101,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200 && result.data.paystatus === 1) {
+            if (result.code == 200 && result.data.paystatus == 1) {
               clearInterval(_this.intervalid);
               _this.toSuccess()
             }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="no-data" v-if="this.informationList.length === 0">
+    <div class="no-data" v-if="this.informationList.length == 0">
        <p><a-icon type="exclamation"/></p>
        <p>您还没有消息！</p>
         <!-- <a-icon type="delete" @click.stop="delCollec(item.sku)"/> -->
@@ -53,7 +53,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.informationList = result.data;
             _this.total = result.total
           } else {

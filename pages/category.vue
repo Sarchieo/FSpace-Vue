@@ -63,11 +63,11 @@
         </li>
         <li class="sort-box">
           <!-- 选中的样式为 active-search -->
-          <!-- <a href="javascript:;" @click="selectCompr()" :class="this.sortGoods === 0 ? 'active-search' : ''">综合 <a-icon type="arrow-down"/></a> -->
+          <!-- <a href="javascript:;" @click="selectCompr()" :class="this.sortGoods == 0 ? 'active-search' : ''">综合 <a-icon type="arrow-down"/></a> -->
           <a
             href="javascript:;"
             @click="selectVolume()"
-            :class="this.sortGoods === 1 ? 'active-search' : ''"
+            :class="this.sortGoods == 1 ? 'active-search' : ''"
           >
             销量
             <a-icon type="arrow-down"/>
@@ -77,7 +77,7 @@
             defaultValue="价格排序"
             style="width: 150px"
             @change="handleChange"
-            :class="this.sortGoods === 2 || this.sortGoods === 3 ? 'active-search' : ''"
+            :class="this.sortGoods == 2 || this.sortGoods == 3 ? 'active-search' : ''"
           >
             <a-select-option value="0">价格从高到低</a-select-option>
             <a-select-option value="1">价格从低到高</a-select-option>
@@ -91,9 +91,9 @@
         <li v-for="(item,index) in searchList" :key="index" @click="toDetail(item)">
           <a-card hoverable class="card">
             <img class="card-img" v-lazy="item.imgURl" :key="item.imgURl" slot="cover">
-            <img class="no-card" src="../assets/img/shortage.png" slot="cover" v-if="item.store === 0">
-            <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus === 1 || item.rulestatus === 2 || item.rulestatus === 4" alt="" slot="cover">
-            <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus === 8 || item.rulestatus === 16 || item.rulestatus === 32　||　item.rulestatus === 64" alt="" slot="cover">
+            <img class="no-card" src="../assets/img/shortage.png" slot="cover" v-if="item.store == 0">
+            <img class="reduce-img" src="../assets/img/reduction.png" v-if="item.rulestatus == 1 || item.rulestatus == 2 || item.rulestatus == 4" alt="" slot="cover">
+            <img class="reduce-img" src="../assets/img/gift.png" v-if="item.rulestatus == 8 || item.rulestatus == 16 || item.rulestatus == 32　||　item.rulestatus == 64" alt="" slot="cover">
             <p class="surplus text-Center top185">{{item.brandName}} {{ item.prodname }} {{ item.spec }}</p>
             <p class="validity">有效期至{{item.vaildedate}}</p>
               <p class="card-price top165" v-if="item.vatp != -1">
@@ -214,7 +214,7 @@ export default {
           promtype: 0
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.$message.success(result.message);
           }
         });
@@ -238,7 +238,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.manunameList = [];
               _this.specList = [];
               _this.conditionList = result.data;
@@ -295,12 +295,12 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.searchList = result.data;
 
               _this.fsGeneralMethods.addImages(_this,_this.searchList, 'sku', 'spu' );
 
-              if (_this.searchList.length === 0 || _this.searchList === null) {
+              if (_this.searchList.length == 0 || _this.searchList == null) {
                 _this.isGoods = true;
               } else {
                 _this.isGoods = false;
@@ -323,7 +323,7 @@ export default {
     },
     // 价格排序
     handleChange(value) {
-      if (value === "0") {
+      if (value == "0") {
         this.sortGoods = 2;
       } else {
         this.sortGoods = 3;
@@ -380,11 +380,11 @@ export default {
     removeArray(_arr, _obj) {
       let length = _arr.length;
       for (let i = 0; i < length; i++) {
-        if (_arr[i] === _obj) {
-          if (i === 0) {
+        if (_arr[i] == _obj) {
+          if (i == 0) {
             _arr.shift(); //删除并返回数组的第一个元素
             return _arr;
-          } else if (i === length - 1) {
+          } else if (i == length - 1) {
             _arr.pop(); //删除并返回数组的最后一个元素
             return _arr;
           } else {

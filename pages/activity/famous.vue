@@ -86,10 +86,10 @@ export default {
   methods: {
     // 新增商品数量
     addCount(item) {
-      item.pnum += 1
+      item.pnum += item.medpacknum
     },
     reduceCount(item) {
-      item.pnum > 1 ? item.pnum -- : item.pnum
+      item.pnum > item.medpacknum ? item.pnum - item.medpacknum : item.pnum
     },
      // 加入购物车
     addCart(item) {
@@ -103,7 +103,7 @@ export default {
           promtype: 0
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.$message.success(result.message);
           }
         });
@@ -128,10 +128,11 @@ export default {
           keyword: this.keyword
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.famousList = result.data;
              this.famousList.forEach(item => {
-              this.$set(item, "pnum", 1);
+              item.medpacknum = item.medpacknum ? item.medpacknum : 1
+              this.$set(item, "pnum", item.medpacknum);
             });
             this.total = result.total;
             this.currentIndex = result.pageNo

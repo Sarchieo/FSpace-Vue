@@ -129,7 +129,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if(result.code === 200) {
+            if(result.code == 200) {
               if(result.data) {
                 _this.data = result.data
               }
@@ -158,7 +158,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             console.log(result)
-            if(result.code === 200) {
+            if(result.code == 200) {
               _this.$message.success(result.message)
               _this.queryMyConsignee()
             }else {
@@ -191,7 +191,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if(result.code === 200) {
+            if(result.code == 200) {
               _this.$message.success(result.message)
               _this.queryMyConsignee()
             }else {
@@ -230,7 +230,7 @@ export default {
             iRequest,
             new this.$iceCallback(
               function result(result) {
-                if(result.code === 200) {
+                if(result.code == 200) {
                   _this.visible = false
                   _this.queryMyConsignee()
                   _this.$message.success(result.message)

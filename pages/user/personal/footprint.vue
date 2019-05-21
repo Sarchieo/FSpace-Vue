@@ -1,7 +1,7 @@
 <template>
   <div class="collection-box">
     <p class="collection-text">我的足迹</p>
-     <div class="no-data" v-if="this.footList.length === 0">
+     <div class="no-data" v-if="this.footList.length == 0">
        <p><a-icon type="exclamation"/></p>
        <p>您还没有药品足迹！</p>
         <!-- <a-icon type="delete" @click.stop="delCollec(item.sku)"/> -->
@@ -80,7 +80,7 @@ export default {
         "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.footList = result.data;
                 _this.footList.forEach(item => {
               _this.fsGeneralMethods.addImages(
@@ -107,7 +107,7 @@ export default {
         "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.getFootList();
             _this.$message.success(result.message);
           } else {

@@ -55,19 +55,19 @@
                 :disabled="!isPay"
                 type="primary"
                 @click="prePay()"
-                v-if="this.value === 1 || this.value === 2"
+                v-if="this.value == 1 || this.value == 2"
               >立即支付</a-button>
               <a-button
                 :disabled="!isPay"
                 type="primary"
                 @click="offlinePay('4')"
-                v-if="this.value === 3"
+                v-if="this.value == 3"
               >立即支付</a-button>
               <a-button
                 :disabled="!isPay"
                 type="primary"
                 @click="offlinePay('5')"
-                v-if="this.value === 4"
+                v-if="this.value == 4"
               >确定购买</a-button>
             </p>
             <p class="surplus-time">
@@ -129,10 +129,10 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.payInfo = result.data;
             // 余额完全支付
-            if (result.data.balflag === 1) {
+            if (result.data.balflag == 1) {
               _this.balAllPay();
             } else {
               _this.payamt = result.data.payamt;
@@ -162,7 +162,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$router.push({
               path: "/order/pay-complete",
               query: {
@@ -191,7 +191,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$router.push({
               path: "/order/payment",
               query: {
@@ -222,7 +222,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$router.push({
               path: "/order/line-down",
               query: {

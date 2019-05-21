@@ -34,9 +34,9 @@
                 <p class="goods-price" v-else>￥认证后可见</p>
                 <p class="package">中包装{{item.medpacknum}}{{item.unitName}} <span class="float-right">已售{{item.sales}}{{item.unitName}}</span></p>
                 <p class="button-p">
-                  <button class="add-small" @click.stop="add(item)">+</button>
+                  <button class="add-small" @click.stop="addCount(item)">+</button>
                   <input type="number" v-model="item.pnum" @click.stop="">
-                  <button class="reduct-small" @click.stop="reduce(item)">-</button>
+                  <button class="reduct-small" @click.stop="reduceCount(item)">-</button>
                   <a-button class="add" @click.stop="addCart(item)">加入采购单</a-button>
                 </p>
               </a-card>
@@ -95,6 +95,13 @@ export default {
         }
       });
     },
+    // 新增商品数量
+    addCount(item) {
+      item.pnum += item.medpacknum
+    },
+    reduceCount(item) {
+      item.pnum > item.medpacknum ? item.pnum - item.medpacknum : item.pnum
+    },
     async addCart(item) {
        this.fsGeneralMethods.addShoppingCart(this, item, item.pnum);
     },
@@ -114,11 +121,12 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.newGoodsList = result.data;
               _this.newGoodsList.forEach(item => {
-            _this.$set(item, "pnum", 1);
-            });
+                item.medpacknum = item.medpacknum ? item.medpacknum : 1
+                _this.$set(item, "pnum", item.medpacknum);
+              });
             _this.total = result.total;
             _this.currentIndex = result.pageNo
             _this.fsGeneralMethods.addImages(_this, _this.newGoodsList, 'sku', 'spu')
@@ -134,16 +142,10 @@ export default {
           promtype: 0
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.$message.success(result.message);
           }
         });
-    },
-    add(item) {
-      item.pnum += 1
-    },
-    reduce(item) {
-      item.pnum > 1 ? item.pnum -- : item.pnum
     },
     onChangePage(pageNumber) {
       this.currentIndex = pageNumber;

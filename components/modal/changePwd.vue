@@ -20,7 +20,7 @@
         <a-input
           v-decorator="[
             'newPassword',
-            {rules: [{ required: true, message: '请输入新密码', min:6 }]}           
+            {rules: [{ required: true, validator: validatePwd2 }]}           
           ]"
           type="password"
           placeholder="请再次输入密码"
@@ -110,7 +110,7 @@ export default {
             iRequest,
             new this.$iceCallback(
               function result(result) {
-                if (result.code === 200) {
+                if (result.code == 200) {
                   _this.$message.success(result.message)
                   _this.$emit('changePwdCancel')
                 }
@@ -131,7 +131,10 @@ export default {
     
     validatePwd2(rule, value, callback) {
       const form = this.form;
-      if (value && value === form.getFieldValue("newPassword")) {
+      if(value == form.getFieldValue("oldPassword")) {
+        callback("新密码不能与旧密码一致");
+      }
+      if (value && value == form.getFieldValue("newPassword")) {
         callback();
       } else {
         callback("密码不一致, 请重新输入");

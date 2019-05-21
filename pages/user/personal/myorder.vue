@@ -27,7 +27,7 @@
     </div>
     <p class="table-title">
        <!-- <a-checkbox
-        :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0"
+        :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum == 0"
         @change="onChange"
         :value="item"
         v-model="item.checked"
@@ -94,14 +94,14 @@
               <p class="freight">(含运费{{item.freight}}元)</p>
             </div>
             <div class="operation">
-            <p class="button-p" v-if="item.ostatus === 0 && item.payway == -1">
+            <p class="button-p" v-if="item.ostatus == 0 && item.payway == -1">
               <a-button @click="toPay(item)" type="primary" class="confirm-btn">付款</a-button>
             </p>
-            <!-- <p class="button-p" v-if="item.ostatus === 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
-            <!-- v-if="item.ostatus === 3" -->
+            <!-- <p class="button-p" v-if="item.ostatus == 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
+            <!-- v-if="item.ostatus == 3" -->
             <p class="detail" @click="confirmReceipt(item)" v-if="item.ostatus == 3">确认签收</p>
-            <p class="detail" @click="afterApply(item)" v-if="item.ostatus === 3 || item.ostatus === 4">申请售后</p>
-            <p @click="toEvaluate(item)" v-if="item.ostatus === 4 && (item.cstatus&128) === 0" ref="toevaluate">
+            <p class="detail" @click="afterApply(item)" v-if="item.ostatus == 3 || item.ostatus == 4">申请售后</p>
+            <p @click="toEvaluate(item)" v-if="item.ostatus == 4 && (item.cstatus&128) == 0" ref="toevaluate">
               评论
             </p>
             <p
@@ -113,7 +113,7 @@
             <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
             <p @click="deleteOrder(item)" class="del-order">删除</p>
             <!-- v-if="item.ostatus == 3" -->
-            <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)===0">补开发票</p>
+            <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)==0">补开发票</p>
           </div>
           </div>
         
@@ -124,7 +124,7 @@
       </li>
       <a-pagination v-if="this.orderList.length !== 0 " @change="onChangePage" :total="total"/>
     </ul>
-    <div class="no-data" v-if="this.orderList.length === 0">
+    <div class="no-data" v-if="this.orderList.length == 0">
       <p class="icon">
         <a-icon type="exclamation"/>
       </p>
@@ -300,7 +300,7 @@ export default {
           Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.orderList = result.data;
             _this.total = result.total;
             _this.currentIndex = result.pageNo;
@@ -338,7 +338,7 @@ export default {
           Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success('购物车添加成功')
           }
         })
@@ -380,7 +380,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data.node.length > 0) {
+          if (result.code == 200 && result.data.node.length > 0) {
             _this.logistixs = result.data;
             _this.isLogistics = true;
           }else {
@@ -454,18 +454,18 @@ export default {
           text = "已取消";
           break;
       }
-        // if (val.payway == 4 && val.ostatus === 1 && val.settstatus === 0){
+        // if (val.payway == 4 && val.ostatus == 1 && val.settstatus == 0){
         //     text = "待发货"
         // }
-        // if (val.payway == 5 && val.ostatus === 1 && val.settstatus === 0){
+        // if (val.payway == 5 && val.ostatus == 1 && val.settstatus == 0){
         //     text = "待发货"
         // }
         return text;
     },
       setstatusText(settstatus) {
-          if (settstatus===0) {
+          if (settstatus==0) {
               return "未结算"
-          } else if (settstatus===1) {
+          } else if (settstatus==1) {
               return "已结算"
           } else {
               return "已退款";
@@ -488,13 +488,13 @@ export default {
         var timestampNow = parseInt(new Date().getTime());    // 当前时间戳
         var times = timestampNow - timestamp;
         var thirtyMin = 30 * 60 * 1000;
-        if (item.payway == 4 && item.ostatus ===0 && times < thirtyMin){
+        if (item.payway == 4 && item.ostatus ==0 && times < thirtyMin){
             return true
         }
-        if (item.payway == 5 && item.ostatus === 1 && times < thirtyMin) {
+        if (item.payway == 5 && item.ostatus == 1 && times < thirtyMin) {
             return true
         }
-        if (item.ostatus === 0 && item.payway == -1) {
+        if (item.ostatus == 0 && item.payway == -1) {
             return true
         }
       },
@@ -515,7 +515,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.visible = false;
             _this.$message.success(result.message);
             _this.queryOrderList();
@@ -554,7 +554,7 @@ export default {
               Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
               iRequest,
               new this.$iceCallback(function result(result) {
-                  if (result.code === 200) {
+                  if (result.code == 200) {
                       _this.$message.success(result.message);
                       _this.queryOrderList();
                   }
@@ -569,7 +569,7 @@ export default {
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "TranOrderOptModule";
-      if (this.cancelOrderNo.ostatus === 0 && this.cancelOrderNo.payway == -1) {
+      if (this.cancelOrderNo.ostatus == 0 && this.cancelOrderNo.payway == -1) {
           iRequest.method = "cancelOrder";
       } else {
           iRequest.method = "cancelOffLineOrder";
@@ -585,7 +585,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.visible = false;
             _this.queryOrderList();
           }

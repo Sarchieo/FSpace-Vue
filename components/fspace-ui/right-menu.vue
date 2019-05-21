@@ -67,7 +67,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             if (result.data) {
               _this.cartList = result.data;
               _this.cartList.forEach(item => {

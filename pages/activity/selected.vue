@@ -105,16 +105,16 @@ export default {
         }
       });
     },
+    // 新增商品数量
+    addCount(item) {
+      item.pnum += item.medpacknum
+    },
+    reduceCount(item) {
+      item.pnum > item.medpacknum ? item.pnum - item.medpacknum : item.pnum
+    },
      // 加入购物车
     addCart(item) {
       this.fsGeneralMethods.addShoppingCart(this, item, item.pnum)
-    },
-    // 新增商品数量
-    addCount(item) {
-      item.pnum += 1
-    },
-    reduceCount(item) {
-      item.pnum > 1 ? item.pnum -- : item.pnum
     },
     // 为你精选数据
     getSelects() {
@@ -125,11 +125,12 @@ export default {
             pageNumber: 10
           })
           .then(result => {
-            if (result.code === 200) {
+            if (result.code == 200) {
               this.selectedList = result.data;
               this.selectedList.forEach(item => {
-              this.$set(item, "pnum", 1);
-            });
+                item.medpacknum = item.medpacknum ? item.medpacknum : 1
+                this.$set(item, "pnum", item.medpacknum);
+              });
               this.total = result.total;
               this.currentIndex = result.pageNo
               this.fsGeneralMethods.addImages(this, this.selectedList, 'sku', 'spu')
@@ -144,7 +145,7 @@ export default {
           promtype: 0
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.$message.success(result.message);
           }
         });

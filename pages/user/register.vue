@@ -170,7 +170,7 @@ export default {
     validatePhone(rule, value, callback) {
       let _this = this;
       const form = this.form;
-      if (value && value.length === 11) {
+      if (value && value.length == 11) {
         // 调用后台接口, 验证手机是否允许注册
         let iRequest = new inf.IRequest();
         iRequest.cls = "LoginRegistrationModule";
@@ -184,7 +184,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if(result.code === 200) {
+            if(result.code == 200) {
               _this.sendAuthCode = true
               callback()
             }else {
@@ -209,7 +209,7 @@ export default {
     },
     validatePwd2(rule, value, callback) {
       const form = this.form;
-      if (value && value === form.getFieldValue("password")) {
+      if (value && value == form.getFieldValue("password")) {
         callback();
       } else {
         callback('密码不一致, 请重新输入');
@@ -234,7 +234,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if(result.code === 200) {
+            if(result.code == 200) {
               _this.auth_time = 60;
               _this.$message.success('短信发送成功');
               let auth_timetimer =  setInterval(()=>{
@@ -290,7 +290,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if(result.code === 200) {
+            if(result.code == 200) {
               _this.$message.success(result.data);
               // 跳转页面
               _this.$router.push({

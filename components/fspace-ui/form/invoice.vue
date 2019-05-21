@@ -90,9 +90,9 @@ export default {
     validateTaxID(rule, value, callback) {
       const form = this.form;
       if (
-        (value && value.length === 15) ||
-        value.length === 18 ||
-        value.length === 20
+        (value && value.length == 15) ||
+        value.length == 18 ||
+        value.length == 20
       ) {
         callback();
       } else {
@@ -101,7 +101,7 @@ export default {
     },
     validatePhone(rule, value, callback) {
       const form = this.form;
-      if (value && value.length === 11) {
+      if (value && value.length == 11) {
         callback();
       } else {
         callback("请输入手机正确的手机号码");
@@ -127,7 +127,7 @@ export default {
             "userServer",
             iRequest,
             new this.$iceCallback(function result(result) {
-              if (result.code === 200) {
+              if (result.code == 200) {
                 _this.$message.success(result.message);
                 _this.$emit("handleSuccess", values);
               }

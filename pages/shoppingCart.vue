@@ -19,7 +19,7 @@
               <a-icon type="shop"/>
               <span>一块医药</span>
             </div>
-            <div class="no-data" v-if="cartList.length === 0">
+            <div class="no-data" v-if="cartList.length == 0">
               <p class="no-icon">
                 <a-icon type="exclamation"/>
               </p>
@@ -28,7 +28,7 @@
             <li class="goods-lists-li" v-for="(item,index) in cartList" :key="index">
               <div class="first-div" :class="item.checked ? 'back-pink' : ''">
                 <a-checkbox
-                  :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0 || item.num === 0"
+                  :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum == 0 || item.num == 0"
                   @change="onChange"
                   :value="item"
                   v-model="item.checked"
@@ -42,7 +42,7 @@
                 <p class="icon">
                   <a-tag color="#999999" v-if="item.status == 1">秒杀商品无法从购物车购买</a-tag>
                   <a-tag color="#999999" v-if="item.status == 2">当前商品已下架</a-tag>
-                  <a-tag color="#999999" v-if="item.status == 3 || item.num === 0">商品库存不足</a-tag>
+                  <a-tag color="#999999" v-if="item.status == 3 || item.num == 0">商品库存不足</a-tag>
                   <a-tag
                     color="red"
                     v-for="(ruleItem, i) in item.rule"
@@ -52,10 +52,10 @@
                 <p class="old-price">￥ {{item.pdprice}}</p>
                 <p class="validity">有效期：{{item.vperiod}}</p>
                 <p class="btn-p">
-                  <button :disabled="item.status == 1 || item.maximum === 0" @click="reduceCount(index,item)">-</button>
+                  <button :disabled="item.status == 1 || item.maximum == 0" @click="reduceCount(index,item)">-</button>
                   <!-- <button class="goods-count">{{item.count}}</button> -->
                   <a-input-number
-                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.checked || item.maximum === 0 || item.num === 0"
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.checked || item.maximum == 0 || item.num == 0"
                     :min="1"
                     :max="item.maximum"
                     v-model="item.num"
@@ -63,7 +63,7 @@
                     readonly="readonly"
                   />
                   <button
-                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum === 0 || item.num === 0"
+                    :disabled="item.status == 1 || item.status == 2 || item.status == 3 || item.maximum == 0 || item.num == 0"
                     @click="addCount(index,item)"
                   >+</button>
                   <!-- <a-input-number :disabled="item.status == 1 || item.status == 2 || item.status == 3" :min="1" :max="item.maximum" v-model="item.num" style="position:relative;top: 2px;left:0px;height: 30px;width: 50px;" readonly="readonly"/>
@@ -108,7 +108,7 @@
               <span v-if="String(item.offercode).substring(0,4) == 1120 ">
                <!-- <a-tag color="red">{{ item.offername }}</a-tag> 当前 满 {{ item.ladamt }} 包邮
                您还差{{ Math.abs(item.gapamt) }}元 , 可包邮</span> -->
-                <span v-if="item.gapamt === 0"><a-tag color="red">{{ item.offername }}</a-tag> 当前已满 {{ item.ladamt }}  包邮</span>
+                <span v-if="item.gapamt == 0"><a-tag color="red">{{ item.offername }}</a-tag> 当前已满 {{ item.ladamt }}  包邮</span>
                 <span v-if="item.gapamt < 0"><a-tag color="red">{{ item.offername }}</a-tag> 您还差{{ Math.abs(item.gapamt) }}元 , 可包邮</span>
               </span>
               <!-- 满减-折扣 -->
@@ -239,7 +239,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.tips = result.data
           }else {
             _this.tips = []
@@ -262,12 +262,12 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             if (result.data) {
               _this.cartList = result.data;
               _this.getOfferTip();
               _this.cartList.forEach((item) => {
-                _this.$set(item, 'checked', item.checked === 0 ? false : true)
+                _this.$set(item, 'checked', item.checked == 0 ? false : true)
                 // actstock limitnum inventory
                 item.maximum = item.inventory
 
@@ -282,7 +282,7 @@ export default {
 
                 // item.limitnum = item.limitnum - item.limitsub
              
-                // if(item.limitnum > item.inventory || item.limitnum === 0) {
+                // if(item.limitnum > item.inventory || item.limitnum == 0) {
                 //   item.maximum = item.inventory
                 // } else {
                 //   item.maximum = item.limitnum
@@ -316,12 +316,12 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.cartList = result.data;
              _this.cartList.forEach((item) => {
-                _this.$set(item, 'checked', item.checked === 0 ? false : true)
+                _this.$set(item, 'checked', item.checked == 0 ? false : true)
                 // item.limitnum = item.limitnum - item.limitsub
-                // item.maximum = (item.limitnum > item.inventory || item.limitnum === 0)  ? item.inventory : item.limitnum
+                // item.maximum = (item.limitnum > item.inventory || item.limitnum == 0)  ? item.inventory : item.limitnum
                 item.maximum = item.inventory
 
                 if(item.limitnum !==0 && item.limitnum < item.maximum) {
@@ -357,7 +357,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success("购物车移除成功~");
             _this.cartList.splice(index, 1);
             if (_this.cartList.length > 0) _this.queryCheckShopCartList();
@@ -407,7 +407,7 @@ export default {
           });
         }
       });
-      if (arr.length === 0) {
+      if (arr.length == 0) {
         this.$message.error("请选择要购买的药品～");
         this.loading = false;
         return;
@@ -425,7 +425,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           _this.loading = false;
-          if (result.code === 200) {
+          if (result.code == 200) {
             sessionStorage.setItem(
               "placeOrderList",
               JSON.stringify(result.data)
@@ -489,7 +489,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             if(result.data.length > 5) {
               _this.likeList = result.data.slice(0, 5);
             }
@@ -522,7 +522,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success(result.message);
           }
         })

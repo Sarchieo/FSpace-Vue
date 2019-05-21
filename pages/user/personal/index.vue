@@ -223,7 +223,7 @@ export default {
         "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.setArea(_this.cascaderData, result.data, 0);
           }
         })
@@ -242,10 +242,10 @@ export default {
         "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             let Items = result.data;
             area.map((value, i) => {
-              if (value.value === data[index].areac) {
+              if (value.value == data[index].areac) {
                 let arr = Items.map((value, i) => {
                   return {
                     value: value.areac,
@@ -326,7 +326,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data) {
+          if (result.code == 200 && result.data) {
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
@@ -363,14 +363,14 @@ export default {
         "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.uploadInfo = result.data;
             if (isDefault) {
               // 获取默认图片
               var path = result.data.ergodicUrl;
               var xhr = new XMLHttpRequest();
               xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
+                if (xhr.readyState == 4 && xhr.status == 200) {
                   _this.uploadList = [
                     {
                       fileList: [],
@@ -447,7 +447,7 @@ export default {
           };
           upload(options, function(success) {
             // 这里有不确定性 先这样吧
-            if(index === 2) {
+            if(index == 2) {
               _this.getBasicInfo()
             }
           });
@@ -463,7 +463,7 @@ export default {
           let flag = true
           let message = ''
           _this.uploadList.forEach((item) => {
-            if(item.fileList.length === 0 ) {
+            if(item.fileList.length == 0 ) {
               flag = false
             }
             message = item.message
@@ -488,7 +488,7 @@ export default {
             "userServer",
             iRequest,
             new this.$iceCallback(function result(result) {
-              if (result.code === 200) {
+              if (result.code == 200) {
                 _this.getFilePathPrev(false, result.map.compid);
                 _this.setEditor();
                 _this.$success({
@@ -521,7 +521,7 @@ export default {
         "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             let Items = result.data;
             targetOption.loading = false;
             let arr = Items.map((value, i) => {
@@ -548,7 +548,7 @@ export default {
         "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             let Items = result.data;
             _this.cascaderData = Items.map((value, i) => {
               return {

@@ -120,7 +120,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             result.data.list = result.data.list;
             _this.teamBuyList = result.data;
             _this.pagination =  _this.teamBuyList.list

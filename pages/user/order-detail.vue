@@ -28,16 +28,16 @@
               </p>
               <p>
                 <span>订单状态:</span>
-                <span v-if="item.ostatus === 0">未付款</span>
-                <span v-if="item.ostatus === 2">等待收货</span>
-                <span v-if="item.ostatus === 3">已签收</span>
-                <span v-if="item.ostatus === 4">已完成</span>
-                <span v-if="item.ostatus === -4">交易取消</span>
-                <span v-if="item.ostatus === 1 && item.opayway != 4 && item.opayway != 5">付款成功</span>
-                <span v-if="item.ostatus === 1 && (item.opayway == 4 || item.opayway == 5)">待发货</span>
-                <span v-if="item.ostatus === -1">申请售后</span>
-                <span v-if="item.ostatus === -2">售后中</span>
-                <span v-if="item.ostatus === -3">完成售后</span>
+                <span v-if="item.ostatus == 0">未付款</span>
+                <span v-if="item.ostatus == 2">等待收货</span>
+                <span v-if="item.ostatus == 3">已签收</span>
+                <span v-if="item.ostatus == 4">已完成</span>
+                <span v-if="item.ostatus == -4">交易取消</span>
+                <span v-if="item.ostatus == 1 && item.opayway != 4 && item.opayway != 5">付款成功</span>
+                <span v-if="item.ostatus == 1 && (item.opayway == 4 || item.opayway == 5)">待发货</span>
+                <span v-if="item.ostatus == -1">申请售后</span>
+                <span v-if="item.ostatus == -2">售后中</span>
+                <span v-if="item.ostatus == -3">完成售后</span>
               </p>
               <p>
                 <span>发票信息:</span>
@@ -105,22 +105,22 @@
           <!-- <div class="order-state float-left">
             <div class="state-box">
               <div class="state-box-content">
-                <p class="state-p" v-if="item.ostatus === 0">未付款</p>
-                <p class="state-p" v-if="item.ostatus === 2">等待收货</p>
-                <p class="state-p" v-if="item.ostatus === 3">已签收</p>
-                <p class="state-p" v-if="item.ostatus === 4">已完成</p>
-                <p class="state-p" v-if="item.ostatus === -4">交易取消</p>
+                <p class="state-p" v-if="item.ostatus == 0">未付款</p>
+                <p class="state-p" v-if="item.ostatus == 2">等待收货</p>
+                <p class="state-p" v-if="item.ostatus == 3">已签收</p>
+                <p class="state-p" v-if="item.ostatus == 4">已完成</p>
+                <p class="state-p" v-if="item.ostatus == -4">交易取消</p>
                 <p
                   class="state-p"
-                  v-if="item.ostatus === 1 && item.opayway != 4 && item.opayway != 5"
+                  v-if="item.ostatus == 1 && item.opayway != 4 && item.opayway != 5"
                 >付款成功</p>
                 <p
                   class="state-p"
-                  v-if="item.ostatus === 1 && (item.opayway == 4 || item.opayway == 5)"
+                  v-if="item.ostatus == 1 && (item.opayway == 4 || item.opayway == 5)"
                 >待发货</p>
-                <p class="state-p" v-if="item.ostatus === -1">退货申请</p>
-                <p class="state-p" v-if="item.ostatus === -2">退货中</p>
-                <p class="state-p" v-if="item.ostatus === -3">已退货</p>
+                <p class="state-p" v-if="item.ostatus == -1">退货申请</p>
+                <p class="state-p" v-if="item.ostatus == -2">退货中</p>
+                <p class="state-p" v-if="item.ostatus == -3">已退货</p>
                 <p class="billno margin-top20">
                   <span>运单号:</span>
                   <span>{{logistixs.billno}}</span>
@@ -152,7 +152,6 @@
           </div> -->
           <div class="order-state float-left" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node && logistixs.node.length > 0">
             <div class="logistixs-left">
-
               <div v-for="(items,index1) in logistixs.data" :key="index1">
                 <p>物流状态</p>
                 <p>送货方式：普通快递</p>
@@ -160,7 +159,7 @@
                 <p>运单号：{{ items.billno }}</p>
               </div>
               
-            </div>
+            </div>  
             <div class="logistixs-right">
               <a-steps direction="vertical" size="small" :current="logistixs.node.length -1 ">
                 <a-step
@@ -192,7 +191,7 @@
                 </div>
                 <div class="width11 padding40">
                    <p class="pdprice">￥{{items.pdprice}}</p>
-                   <p class="pdprice"><del>￥{{items.distprice}}</del></p>
+                   <p class="pdprice"><del>￥{{items.mp}}</del></p>
                 </div>
                  <div class="width11">
                    <p class="pnum">{{items.pnum}}</p>
@@ -278,7 +277,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.logistixs = result.data;
           }
         })
@@ -306,7 +305,7 @@ export default {
           Math.floor(this.storeInfo.comp.storeId / 8192 % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success('购物车添加成功')
           }
         })
@@ -326,7 +325,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.orderDetail = result.data;
             console.log(_this.orderDetail);
             _this.fsGeneralMethods.addImages(
@@ -354,10 +353,10 @@ export default {
                 _this.steps = -1;
                 break;
             }
-            // if (_this.orderDetail[0].opayway == 4 && _this.orderDetail[0].ostatus === 1 && _this.orderDetail[0].settstatus === 0) {
+            // if (_this.orderDetail[0].opayway == 4 && _this.orderDetail[0].ostatus == 1 && _this.orderDetail[0].settstatus == 0) {
             //     _this.steps = 0;
             // }
-            //   if (_this.orderDetail[0].opayway == 5 && _this.orderDetail[0].ostatus === 1 && _this.orderDetail[0].settstatus === 0) {
+            //   if (_this.orderDetail[0].opayway == 5 && _this.orderDetail[0].ostatus == 1 && _this.orderDetail[0].settstatus == 0) {
             //     _this.steps = 0;
             //   }
           }
@@ -400,13 +399,13 @@ export default {
       var timestampNow = parseInt(new Date().getTime()); // 当前时间戳
       var times = timestampNow - timestamp;
       var thirtyMin = 30 * 60 * 1000;
-      if (item.opayway == 4 && item.ostatus === 0 && times < thirtyMin) {
+      if (item.opayway == 4 && item.ostatus == 0 && times < thirtyMin) {
         return true;
       }
-      if (item.opayway == 5 && item.ostatus === 1 && times < thirtyMin) {
+      if (item.opayway == 5 && item.ostatus == 1 && times < thirtyMin) {
         return true;
       }
-      if (item.ostatus === 0 && item.opayway == -1) {
+      if (item.ostatus == 0 && item.opayway == -1) {
         return true;
       }
     },
@@ -416,7 +415,7 @@ export default {
       let iRequest = new inf.IRequest();
       iRequest.cls = "TranOrderOptModule";
       if (
-        this.orderDetail[0].ostatus === 0 &&
+        this.orderDetail[0].ostatus == 0 &&
         this.orderDetail[0].opayway == -1
       ) {
         iRequest.method = "cancelOrder";
@@ -434,7 +433,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.visible = false;
             _this.queryOrderDetail();
           }

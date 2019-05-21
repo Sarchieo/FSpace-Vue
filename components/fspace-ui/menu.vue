@@ -77,7 +77,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.list = JSON.parse(result.data);
               _this.list.forEach(element => {
                 _this.$set(element, "isActive", false);

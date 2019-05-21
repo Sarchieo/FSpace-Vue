@@ -9,13 +9,13 @@
         <div class="yidong"
              :style="'bottom:'+bottom+'px;right: '+right+'px;width: '+objw+'px;height: '+objH+'px'"
              ref="yidong"
-             v-if="h_xian===true">
+             v-if="h_xian==true">
 
         </div>
       </div>
       <div class="big_box"
            :style="'width: '+big_img_boxW+'px;height: '+big_img_boxh+'px;margin-top: -'+big_img_boxh+'px;margin-right: -'+big_img_boxW+'px;'"
-           v-if="h_xian===true">
+           v-if="h_xian==true">
         <div class="big_img_box"
              ref="big_img_box"
              :style="'width: '+big_img_boxW+'px;height: '+big_img_boxh+'px'">

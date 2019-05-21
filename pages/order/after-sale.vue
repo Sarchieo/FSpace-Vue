@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     reduce(item) {
-      if (item.pnum === 1) {
+      if (item.pnum == 1) {
         return false;
       }
       item.pnum-=1;

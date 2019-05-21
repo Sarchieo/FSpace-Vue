@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="collection-text">我的收藏</p>
-     <div class="no-data" v-if="this.collecList.length === 0">
+     <div class="no-data" v-if="this.collecList.length == 0">
        <p><a-icon type="exclamation"/></p>
        <p>您还没有收藏药品！</p>
         <!-- <a-icon type="delete" @click.stop="delCollec(item.sku)"/> -->
@@ -73,7 +73,7 @@ export default {
         "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             // _this.prodDetail = result.data
             // _this.details = JSON.parse(_this.prodDetail.detail)
             _this.collecList = result.data;
@@ -104,7 +104,7 @@ export default {
         "orderServer" + Math.floor(this.storeInfo.comp.storeId/8192%65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             // _this.isCollec();
             _this.queryCollec();
             _this.$message.success(result.message);

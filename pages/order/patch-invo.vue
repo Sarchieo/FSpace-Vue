@@ -20,7 +20,7 @@
             </a-steps>
           </div>
           <!-- 第一步 -->
-          <div class="reason-box" v-if="steps === 0">
+          <div class="reason-box" v-if="steps == 0">
             <p class="reason-p">补开原因</p>
             <div class="reason-right">
               <a-form-item label="补开原因" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
@@ -65,7 +65,7 @@
             </div>
           </div>
           <!-- 第二步 -->
-          <div class="reason-box" v-if="steps === 1">
+          <div class="reason-box" v-if="steps == 1">
             <p class="reason-p">填写发票信息</p>
             <a-tabs v-model="invoiceType" defaultActiveKey="1" @change="changeType">
               <a-tab-pane tab="普通发票" key="1"></a-tab-pane>
@@ -135,7 +135,7 @@
             </div>
           </div>
           <!-- 第三步 -->
-          <div class="reason-box" v-if="steps === 2">
+          <div class="reason-box" v-if="steps == 2">
             <p class="reason-p">填写邮寄信息</p>
             <div class="mail-box">
               <p class="title">取件地址</p>
@@ -167,7 +167,7 @@
             </div>
           </div>
           <!-- 第四步 -->
-          <div class="reason-box" v-if="steps === 3">
+          <div class="reason-box" v-if="steps == 3">
             <div class="payment-header">第三方支付</div>
             <div class="qr-code">
               <p class="scan">扫一扫付款</p>
@@ -176,7 +176,7 @@
             </div>
           </div>
           <!-- 第五步 -->
-          <div class="reason-box" v-if="steps === 3">
+          <div class="reason-box" v-if="steps == 3">
             <p class="reason-p">发票详情</p>
             <p class="reason-wait">您的订单号为{{orderno}}的补开发票申请商家正在审核并制票，请耐心等待</p>
             <!-- <table>
@@ -280,7 +280,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if(result.code === 200 && result.data.length > 0) {
+            if(result.code == 200 && result.data.length > 0) {
               _this.invoice = result.data[0]
             }
           }
@@ -303,7 +303,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.uploadInfo = result.data;
               _this.headers["specify-filename"] =
                 _this.fileList.length + ".jpg";
@@ -332,7 +332,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.payamt = result.data.payamt;
           }
         })
@@ -366,7 +366,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.url = result.data;
             _this.steps = 3;
           }
@@ -409,7 +409,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             if (result.data && result.data.length > 0) {
               _this.receiverList = result.data;
               _this.consignee = _this.receiverList[0].contactname;
@@ -475,7 +475,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.afsano = result.data;
               // console.log("afsano--- " + _this.afsano)
               _this.setStep(3);
@@ -498,7 +498,7 @@ export default {
         "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.mireason = JSON.parse(result.data).mireason;
           }
         })
@@ -521,7 +521,7 @@ export default {
     },
     remove(file) {
       for(let i = 0; i< this.fileList.length; i++) {
-        if(this.fileList[i].uid === file.uid) {
+        if(this.fileList[i].uid == file.uid) {
           this.fileList.splice(i,1);
         }
       }
@@ -541,8 +541,8 @@ export default {
       // console.log("value-- " + this.reasonType)
     },
     setStep(index) {
-      if (index === 1) {
-        if (this.reasonType === '') {
+      if (index == 1) {
+        if (this.reasonType == '') {
             this.$message.warning("请选择补开发票原因")
             return
         }
@@ -550,7 +550,7 @@ export default {
           this.form.setFieldsValue(this.invoice);
         }, 500)
       }
-      if (index === 3) {
+      if (index == 3) {
         this.prePay();
         return;
       }
@@ -566,7 +566,7 @@ export default {
     },
     validateTaxID(rule, value, callback) {
       const form = this.form;
-      if (value && (value.length === 15 ||value.length === 18 || value.length === 20)) {
+      if (value && (value.length == 15 ||value.length == 18 || value.length == 20)) {
         callback();
       } else {
         callback("纳税人识别号有误");

@@ -119,7 +119,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.data = result.data
             _this.data.forEach((item) => {
                item.date = item.createdate + ' ' + item.createtime
@@ -144,7 +144,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.integralNumber = result.data.balpoints;
             _this.expirepointNumber = result.data.expirepoint;
           }

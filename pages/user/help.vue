@@ -98,7 +98,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.balamt = result.data.balamt
           }
         })
@@ -117,7 +117,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.countList = result.data
           }
         })
@@ -138,7 +138,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.gradeNumber = result.data.levelname
           }
         })

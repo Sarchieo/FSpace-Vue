@@ -34,7 +34,7 @@
         <div class="complete">
           <p class="price service-type">{{ item.ckstatus | stateTypeFormat }}</p>
           <!-- 退款有？ -->
-          <p class="price" v-if="item.astype === 0 || item.astype === 1">实退：￥{{item.refamt}}</p>
+          <p class="price" v-if="item.astype == 0 || item.astype == 1">实退：￥{{item.refamt}}</p>
         </div>
         <div class="see-detail" @click="seeDetail(item)">查看详情</div>
         <div style="clear: both;"></div>
@@ -125,7 +125,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.list = result.data;
             console.log(_this.list);
             _this.total = result.total;

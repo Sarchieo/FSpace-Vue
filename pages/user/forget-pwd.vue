@@ -143,7 +143,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success(result.message);
             setTimeout(() => {
               _this.$router.push({
@@ -196,7 +196,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             ;
             _this.auth_time = 60;
             _this.$message.success("短信发送成功");

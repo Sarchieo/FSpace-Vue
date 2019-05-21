@@ -52,14 +52,14 @@
           <!-- 6746 -->
           <!-- <p class="moon-data"> <span>4.23</span><span>4.24</span><span>4.25</span><span>4.26</span><span>4.27</span><span>4.28</span><span>4.29</span></p> -->
           <div class="coupon-box">
-            <p v-if="exchangeList.length === 0" class="no-data">暂无优惠券！</p>
+            <p v-if="exchangeList.length == 0" class="no-data">暂无优惠券！</p>
             <div
               class="coupon-card"
               v-for="(item,index) in exchangeList"
               :key="index"
               @click="receiveCoupon(item)"
             >
-              <div class="coupon-left" v-if="item.brulecode === 2110">
+              <div class="coupon-left" v-if="item.brulecode == 2110">
                 <div v-for="(items,index1) in item.ladderVOS" :key="index1">
                   <p class="coupon-type">
                     <span class="float-left">{{item.rulename}}</span>
@@ -75,7 +75,7 @@
                   </p>
                 </div>
               </div>
-              <div class="coupon-left" v-if="item.brulecode === 2120">
+              <div class="coupon-left" v-if="item.brulecode == 2120">
                 <div
                   v-for="(items,index1) in item.ladderVOS"
                   :key="index1"
@@ -103,14 +103,14 @@
           <div class="whole-coupon" id="navBar">
             <p class="title">领券中心</p>
             <div class="whole-box">
-              <p v-if="couponPub.length === 0" class="no-data">暂无优惠券！</p>
+              <p v-if="couponPub.length == 0" class="no-data">暂无优惠券！</p>
               <div
                 class="coupon-boxs"
                 v-for="(item, index) in couponPub"
                 :key="index"
                 @click="revCoupon(item)"
               >
-                <div class="discount" v-if="item.brulecode === 2130">
+                <div class="discount" v-if="item.brulecode == 2130">
                   <p class="discount-count">{{ item.rulename }}</p>
                   <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
                     满
@@ -119,7 +119,7 @@
                   </p>
                   <p class="validity">有效期:{{item.validday}}天</p>
                 </div>
-                <div class="discount" v-if="item.brulecode === 2110">
+                <div class="discount" v-if="item.brulecode == 2110">
                   <p class="discount-count">{{ item.rulename }}</p>
                   <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
                     满
@@ -128,7 +128,7 @@
                   </p>
                   <p class="validity">有效期:{{item.validday}}天</p>
                 </div>
-                <div class="discount" v-if="item.brulecode === 2120">
+                <div class="discount" v-if="item.brulecode == 2120">
                   <p class="discount-count">{{ item.rulename }}</p>
                   <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
                     满
@@ -183,7 +183,7 @@ export default {
   },
   methods: {
     toCouponScroll() {
-      if (this.scrollTop === 1) {
+      if (this.scrollTop == 1) {
         document.body.scrollTop = document.documentElement.scrollTop = 2100;
       }
     },
@@ -205,7 +205,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.userIntergral = result.data;
             _this.getIntegralNum();
           }
@@ -226,7 +226,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.signNumber = result.data.times;
             result.data.dates = result.data.dates.reverse();
             _this.signDays = result.data;
@@ -249,7 +249,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.integralNumber = result.data.accupoints;
           }
         })
@@ -270,7 +270,7 @@ export default {
         "discountServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.exchangeList = result.data;
           }
         })
@@ -290,7 +290,7 @@ export default {
         "discountServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success(result.message);
             this.getQueryCouponExcgPub();
           }
@@ -315,7 +315,7 @@ export default {
         "discountServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.couponPub = result.data;
           }
         })
@@ -335,7 +335,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success(result.message);
             _this.queryCouponPub();
           }

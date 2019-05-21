@@ -145,7 +145,7 @@ export default {
               iRequest,
               new this.$iceCallback(
                   function result(result) {
-                      if (result.code === 200) {
+                      if (result.code == 200) {
                           //评价成功
                           _this.$message.success(result.message)
                           _this.$router.push({

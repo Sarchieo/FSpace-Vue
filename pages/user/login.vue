@@ -139,7 +139,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if(result.code === 200) {
+            if(result.code == 200) {
               _this.captchaURL = JSON.parse(result.data).url + '?' + Math.random();
               _this.captchaKey = JSON.parse(result.data).key
             }
@@ -167,7 +167,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             
-            if(result.code === 200) {
+            if(result.code == 200) {
               _this.$store
                 .dispatch("setUserStatus", { context: _this, status: result.data })
                 .then(res => {
@@ -200,7 +200,7 @@ export default {
         "userServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data) {
+          if (result.code == 200 && result.data) {
             _this.$store.dispatch("setUser", {
               context: _this,
               user: result.data
@@ -236,7 +236,7 @@ export default {
     validatePhone(rule, value, callback) {
       let _this = this;
       const form = this.form;
-      if (value && value.length === 11) {
+      if (value && value.length == 11) {
         callback()
       } else {
         this.sendAuthCode = false

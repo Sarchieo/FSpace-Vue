@@ -99,12 +99,12 @@ export default {
         }
       });
     },
-    // 新增商品数量
+     // 新增商品数量
     addCount(item) {
-      item.pnum += 1
+      item.pnum += item.medpacknum
     },
     reduceCount(item) {
-      item.pnum > 1 ? item.pnum -- : item.pnum
+      item.pnum > item.medpacknum ? item.pnum - item.medpacknum : item.pnum
     },
      // 加入购物车
     addCart(item) {
@@ -130,10 +130,11 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200 && result.data) {
+          if (result.code == 200 && result.data) {
             _this.newPersonList = result.data
              _this.newPersonList.forEach(item => {
-              _this.$set(item, "pnum", (item.goodsNum = 1));
+              item.medpacknum = item.medpacknum ? item.medpacknum : 1
+              _this.$set(item, "pnum", item.medpacknum);
             });
             console.log(_this.newPersonList)
             _this.newPersonID = result.data.actcode
@@ -151,7 +152,7 @@ export default {
           promtype: 0
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.$message.success(result.message);
           }
         });

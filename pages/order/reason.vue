@@ -161,7 +161,7 @@ export default {
         "globalServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.reprreason = JSON.parse(result.data).reprreason;
           }
         })
@@ -169,7 +169,7 @@ export default {
     },
     //提交售后
     afterSaleApp() {
-      if (this.reasonType === "") {
+      if (this.reasonType == "") {
         this.$message.warning("请选择退款/退货原因");
         return;
       }
@@ -201,7 +201,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success(result.message);
           }
         })
@@ -223,7 +223,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.uploadInfo = result.data;
               _this.headers["specify-filename"] =
                 _this.fileList.length + ".jpg";
@@ -251,7 +251,7 @@ export default {
     },
     remove(file) {
       for (let i = 0; i < this.fileList.length; i++) {
-        if (this.fileList[i].uid === file.uid) {
+        if (this.fileList[i].uid == file.uid) {
           this.fileList.splice(i, 1);
         }
       }

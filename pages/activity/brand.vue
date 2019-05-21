@@ -97,10 +97,10 @@ export default {
     },
     // 新增商品数量
     addCount(item) {
-      item.pnum += 1
+      item.pnum += item.medpacknum
     },
     reduceCount(item) {
-      item.pnum > 1 ? item.pnum -- : item.pnum
+      item.pnum > item.medpacknum ? item.pnum - item.medpacknum : item.pnum
     },
     selectBrand(item) {
       this.brandno = item.brandno
@@ -115,7 +115,7 @@ export default {
           promtype: 0
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.$message.success(result.message);
           }
         });
@@ -138,7 +138,7 @@ export default {
       this.fsGeneralMethods
         .request(this, 'goodsServer', 'ProdExtModule', 'queryBrandInfo')
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.brands = result.data
             this.brands.forEach(item => {
               this.$set(item, 'isChecked', false)
@@ -155,12 +155,13 @@ export default {
         pageNumber: 10
       })
       .then(result => {
-        if (result.code === 200) {
+        if (result.code == 200) {
           
           this.brandList = result.data;
           console.log(this.brandList)
           this.brandList.forEach((item,index) => {
-            this.$set(item, 'pnum', 1)
+            item.medpacknum = item.medpacknum ? item.medpacknum : 1
+            this.$set(item, 'pnum', item.medpacknum)
           });
           this.total = result.total;
           this.currentIndex = result.pageNo;

@@ -165,7 +165,7 @@ export default {
         new this.$iceCallback(
           function result(result) {
             
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.info = result.data
             }
           }

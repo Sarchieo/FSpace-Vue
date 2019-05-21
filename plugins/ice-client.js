@@ -23,7 +23,7 @@ function initIce() {
  * @param  {...any} _IRequest 参数
  */
 function refcallback(context, moduleName,_IRequest, callback) {
-  if (!callback || callback.constructor === IceCallback.constructor) {
+  if (!callback || callback.constructor == IceCallback.constructor) {
     throw new Error("callback is not IceCallback!")
   }
   Ice.Promise.try(
@@ -41,7 +41,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
     .then(
       function (result) {
         let success = JSON.parse(result)
-        if(success.code === -2 && context.$route.name !== 'user-login') {
+        if(success.code == -2 && context.$route.name !== 'user-login') {
           context.$message.error(success.message, 5);
           context.$store
             .dispatch("setLogout", { context: context })
@@ -57,11 +57,11 @@ function refcallback(context, moduleName,_IRequest, callback) {
               console.log(err);
             });
           return
-        } else if(success.code === -3){
+        } else if(success.code == -3){
           context.$router.push({
             path: '/user/personal'
           })
-        } else if (success.code === -1){
+        } else if (success.code == -1){
           context.$message.error(success.message);
           callback.onCallback(CALLBACK_ACTION.COMPLETE, success);
         } else {
@@ -122,14 +122,14 @@ function initIceLong(serverName, compid, callback) {
 
 function IceCallback() {
   let len = arguments.length;
-  if (len === 1) {
+  if (len == 1) {
     this.completeCallback = arguments[0];
   }
-  if (len === 2) {
+  if (len == 2) {
     this.completeCallback = arguments[0];
     this.errorCallback = arguments[1];
   }
-  if (len === 3) {
+  if (len == 3) {
     this.readyCallback = arguments[0];
     this.completeCallback = arguments[1];
     this.errorCallback = arguments[2];

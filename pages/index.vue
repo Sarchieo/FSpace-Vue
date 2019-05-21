@@ -8,7 +8,7 @@
           <!-- <f-space-menu></f-space-menu> -->
           <div class="index-header">
               <div class="binnar-box">
-            <a-carousel autoplay v-if="isCarousel">
+            <a-carousel arrows autoplay v-if="isCarousel">
               <div
                 slot="prevArrow"
                 slot-scope="props"
@@ -64,7 +64,7 @@
                 <span class="float-left">公告</span>
                 <span class="float-right more">更多</span>
               </p>
-              <p v-if="noticeList.length === 0" class="no-ntice">暂无公告</p>
+              <p v-if="noticeList.length == 0" class="no-ntice">暂无公告</p>
               <div v-else>
                 <p
                 class="notice-text"
@@ -90,11 +90,11 @@
         </div>
         <div v-for="(item,index) in list" :key="index" style="height: auto;">
           <!-- 新品专区 -->
-          <!-- v-if="item.unqid === 1 && newGoodsList.length > 4" -->
+          <!-- v-if="item.unqid == 1 && newGoodsList.length > 4" -->
           <div
             :ref="item.unqid"
             class="elaborate"
-            v-if="item.unqid === '1' && newGoodsList.length > 4"
+            v-if="item.unqid == '1' && newGoodsList.length > 4"
           >
             <p class="elaborate-title">
               新品专区
@@ -122,11 +122,11 @@
             </ul>
           </div>
           <!-- 热销专区 -->
-          <!-- v-if="item.unqid === 2 && hotGoodsList.length > 9" -->
+          <!-- v-if="item.unqid == 2 && hotGoodsList.length > 9" -->
           <div
             :ref="item.unqid"
             class="brand-hall height-auto"
-            v-if="item.unqid === '2' && hotGoodsList.length > 9"
+            v-if="item.unqid == '2' && hotGoodsList.length > 9"
           >
             <p class="brand-hall-title">
               热销专区
@@ -156,11 +156,11 @@
             </div>
           </div>
           <!-- 秒杀专区 -->
-          <!-- v-if="item.unqid === 4 && secondList.length > 4" -->
+          <!-- v-if="item.unqid == 4 && secondList.length > 4" -->
           <div
             :ref="item.unqid"
             class="brand-hall height-auto"
-            v-if="item.unqid === '4' && secondList.length > 4"
+            v-if="item.unqid == '4' && secondList.length > 4"
           >
             <div class="brand-hall-title height80">
               秒杀专区
@@ -202,11 +202,11 @@
             </div>
           </div>
           <!-- 一块购 -->
-          <!-- v-if="item.unqid === 8 && teamBuyList.length > 4" -->
+          <!-- v-if="item.unqid == 8 && teamBuyList.length > 4" -->
           <div
             :ref="item.unqid"
             class="brand-hall height-auto"
-            v-if="item.unqid === '8' && teamBuyList.length > 4"
+            v-if="item.unqid == '8' && teamBuyList.length > 4"
           >
             <div class="brand-hall-title height80">
               一块购 ● 越团越优惠
@@ -276,8 +276,8 @@
             </div>
           </div>
           <!-- 包邮专区 -->
-          <!-- v-if="item.unqid === 16 && postList.length > 4" -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === '16' && postList.length > 4">
+          <!-- v-if="item.unqid == 16 && postList.length > 4" -->
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid == '16' && postList.length > 4">
             <p class="brand-hall-title">
               包邮专区
               <!-- <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
@@ -302,11 +302,11 @@
             </div>
           </div>
           <!-- 新人专享 -->
-          <!-- v-if="item.unqid === 32 && newPersonList.length > 4" -->
+          <!-- v-if="item.unqid == 32 && newPersonList.length > 4" -->
           <div
             :ref="item.unqid"
             class="brand-hall"
-            v-if="item.unqid === '32' && newPersonList.length > 4"
+            v-if="item.unqid == '32' && newPersonList.length > 4"
           >
             <p class="brand-hall-title">
               新人专享
@@ -335,7 +335,7 @@
           </div>
           <!-- 暂无数据接口 -->
           <!-- 中华名方 -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid === '64' && famousPrescription.length > 3">
+          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid == '64' && famousPrescription.length > 3">
             <p class="brand-hall-title">
               中华名方
               <a href="javascript:;" @click="toFamous()">查看全部<a-icon type="right"/>
@@ -359,11 +359,11 @@
             </div>
           </div>
           <!-- 为你精选 -->
-          <!-- v-if="item.unqid === 128 && selectedList.length > 5" -->
+          <!-- v-if="item.unqid == 128 && selectedList.length > 5" -->
           <div
             :ref="item.unqid"
             class="elaborate"
-            v-if="item.unqid === '128' && selectedList.length > 5"
+            v-if="item.unqid == '128' && selectedList.length > 5"
           >
             <p class="elaborate-title">
               为你精选
@@ -390,11 +390,11 @@
             </ul>
           </div>
           <!-- 品牌专区 -->
-          <!-- v-if="item.unqid === 256 && brandList.length > 4" -->
+          <!-- v-if="item.unqid == 256 && brandList.length > 4" -->
           <div
             :ref="item.unqid"
             class="brand-hall"
-            v-if="item.unqid === '256' && brandList.length > 4"
+            v-if="item.unqid == '256' && brandList.length > 4"
           >
             <p class="brand-hall-title">
               品牌专区
@@ -421,11 +421,11 @@
             </div>
           </div>
           <!-- 限时抢购 -->
-          <!-- v-if="item.unqid === 512 && limitedList.length > 3" -->
+          <!-- v-if="item.unqid == 512 && limitedList.length > 3" -->
           <div
             :ref="item.unqid"
             class="brand-hall"
-            v-if="item.unqid === '512' && limitedList.length > 3"
+            v-if="item.unqid == '512' && limitedList.length > 3"
           >
             <p class="brand-hall-title">
               限时折扣
@@ -611,7 +611,7 @@ export default {
       this.fsGeneralMethods
         .request(this, "goodsServer", "ProdModule", "getMallFloorProd")
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.list = result.data;
             let floorList = []; // 需要加载的楼层
             this.list.map((value, index) => {
@@ -670,7 +670,7 @@ export default {
           .request(this, "goodsServer", "ProdModule", "getTeamBuyMallFloor")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.list) {
+            if (result.code == 200 && result.data.list) {
               result.data.list = result.data.list.slice(0, 5);
               this.teamBuyList = result.data.list;
               this.teamByID = result.data.actcode;
@@ -695,7 +695,7 @@ export default {
           .request(this, "goodsServer", "ProdModule", "getSeckillMallFloor")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.list) {
+            if (result.code == 200 && result.data.list) {
               result.data.list = result.data.list.slice(0, 5);
               this.secondList = result.data.list;
               this.secondID = result.data.actcode;
@@ -720,7 +720,7 @@ export default {
           .request(this, "goodsServer", "ProdModule", "getBrandMallFloor")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.list) {
+            if (result.code == 200 && result.data.list) {
               result.data.list = result.data.list.slice(0, 5);
               this.brandList = result.data.list;
               this.brandID = result.data.actcode;
@@ -741,7 +741,7 @@ export default {
           .request(this, "goodsServer", "ProdModule", "getExemPostMallFloor")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.list) {
+            if (result.code == 200 && result.data.list) {
               result.data.list = result.data.list.slice(0, 5);
               this.postList = result.data.list;
               this.postID = result.data.actcode;
@@ -764,7 +764,7 @@ export default {
             
             resolve();
             
-            if (result.code === 200 && result.data.length > 4) {
+            if (result.code == 200 && result.data.length > 4) {
               this.famousPrescription = result.data.slice(0, 5);
               // this.famousID = result.data.actcode;
               this.fsGeneralMethods.addImages(
@@ -784,7 +784,7 @@ export default {
           .request(this, "goodsServer", "ProdModule", "getNewMemberMallFloor")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.list) {
+            if (result.code == 200 && result.data.list) {
               result.data.list = result.data.list.slice(0, 5);
               this.newPersonList = result.data.list;
               this.newPersonID = result.data.actcode;
@@ -805,7 +805,7 @@ export default {
           .request(this, "goodsServer", "ProdModule", "getDiscountMallFloor")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.list) {
+            if (result.code == 200 && result.data.list) {
               result.data.list = result.data.list.slice(0, 4);
               this.limitedList = result.data.list;
               this.limitedList.forEach(item => {
@@ -833,7 +833,7 @@ export default {
           .request(this, "goodsServer", "ProdModule", "getNewMallFloor")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.length > 6) {
+            if (result.code == 200 && result.data.length > 6) {
               this.newGoodsList = result.data.slice(0, 6);
               this.newGoodsID = result.data.actcode;
               this.fsGeneralMethods.addImages(
@@ -859,7 +859,7 @@ export default {
           .then(result => {
             resolve();
             
-            if (result.code === 200 && result.data.length > 6) {
+            if (result.code == 200 && result.data.length > 6) {
               this.selectedList = result.data.slice(0, 6);
               this.fsGeneralMethods.addImages(
                 this,
@@ -879,7 +879,7 @@ export default {
           .request(this, "goodsServer", "ProdModule", "getHotMallFloor")
           .then(result => {
             resolve();
-            if (result.code === 200 && result.data.length > 10) {
+            if (result.code == 200 && result.data.length > 10) {
               this.hotGoodsList = result.data.slice(0, 10);
               this.hotGoodsID = result.data.actcode;
               this.hotGoodsList.forEach((item, index) => {
@@ -902,7 +902,7 @@ export default {
           .request(this, "globalServer", "NoticeModule", "query")
           .then(result => {
             resolve();
-            if (result.code === 200) {
+            if (result.code == 200) {
               sessionStorage.setItem("noticeListAll",JSON.stringify(result.data));
               this.noticeList = result.data.slice(0, 4);
             }
@@ -1135,6 +1135,32 @@ li {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+/* 导航及广告轮播左侧菜单栏,广告位，特价区 */
+.ant-carousel /deep/ .slick-slide {
+  text-align: center;
+  height: auto;
+  line-height: auto;
+  overflow: hidden;
+}
+
+.ant-carousel /deep/ .custom-slick-arrow {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #fff;
+  background-color: rgba(31,45,61,.11);
+  opacity: 0.3;
+}
+.ant-carousel /deep/ .custom-slick-arrow:before {
+  display: none;
+}
+.ant-carousel /deep/ .custom-slick-arrow:hover {
+  opacity: 0.5;
+}
+
+.ant-carousel /deep/ .slick-slide  h3 {
+  color: #fff;
 }
 .more:hover {
   cursor: pointer;
@@ -1592,33 +1618,6 @@ li {
   text-align: center !important;
   text-indent: 0px !important;
 }
-/* 导航及广告轮播左侧菜单栏,广告位，特价区 */
-/* For demo */
-.ant-carousel > .slick-slide {
-  text-align: center;
-  height: 435px;
-  line-height: 435px;
-  overflow: hidden;
-}
-
-.ant-carousel > .custom-slick-arrow {
-  width: 25px;
-  height: 25px;
-  font-size: 25px;
-  color: #fff;
-  background-color: rgba(31, 45, 61, 0.11);
-  opacity: 0.3;
-}
-.ant-carousel > .custom-slick-arrow:before {
-  display: none;
-}
-.ant-carousel > .custom-slick-arrow:hover {
-  opacity: 0.5;
-}
-
-.ant-carousel > .slick-slide h3 {
-  color: #fff;
-}
 .goods-nav-box {
   .container-size(block, 100%, 412px, 0 auto, 0px);
   position: relative;
@@ -1626,15 +1625,6 @@ li {
   background: #f8f8f8;
   border-top: 1px solid #f8f8f8;
   margin-bottom: 25px;
-}
-.ant-carousel > .slick-slide {
-  text-align: center;
-  height: 160px;
-  line-height: 160px;
-  overflow: hidden;
-}
-.ant-carousel > .slick-slide h3 {
-  color: #fff;
 }
 .banner-pic {
   width: 804px;
@@ -1920,32 +1910,5 @@ margin-left: 178px;
 }
 .margin-bottom10 {
   margin-bottom: 10px;
-}
-/* For demo */
-.ant-carousel > .slick-slide {
-  text-align: center;
-  height: 160px;
-  line-height: 160px;
-  background: #364d79;
-  overflow: hidden;
-}
-
-.ant-carousel > .custom-slick-arrow {
-  width: 25px;
-  height: 25px;
-  font-size: 25px;
-  color: #fff;
-  background-color: rgba(31, 45, 61, 0.11);
-  opacity: 0.3;
-}
-.ant-carousel > .custom-slick-arrow:before {
-  display: none;
-}
-.ant-carousel > .custom-slick-arrow:hover {
-  opacity: 0.5;
-}
-
-.ant-carousel > .slick-slide h3 {
-  color: #fff;
 }
 </style>

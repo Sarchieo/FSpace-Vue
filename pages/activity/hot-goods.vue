@@ -87,10 +87,10 @@ export default {
   methods: {
     // 新增商品数量
     addCount(item) {
-      item.pnum += 1
+      item.pnum += item.medpacknum
     },
     reduceCount(item) {
-      item.pnum > 1 ? item.pnum -- : item.pnum
+      item.pnum > item.medpacknum ? item.pnum - item.medpacknum : item.pnum
     },
     async addCart(item) {
        this.fsGeneralMethods.addShoppingCart(this, item, item.pnum);
@@ -113,10 +113,11 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.hotGoodsList = result.data;
             _this.hotGoodsList.forEach(item => {
-              _this.$set(item, "pnum", 1);
+              item.medpacknum = item.medpacknum ? item.medpacknum : 1
+              _this.$set(item, "pnum", item.medpacknum);
             });
             _this.total = result.total;
             _this.currentIndex = result.pageNo;
@@ -138,7 +139,7 @@ export default {
           promtype: 0
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             this.$message.success(result.message);
           }
         });

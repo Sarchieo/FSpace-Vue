@@ -15,7 +15,7 @@ var fsGeneralMethods = {
       request(context,serverName, cls, method, params, arr) {
         console.log('模块名<' + cls + '>  方法名:<' + method + '>调用参数:' + JSON.stringify(params || {}))
         return new Promise((resolve, reject) => {
-          if(serverName && serverName === 'orderServer') {
+          if(serverName && serverName == 'orderServer') {
             serverName +=  Math.floor((context.storeInfo.comp.storeId / 8192) % 65535)
           }
           let iRequest = new inf.IRequest();
@@ -76,7 +76,7 @@ var fsGeneralMethods = {
        * @param {*} isCache 是否浏览器缓存图片
        */
       addImages(context, arr, skuName, spuName, imageType, isCache) {
-        if (!arr || arr.length === 0) {
+        if (!arr || arr.length == 0) {
           return
         }
         imageType = imageType || '200x200'
@@ -102,7 +102,7 @@ var fsGeneralMethods = {
           iRequest,
           new context.$iceCallback(
             function result(result) {
-              if (result.code === 200) {
+              if (result.code == 200) {
                 let date = new Date()
                 result.data.goodsFilePathList.forEach((c, index, list) => {
                   _this.$set(
@@ -138,7 +138,7 @@ var fsGeneralMethods = {
           compid: context.$store.state.user.comp.storeId
         })
         .then(result => {
-          if (result.code === 200) {
+          if (result.code == 200) {
             context.$message.success(result.message);
           }
         });

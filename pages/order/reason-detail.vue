@@ -20,15 +20,15 @@
             <div class="step-left">
               <p class="order-num">申请单号：{{ detail.asno }}</p>
               <!-- 显示药品列表相对应的订单状态 -->
-              <p class="pay-success" v-if="detail.ckstatus === -1">拒绝</p>
-              <p class="pay-success" v-if="detail.ckstatus === 0">未审核</p>
-              <p class="pay-success" v-if="detail.ckstatus === -2">取消售后</p>
-              <p class="pay-success" v-if="detail.ckstatus === 200">售后完成</p>
+              <p class="pay-success" v-if="detail.ckstatus == -1">拒绝</p>
+              <p class="pay-success" v-if="detail.ckstatus == 0">未审核</p>
+              <p class="pay-success" v-if="detail.ckstatus == -2">取消售后</p>
+              <p class="pay-success" v-if="detail.ckstatus == 200">售后完成</p>
               <!-- <p class="pay-success">补票中</p>
               <p class="pay-success">退货中</p>
                -->
-               <p class="pay-success" v-if="detail.ckstatus === 1">审核通过</p>
-              <!-- <p><a-button class="cancelApply" v-if="detail.ckstatus === 1">审核通过</a-button></p> -->
+               <p class="pay-success" v-if="detail.ckstatus == 1">审核通过</p>
+              <!-- <p><a-button class="cancelApply" v-if="detail.ckstatus == 1">审核通过</a-button></p> -->
               <!-- <p class="pay-success">完成</p> -->
             </div>
 
@@ -262,13 +262,13 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.uploadInfo = result.data;
                // 获取默认图片
               var path = result.data.ergodicUrl;
               var xhr = new XMLHttpRequest();
               xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
+                if (xhr.readyState == 4 && xhr.status == 200) {
                   var data = xhr.responseText;
                   data = JSON.parse(data).data.sort();
 
@@ -319,7 +319,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.imgUrl =
                 result.data.downPrev +
                 result.data.goodsFilePathList +

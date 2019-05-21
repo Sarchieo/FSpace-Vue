@@ -18,7 +18,7 @@
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
-               <img class="shortage" src="../../assets/img/shortage.png" slot="cover" v-if="prodDetail.store === 0">
+               <img class="shortage" src="../../assets/img/shortage.png" slot="cover" v-if="prodDetail.store == 0">
               <!-- <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom> -->
               <!-- <img v-lazy="imgUrl" slot="cover"> -->
               <f-space-pic-zoom v-if="isShowPic" :imgUrl="imgUrl"/>
@@ -27,9 +27,9 @@
             </div>
             <div class="goods-info">
               <p class="goods-name">
-                <img src="../../assets/img/otc-red.png" alt v-if="prodDetail.rx === 2">
-                <img src="../../assets/img/otc-green.png" alt v-if="prodDetail.rx === 1">
-                <img src="../../assets/img/rx.png" alt v-if="prodDetail.rx === 3">
+                <img src="../../assets/img/otc-red.png" alt v-if="prodDetail.rx == 2">
+                <img src="../../assets/img/otc-green.png" alt v-if="prodDetail.rx == 1">
+                <img src="../../assets/img/rx.png" alt v-if="prodDetail.rx == 3">
                 {{prodDetail.brandName}} {{ prodDetail.prodname }} {{prodDetail.spec}}
               </p>
               <p class="rush-time" v-if="rulecode == 1113 && isSecondkill">
@@ -49,45 +49,27 @@
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.offer }}</span>
                   <span>折</span>
                 </p>
-                <a-progress
-                  v-if="rulecode === 1113 || rulecode === 1133"
+                <!-- <a-progress
+                  v-if="rulecode == 1113 || rulecode == 1133"
                   :percent="discount.currNums / ladnum * 100"
                   style="width: 295px;height: 8px;margin-left: 20px;"
                   :showInfo="false"
                   status="exception"
-                />
-                <p class="onek-person" v-if="rulecode === 1133">
+                /> -->
+                <p class="onek-person" v-if="rulecode == 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.ladnum }}</span>
                   <span>件</span>
                 </p>
-                <!-- <p class="surplus" v-if="rulecode == 1113">
-                  还剩{{ discount.limits }}支
-                  <span>限购{{ discount.limits }}支</span>
-                </p> -->
-                <!--</p>-->
-
-                <!-- <div class="price" v-if="rulecode == 1113">
-                  <span class="price-title">价格</span>
-                  <span class="money-count">￥{{ discount.killPrice }}</span>
-                  <del>{{ prodDetail.mp }}</del>
-                </div> -->
-                <!-- <p class="price" v-else-if="rulecode === 1133">
-                  <span class="price-title">价格</span>
-                  <span class="money-count"  v-if="userStatus">￥{{ prodDetail.vatp }}</span>
-                  <span class="money-count" v-else>￥认证后可见</span>
-                </p>-->
-
                 <div class="price">
-                  <!-- 显示采购价 -->
-                  <!-- <p v-if="prodDetail.vatp !== -1">
-                    <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="price-title">采购价:</span>
-                    <span v-if="rulecode !== 1113 || rulecode !== 1133 || rulecode !== 1110" class="money-count"> -->
-                <!-- <div class="price" v-else> -->
-                  <p v-if="prodDetail.vatp !== -1">
-                    <span class="price-title" v-if="rulecode !== 1113 || rulecode !== 1133">采购价:</span>
-                    <span class="money-count" v-if="prodDetail.vatp != -1">
+                  <p v-if="prodDetail.vatp != -1">
+                    <span class="price-title">采购价:</span>
+                    <span class="money-count" v-if="rulecode != 1113">
                       <span class="font-size14">￥</span>
                         {{ prodDetail.vatp }}
+                    </span>
+                    <span class="money-count" v-else-if="rulecode == 1113">
+                      <span class="font-size14">￥</span>
+                        {{ prodDetail.minPrice }}
                     </span>
                     <span class="price-title">市场价:</span>
                     <del>
@@ -95,7 +77,9 @@
                       {{ prodDetail.mp }}
                     </del>
                     <span class="price-title">毛利润：</span>
-                    <span>{{Math.ceil((((prodDetail.mp - prodDetail.vatp) / prodDetail.vatp)*100))}}%</span>
+                   
+                    <span v-if="rulecode == 1113">{{Math.ceil((((prodDetail.rrp - prodDetail.minPrice) / prodDetail.vatp)*100))}}%</span>
+                    <span v-else>{{Math.ceil((((prodDetail.rrp - prodDetail.vatp) / prodDetail.vatp)*100))}}%</span>
                   </p>
 
                   <p v-else>
@@ -106,7 +90,7 @@
                     </span>
                   </p>
 
-                  <p class="folding" v-if="prodDetail.vatp !== -1">
+                  <p class="folding" v-if="prodDetail.vatp != -1 && rulecode != 1113">
                     <span>折后约:</span>
                     <span class="folding-price">
                       <span class="font-size14">￥</span>
@@ -119,15 +103,15 @@
                       </a-tooltip>
                     </span>
 
-                    <span>零售价:</span>
-                    <span class="folding-price">
+                    <span v-if="prodDetail.rrp > 0">零售价:</span>
+                    <span v-if="prodDetail.rrp > 0" class="folding-price">
                       <span class="font-size14">￥</span>
                       {{ prodDetail.rrp }}
                     </span>
                   </p>
-                  <div class="promotion" v-if="rulecode !== 0">
+                  <div class="promotion" v-if="rulecode != 0 && rulecode != 1113">
                     <span class="promotion-text">促 &nbsp 销:</span>
-                    <div class="promotion-list" v-if="rulecode === 1110 || rulecode === 1120 || rulecode === 1130 || rulecode === 1113 || rulecode === 1133">
+                    <div class="promotion-list" v-if="rulecode == 1110 || rulecode == 1120 || rulecode == 1130 || rulecode == 1133">
                       <a-tag color="pink">满减</a-tag>
                       <!-- offercode -->
                       <span v-for="(item,index) in discountLadoff" :key="index">
@@ -141,7 +125,7 @@
                       </span>
                       <!-- <span class="see-more">查看更多商品</span> -->
                     </div>
-                    <div class="promotion-list" v-if="rulecode === 1210 || rulecode === 1220 || rulecode === 1230 || rulecode === 1240 || rulecode === 2110 || rulecode === 2120 || rulecode === 2130 || rulecode === 2140">
+                    <div class="promotion-list" v-if="rulecode == 1210 || rulecode == 1220 || rulecode == 1230 || rulecode == 1240 || rulecode == 2110 || rulecode == 2120 || rulecode == 2130 || rulecode == 2140">
                       <a-tag color="pink">满赠</a-tag>
                       <!-- <span>满 800 赠 40元优惠券</span> -->
                       <!-- <span class="see-more">查看更多商品</span> -->
@@ -225,7 +209,7 @@
                     type="danger"
                     class="purchase"
                     @click="placeOrder()"
-                    v-if="rulecode !== 1113"
+                    v-if="rulecode != 1113"
                   >立即购买</a-button>
                   <a-button class="add-cart" @click="addCart()" v-if="rulecode !== 1113">
                     <a-icon type="shopping-cart"/>加入采购单
@@ -234,19 +218,19 @@
                     type="primary"
                     class="purchase"
                     @click="attendSecKill()"
-                    v-if="rulecode === 1113 && isSecondkill"
+                    v-if="rulecode == 1113 && isSecondkill"
                   >立即抢购</a-button>
                   <span class="collect-box margin-right100">
                     <span v-clipboard:copy="shareURl" v-clipboard:success="onShare">
                       <a-icon type="share-alt" class="collection"/>分享
                     </span>
                   </span>
-                  <span v-if="this.isShowCollec === false" class="collect-box">
+                  <span v-if="this.isShowCollec == false" class="collect-box">
                     <span @click="addCollec()">
                       <a-icon type="star" class="collection"/>收藏
                     </span>
                   </span>
-                  <span v-if="this.isShowCollec === true" class="collect-box">
+                  <span v-if="this.isShowCollec == true" class="collect-box">
                     <span @click="delCollec()">
                       <a-icon type="star" class="collection"/>取消收藏
                     </span>
@@ -267,7 +251,7 @@
             </p>
             <div class="coupon-content">
               <div class="coupon-boxs" v-for="(item, index) in couponPub" :key="index">
-                <div class="coupon-card" v-if="item.brulecode === 2120" @click="revCoupon(item)">
+                <div class="coupon-card" v-if="item.brulecode == 2120" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">
                       {{ item.rulename }}
@@ -282,7 +266,7 @@
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                   </div>
                 </div>
-                <div class="coupon-card" v-if="item.brulecode === 2130" @click="revCoupon(item)">
+                <div class="coupon-card" v-if="item.brulecode == 2130" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">
                       {{ item.rulename }}
@@ -299,7 +283,7 @@
                     <img class="state-pic" src="../../assets/img/receive.png" alt>
                   </div>
                 </div>
-                <div class="coupon-card" v-if="item.brulecode === 2110" @click="revCoupon(item)">
+                <div class="coupon-card" v-if="item.brulecode == 2110" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">
                       {{ item.rulename }}
@@ -318,7 +302,7 @@
                 </div>
               </div>
               <!-- <div v-for="(item, index) in couponPub" :key="index" class="coupon-boxs">
-                <div class="coupon-card" v-if="item.brulecode === 2130" @click="revCoupon(item)">
+                <div class="coupon-card" v-if="item.brulecode == 2130" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">
                       {{ item.rulename }}
@@ -337,7 +321,7 @@
                 </div>
               </div>-->
               <!-- <div class="coupon-boxs" v-for="(item, index) in couponPub" :key="index">
-                <div class="coupon-card" v-if="item.brulecode === 2110" @click="revCoupon(item)">
+                <div class="coupon-card" v-if="item.brulecode == 2110" @click="revCoupon(item)">
                   <div class="coupon-left">
                     <p class="coupon-type">
                       {{ item.rulename }}
@@ -357,7 +341,7 @@
             </div>
           </div>
           <!-- 一块购 -->
-          <div class="coupon-box" v-if="rulecode === 1133">
+          <div class="coupon-box" v-if="rulecode == 1133">
             <p class="coupon-title">一块购规则说明</p>
             <div class="coupon-content">
               <img src="../../assets/img/arrow.png" alt>
@@ -446,7 +430,7 @@
                 <a-tab-pane tab="药品评价" key="2" forceRender>
                   <div class="evaluate-box">
                     <div class="evaluate-list">
-                      <p class="no-evaluate" v-if="appriseArr.length === 0">药品暂无评价！</p>
+                      <p class="no-evaluate" v-if="appriseArr.length == 0">药品暂无评价！</p>
                       <a-comment
                         v-for="(item,index) in appriseArr"
                         :key="index"
@@ -635,7 +619,7 @@ export default {
       let text = "";
       if (val >= 100) {
         text = "有货";
-      } else if (val === 0) {
+      } else if (val == 0) {
         text = "已售完";
       } else {
         text = val;
@@ -659,7 +643,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.appriseArr = result.data;
             _this.total = result.total;
           }
@@ -673,7 +657,7 @@ export default {
       }
     },
     reduceCount() {
-      if (this.inventory - this.prodDetail.medpacknum <= 1) {
+      if ((this.inventory - this.prodDetail.medpacknum) < 1) {
         return;
       }
       this.inventory-= this.prodDetail.medpacknum;
@@ -691,7 +675,7 @@ export default {
         "orderServer" + Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             result.data.forEach((item) => {
               _this.discountLadoff = item
             })
@@ -715,7 +699,7 @@ export default {
     //     iRequest,
     //     new this.$iceCallback(function result(result) {
     //       
-    //       if (result.code === 200) {
+    //       if (result.code == 200) {
     //       }
     //     })
     //   );
@@ -734,14 +718,16 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
+            debugger
             _this.activitiesBySKU = result.data.discounts;
             // 如果存在活动 取库存与活动库存最小值
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
               _this.rulecode = _this.activitiesBySKU[0].brulecode;
               _this.unqid = _this.activitiesBySKU[0].unqid;
-              if (_this.rulecode === 1113) {
+              
+              if (_this.rulecode == 1113) {
                 _this.beforeSecKill();
               }
               _this.queryActiveType(_this.activitiesBySKU[0].unqid);
@@ -784,7 +770,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$message.success(result.message);
           }
         })
@@ -806,7 +792,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.unqid2 = result.data;
           }
         })
@@ -834,7 +820,9 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          debugger
+          if (result.code == 200) {
+            
             _this.$route.path.replace();
             result.data.forEach(item => {
               item.actcode = _this.unqid;
@@ -868,7 +856,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.queryCouponPub();
           }
         })
@@ -890,7 +878,7 @@ export default {
         "discountServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.couponPub = result.data;
           }
         })
@@ -926,7 +914,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             if (result.data) {
               _this.discount = result.data;
               // 设置倒计时
@@ -956,7 +944,7 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.hotList = result.data.slice(0, 5);
             _this.fsGeneralMethods.addImages(
               _this,
@@ -983,9 +971,10 @@ export default {
         "goodsServer",
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             if (result.data) {
               _this.prodDetail = result.data;
+              result.data.medpacknum = result.data.medpacknum ? result.data.medpacknum : 1
               // 设置中包装数 商品数
               _this.inventory = result.data.medpacknum
               
@@ -1033,7 +1022,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
           }
         })
       );
@@ -1057,7 +1046,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.isCollec();
           }
         })
@@ -1083,7 +1072,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.isCollec();
           }
         })
@@ -1105,7 +1094,7 @@ export default {
           Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.isShowCollec = result.data;
           }
         })
@@ -1155,7 +1144,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           _this.loading = false;
-          if (result.code === 200) {
+          if (result.code == 200) {
             _this.$route.path.replace();
             if (_this.unqid > 0) {
               result.data.forEach(item => {
@@ -1198,7 +1187,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            if (result.code === 200) {
+            if (result.code == 200) {
               _this.imgUrl =
                 result.data.downPrev +
                 result.data.goodsFilePathList +
@@ -1307,7 +1296,7 @@ export default {
   },
   watch: {
     inventory: function(newVal) {
-      this.inventory = parseInt(this.inventory/this.prodDetail.medpacknum) * this.prodDetail.medpacknum
+      this.inventory = parseInt(this.inventory/ this.prodDetail.medpacknum * this.prodDetail.medpacknum)
     }
   },
   beforeDestroy() {
