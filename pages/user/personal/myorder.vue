@@ -65,11 +65,11 @@
              ></a-checkbox> -->
             <div class="goods-pic">
               <!-- <img v-lazy="item.goods[0].imgURl" @click="toDetail(item)"> -->
-              <img v-lazy="item.imgURl" @click="toDetail(item)">
+              <img v-lazy="item.goods[0].imgURl" @click="toDetail(item)">
               <!-- <span class="time">{{item.odate}}</span> -->
               <p class="order-info"><span>订单号：</span> <span>{{item.orderno}}</span></p>
               <p class="order-info"><span>下单时间：</span> <span>{{item.odate}} {{item.otime}}</span></p>
-              <p class="order-info">订单内共{{item.totalNum}}件商品</p>
+              <p class="order-info">订单内共{{item.goods.length}}件商品</p>
               <!-- <p class="goods-text" @click="toDetail(items)">{{items.pname}}</p>
               <p class="guige">规格：{{items.pspec}}</p>
               <p class="menu-name">{{items.manun}}</p> -->
@@ -302,6 +302,7 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code == 200) {
             _this.orderList = result.data;
+            console.log( _this.orderList)
             _this.total = result.total;
             _this.currentIndex = result.pageNo;
             _this.orderList.forEach(item => {

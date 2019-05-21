@@ -152,11 +152,11 @@
           </div> -->
           <div class="order-state float-left" v-if="item.ostatus >= 2 && item.ostatus != -4 && logistixs.node && logistixs.node.length > 0">
             <div class="logistixs-left">
-              <div v-for="(items,index1) in logistixs.data" :key="index1">
+              <div class="border-right">
                 <p>物流状态</p>
-                <p>送货方式：普通快递</p>
-                <p>配送方式： {{items.carriername}}</p>
-                <p>运单号：{{ items.billno }}</p>
+                <p><span class="title">送货方式：</span><span class="content">普通快递</span></p>
+                <p><span class="title">配送方式：</span> <span class="content width-name">{{logistixs.carriername}}</span></p>
+                <p><span class="title">运单号：</span><span class="content">{{ logistixs.billno }}</span></p>
               </div>
               
             </div>  
@@ -197,7 +197,7 @@
                    <p class="pnum">{{items.pnum}}</p>
                 </div>
                  <div class="width11">
-                    <p class="pnum">￥{{items.pdprice*items.pnum}}</p>
+                    <p class="pnum">￥{{(items.pdprice*items.pnum).toFixed(2)}}</p>
                 </div>
                  <div class="width28 detail-div">
                    <p class="detail-p">优惠金额：￥{{items.distprice}}</p>
@@ -285,13 +285,14 @@ export default {
     },
     //再次购买
     reOrder(item) {
+      debugger
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
       iRequest.method = "againShopCart";
       iRequest.param.token = localStorage.getItem("identification");
       let arr = item.goods.map((value) => {
-        return {
+         return {
           compid: _this.storeInfo.comp.storeId,
           pdno: value.pdno,
           pnum: value.pnum,
@@ -485,6 +486,9 @@ export default {
 .padding40{
   padding: 40px 0px;
 }
+.border-right{
+  border-right:1px solid #e0e0e0;
+}
 .pnum{
   width: 100%!important;
   height: 120px!important;
@@ -517,16 +521,32 @@ export default {
   padding: 15px!important;
 }
 .logistixs-left{
-  .container-size(inline-left, 283px, 220px, 0, 0px);
+  .container-size(inline-block, 283px, 220px, 0, 0px);
   float: left;
-  padding-top: 40px;
-  border-right: 1px solid #e0e0e0;
+  padding-top: 30px;
   div{
-    .container-size(inline-left, 283px, 160px, 0, 0px);
+    .container-size(inline-block, 283px, 160px, 0, 0px);
     padding-top: 20px;
+    padding-left: 20px;
     p{
       width: 100%;
       .p-size(30px, 30px, 14px, center, 0px, #666666);
+      
+      .title{
+        float: left;
+        width: 75px;
+        text-align: left;
+      }
+      .content{
+        float: left;
+        text-align: left;
+      }
+      .width-name{
+        width: 180px;
+         overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 }
