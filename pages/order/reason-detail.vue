@@ -30,6 +30,7 @@
                <p class="pay-success" v-if="detail.ckstatus == 1">审核通过</p>
               <!-- <p><a-button class="cancelApply" v-if="detail.ckstatus == 1">审核通过</a-button></p> -->
               <!-- <p class="pay-success">完成</p> -->
+              <span class="ckdesc" v-if="detail.ckstatus == -1">拒绝原因: {{ detail.ckdesc }}</span>
             </div>
 
             <div class="line"></div>
@@ -496,6 +497,9 @@ export default {
   .container-size(block, 1190px, 50px, 0 auto, 0px);
   line-height: 50px;
   background: #ffffff;
+}
+.ckdesc {
+  margin-left: 50px;
 }
 .step-box {
   .container-size(block, 1190px, 220px, 0 auto, 0px);

@@ -11,7 +11,7 @@
     <a-table
       :columns="columns"
       :dataSource="data"
-      bordered
+      :pagination="pagination"  
       style="display: block;width: 935px;margin: 0 auto;margin-top: 25px;"
       @change="handleTableChange"
     >
@@ -84,13 +84,15 @@ export default {
       total: 0,
       integralNumber: 0, //可用积分
       expirepointNumber: 0, // 过期积分
-      pagination: {}
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        total: 0
+      }
     };
   },
   mounted() {
     this.$store.commit(types.SELECTED_KEYS, "/user/personal/integral");
-    this.pagination.current = 1;
-    this.pagination.pageSize = 10;
     this.getIntegralList();
     this.getMember();
   },
@@ -124,6 +126,8 @@ export default {
             _this.data.forEach((item) => {
                item.date = item.createdate + ' ' + item.createtime
             })
+            _this.pagination.pageSize = result.pageSize;
+            _this.pagination.current = result.pageNo;
             _this.pagination.total = result.total;
           }
         })

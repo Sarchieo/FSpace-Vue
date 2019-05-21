@@ -176,9 +176,17 @@
             </div>
           </div>
           <!-- 第五步 -->
-          <div class="reason-box" v-if="steps == 3">
+          <div class="reason-box" v-if="steps == 4">
             <p class="reason-p">发票详情</p>
             <p class="reason-wait">您的订单号为{{orderno}}的补开发票申请商家正在审核并制票，请耐心等待</p>
+            <p class="order-detail">
+              <a-button
+                type="primary"
+                class="order-detail-btn"
+                @click="toOrderDetail()"
+              >订单详情</a-button>
+              <span class="keep-shoping" @click="toIndex()">继续逛逛</span>
+            </p>
             <!-- <table>
               <thead>订单号: {{orderno}}</thead>
               <tbody>
@@ -235,7 +243,7 @@ export default {
       contact: "",
       reprreason: [],
       content: "",
-      steps: 0,
+      steps: 4,
       reasonType: '',
       asType: 0,
       previewVisible: false,
@@ -266,6 +274,9 @@ export default {
     this.payResult();
     this.getFilePathPrev();
     this.getInvoice()
+    this.intervalid = setInterval(() => {
+      this.getPayResult()
+    }, 5000)
   },
   methods: {
     getInvoice(){
@@ -348,6 +359,15 @@ export default {
         this.form.setFieldsValue(this.invoice);
       }, 500)
     },
+    toOrderDetail() {
+      this.$router.push({
+        path: "/user/order-detail",
+        query: {
+          orderno: this.orderno,
+          cusno: this.storeInfo.comp.storeId
+        }
+      });
+    },
     prePay() {
       const _this = this;
       const iRequest = new inf.IRequest();
@@ -373,15 +393,42 @@ export default {
         })
       );
     },
+       // 获取订单详情
+    getPayResult() {
+      const _this = this;
+      const iRequest = new inf.IRequest();
+      iRequest.cls = "PayModule";
+      iRequest.method = "getPayResult";
+      iRequest.param.json = JSON.stringify({
+        orderno: this.orderno,
+        compid: this.storeInfo.comp.storeId
+      })
+      iRequest.param.token = localStorage.getItem("identification")
+      this.$refcallback(
+        this,
+        "orderServer" + Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+        iRequest,
+        new this.$iceCallback(
+          function result(result) {
+            if (result.code == 200 && result.data.paystatus == 1) {
+              _this.steps = 4;
+              clearInterval(_this.intervalid);
+            }
+          }
+        )
+      );
+    },
     payResult() {
       let _this = this;
       let ice_callback = new Ice.Class(inf.PushMessageClient, {
         receive: function(message, current) {
           try{
             let result = JSON.parse(message);
+            debugger
             // event tradeStatus 需要跟蒋文广确认
             if (result.event == 1 && result.body.tradeStatus == 1) {
               _this.steps = 4;
+              clearInterval(_this.intervalid);
               // 支付结果页面数据
             }
           } catch(err){
@@ -435,7 +482,6 @@ export default {
       } else {
         this.asType = 4;
       }
-      debugger
       this.invoice = {
         invoiceInfo: {
           compName: this.comp.storeName,
@@ -580,7 +626,21 @@ export default {
            this.steps = 2;
         }
       });
-    }
+    },
+    toOrderDetail() {
+      this.$router.push({
+        path: "/user/order-detail",
+        query: {
+          orderno: this.orderno,
+          cusno: this.storeInfo.comp.storeId
+        }
+      });
+    },
+    toIndex() {
+      this.$router.push({
+        path: "/"
+      });
+    },
   }
 };
 </script>
@@ -783,5 +843,16 @@ tr {
    .p-size(50px, 50px, 16px, center, 0px, #666666);
     background: #f8f8f8;
     font-weight: bold;
+}
+.order-detail {
+  .p-size(60px, 60px, 16px, center, 0px, #666666);
+  .order-detail-btn {
+    .button-size(150px, 45px, 45px, 16px, 0px, 5px);
+    .button-color(1px solid transparent, #ed2f26, #ffffff);
+  }
+  span {
+    margin-left: 30px;
+    color: #3189f5;
+  }
 }
 </style>

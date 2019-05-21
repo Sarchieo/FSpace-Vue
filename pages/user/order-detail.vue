@@ -168,7 +168,7 @@
                   :title="item.status"
                   :description="item.date + item.time + item.des"
                 />
-            </a-steps>      
+              </a-steps>      
             </div>
             
           </div>
@@ -183,8 +183,8 @@
               </p>
               <li  v-for="(items,index1) in item.goods" :key="index1">
                 <div class="width342 goods-info-box">
-                  <img :src="items.imgURl" class="goods-img" alt="">
-                  <p>{{items.pname}}{{items.brandn}}</p>
+                  <img :src="items.imgURl" class="goods-img" alt="" @click="toDetail(items)">
+                  <p @click="toDetail(items)" class="goods-name">{{items.pname}}{{items.brandn}}</p>
                   <p>{{items.pspec}}</p>
                   <p v-if="items.standarNo !== ''">{{items.standarNo}}</p>
                   <p>{{items.manun}}</p>
@@ -446,6 +446,17 @@ export default {
         path: "/order/pay",
         query: {
           orderno: this.orderDetail[0].orderno
+        }
+      });
+      window.open(routeData.href, "_blank");
+    },
+    
+    toDetail(item) {
+      var routeData = this.$router.resolve({
+        path: "/product/detail",
+        query: {
+          sku: item.pdno,
+          spu: item.spu,
         }
       });
       window.open(routeData.href, "_blank");
@@ -713,7 +724,7 @@ export default {
       }
     }
   }
-  .goods-list-p{
+  .goods-list-p {
     .p-size(60px, 60px, 16px, center, 0px, #666666);
     background: #f2f2f2;
     span{
@@ -721,6 +732,10 @@ export default {
       float: left;
     }
   }
+}
+.goods-name:hover {
+  cursor: pointer;
+  color: #ed3025!important;
 }
 // .address {
 //   height: auto !important;

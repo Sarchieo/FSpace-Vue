@@ -203,7 +203,7 @@ export default {
   methods: {
     // 加入购物车
     addCart(item) {
-     this.fsGeneralMethods.addShoppingCart(this, item, 1)
+     this.fsGeneralMethods.addShoppingCart(this, item, item.medpacknum || 1)
     },
     // 收藏
     addCollec(item) {

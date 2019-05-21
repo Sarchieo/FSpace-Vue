@@ -16,13 +16,13 @@
       <span>订单号:</span> <a-input v-model="orderNo" placeholder="输入订单号搜索" />
       <span>下单时间：</span>
       <a-range-picker
-        :allowClear = false 
-        style="width: 300px;"
         :placeholder="['开始日期', '结束日期']"
          format="YYYY-MM-DD"
         :value="monthValue"
         @change="handlePanelChange"
-      />   
+      >
+      <a-icon slot="suffixIcon" type="smile" />
+      </a-range-picker>
       <a-button class="search-btn" @click="queryOrderList()">搜索</a-button>
     </div>
     <p class="table-title">
@@ -45,7 +45,7 @@
       <span class="width10">结算状态</span>
       <span class="width15">金额</span>
       <span class="width13">操作</span>
-     
+
     </p>
     <ul class="order-box" v-if="this.orderList.length !== 0 ">
       <li v-for="(item,index) in orderList" :key="index" class="order-box-li">
@@ -78,14 +78,14 @@
              <div class="state">
               <p class="sucess">{{statusText(item)}}</p>
             </div>
-           
+
              <div class="state">
               <p class="sucess">{{setstatusText(item.settstatus)}}</p>
             </div>
             <!-- <div class="pay count-div">
               <p>{{items.pnum}}</p>
             </div> -->
-           
+
             <!-- <div class="pay price-div">
               <p class="price-p">￥{{items.pdprice}}</p>
             </div> -->
@@ -114,11 +114,9 @@
             <p @click="deleteOrder(item)" class="del-order">删除</p>
             <!-- v-if="item.ostatus == 3" -->
             <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)==0">补开发票</p>
+            <!-- <p @click="toSuppInvo(item)">补开发票</p> -->
           </div>
           </div>
-        
-
-          
         </div>
         <div style="clear: both;"></div>
       </li>
@@ -302,7 +300,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code == 200) {
             _this.orderList = result.data;
-            console.log( _this.orderList)
             _this.total = result.total;
             _this.currentIndex = result.pageNo;
             _this.orderList.forEach(item => {
@@ -389,15 +386,6 @@ export default {
           }
         })
       );
-    },
-    toDetail(item) {
-      this.$router.push({
-        path: "/product/detail",
-        query: {
-          sku: item.pdno,
-          spu: item.spu,
-        }
-      });
     },
     toDetails(item) {
       var routeData = this.$router.resolve({
@@ -540,27 +528,27 @@ export default {
       },
       //确认签收
       conReceipt(item) {
-          let _this = this;
-          let iRequest = new inf.IRequest();
-          iRequest.cls = "OrderOptModule";
-          iRequest.method = "confirmReceipt";
-          iRequest.param.token = localStorage.getItem("identification");
-          iRequest.param.json = JSON.stringify({
-              orderno: item.orderno,
-              cusno: item.cusno
-          });
-          this.$refcallback(
-              this,
-              "orderServer" +
-              Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
-              iRequest,
-              new this.$iceCallback(function result(result) {
-                  if (result.code == 200) {
-                      _this.$message.success(result.message);
-                      _this.queryOrderList();
-                  }
-              })
-          );
+        let _this = this;
+        let iRequest = new inf.IRequest();
+        iRequest.cls = "OrderOptModule";
+        iRequest.method = "confirmReceipt";
+        iRequest.param.token = localStorage.getItem("identification");
+        iRequest.param.json = JSON.stringify({
+            orderno: item.orderno,
+            cusno: item.cusno
+        });
+        this.$refcallback(
+            this,
+            "orderServer" +
+            Math.floor((this.storeInfo.comp.storeId / 8192) % 65535),
+            iRequest,
+            new this.$iceCallback(function result(result) {
+                if (result.code == 200) {
+                    _this.$message.success(result.message);
+                    _this.queryOrderList();
+                }
+            })
+        );
       },
       thinkAgain(){
           this.cancelOrderNo = {}
@@ -594,6 +582,12 @@ export default {
       );
     },
     handlePanelChange (value, mode) {
+      this.monthValue = value
+      if(value.length === 0) {
+        this.sDate = ''
+        this.eDate = ''
+        return
+      }
       this.startValue = value[0]
       this.endValue = value[1]
       this.year = new Date(value[0]).getFullYear()
@@ -605,7 +599,7 @@ export default {
       }
       this.sDate = startDate.getFullYear() + '-' + this.timeAdd0(startDate.getUTCMonth()+1) + '-' + this.timeAdd0(startDate.getUTCDate())
       this.eDate = endDate.getFullYear() + '-' + this.timeAdd0(endDate.getUTCMonth()+1) + '-' + this.timeAdd0(endDate.getUTCDate())
-      this.monthValue = value
+
     },
     timeAdd0(str) {
       if(String(str).length<=1){
