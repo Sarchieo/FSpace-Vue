@@ -772,7 +772,7 @@ li {
 }
 .spike a {
   display: inline-block;
-  max-width: 190px;
+  max-width: 170px;
   height: 26px;
   line-height: 26px;
   padding: 0px 23px 0px 23px;

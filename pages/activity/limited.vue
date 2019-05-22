@@ -14,6 +14,8 @@
               <a-tab-pane v-for="(item, index) in goodsList.timeArray" :key="index" :tab="item.sdate + '~' + item.edate">
                 <div class="goods-box" v-for="(item,index) in goodsList.list" :key="index">
                   <img v-lazy="item.imgURl" :key="item.imgURl" alt class="goods-pic">
+                  <img v-if="item.surplusstock == 0" slot="cover" src="../../assets/img/shortage.png" class="sold" alt="">
+                  
                   <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
                   <p class="goods-adv">{{item.spec}}</p>
                   <a-progress
@@ -97,6 +99,7 @@ export default {
           if (result.code == 200) {
             result.data.list = result.data.list;
             _this.goodsList = result.data;
+            console.log(_this.goodsList)
             _this.pagination = _this.goodsList.list
             _this.total = result.total
             _this.goodsList.list.forEach((item) => {
@@ -243,9 +246,13 @@ export default {
   }
 }
 .goods-pic {
-  .position(absolute, 0px, 0px);
   width: 225px;
   height: 225px;
+}
+.sold{
+  .position(absolute,62px,62px);
+  width: 100px;
+  height: 100px;
 }
 .goods-name {
   .position(absolute, 20px, 250px);

@@ -45,6 +45,7 @@
           <div class="notice-box">
             <div class="login-tips">
               <h3>欢迎来到一块医药</h3>
+              
               <!-- {{ storeInfo.comp.storeName }} -->
               <p
                 v-if="userStatus && storeInfo.comp && storeInfo.comp.storeName"
@@ -58,7 +59,7 @@
                 </nuxt-link>
               </p>
             </div>
-            <img src="../assets/img/certificate.png">
+            <img src="../assets/img/certificate.jpg">
             <div class="notice-content">
               <p class="title">
                 <span class="float-left">公告</span>
@@ -1648,6 +1649,8 @@ margin-left: 178px;
   height: 413px;
   margin: 0 auto;
   // border: 1px solid #e0e0e0;
+  background: #ffffff;
+  .position(relative,0px,0px);
   .login-tips {
     .container-size(block, 200px, 100px, 0 auto, 0px);
     border: 1px solid #f2f2f2;

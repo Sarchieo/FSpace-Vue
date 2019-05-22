@@ -115,7 +115,7 @@
                   <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
                     满
                     <span>{{ j.ladamt }}</span> 打
-                    <span>{{ j.offer/10}}</span>折
+                    <span>{{ j.offer}}</span>折
                   </p>
                   <p class="validity">有效期:{{item.validday}}天</p>
                 </div>
