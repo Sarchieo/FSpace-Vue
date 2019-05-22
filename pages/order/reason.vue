@@ -346,6 +346,9 @@ export default {
 
     p {
       .p-size(30px, 30px, 13px, left, 0px, #333333);
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
     }
   }
 

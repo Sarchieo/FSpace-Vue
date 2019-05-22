@@ -50,7 +50,7 @@
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
                 满
                 <span>{{ j.ladamt }}</span> 打
-                <span>{{ j.offer/10}}</span>折
+                <span>{{ j.offer}}</span>折
               </p>
               <p class="validity">有效期:{{item.startdate}}至{{item.enddate}}</p>
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
@@ -113,7 +113,7 @@
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
                 满
                 <span>{{ j.ladamt }}</span> 打
-                <span>{{ j.offer/10}}</span>折
+                <span>{{ j.offer}}</span>折
               </p>
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
                <img class="state-pic" src="../../../assets/img/invalied.png" alt>
@@ -167,7 +167,7 @@
               <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
                 满
                 <span>{{ j.ladamt }}</span> 打
-                <span>{{ j.offer/10}}</span>折
+                <span>{{ j.offer}}</span>折
               </p>
               <!-- <p>有效期 {{ item.validday }} 天</p> -->
               <img class="state-pic" src="../../../assets/img/Invalid.png" alt="">
@@ -193,7 +193,7 @@
             <p class="discount-coupon" v-for="(j, i) in item.ladderVOS" :key="i">
               满
               <span>{{ j.ladamt }}</span> 打
-              <span>{{ j.offer/10}}</span>折
+              <span>{{ j.offer}}</span>折
             </p>
             <p class="validity">有效期:{{item.validday}}天</p>
             <!-- <p>有效期 {{ item.validday }} 天</p> -->
