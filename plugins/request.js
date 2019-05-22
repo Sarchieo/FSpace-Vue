@@ -30,6 +30,7 @@ function upload(option, onSuccess) {
   var xhr = new XMLHttpRequest();
   if (xhr.upload) {
     xhr.upload.onprogress = function progress(e) {
+      // 图片上传进度条
       // if (e.total > 0) {
       //   e.percent = e.loaded / e.total * 100;
       // }

@@ -1911,4 +1911,8 @@ margin-left: 178px;
 .margin-bottom10 {
   margin-bottom: 10px;
 }
+
+.mask h3 {
+    text-align: center;
+}
 </style>

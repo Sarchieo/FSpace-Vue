@@ -18,12 +18,19 @@
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div class="goods-big-pic">
-               <img class="shortage" src="../../assets/img/shortage.png" slot="cover" v-if="prodDetail.store == 0">
+              <img
+                class="shortage"
+                src="../../assets/img/shortage.png"
+                slot="cover"
+                v-if="prodDetail.store == 0"
+              >
               <!-- <pic-zoom :url="imgUrl" :scale="2.5"></pic-zoom> -->
               <!-- <img v-lazy="imgUrl" slot="cover"> -->
               <f-space-pic-zoom v-if="isShowPic" :imgUrl="imgUrl"/>
               <!-- 根据商品收藏状态显示收藏或者取消收藏 -->
-              <p class="remind"><span>温馨提示：</span> 部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准</p>
+              <p class="remind">
+                <span>温馨提示：</span> 部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准
+              </p>
             </div>
             <div class="goods-info">
               <p class="goods-name">
@@ -55,7 +62,7 @@
                   style="width: 295px;height: 8px;margin-left: 20px;"
                   :showInfo="false"
                   status="exception"
-                /> -->
+                />-->
                 <p class="onek-person" v-if="rulecode == 1133">
                   <span v-for="(i, index) in discount.ladoffs" :key="index">{{ i.ladnum }}</span>
                   <span>件</span>
@@ -65,28 +72,32 @@
                     <span class="price-title">采购价:</span>
                     <span class="money-count" v-if="rulecode != 1113">
                       <span class="font-size14">￥</span>
-                        {{ prodDetail.vatp }}
+                      {{ prodDetail.vatp }}
                     </span>
                     <span class="money-count" v-else-if="rulecode == 1113">
                       <span class="font-size14">￥</span>
-                        {{ prodDetail.minPrice }}
+                      {{ prodDetail.minPrice }}
                     </span>
                     <span class="price-title">市场价:</span>
                     <del>
-                      <span class="font-size14"> ￥</span>
+                      <span class="font-size14">￥</span>
                       {{ prodDetail.mp }}
                     </del>
-                    <span class="price-title">毛利润：</span>
-                   
-                    <span v-if="rulecode == 1113">{{Math.ceil((((prodDetail.rrp - prodDetail.minPrice) / prodDetail.vatp)*100))}}%</span>
-                    <span v-else>{{Math.ceil((((prodDetail.rrp - prodDetail.vatp) / prodDetail.vatp)*100))}}%</span>
+                    <span v-if="prodDetail.rrp > 0" class="price-title">毛利润：</span>
+
+                    <span
+                      v-if="rulecode == 1113 && prodDetail.rrp > 0"
+                    >{{Math.ceil((((prodDetail.rrp - prodDetail.minPrice) / prodDetail.vatp)*100))}}%</span>
+                    <span
+                      v-else-if="prodDetail.rrp > 0"
+                    >{{Math.ceil((((prodDetail.rrp - prodDetail.vatp) / prodDetail.vatp)*100))}}%</span>
                   </p>
 
                   <p v-else>
                     <span class="price-title">采购价:</span>
                     <span class="money-count">
                       <span class="font-size14">￥</span>
-                        认证后可见
+                      认证后可见
                     </span>
                   </p>
 
@@ -95,7 +106,10 @@
                     <span class="folding-price">
                       <span class="font-size14">￥</span>
                       {{ prodDetail.minPrice }}
-                      <a-tooltip placement="bottom" style="width: 20px;height: 20px;border-radius: 50%;">
+                      <a-tooltip
+                        placement="bottom"
+                        style="width: 20px;height: 20px;border-radius: 50%;"
+                      >
                         <template slot="title">
                           <span>商品折后价为叠加所有符合条件的有效促销活动后的最优购买单价。商品结算价格可低至该最优购买单价。</span>
                         </template>
@@ -111,23 +125,62 @@
                   </p>
                   <div class="promotion" v-if="rulecode != 0 && rulecode != 1113">
                     <span class="promotion-text">促 &nbsp 销:</span>
-                    <div class="promotion-list" v-if="rulecode == 1110 || rulecode == 1120 || rulecode == 1130 || rulecode == 1133">
-                      <a-tag color="pink">满减</a-tag>
+                    <div
+                      class="promotion-list"
+                      v-if="rulecode == 1210 || rulecode == 1220 || rulecode == 1230 || rulecode == 1240 || rulecode == 2110 || rulecode == 2120 || rulecode == 2130 || rulecode == 2140"
+                    >
                       <!-- offercode -->
                       <span v-for="(item,index) in discountLadoff" :key="index">
-                         <span>满</span>
-                         <!-- <span>每满</span>  -->
-                         {{item.ladamt}}
-                         <span>减 </span>
-                         <span>{{item.offer}}</span>
-                         <!-- <span>送</span> -->
-                         <!-- <span>{{item.fiftList}}</span> -->
+                        <div v-if="item.rulecode == 1110 || item.rulecode == 1113">
+                          <a-tag color="pink">满减</a-tag>
+                          <span>满</span>
+                          {{item.ladamt}}
+                          <span>减</span>
+                          <span>{{item.offer}}</span>
+                          <span>元</span>
+                        </div>
+
+                        <div v-if="item.rulecode == 1120">
+                          <a-tag color="pink">满减</a-tag>
+                          <span>满</span>
+                          {{item.ladamt}}
+                          <span>包邮</span>
+                        </div>
+
+                        <div v-if="item.rulecode == 1130 || item.rulecode == 1133">
+                          <a-tag color="pink">满减</a-tag>
+                          <span>满</span>
+                          {{item.ladamt}}
+                          <span>打</span>
+                          <span>{{item.offer}}</span>
+                          <span>折</span>
+                        </div>
+
+                        <div v-if="item.rulecode == 1210">
+                          <a-tag color="pink">满赠</a-tag>
+                          <span>满</span>
+                          {{item.ladamt}}
+                          <span>送</span>
+                          <span>{{item.offer}}</span>
+                          <span>现金券</span>
+                        </div>
+                        <div v-if="item.rulecode == 1220">
+                          <a-tag color="pink">满赠</a-tag>
+                          <span>满</span>
+                          {{item.ladamt}}
+                          <span>送</span>
+                          <span>{{item.offer}}</span>
+                          <span>包邮券</span>
+                        </div>
+                         <div v-if="item.rulecode == 1230">
+                          <a-tag color="pink">满赠</a-tag> 
+                          <span>满</span>
+                          {{item.ladamt}}
+                          <span>送</span>
+                          <span>{{item.offer}}</span>
+                          <span>折扣券</span>
+                        </div>
                       </span>
-                      <!-- <span class="see-more">查看更多商品</span> -->
-                    </div>
-                    <div class="promotion-list" v-if="rulecode == 1210 || rulecode == 1220 || rulecode == 1230 || rulecode == 1240 || rulecode == 2110 || rulecode == 2120 || rulecode == 2130 || rulecode == 2140">
-                      <a-tag color="pink">满赠</a-tag>
-                      <!-- <span>满 800 赠 40元优惠券</span> -->
                       <!-- <span class="see-more">查看更多商品</span> -->
                     </div>
                   </div>
@@ -155,8 +208,8 @@
                 <p class="packing">
                   <span class="float-left width110">批准文号：</span>
                   <span class="brand-text">{{ prodDetail.standarNo }}</span>
-                  <span>整件数量：</span>
-                  <span>{{ prodDetail.wholenum }}</span>
+                  <span v-if="prodDetail.wholenum > 0">整件数量：</span>
+                  <span v-if="prodDetail.wholenum > 0">{{ prodDetail.wholenum }}</span>
                 </p>
                 <p class="packing">
                   <span class="float-left width110">生产厂家：</span>
@@ -170,7 +223,7 @@
                   <span
                     class="margin-right190"
                   >{{ prodDetail.prodsdate + ' ~ ' + prodDetail.prodedate}}</span>
-                </p> -->
+                </p>-->
                 <p class="packing">
                   <span class="float-left width110">有效期至：</span>
                   <span class="brand-text">{{ prodDetail.vaildsdate }} ~ {{ prodDetail.vaildedate }}</span>
@@ -235,7 +288,6 @@
                       <a-icon type="star" class="collection"/>取消收藏
                     </span>
                   </span>
-
                 </p>
               </div>
             </div>
@@ -381,7 +433,7 @@
                     <p>
                       <span class="title-left">温馨提示：</span> 部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准
                     </p>
-                  </div> -->
+                  </div>-->
                   <div class="goods-detail">
                     <p class="instructions">{{prodDetail.prodname}}说明书</p>
                     <p class="detail-list">
@@ -487,7 +539,6 @@ import FSpaceButton from "../../components/fspace-ui/button/button";
 import FSpaceFooter from "../../components/fspace-ui/footer";
 import FSpacePicZoom from "../../components/fspace-ui/piczoom";
 
-
 export default {
   components: {
     FSpaceHeader,
@@ -528,7 +579,7 @@ export default {
       loading: false,
       maximum: 1, // 最大库存
       activeStore: null, // 活动库存
-      store: 0,// 商品库存
+      store: 0, // 商品库存
       activeLimits: null, // 活动限购量
       inventory: 1, // 当前商品数
       percentAge: 50,
@@ -610,7 +661,7 @@ export default {
     });
   },
   methods: {
-    pageNumber(pageNumber) { 
+    pageNumber(pageNumber) {
       this.currentIndex = pageNumber;
       // 再重新调一次请求评价列表方法
       this.getGoodsApprise();
@@ -652,15 +703,15 @@ export default {
     },
     // 新增采购数量
     addCount() {
-      if(this.checkInventory()) {
-        this.inventory+= this.prodDetail.medpacknum;
+      if (this.checkInventory()) {
+        this.inventory += this.prodDetail.medpacknum;
       }
     },
     reduceCount() {
-      if ((this.inventory - this.prodDetail.medpacknum) < 1) {
+      if (this.inventory - this.prodDetail.medpacknum < 1) {
         return;
       }
-      this.inventory-= this.prodDetail.medpacknum;
+      this.inventory -= this.prodDetail.medpacknum;
     },
     // 获取活动阶梯值
     getLadoff() {
@@ -672,20 +723,25 @@ export default {
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,
-        "orderServer" + Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
+        "orderServer" +
+          Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code == 200) {
-            result.data.forEach((item) => {
-              _this.discountLadoff = item
-            })
+            result.data.forEach(item => {
+              _this.discountLadoff = item;
+              _this.discountLadoff.forEach(item => {
+                _this.$set(item, 'rulecode', Math.floor(item.offercode / 1000))
+              })
+              console.log(_this.discountLadoff);
+            });
           }
         })
       );
     },
     // // 获取药品活动
     // getactivities() {
-    //   
+    //
     //   let _this = this;
     //   let iRequest = new inf.IRequest();
     //   iRequest.cls = "CalculateModule";
@@ -698,7 +754,7 @@ export default {
     //       Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
     //     iRequest,
     //     new this.$iceCallback(function result(result) {
-    //       
+    //
     //       if (result.code == 200) {
     //       }
     //     })
@@ -719,26 +775,29 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code == 200) {
-            debugger
             _this.activitiesBySKU = result.data.discounts;
-            // 如果存在活动 取库存与活动库存最小值
+            // 如果存在活动 取库存与活动库存最小值 （我也搞不清了 中包装 库存 活动库存 限购量mmp）
             // 如果不存在活动 取活动库存与限购量存最小值
             if (_this.activitiesBySKU.length > 0) {
               _this.rulecode = _this.activitiesBySKU[0].brulecode;
               _this.unqid = _this.activitiesBySKU[0].unqid;
-              
+
               if (_this.rulecode == 1113) {
                 _this.beforeSecKill();
               }
+              
               _this.queryActiveType(_this.activitiesBySKU[0].unqid);
               // 最小限购量
-              _this.activeLimits =  (result.data.minLimit - result.data.maxBuyed) > 0 ? result.data.minLimit - result.data.maxBuyed : null;
-              //最小活动库存  
-              _this.activeStore = result.data.minStock
-              if(result.data.minStock > result.data.minLimit) {
-                _this.maximum =  _this.activeLimits
-              }else {
-                _this.maximum =  _this.activeStore
+              _this.activeLimits =
+                result.data.minLimit - result.data.maxBuyed > 0
+                  ? result.data.minLimit - result.data.maxBuyed
+                  : null;
+              //最小活动库存
+              _this.activeStore = result.data.minStock;
+              if (result.data.minStock > result.data.minLimit) {
+                _this.maximum = _this.activeLimits;
+              } else {
+                _this.maximum = _this.activeStore;
               }
             }
           }
@@ -751,6 +810,10 @@ export default {
         this.$router.push({
           path: "/user/login"
         });
+        return;
+      }
+      if (!this.inventory > 0) {
+        this.$message.warning("库存不足或超出限购数量");
         return;
       }
       let _this = this;
@@ -803,6 +866,10 @@ export default {
         this.$message.error("下单失败, 当前企业未进行认证审核");
         return;
       }
+      if (!this.inventory > 0) {
+        this.$message.warning("库存不足或超出限购数量");
+        return;
+      }
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "SecKillModule";
@@ -820,9 +887,7 @@ export default {
           Math.floor((_this.storeInfo.comp.storeId / 8192) % 65535),
         iRequest,
         new this.$iceCallback(function result(result) {
-          debugger
           if (result.code == 200) {
-            
             _this.$route.path.replace();
             result.data.forEach(item => {
               item.actcode = _this.unqid;
@@ -886,19 +951,26 @@ export default {
     },
     // 库存校验
     checkInventory() {
-      if(this.inventory + this.prodDetail.medpacknum > this.store) {
+      if (this.inventory + this.prodDetail.medpacknum > this.store) {
         this.$message.warning("当前商品库存不足");
         return false;
       }
-      if(this.activeStore !== null && this.inventory + this.prodDetail.medpacknum > this.activeStore) {
+      if (
+        this.activeStore !== null &&
+        this.inventory + this.prodDetail.medpacknum > this.activeStore
+      ) {
         this.$message.warning("当前商品活动库存不足");
         return false;
       }
-      if(this.activeLimits !== null && this.inventory + this.prodDetail.medpacknum > this.activeLimits) {
+      
+      if (
+        this.activeLimits !== null &&
+        this.inventory + this.prodDetail.medpacknum > this.activeLimits
+      ) {
         this.$message.warning("当前商品限购量不足");
         return false;
       }
-      return true
+      return true;
     },
     // 查询商品活动类型
     queryActiveType(unqid) {
@@ -974,10 +1046,12 @@ export default {
           if (result.code == 200) {
             if (result.data) {
               _this.prodDetail = result.data;
-              result.data.medpacknum = result.data.medpacknum ? result.data.medpacknum : 1
+              result.data.medpacknum = result.data.medpacknum
+                ? result.data.medpacknum
+                : 1;
               // 设置中包装数 商品数
-              _this.inventory = result.data.medpacknum
-              
+              _this.inventory = result.data.medpacknum;
+              debugger;
               if (_this.userStatus) {
                 // 上传足迹
                 _this.getFoot();
@@ -1114,8 +1188,8 @@ export default {
         return;
       }
 
-      if(this.inventory > this.maximum) {
-         this.$message.warning("超出限购数量");
+      if (this.inventory > this.maximum) {
+        this.$message.warning("超出限购数量");
         return;
       }
 
@@ -1296,7 +1370,14 @@ export default {
   },
   watch: {
     inventory: function(newVal) {
-      this.inventory = parseInt(this.inventory/ this.prodDetail.medpacknum * this.prodDetail.medpacknum)
+      if (this.prodDetail.medpacknum > newVal) {
+        this.inventory = 0;
+        return;
+      }
+      this.inventory = parseInt(
+        (this.inventory / this.prodDetail.medpacknum) *
+          this.prodDetail.medpacknum
+      );
     }
   },
   beforeDestroy() {
@@ -1354,30 +1435,30 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
-.float-left{
+.float-left {
   float: left;
 }
-.width110{
+.width110 {
   width: 110px;
 }
-.brand-text{
-  float:left;
+.brand-text {
+  float: left;
   width: 265px;
-  text-align:left;
+  text-align: left;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
-.remind{
+.remind {
   width: 100%;
   font-size: 14px;
   color: #999;
 }
-.collect-box{
+.collect-box {
   float: right;
   margin-top: 10px;
 }
-.margin-right100{
+.margin-right100 {
   margin-right: 100px;
 }
 /* 优惠券 */
@@ -1484,12 +1565,12 @@ li {
   margin: 0 auto;
   padding-top: 20px;
 }
-.shortage{
+.shortage {
   position: absolute;
   top: 100px;
   left: 150px;
-  width: 200px!important;
-  height: 200px!important;
+  width: 200px !important;
+  height: 200px !important;
   z-index: 2;
 }
 .goods-exhibition .crumbs {

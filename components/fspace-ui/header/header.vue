@@ -153,16 +153,17 @@
     <!-- 登录 -->
     <a-layout-header v-if="type == 'login'" class="login-header">
       <div class="ant-layout-header-login">
-         <nuxt-link to="/">
-          <div class="medicine-name-login">
-            <img src="../../../assets/img/u49.png" alt>
-          </div>
-         </nuxt-link>
+         <!-- <nuxt-link to="/"> -->
+        <div class="medicine-name-login" @click="toHome()">
+          <img src="../../../assets/img/u49.png" alt>
+        </div>
+         <!-- </nuxt-link> -->
       
         <div class="ant-layout-header-back login-header-text">
-          <nuxt-link to="/">
+          <a href="javascript:;" @click="toHome()" class="back-index">返回首页</a>
+          <!-- <nuxt-link to="/">
             <a class="back-index">返回首页</a>
-          </nuxt-link>
+          </nuxt-link> -->
           <a class="service-phone">客服电话：0731-88159987</a>
         </div>
         <div class="divider"></div>
@@ -200,15 +201,11 @@
   </div>
 </template>
 <script>
-// import HeaderNotice from './HeaderNotice'
 import FSpaceMenu from '../menu'
 import FSpaceRight from '../right-menu'
 export default {
   name: "f-space-header",
   props: ["type", "searchList"],
-  // components: {
-  //   HeaderNotice
-  // },
   components: {
     FSpaceMenu,
     FSpaceRight
@@ -257,19 +254,22 @@ export default {
     };
   },
   mounted() {
-    this.isShowMenu = this.$route.name == 'index' ? true : false
-    this.init();
-    this.checkStoreLoginStatus();
-    this.usualKeyword();
-    window.addEventListener("scroll", this.handleScroll);
+    // this.init();
+    if(this.type == 'home') {
+      this.isShowMenu = this.$route.name == 'index' ? true : false
+      window.addEventListener("scroll", this.handleScroll);
+      // 获取用户登录状态
+      this.checkStoreLoginStatus();
+      this.usualKeyword();
+    }
   },
   methods: {
-    init() {
-      this.isDisTip = localStorage.getItem("isDisTip") ? false : true;
-      if (this.isDisTip) {
-        localStorage.setItem("isDisTip", "1");
-      }
-    },
+    // init() {
+    //   this.isDisTip = localStorage.getItem("isDisTip") ? false : true;
+    //   if (this.isDisTip) {
+    //     localStorage.setItem("isDisTip", "1");
+    //   }
+    // },
     downloadHtml() {
       location.href = "http://114.116.155.221:8000/一块医药.url";
     },
@@ -522,6 +522,11 @@ export default {
       this.$router.push({
         path: '/user/help/web-operation'
       })
+    },
+    toHome() {
+      this.$router.push({
+        path: "/"
+      });
     },
     toInformation() {
       this.$router.push({

@@ -111,9 +111,6 @@ export default {
   mounted() {
     this.orderno = this.$route.query.orderno;
     this.showPayInfo();
-    this.$router.beforeEach((to, from, next) => {
-      
-    })
   },
   methods: {
     showPayInfo() {
@@ -282,7 +279,11 @@ export default {
         }
       }
     }
-  }
+  },
+  beforeRouteLeave (to, from, next) {
+    to.query.orderType = 400
+    next()
+  },
 };
 </script>
 <style scoped lang="less">

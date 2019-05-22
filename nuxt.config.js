@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   mode: 'universal',
@@ -61,5 +62,22 @@ module.exports = {
       //- `chunk` build vue-server-renderer.patch.js 解决
       chunk: '[name].[contenthash].js'
     }
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            warnings: false,
+            drop_console: true
+          },
+          mangle: {
+            safari10: true
+          }
+        },
+        sourceMap: true,
+        cache: true,
+        parallel: true
+    })],
   }
 }

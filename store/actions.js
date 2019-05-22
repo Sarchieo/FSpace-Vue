@@ -35,10 +35,9 @@ const actions = {
   },
   async setNoticeList(store, { message }) {
     store.commit(types.IS_NEW_NOTICE, true)
-    let list = store.state.noticeList
-    list.push({
+    let list = [{
       text: message
-    })
+    }]
     store.commit(types.NOTICE_LIST, list)
   },
   async removeNoticeList(store) {

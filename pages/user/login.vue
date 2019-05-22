@@ -3,7 +3,6 @@
     <a-layout>
       <f-space-header type="login"></f-space-header>
       <div class="login-box">
-        <!-- <div class="right-float"> -->
           <div class="login-input">
             <p class="user-login">用户登录</p>
             <a-form :form="form" @submit="handleSubmit">
@@ -76,7 +75,6 @@
               <nuxt-link to="/user/register">注册</nuxt-link></span>
             </p>
           </div>
-        <!-- </div> -->
       </div>
       <f-space-footer></f-space-footer>
     </a-layout>
@@ -108,10 +106,11 @@ export default {
       isSavePwd: false,
       formItemLayout,
       formTailLayout,
-      captchaKey: 'uncheck'
+      captchaKey: 'uncheck',
+      form: null
     };
   },
-  beforeCreate() {
+  mounted() {
     this.form = this.$form.createForm(this);
   },
   methods: {

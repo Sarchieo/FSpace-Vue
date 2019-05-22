@@ -319,9 +319,14 @@ export default {
   },
   mounted() {
     this.cartList = JSON.parse(sessionStorage.getItem("placeOrderList"));
-
     this.placeType = this.$route.query.placeType;
     this.orderType = this.$route.query.orderType;
+    if(this.orderType == 400) {
+      this.$router.push({
+        path: "/shoppingCart"
+      });
+      return
+    }
     this.actcode = this.$route.query.actcode || 0;
     // 获取优惠券信息
     this.queryActCouponList();
@@ -565,7 +570,6 @@ export default {
         orderType: this.orderType,
         actcode: this.cartList[0].actcode
       });
-      debugger
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
         this,

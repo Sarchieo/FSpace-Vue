@@ -243,7 +243,7 @@ export default {
       contact: "",
       reprreason: [],
       content: "",
-      steps: 4,
+      steps: 0,
       reasonType: '',
       asType: 0,
       previewVisible: false,

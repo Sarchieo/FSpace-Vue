@@ -147,8 +147,6 @@ export default {
     };
   },
   mounted() {
-  },
-  beforeCreate() {
     this.form = this.$form.createForm(this);
   },
   methods: {

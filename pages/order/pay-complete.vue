@@ -11,7 +11,7 @@
             <div class="info-left">
               <p>商品合计： ￥ {{ info.pdamt }}元</p>
               <p>运费： ￥{{ info.freight }}元</p>
-              <p>优惠券： ￥ {{ info.coupamt }} 元</p>
+              <p>优惠金额： ￥ {{ info.distamt }} 元</p>
               <p>抵扣余额 ￥ {{ info.balamt }} 元</p>
 
               <p>
@@ -164,9 +164,9 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            
             if (result.code == 200) {
               _this.info = result.data
+              debugger
             }
           }
         )
