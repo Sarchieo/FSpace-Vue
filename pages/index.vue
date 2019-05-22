@@ -1535,8 +1535,8 @@ li {
   }
 }
 .brand-hall .brand-hall-title {
-  height: 50px;
-  line-height: 50px;
+  // height: 50px;
+  // line-height: 50px;
   background: #f8f8f8;
   font-size: 22px;
   font-weight: bold;

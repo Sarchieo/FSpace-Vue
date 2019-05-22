@@ -147,21 +147,21 @@
               </div>
               <div class="manufacturer">
                 <p class="packing">
-                  <span>规格/包装：</span>
-                  <span class="margin-right190">{{ prodDetail.spec }}</span>
+                  <span class="float-left width110">规格/包装：</span>
+                  <span class="brand-text">{{ prodDetail.spec }}</span>
                   <span>剂 型：</span>
                   <span>{{prodDetail.formName}}</span>
                 </p>
                 <p class="packing">
-                  <span>批准文号：</span>
-                  <span class="margin-right190">{{ prodDetail.standarNo }}</span>
+                  <span class="float-left width110">批准文号：</span>
+                  <span class="brand-text">{{ prodDetail.standarNo }}</span>
                   <span>整件数量：</span>
                   <span>{{ prodDetail.wholenum }}</span>
                 </p>
                 <p class="packing">
-                  <span>生产厂家：</span>
-                  <span class="brand-text margin-right190">{{ prodDetail.manuName }}</span>
-                  <span class="medpacknum-text">中包装量：</span>
+                  <span class="float-left width110">生产厂家：</span>
+                  <span class="brand-text">{{ prodDetail.manuName }}</span>
+                  <span>中包装量：</span>
                   <span>{{prodDetail.medpacknum}}</span>
                   <span>{{prodDetail.unitName}}</span>
                 </p>
@@ -172,9 +172,9 @@
                   >{{ prodDetail.prodsdate + ' ~ ' + prodDetail.prodedate}}</span>
                 </p> -->
                 <p class="packing">
-                  <span>有效期至：</span>
-                  <span>{{ prodDetail.vaildsdate }} ~ {{ prodDetail.vaildedate }}</span>
-                  <span class="store-num">库存：</span>
+                  <span class="float-left width110">有效期至：</span>
+                  <span class="brand-text">{{ prodDetail.vaildsdate }} ~ {{ prodDetail.vaildedate }}</span>
+                  <span>库存：</span>
                   <span>{{storeNum(prodDetail.store)}}</span>
                 </p>
                 <!-- <div class="packing">
@@ -353,7 +353,7 @@
               <a-tabs defaultActiveKey="1" @change="callback" :tabBarStyle="tabStyle">
                 <!-- 详情 -->
                 <a-tab-pane tab="药品详情" key="1">
-                  <div class="probably">
+                  <!-- <div class="probably">
                     <p>
                       <span class="title-left">药品名称：</span>
                       {{prodDetail.brandName}} {{prodDetail.prodname}}
@@ -381,7 +381,7 @@
                     <p>
                       <span class="title-left">温馨提示：</span> 部分商品包装更换频繁，如货品与图片 不完全一致，请以收到的商品实物为准
                     </p>
-                  </div>
+                  </div> -->
                   <div class="goods-detail">
                     <p class="instructions">{{prodDetail.prodname}}说明书</p>
                     <p class="detail-list">
@@ -1354,9 +1354,16 @@ li {
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
+.float-left{
+  float: left;
+}
+.width110{
+  width: 110px;
+}
 .brand-text{
-  display: inline-block;
-  width: 150px;
+  float:left;
+  width: 265px;
+  text-align:left;
   overflow: hidden;
   text-overflow:ellipsis;
   white-space: nowrap;

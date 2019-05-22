@@ -767,14 +767,14 @@ li {
 }
 .spike a {
   display: inline-block;
-  width: 140px;
+  max-width: 190px;
   height: 26px;
   line-height: 26px;
-  padding: 0px 23px 0px 0px;
+  padding: 0px 23px 0px 23px;
   text-align: left;
   text-indent: 0px!important;
-  margin-left: 15px;
-  margin-right: 15px;
+  // margin-left: 15px;
+  // margin-right: 15px;
   border-right: 2px solid #e0e0e0;
   color: #999999 !important;
    overflow: hidden;
