@@ -31,7 +31,7 @@
           <div class="right">
             <!-- <p class="right-title">优惠信息</p> -->
             <p>
-              <span>优惠券</span>{{ countList[0] }}
+              <span>优惠券</span>{{ countList[0] }}张
             </p>
             <p>
               <span>积分</span>{{ countList[1] }}
@@ -43,7 +43,7 @@
           <div class="order-info">
             <!-- <p class="order-title">订单信息</p> -->
             <p>
-              <span>待付款</span>{{ countList[2] }}张
+              <span>待付款</span>{{ countList[2] }}单
               <span class="left65">待评价</span> {{ countList[5] }}单
             </p>
             <p>

@@ -259,6 +259,7 @@ export default {
     pickOK() {
       let arr = this.goodsArr.map(value => {
         return {
+          balamt: value.balamt,
           pname: value.pname,
           pspec: value.pspec,
           manun: value.manun,

@@ -29,7 +29,7 @@
                   <!-- <input type="radio" class="pick-input"> -->
                   <img v-lazy="item.imgURl" class="after-pic">
                   <div class="goods-info">
-                    <p class="goods-name">{{item.brandName}} {{ item.prodname }} {{item.spec}}</p>
+                    <p class="goods-name">{{item.pname}}</p>
                     <p class="goods-guige">{{item.pspec}}</p>
                     <p class="manufactor">{{item.manun}}</p>
                   </div>
@@ -84,11 +84,14 @@ export default {
       this.asType = this.$route.query.asType;
       this.orderno = this.$route.query.orderno;
       this.goodsArr = JSON.parse(sessionStorage.getItem("afterSaleGoods"));
+      console.log(this.goodsArr)
       this.fsGeneralMethods.addImages(this, this.goodsArr, "pdno", "spu");
       this.goodsArr.forEach((item) => {
-       item.inventory = item.pnum
-       item.price = item.payamt
+        item.inventory = item.pnum
+        item.price = item.payamt + item.balamt
+        item.payamt = accMul(accDiv(item.price,item.inventory),item.pnum)
       })
+     
   },
   methods: {
     reduce(item) {
@@ -107,6 +110,7 @@ export default {
         return false
       } else {
         item.pnum +=1;
+
       }
       if (item.pnum == item.inventory) {
           item.payamt = item.price
@@ -240,7 +244,7 @@ export default {
 .first-div {
   .position(relative, 0px, 0px);
   .container-size(inline-block, 1190px, 140px, 0, 0px);
-  border-bottom: 1px solid #e0e0e0;
+  // border-bottom: 1px solid #e0e0e0;
 }
 .first-div img {
   .container-size(inline-block, 95px, 95px, 0, 0px);
