@@ -357,9 +357,7 @@ export default {
         })
         .then(result => {
           if (result.code == 200 && result.data.unqid !== 0) {
-
             this.offlineCouponCalculate(result.data.unqid)
-            console.log(result)
           }
         });
       

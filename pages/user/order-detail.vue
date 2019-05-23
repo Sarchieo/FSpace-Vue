@@ -285,7 +285,7 @@ export default {
     },
     //再次购买
     reOrder(item) {
-      debugger
+      
       let _this = this;
       let iRequest = new inf.IRequest();
       iRequest.cls = "ShoppingCartModule";
@@ -328,7 +328,6 @@ export default {
         new this.$iceCallback(function result(result) {
           if (result.code == 200) {
             _this.orderDetail = result.data;
-            console.log(_this.orderDetail);
             _this.fsGeneralMethods.addImages(
               _this,
               _this.orderDetail[0].goods,

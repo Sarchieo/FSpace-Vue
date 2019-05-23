@@ -7,78 +7,74 @@
         <div class="goods-nav-box">
           <!-- <f-space-menu></f-space-menu> -->
           <div class="index-header">
-              <div class="binnar-box">
-            <a-carousel arrows autoplay v-if="isCarousel">
-              <div
-                slot="prevArrow"
-                slot-scope="props"
-                class="custom-slick-arrow"
-                style="left: 10px;zIndex: 1"
-              >
-                <a-icon type="left-circle"/>
-              </div>
-              <div
-                slot="nextArrow"
-                slot-scope="props"
-                class="custom-slick-arrow"
-                style="right: 10px"
-              >
-                <a-icon type="right-circle"/>
-              </div>
-              <div>
-                <img src="../assets/banner/hunan.png" class="banner-pic">
-              </div>
-              <div>
-                <img src="../assets/banner/money.jpg" class="banner-pic">
-              </div>
-              <div>
-                <img src="../assets/banner/register.jpg" class="banner-pic">
-              </div>
-              <div>
-                <img src="../assets/banner/newperson.jpg" class="banner-pic">
-              </div>
-              <div>
-                <img src="../assets/banner/integral.jpg" class="banner-pic">
-              </div>
-            </a-carousel>
-          </div>
-          <div class="notice-box">
-            <div class="login-tips">
-              <h3>欢迎来到一块医药</h3>
-              
-              <!-- {{ storeInfo.comp.storeName }} -->
-              <p
-                v-if="userStatus && storeInfo.comp && storeInfo.comp.storeName"
-              >您好，{{ storeInfo.comp.storeName }}</p>
-              <p v-if="!userStatus">
-                <nuxt-link to="/user/login">
-                  <a-button class="float-left">登录</a-button>
-                </nuxt-link>
-                <nuxt-link to="/user/register">
-                  <a-button class="float-right">注册</a-button>
-                </nuxt-link>
-              </p>
+            <div class="binnar-box">
+              <a-carousel arrows autoplay v-if="isCarousel">
+                <div
+                  slot="prevArrow"
+                  class="custom-slick-arrow"
+                  style="left: 10px;zIndex: 1"
+                >
+                  <a-icon type="left-circle"/>
+                </div>
+                <div
+                  slot="nextArrow"
+                  class="custom-slick-arrow"
+                  style="right: 10px"
+                >
+                  <a-icon type="right-circle"/>
+                </div>
+                <div>
+                  <img src="../assets/banner/hunan.png" class="banner-pic">
+                </div>
+                <div>
+                  <img src="../assets/banner/money.jpg" class="banner-pic">
+                </div>
+                <div>
+                  <img src="../assets/banner/register.jpg" class="banner-pic">
+                </div>
+                <div>
+                  <img src="../assets/banner/newperson.jpg" class="banner-pic">
+                </div>
+                <div>
+                  <img src="../assets/banner/integral.jpg" class="banner-pic">
+                </div>
+              </a-carousel>
             </div>
-            <img src="../assets/img/certificate.jpg">
-            <div class="notice-content">
-              <p class="title">
-                <span class="float-left">公告</span>
-                <span class="float-right more">更多</span>
-              </p>
-              <p v-if="noticeList.length == 0" class="no-ntice">暂无公告</p>
-              <div v-else>
+            <div class="notice-box">
+              <div class="login-tips">
+                <h3>欢迎来到一块医药</h3>
+
+                <!-- {{ storeInfo.comp.storeName }} -->
                 <p
-                class="notice-text"
-                v-for="(item,index) in noticeList"
-                :key="index"
-                @click="toNotice(index)"
-              >{{item.type}}{{item.title}}</p>
+                  v-if="userStatus && storeInfo.comp && storeInfo.comp.storeName"
+                >您好，{{ storeInfo.comp.storeName }}</p>
+                <p v-if="!userStatus">
+                  <nuxt-link to="/user/login">
+                    <a-button class="float-left">登录</a-button>
+                  </nuxt-link>
+                  <nuxt-link to="/user/register">
+                    <a-button class="float-right">注册</a-button>
+                  </nuxt-link>
+                </p>
               </div>
-              
+              <img src="../assets/img/certificate.jpg">
+              <div class="notice-content">
+                <p class="title">
+                  <span class="float-left">公告</span>
+                  <span class="float-right more">更多</span>
+                </p>
+                <p v-if="noticeList.length == 0" class="no-ntice">暂无公告</p>
+                <div v-else>
+                  <p
+                    class="notice-text"
+                    v-for="(item,index) in noticeList"
+                    :key="index"
+                    @click="toNotice(index)"
+                  >{{item.type}}{{item.title}}</p>
+                </div>
+              </div>
             </div>
           </div>
-          </div>
-        
         </div>
         <div class="pic-link">
           <nuxt-link to="/user/personal/coupon">
@@ -86,7 +82,7 @@
           </nuxt-link>
 
           <img src="../assets/img/sign.png" @click="toIntegral()">
-          <img src="../assets/img/brand.png" @click='toBrands()'>
+          <img src="../assets/img/brand.png" @click="toBrands()">
           <img src="../assets/img/zhonghua.png" @click="toZhonghua()">
         </div>
         <div v-for="(item,index) in list" :key="index" style="height: auto;">
@@ -278,7 +274,11 @@
           </div>
           <!-- 包邮专区 -->
           <!-- v-if="item.unqid == 16 && postList.length > 4" -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid == '16' && postList.length > 4">
+          <div
+            :ref="item.unqid"
+            class="brand-hall"
+            v-if="item.unqid == '16' && postList.length > 4"
+          >
             <p class="brand-hall-title">
               包邮专区
               <!-- <a href="javascript:;" @click="toPost()">查看全部<a-icon type="right"/>
@@ -336,10 +336,16 @@
           </div>
           <!-- 暂无数据接口 -->
           <!-- 中华名方 -->
-          <div :ref="item.unqid" class="brand-hall" v-if="item.unqid == '64' && famousPrescription.length > 3">
+          <div
+            :ref="item.unqid"
+            class="brand-hall"
+            v-if="item.unqid == '64' && famousPrescription.length > 3"
+          >
             <p class="brand-hall-title">
               中华名方
-              <a href="javascript:;" @click="toFamous()">查看全部<a-icon type="right"/>
+              <a href="javascript:;" @click="toFamous()">
+                查看全部
+                <a-icon type="right"/>
               </a>
             </p>
             <div class="brand-div">
@@ -462,7 +468,9 @@
                     />
                     <p class="surplus">
                       还剩{{items.surplusstock}}{{items.unitName}}
-                      <span v-if="item.limits !== 0">限购{{items.actlimit}}{{items.unitName}}</span>
+                      <span
+                        v-if="item.limits !== 0"
+                      >限购{{items.actlimit}}{{items.unitName}}</span>
                     </p>
 
                     <!-- <a-card-meta class="card-info" :title="items.text"></a-card-meta> -->
@@ -523,7 +531,7 @@ export default {
   },
   data() {
     return {
-      noticeIndex: '',
+      noticeIndex: "",
       noticeList: [], // 公告列表
       isCarousel: false,
       percentage: 0,
@@ -580,9 +588,6 @@ export default {
       this.isCarousel = true;
     });
   },
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
   methods: {
     handleScroll() {
       this.scrollTop =
@@ -597,12 +602,16 @@ export default {
         this.list.forEach(item => {
           let div = this.$refs[item.unqid];
           if (div) {
-            let top =  125 + 30 // 头部位置, 以后动态获取
-            this.$set(item,'isShow',true)
-            this.$set(item,'sHeight',div[0].offsetTop - top)
-            this.$set(item,'eHeight',div[0].offsetTop - top + div[0].offsetHeight -1)
+            let top = 125 + 30; // 头部位置, 以后动态获取
+            this.$set(item, "isShow", true);
+            this.$set(item, "sHeight", div[0].offsetTop - top);
+            this.$set(
+              item,
+              "eHeight",
+              div[0].offsetTop - top + div[0].offsetHeight - 1
+            );
           } else {
-            this.$set(item,'isShow',false)
+            this.$set(item, "isShow", false);
           }
         });
       });
@@ -617,44 +626,44 @@ export default {
             let floorList = []; // 需要加载的楼层
             this.list.map((value, index) => {
               switch (value.unqid) {
-                case '1': // 新品专区
+                case "1": // 新品专区
                   floorList.push(this.getNewGoods());
                   value.color = "color-purple";
                   break;
-                case '2': // 热销专区
+                case "2": // 热销专区
                   floorList.push(this.getHotGoods());
                   value.color = "color-wheat";
                   break;
-                case '4': // 秒杀专区
+                case "4": // 秒杀专区
                   floorList.push(this.getSeckillMallFloor());
                   value.color = "color-blue";
                   break;
-                case '8': // 一块购
+                case "8": // 一块购
                   floorList.push(this.getTeamBuyMallFloor());
                   value.color = "color-pink";
                   value.fname = "一块购区";
                   break;
-                case '16': // 包邮专区
+                case "16": // 包邮专区
                   floorList.push(this.getExemPostMallFloor());
                   value.color = "color-beige";
                   break;
-                case '32': // 新人专享
+                case "32": // 新人专享
                   floorList.push(this.getNewPersonList());
                   value.color = "color-pink";
                   break;
-                case '64': // 中华名方 暂未提供接口
-                floorList.push(this.getFamousPrescriptionFloor());
+                case "64": // 中华名方 暂未提供接口
+                  floorList.push(this.getFamousPrescriptionFloor());
                   value.color = "color-indigo";
                   break;
-                case '128': // 为你精选
+                case "128": // 为你精选
                   floorList.push(this.getSelects());
                   value.color = "color-green";
                   break;
-                case '256': // 品牌专区
+                case "256": // 品牌专区
                   floorList.push(this.getBrandMallFloor());
                   value.color = "color-indigo";
                   break;
-                case '512': // 限时抢购
+                case "512": // 限时抢购
                   floorList.push(this.getDiscountMallFloor());
                   value.color = "color-khaki";
                   break;
@@ -760,11 +769,15 @@ export default {
     async getFamousPrescriptionFloor() {
       return new Promise((resolve, reject) => {
         this.fsGeneralMethods
-          .request(this, "goodsServer", "ProdModule", "getFamousPrescriptionFloor")
+          .request(
+            this,
+            "goodsServer",
+            "ProdModule",
+            "getFamousPrescriptionFloor"
+          )
           .then(result => {
-            
             resolve();
-            
+
             if (result.code == 200 && result.data.length > 4) {
               this.famousPrescription = result.data.slice(0, 5);
               // this.famousID = result.data.actcode;
@@ -859,7 +872,7 @@ export default {
           )
           .then(result => {
             resolve();
-            
+
             if (result.code == 200 && result.data.length > 6) {
               this.selectedList = result.data.slice(0, 6);
               this.fsGeneralMethods.addImages(
@@ -904,7 +917,10 @@ export default {
           .then(result => {
             resolve();
             if (result.code == 200) {
-              sessionStorage.setItem("noticeListAll",JSON.stringify(result.data));
+              sessionStorage.setItem(
+                "noticeListAll",
+                JSON.stringify(result.data)
+              );
               this.noticeList = result.data.slice(0, 4);
             }
           });
@@ -947,11 +963,6 @@ export default {
             clearInterval(timer);
           }
         }, 1000);
-        if (times >= 0) {
-          console.log(times);
-        } else {
-          console.log("活动结束");
-        }
       }
     },
     // 设置倒计时
@@ -978,11 +989,6 @@ export default {
             clearInterval(timer);
           }
         }, 1000);
-        if (times >= 0) {
-          console.log(times);
-        } else {
-          console.log("活动结束");
-        }
       }
     },
     meauItemClick(item) {
@@ -1078,7 +1084,7 @@ export default {
       this.$router.push({
         path: "/user/notice",
         query: {
-          noticeIndex: index,
+          noticeIndex: index
         }
       });
     },
@@ -1099,16 +1105,20 @@ export default {
       });
     },
     toBrands() {
-      this.$message.success('当前功能正在玩命建设中,敬请期待...')
+      this.$message.success("当前功能正在玩命建设中,敬请期待...");
     },
     toZhonghua() {
-        this.$router.push({
-        path: "/activity/famous",
+      this.$router.push({
+        path: "/activity/famous"
         // query: {
         //   actcode: this.famousID
         // }
       });
     }
+  },
+  beforeRouteLeave (to, from, next) {
+     window.removeEventListener('scroll', this.handleScroll);
+     next()
   }
 };
 </script>
@@ -1150,7 +1160,7 @@ li {
   height: 25px;
   font-size: 25px;
   color: #fff;
-  background-color: rgba(31,45,61,.11);
+  background-color: rgba(31, 45, 61, 0.11);
   opacity: 0.3;
 }
 .ant-carousel /deep/ .custom-slick-arrow:before {
@@ -1160,7 +1170,7 @@ li {
   opacity: 0.5;
 }
 
-.ant-carousel /deep/ .slick-slide  h3 {
+.ant-carousel /deep/ .slick-slide h3 {
   color: #fff;
 }
 .more:hover {
@@ -1194,20 +1204,17 @@ li {
   min-height: 1000px;
   color: #000000;
 }
-#components-layout-demo-basic > .ant-layout {
-  /* margin-bottom: 48px; */
-}
 #components-layout-demo-basic > .ant-layout:last-child {
   margin: 0;
 }
-.index-header{
+.index-header {
   .container-size(block, 1192px, 412px, 0 auto, 0px);
 }
 .height-auto {
   // min-height: 360px;
   height: auto !important;
 }
-.no-ntice{
+.no-ntice {
   .p-size(50px, 50px, 16px, center, 0px, #999999);
 }
 .active {
@@ -1632,9 +1639,9 @@ li {
   height: 412px;
 }
 .binnar-box {
-float: left;
-.container-size(inline-block, 804px, 412px, 0 auto, 0px);
-margin-left: 178px;
+  float: left;
+  .container-size(inline-block, 804px, 412px, 0 auto, 0px);
+  margin-left: 178px;
 }
 .binnar-pic {
   width: 750px;
@@ -1650,7 +1657,7 @@ margin-left: 178px;
   margin: 0 auto;
   // border: 1px solid #e0e0e0;
   background: #ffffff;
-  .position(relative,0px,0px);
+  .position(relative, 0px, 0px);
   .login-tips {
     .container-size(block, 200px, 100px, 0 auto, 0px);
     border: 1px solid #f2f2f2;
@@ -1877,7 +1884,7 @@ margin-left: 178px;
 }
 
 .menu-cur-nav .color-khaki {
-  background-color: #F0E68C !important;
+  background-color: #f0e68c !important;
   a {
     color: #ffffff !important;
   }
@@ -1889,7 +1896,6 @@ margin-left: 178px;
     color: #ffffff !important;
   }
 }
-
 
 .menu-cur-nav .color-beige {
   background-color: #6b8e23 !important;
@@ -1916,6 +1922,6 @@ margin-left: 178px;
 }
 
 .mask h3 {
-    text-align: center;
+  text-align: center;
 }
 </style>

@@ -232,7 +232,6 @@ export default {
       // b方案获取这个值
     }
    
-    console.log(this.detail)
     switch(this.detail.ckstatus) {
       case -2:
       this.steps = 3
@@ -252,7 +251,6 @@ export default {
     }
     this.getImgUrl()
     this.getFilePathPrev()
-    console.log(this.detail)
   },  
   methods: {
      // 获取售后图片

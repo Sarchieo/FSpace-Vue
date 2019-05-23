@@ -4,7 +4,8 @@ import {
   removeUser,
   saveUserStatus,
   saveAreas,
-  removeUserStatus
+  removeUserStatus,
+  loadUserStatus
 } from '../utils/cache'
 const UserKey = 'f-space-user' 
 const UserStatusKey = 'f-space-user-state'
@@ -13,7 +14,7 @@ const UserStatusKey = 'f-space-user-state'
 const actions = {
   nuxtServerInit({ commit }, { app }) {
     if(app.$cookies.get(UserStatusKey)) {
-      commit(types.SET_LOGIN_STATE, saveUserStatus(true, app))
+      commit(types.SET_LOGIN_STATE, loadUserStatus(app))
       commit(types.SET_USER, saveUser(app.$cookies.get(UserKey), app))
     }
   },
@@ -31,7 +32,7 @@ const actions = {
   },
   async setLogout(store, { context }) {
     store.commit(types.SET_USER, removeUser())
-    store.commit(types.SET_LOGIN_STATE, saveUserStatus(false, context))
+    store.commit(types.SET_LOGIN_STATE, removeUserStatus(context))
   },
   async setNoticeList(store, { message }) {
     store.commit(types.IS_NEW_NOTICE, true)

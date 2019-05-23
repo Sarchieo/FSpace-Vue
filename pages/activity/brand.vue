@@ -158,7 +158,6 @@ export default {
         if (result.code == 200) {
           
           this.brandList = result.data;
-          console.log(this.brandList)
           this.brandList.forEach((item,index) => {
             item.medpacknum = item.medpacknum ? item.medpacknum : 1
             this.$set(item, 'pnum', item.medpacknum)

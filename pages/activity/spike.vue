@@ -151,11 +151,6 @@ export default {
           clearInterval(timer);
         }
         }, 1000);
-        if (times >= 0) {
-          console.log(times)
-        } else {
-          console.log('活动结束')
-        }
       }
     },
       // 设置倒计时
@@ -176,11 +171,6 @@ export default {
           clearInterval(timer);
         }
         }, 1000);
-        if (times >= 0) {
-          console.log(times)
-        } else {
-          console.log('活动结束')
-        }
       }
     },
     callback(key) {

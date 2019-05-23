@@ -166,7 +166,7 @@ export default {
           function result(result) {
             if (result.code == 200) {
               _this.info = result.data
-              debugger
+              
             }
           }
         )
@@ -185,9 +185,6 @@ export default {
       this.$router.push({
         path: "/order/pay"
       });
-    },
-    handleOk() {
-      console.log(1);
     },
     toOrderDetail() {
       this.$router.push({

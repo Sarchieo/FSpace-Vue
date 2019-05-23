@@ -290,7 +290,6 @@ export default {
       iRequest.method = "queryOrders";
       iRequest.param.token = localStorage.getItem("identification");
       iRequest.param.arrays = [this.year,this.ostatus, this.orderNo, '', this.sDate, this.eDate];
-      console.log(this.sDate, this.eDate)
       iRequest.param.pageIndex = this.currentIndex;
       iRequest.param.pageNumber = 10;
       this.$refcallback(
