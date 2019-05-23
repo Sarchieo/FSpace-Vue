@@ -69,7 +69,7 @@
               <!-- <span class="time">{{item.odate}}</span> -->
               <p class="order-info"><span>订单号：</span> <span>{{item.orderno}}</span></p>
               <p class="order-info"><span>下单时间：</span> <span>{{item.odate}} {{item.otime}}</span></p>
-              <p class="order-info">订单内共{{item.goods.length}}件商品</p>
+              <p class="order-info">订单内共{{item.goods.length}}种商品</p>
               <!-- <p class="goods-text" @click="toDetail(items)">{{items.pname}}</p>
               <p class="guige">规格：{{items.pspec}}</p>
               <p class="menu-name">{{items.manun}}</p> -->
@@ -111,7 +111,7 @@
             <p class="detail" @click="toDetails(item)">订单详情</p>
             <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
             <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
-            <p @click="deleteOrder(item)" class="del-order">删除</p>
+            <p  v-if="item.ostatus == -4 || item.ostatus == 4" @click="deleteOrder(item)" class="del-order">删除</p>
             <!-- v-if="item.ostatus == 3" -->
             <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)==0">补开发票</p>
             <!-- <p @click="toSuppInvo(item)">补开发票</p> -->
