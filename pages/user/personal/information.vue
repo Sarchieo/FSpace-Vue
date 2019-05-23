@@ -33,7 +33,7 @@ export default {
       return this.$store.state.user;
     }
   },
-    middleware: "authenticated",
+    // middleware: "authenticated",
   mounted() {
     this.getInformation();
     this.$store.commit(types.SELECTED_KEYS, "/user/personal/information");
