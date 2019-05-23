@@ -280,9 +280,14 @@ export default {
       }
     }
   },
+
   beforeRouteLeave (to, from, next) {
-    to.query.orderType = 400
-    next()
+    if(to.name === 'order-placeOrder') {
+      next(false)
+    }else {
+      next()
+    }
+    
   },
 };
 </script>

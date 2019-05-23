@@ -274,9 +274,6 @@ export default {
     this.payResult();
     this.getFilePathPrev();
     this.getInvoice()
-    this.intervalid = setInterval(() => {
-      this.getPayResult()
-    }, 5000)
   },
   methods: {
     getInvoice(){
@@ -377,7 +374,7 @@ export default {
         orderno: this.orderno,
         compid: this.storeInfo.comp.storeId,
         paytype: "alipay",
-        afsano: this.afsano //  这是啥?
+        afsano: this.afsano 
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
@@ -394,13 +391,13 @@ export default {
       );
     },
        // 获取订单详情
-    getPayResult() {
+    getFeePayResult() {
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "PayModule";
-      iRequest.method = "getPayResult";
+      iRequest.method = "getFeePayResult";
       iRequest.param.json = JSON.stringify({
-        orderno: this.orderno,
+        orderno: this.afsano,
         compid: this.storeInfo.comp.storeId
       })
       iRequest.param.token = localStorage.getItem("identification")
@@ -410,6 +407,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
+            debugger
             if (result.code == 200 && result.data.paystatus == 1) {
               _this.steps = 4;
               clearInterval(_this.intervalid);
@@ -524,9 +522,10 @@ export default {
           function result(result) {
             if (result.code == 200) {
               _this.afsano = result.data;
-              // console.log("afsano--- " + _this.afsano)
+              _this.intervalid = setInterval(() => {
+                _this.getFeePayResult()
+              }, 5000)
               _this.setStep(3);
-              // _this.$message.success(result.data);
             } else {
               console.log("result--- " + JSON.stringify(result));
             }
