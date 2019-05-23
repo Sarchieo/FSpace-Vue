@@ -121,7 +121,7 @@ export default {
       return this.$store.state.selectedKeys;
     }
   },
-  middleware: "authenticated",
+  middleware: "personal",
   data() {
     return {
       countList: [0, 0, 0, 0, 0, 0, 0],
