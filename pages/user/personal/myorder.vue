@@ -100,7 +100,7 @@
             <!-- <p class="button-p" v-if="item.ostatus == 2"><a-button type="primary" class="confirm-btn">确认收货</a-button></p> -->
             <!-- v-if="item.ostatus == 3" -->
             <p class="detail" @click="confirmReceipt(item)" v-if="item.ostatus == 3">确认签收</p>
-            <p class="detail" @click="afterApply(item)" v-if="item.ostatus == 3 || item.ostatus == 4">申请售后</p>
+            <p class="detail" @click="afterApply(item)" v-if="(item.ostatus == 3 || item.ostatus == 4) && item.asstatus!==200">申请售后</p>
             <p @click="toEvaluate(item)" v-if="item.ostatus == 4 && (item.cstatus&128) == 0" ref="toevaluate">
               评论
             </p>
@@ -111,7 +111,7 @@
             <p class="detail" @click="toDetails(item)">订单详情</p>
             <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
             <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
-            <p  v-if="item.ostatus == -4 || item.ostatus == 4" @click="deleteOrder(item)" class="del-order">删除</p>
+            <p  v-if="item.ostatus == -4 || item.ostatus == 4 || item.ostatus == -3" @click="deleteOrder(item)" class="del-order">删除</p>
             <!-- v-if="item.ostatus == 3" -->
             <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)==0">补开发票</p>
             <!-- <p @click="toSuppInvo(item)">补开发票</p> -->
