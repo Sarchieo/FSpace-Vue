@@ -31,7 +31,7 @@
                 </p>
                 <p class="goods-price" v-if="item.vatp != -1">
                   ￥{{item.vatp}}元
-                  <del>原价￥{{item.rrp}}元</del>
+                  <del>原价￥{{item.mp}}元</del>
                 </p>
                 <p class="goods-price" v-else>￥认证后可见</p>
                 <p class="package">中包装{{item.medpacknum}}{{item.unitName}} <span class="float-right">已售{{item.sales}}{{item.unitName}}</span></p>

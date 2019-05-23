@@ -111,7 +111,7 @@
             <p class="detail" @click="toDetails(item)">订单详情</p>
             <p class="detail" @click="viewLogistics(item)" v-if="item.ostatus >= 2 && item.ostatus != -4">查看物流</p>
             <p v-if="item.ostatus == 4" @click="reOrder(item)" class="align">再次购买</p>
-            <p @click="deleteOrder(item)" class="del-order">删除</p>
+            <p  v-if="item.ostatus == -4 || item.ostatus == 4" @click="deleteOrder(item)" class="del-order">删除</p>
             <!-- v-if="item.ostatus == 3" -->
             <p @click="toSuppInvo(item)" class="supplement" v-if="(item.ostatus == 3 || item.ostatus == 4) && (item.cstatus&256)==0">补开发票</p>
             <!-- <p @click="toSuppInvo(item)">补开发票</p> -->

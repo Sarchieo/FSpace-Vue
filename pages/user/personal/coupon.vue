@@ -3,7 +3,7 @@
     <a-tabs defaultActiveKey="0" @change="callback">
       <a-tab-pane tab="可使用" key="0">
         <div class="haved-coupon">
-          <div class="condition-price" v-for="(item, index) in revCouponList" :key="index">
+          <div class="condition-price" v-for="(item, index) in revCouponList" :key="index" @click="useCoupon()">
             <div class="discount" v-if="item.brulecode == 2110">
               <p class="discount-count" v-if="item.ctype !=3">{{ item.rulename }}</p>
               <div v-for="(j, i) in item.ladderVOS" :key="i">
@@ -332,6 +332,12 @@ export default {
     },
     callback(key) {
       this.queryRevCouponList(Number(key));
+    },
+    // 立即使用优惠券跳转购物车
+    useCoupon() {
+      this.$router.push({
+        path: '/shoppingCart'
+      })
     }
   }
 };

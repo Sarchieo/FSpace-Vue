@@ -15,7 +15,6 @@ export function accSub(arg1,arg2){
 //返回值：arg1乘以arg2的精确结果
 export function accMul(arg1,arg2) {
     var num = parseFloat(arg1*arg2) + "";
-    console
     var str = [];
     str = num.split(".");
     if (str.length > 1) {
