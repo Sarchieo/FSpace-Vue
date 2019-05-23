@@ -27,7 +27,7 @@
                   <p class="goods-surplus">还剩{{item.surplusstock}}{{item.unitName}}</p>
                   <p class="goods-price" v-if="item.vatp != -1">
                     ￥{{item.actprize}}元
-                    <del> 原价￥{{item.rrp}}元</del>
+                    <del> 原价￥{{item.vatp}}元</del>
                   </p>
                   <p class="goods-price" v-else>
                     ￥认证后可见

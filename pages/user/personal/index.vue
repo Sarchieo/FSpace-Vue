@@ -355,6 +355,7 @@ export default {
       iRequest.cls = "FileInfoModule";
       iRequest.method = "fileServerInfo";
       iRequest.param.token = localStorage.getItem("identification");
+      debugger
       iRequest.param.json = JSON.stringify({
         compid: this.$store.state.user.comp.storeId || compid
       });
