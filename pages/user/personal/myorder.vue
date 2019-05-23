@@ -69,7 +69,7 @@
               <!-- <span class="time">{{item.odate}}</span> -->
               <p class="order-info"><span>订单号：</span> <span>{{item.orderno}}</span></p>
               <p class="order-info"><span>下单时间：</span> <span>{{item.odate}} {{item.otime}}</span></p>
-              <p class="order-info">订单内共{{item.goods.length}}件商品</p>
+              <p class="order-info">订单内共{{item.goods.length}}种商品</p>
               <!-- <p class="goods-text" @click="toDetail(items)">{{items.pname}}</p>
               <p class="guige">规格：{{items.pspec}}</p>
               <p class="menu-name">{{items.manun}}</p> -->
