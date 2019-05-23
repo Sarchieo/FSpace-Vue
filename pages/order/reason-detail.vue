@@ -102,18 +102,18 @@
           <div class="invo-box" v-if="detail.astype == 3">
             <div class="invo-left">
               <p class="speed progress">发票信息</p>
-              <p><span>公司名称：</span>{{detail.invoice.invoiceInfo.compName}}</p>
-              <p><span>注册地址：</span>{{detail.invoice.invoiceInfo.address}}</p>
+              <p><span>公司名称：</span>{{invoice.invoiceInfo.compName}}</p>
+              <p><span>注册地址：</span>{{invoice.invoiceInfo.address}}</p>
               <!-- <p><span>公司注册电话：</span>{{detail.invoice.invoiceInfo.tel}}</p> -->
-              <p><span>纳税人识别号：</span>{{detail.invoice.invoiceInfo.taxpayer}}</p>
-              <p><span>开户银行：</span>{{detail.invoice.invoiceInfo.bankers}}</p>
-              <p><span>银行账号：</span>{{detail.invoice.invoiceInfo.account}}</p>
+              <p><span>纳税人识别号：</span>{{invoice.invoiceInfo.taxpayer}}</p>
+              <p><span>开户银行：</span>{{invoice.invoiceInfo.bankers}}</p>
+              <p><span>银行账号：</span>{{invoice.invoiceInfo.account}}</p>
             </div>
             <div class="invo-right">
               <p class="speed progress">收件信息</p>
-              <p><span>收件人：</span>{{detail.invoice.address.consignee}}</p>
-              <p><span>收件电话：</span>{{detail.invoice.address.contact}}</p>
-              <p><span>收件地址：</span>{{detail.invoice.address.address}}</p>
+              <p><span>收件人：</span>{{invoice.address.consignee}}</p>
+              <p><span>收件电话：</span>{{invoice.address.contact}}</p>
+              <p><span>收件地址：</span>{{invoice.address.address}}</p>
             </div>
           </div>
           <p class="goods-title" v-if="detail.astype !== 3">
@@ -219,14 +219,20 @@ export default {
       steps: 0,
       visible: false,
       detail: '',
+      invoice: '',
       imgUrl: '',
       fileList: []
     };
   },
   mounted() {
     this.detail = JSON.parse(this.$route.query.detail)
-    this.detail.invoice = JSON.parse(this.detail.invoice)
-    console.log(this.detail.invoice)
+    try {
+      this.invoice = JSON.parse(this.detail.invoice)
+    } catch (error) {
+      // b方案获取这个值
+    }
+   
+    console.log(this.detail)
     switch(this.detail.ckstatus) {
       case -2:
       this.steps = 3
