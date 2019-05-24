@@ -87,10 +87,14 @@ export default {
       this.fsGeneralMethods.addImages(this, this.goodsArr, "pdno", "spu");
       this.goodsArr.forEach((item) => {
         item.inventory = item.pnum
-        item.price = item.payamt + item.balamt
-        item.payamt = accMul(accDiv(item.price,item.inventory),item.pnum)
+        item.price = item.payamt + item.balamt;
+        if (item.pnum == item.inventory) {
+            item.payamt = item.price
+        } else {
+            item.payamt = accMul(accDiv(item.price,item.inventory),item.pnum)
+        }
       })
-     
+
   },
   methods: {
     reduce(item) {
