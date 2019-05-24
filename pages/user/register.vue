@@ -205,7 +205,7 @@ export default {
   data() {
     return {
       loading: false, // 图片上传加载条
-      stepNum: 1,
+      stepNum: 0,
       headers: {
         "specify-path": "",
         "specify-filename": ""
