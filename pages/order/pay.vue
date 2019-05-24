@@ -175,6 +175,13 @@ export default {
     },
     // 线上支付
     prePay() {
+      let paytype =  "alipay"
+      if(this.value === 1) {
+        paytype =  "alipay"
+      }else {
+        paytype =  "wxpay"
+      }
+
       const _this = this;
       const iRequest = new inf.IRequest();
       iRequest.cls = "PayModule";
@@ -182,7 +189,7 @@ export default {
       iRequest.param.json = JSON.stringify({
         orderno: this.orderno,
         compid: this.storeInfo.comp.storeId,
-        paytype: "alipay"
+        paytype: paytype
       });
       iRequest.param.token = localStorage.getItem("identification");
       this.$refcallback(
