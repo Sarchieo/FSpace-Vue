@@ -2,97 +2,103 @@
   <div class="header-box">
     <!-- 首页 -->
     <a-layout-header v-if="type == 'home'">
-     
       <f-space-right></f-space-right>
       <div>
         <div class="title-box">
           <div class="header-title" v-show="isShowHeader">
-          <div class="header-left">
-            <a v-show="isLogin">
-              <a-icon type="environment"></a-icon>湖南
-            </a>
-            <a>欢迎来到一块医药</a>
-            <nuxt-link to="/user/login" v-if="!isLogin">请登录</nuxt-link>
-            <nuxt-link to="/user/register" v-if="!isLogin">注册有礼</nuxt-link>
-             <a href="javascript:;" @click="downloadHtml()"> 桌面快捷</a>
-            <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
-          </div>
-          
-          <div class="header-right">
-            <a @click="toHelp()">帮助中心</a>
-            <!-- <a>帮助中心</a> -->
-            <!-- <a class="margin-left0">在线客服</a> -->
-            <!-- 我的消息 -->
-            <a-popover
-              v-model="visible"
-              trigger="click"
-              placement="bottomRight"
-              :autoAdjustOverflow="true"
-              :arrowPointAtCenter="true"
-              overlayClassName="header-notice-wrapper"
-              :overlayStyle="{ width: '300px', top: '50px' }"
-            >
-              <template slot="content">
-                <a-list :locale="locale">
-                  <a-list-item v-for="(item, index) in noticeList" :key="index" @click="toInformation">
-                    <a-list-item-meta :title="item.text">
-                      <a-avatar
-                        style="background-color: white"
-                        slot="avatar"
-                        src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"
-                      />
-                    </a-list-item-meta>
-                  </a-list-item>
-                </a-list>
-              </template>
-               
-              <a-badge v-if="isLogin" :dot="isNewNotice" class="margin-top15">
-                <a href="#">我的消息</a>
-              </a-badge>
-            </a-popover>
-            <!-- 签到有礼 -->
-            <!-- <a v-if="isLogin" class="sign" @click="toIntegral()">
+            <div class="header-left">
+              <a v-show="isLogin">
+                <a-icon type="environment"></a-icon>湖南
+              </a>
+              <a>欢迎来到一块医药</a>
+              <nuxt-link to="/user/login" v-if="!isLogin">请登录</nuxt-link>
+              <nuxt-link to="/user/register" v-if="!isLogin">注册有礼</nuxt-link>
+              <a href="javascript:;" @click="downloadHtml()">桌面快捷</a>
+              <!-- <nuxt-link to="/" v-show="isLogin">登出</nuxt-link> -->
+            </div>
+
+            <div class="header-right">
+              <a @click="toHelp()">帮助中心</a>
+              <!-- <a>帮助中心</a> -->
+              <!-- <a class="margin-left0">在线客服</a> -->
+              <!-- 我的消息 -->
+              <a-popover
+                v-model="visible"
+                trigger="click"
+                placement="bottomRight"
+                :autoAdjustOverflow="true"
+                :arrowPointAtCenter="true"
+                overlayClassName="header-notice-wrapper"
+                :overlayStyle="{ width: '300px', top: '50px' }"
+              >
+                <template slot="content">
+                  <a-list :locale="locale">
+                    <a-list-item
+                      v-for="(item, index) in noticeList"
+                      :key="index"
+                      @click="toInformation"
+                    >
+                      <a-list-item-meta :title="item.text">
+                        <a-avatar
+                          style="background-color: white"
+                          slot="avatar"
+                          src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"
+                        />
+                      </a-list-item-meta>
+                    </a-list-item>
+                  </a-list>
+                </template>
+
+                <a-badge v-if="isLogin" :dot="isNewNotice" class="margin-top15">
+                  <a href="#">我的消息</a>
+                </a-badge>
+              </a-popover>
+              <!-- 签到有礼 -->
+              <!-- <a v-if="isLogin" class="sign" @click="toIntegral()">
               签到有礼
              
-            </a> -->
-            <a v-if="isLogin" @click="toMyOrder()">我的订单</a>
-           
-            <a-dropdown v-if="isLogin">
-              <a class="ant-dropdown-link" href="#">
-                我的医药
-                <a-icon type="down"/>
-              </a>
-              <a-menu slot="overlay">
-                <a-menu-item>
-                  <a href="javascript:;" @click="toCollection()">我的收藏</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <nuxt-link to="/user/personal">我的一块</nuxt-link>
-                </a-menu-item>
-                <a-menu-item>
-                  <a href="javascript:;" @click="toFoot()">浏览记录</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <a @click="logout()">登出</a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
-            <nuxt-link to="/">首页</nuxt-link>
-            <div style="clear:both;"></div>
+              </a>-->
+              <a v-if="isLogin" @click="toMyOrder()">我的订单</a>
+
+              <a-dropdown v-if="isLogin">
+                <a class="ant-dropdown-link" href="#">
+                  我的医药
+                  <a-icon type="down"/>
+                </a>
+                <a-menu slot="overlay">
+                  <a-menu-item>
+                    <a href="javascript:;" @click="toCollection()">我的收藏</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <nuxt-link to="/user/personal">我的一块</nuxt-link>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a href="javascript:;" @click="toFoot()">浏览记录</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a @click="logout()">登出</a>
+                  </a-menu-item>
+                </a-menu>
+              </a-dropdown>
+              <nuxt-link to="/">首页</nuxt-link>
+              <div style="clear:both;"></div>
+            </div>
           </div>
         </div>
-        </div>
-        
+
         <div class="medicine-names" ref="home">
           <div class="medicine-name-box" ref="nameBox">
             <nuxt-link to="/">
-               <div class="medicine-name">
+              <div class="medicine-name">
                 <img src="../../../assets/img/u49.png" alt>
-              <p class="medicine-text"><span class="float-left">舒 心 购</span><span class="circle">•</span><span class="float-right">聚 划 算</span></p>
+                <p class="medicine-text">
+                  <span class="float-left">舒 心 购</span>
+                  <span class="circle">•</span>
+                  <span class="float-right">聚 划 算</span>
+                </p>
               </div>
             </nuxt-link>
-           
-            
+
             <div class="medicine-search">
               <div class="search-box">
                 <!-- <a-input
@@ -100,7 +106,7 @@
                   placeholder="药品名称/药品通用名"
                   class="searchs-input"
                   @keyup.enter="toGoods(keyword)"
-                /> -->
+                />-->
                 <a-auto-complete
                   v-model="keyword"
                   class="searchs-input"
@@ -119,11 +125,11 @@
                 <img src="../../../assets/img/fuwu.png" alt>
                 <p>专业服务</p>
               </div>
-               <div>
+              <div>
                 <img src="../../../assets/img/yunshu.png" alt>
                 <p>准时送达</p>
               </div>
-               <div>
+              <div>
                 <img src="../../../assets/img/pinzhong.png" alt>
                 <p>品类丰富</p>
               </div>
@@ -133,13 +139,26 @@
               </div>
             </div>
             <p class="spike" v-show="isShowHeader">
-              <a href="javascript:;" @click="toGoods(item)" v-for="(item, index) in keyWordList" :key="index">{{ item }} </a>
+              <a
+                href="javascript:;"
+                @click="toGoods(item)"
+                v-for="(item, index) in keyWordList"
+                :key="index"
+              >{{ item }}</a>
               <!--  -->
             </p>
           </div>
           <div class="nav-box" v-show="isShowHeader">
             <div>
-              <span href="javascript:;" class="goods-type" @mouseover="seover()" @mouseleave="leave()"> <a-icon type="bars" class="bars"/>商品分类 <f-space-menu :isMouseover="isMouseover" :isShowMenu="isShowMenu" ></f-space-menu></span>
+              <span
+                href="javascript:;"
+                class="goods-type"
+                @mouseover="seover()"
+                @mouseleave="leave()"
+              >
+                <a-icon type="bars" class="bars"/>商品分类
+                <f-space-menu :isMouseover="isMouseover" :isShowMenu="isShowMenu"></f-space-menu>
+              </span>
               <a href="javascript:;" @click="toNewPerson()">新人专享</a>
               <a href="javascript:;" @click="toNewGoods()">新品上线</a>
               <a href="javascript:;" @click="toHotGoods()">热销商品</a>
@@ -153,17 +172,17 @@
     <!-- 登录 -->
     <a-layout-header v-if="type == 'login'" class="login-header">
       <div class="ant-layout-header-login">
-         <!-- <nuxt-link to="/"> -->
+        <!-- <nuxt-link to="/"> -->
         <div class="medicine-name-login" @click="toHome()">
           <img src="../../../assets/img/u49.png" alt>
         </div>
-         <!-- </nuxt-link> -->
-      
+        <!-- </nuxt-link> -->
+
         <div class="ant-layout-header-back login-header-text">
           <a href="javascript:;" @click="toHome()" class="back-index">返回首页</a>
           <!-- <nuxt-link to="/">
             <a class="back-index">返回首页</a>
-          </nuxt-link> -->
+          </nuxt-link>-->
           <a class="service-phone">客服电话：0731-88159987</a>
         </div>
         <div class="divider"></div>
@@ -177,7 +196,7 @@
             <img src="../../../assets/img/u49.png" alt>
           </div>
         </nuxt-link>
-       
+
         <div class="ant-layout-header-back">
           <span>已有账号</span>
           <nuxt-link to="/user/login">
@@ -201,8 +220,11 @@
   </div>
 </template>
 <script>
-import FSpaceMenu from '../menu'
-import FSpaceRight from '../right-menu'
+import FSpaceMenu from "../menu";
+import FSpaceRight from "../right-menu";
+import * as types from "@/store/mutation-types";
+import { saveUserStatus } from "@/utils/cache";
+
 export default {
   name: "f-space-header",
   props: ["type", "searchList"],
@@ -223,8 +245,16 @@ export default {
         return this.$store.state.keyword;
       }
     },
-    isLogin() {
-      return this.$store.state.userStatus;
+    isLogin: {
+      get: function() {
+        return this.$store.state.userStatus;
+      },
+      set: function(newValue) {
+        this.$store.commit(
+          types.SET_LOGIN_STATE,
+          saveUserStatus(newValue, this)
+        );
+      }
     },
     isNewNotice() {
       return this.$store.state.isNewNotice;
@@ -236,7 +266,7 @@ export default {
   data() {
     return {
       locale: {
-        emptyText: '暂无消息'
+        emptyText: "暂无消息"
       },
       isMouseover: false,
       isShowMenu: false,
@@ -254,26 +284,21 @@ export default {
     };
   },
   mounted() {
-    // this.init();
-    if(this.type == 'home') {
-      this.isShowMenu = this.$route.name == 'index' ? true : false
-      window.addEventListener("scroll", this.handleScroll);
-      // 获取用户登录状态
-      this.checkStoreLoginStatus();
-      this.usualKeyword();
-    }
+    this.$nextTick(() => {
+      if (this.type == "home") {
+        this.isShowMenu = this.$route.name == "index" ? true : false;
+        window.addEventListener("scroll", this.handleScroll);
+        // 获取用户登录状态
+        this.checkStoreLoginStatus();
+        this.usualKeyword();
+      }
+    });
   },
   methods: {
-    // init() {
-    //   this.isDisTip = localStorage.getItem("isDisTip") ? false : true;
-    //   if (this.isDisTip) {
-    //     localStorage.setItem("isDisTip", "1");
-    //   }
-    // },
     downloadHtml() {
       location.href = "http://114.116.155.221:8000/一块医药.url";
     },
-     // 获取楼层显示状态
+    // 获取楼层显示状态
     async usualKeyword() {
       let _this = this;
       let iRequest = new inf.IRequest();
@@ -287,11 +312,10 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code == 200) {
-            _this.keyWordList = result.data
-            if(_this.keyWordList.length > 3) {
-              _this.keyWordList.splice(0,3)
+            _this.keyWordList = result.data;
+            if (_this.keyWordList.length > 3) {
+              _this.keyWordList.splice(0, 3);
             }
-           
           }
         })
       );
@@ -309,8 +333,8 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code == 200) {
-            if(result.data) {
-              _this.getBasicInfo()
+            if (result.data) {
+              _this.getBasicInfo();
             }
             _this.$store
               .dispatch("setUserStatus", {
@@ -318,9 +342,7 @@ export default {
                 status: result.data
               })
               .then(res => {})
-              .catch(err => {
-
-              });
+              .catch(err => {});
           }
         })
       );
@@ -343,21 +365,24 @@ export default {
             });
             let ice_callback = new Ice.Class(inf.PushMessageClient, {
               receive: function(message, current) {
-                try{
-                  let result = JSON.parse(message)
-                } catch(err){
+                try {
+                  let result = JSON.parse(message);
+                } catch (err) {
                   _this.$store
-                    .dispatch("setNoticeList", { message: message.replace('sys:', '') })
-                    .then(res => {
-                      
+                    .dispatch("setNoticeList", {
+                      message: message.replace("sys:", "")
                     })
-                    .catch(err => {
-                      
-                    });
+                    .then(res => {})
+                    .catch(err => {});
                 }
-              }})
+              }
+            });
             // websocket 上线
-            _this.$initIceLong('orderServer', _this.storeInfo.comp.storeId, new ice_callback());
+            _this.$initIceLong(
+              "orderServer",
+              _this.storeInfo.comp.storeId,
+              new ice_callback()
+            );
           }
         })
       );
@@ -377,7 +402,7 @@ export default {
         iRequest,
         new this.$iceCallback(function result(result) {
           if (result.code == 200) {
-            _this.autoResult = result.data
+            _this.autoResult = result.data;
           }
         })
       );
@@ -408,9 +433,7 @@ export default {
                   });
                 }, 500);
               })
-              .catch(err => {
-
-              });
+              .catch(err => {});
           } else {
             _this.$store
               .dispatch("setLogout", { context: _this })
@@ -424,35 +447,35 @@ export default {
                   });
                 }, 500);
               })
-              .catch(err => {
-
-              });
+              .catch(err => {});
           }
         })
       );
     },
     handleScroll() {
-      var scrollTop =
+      let scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-      var home = this.$refs.home.style;
-      var nameBox = this.$refs.nameBox.style;
-      if (scrollTop >= 600) {
-        home.position = "fixed";
-        home.top = "0px";
-        home.opacity = "1";
-        home.zIndex = "1000";
-        home.width = "100%";
-        home.height = "125px";
-        nameBox.height = "100px";
-        this.isShowHeader = false;
-      } else {
-        home.position = "";
-        home.top = "";
-        home.height = "170px";
-        nameBox.height = "130px";
-        this.isShowHeader = true;
+      if (this.$refs.home.style) {
+        let home = this.$refs.home.style;
+        let nameBox = this.$refs.nameBox.style;
+        if (scrollTop >= 600) {
+          home.position = "fixed";
+          home.top = "0px";
+          home.opacity = "1";
+          home.zIndex = "1000";
+          home.width = "100%";
+          home.height = "125px";
+          nameBox.height = "100px";
+          this.isShowHeader = false;
+        } else {
+          home.position = "";
+          home.top = "";
+          home.height = "170px";
+          nameBox.height = "130px";
+          this.isShowHeader = true;
+        }
       }
     },
     removeCartList(item, index) {
@@ -479,7 +502,7 @@ export default {
         })
       );
     },
-    
+
     handleOk() {
       // 跳转企业中心页面
       this.$router.push({
@@ -520,8 +543,8 @@ export default {
     },
     toHelp() {
       this.$router.push({
-        path: '/user/help/web-operation'
-      })
+        path: "/user/help/web-operation"
+      });
     },
     toHome() {
       this.$router.push({
@@ -578,25 +601,25 @@ export default {
       });
     },
     seover() {
-      this.isMouseover = true
+      this.isMouseover = true;
     },
     leave() {
-      this.isMouseover = false
+      this.isMouseover = false;
     }
   },
   watch: {
     visible(val) {
-      if(!val) {
+      if (!val) {
         this.$store
           .dispatch("removeNoticeList")
-          .then(res => {
-            
-          })
-          .catch(err => {
-            
-          });
+          .then(res => {})
+          .catch(err => {});
       }
     }
+  },
+  beforeRouteLeave (to, from, next) {
+     window.removeEventListener('scroll', this.handleScroll);
+     next()
   }
 };
 </script>
@@ -628,7 +651,7 @@ li {
   background: #ffffff;
   color: gray;
 }
-.header-box{
+.header-box {
   height: auto;
 }
 .already {
@@ -645,9 +668,9 @@ li {
   width: 20px;
   height: 20px;
 }
-.ant-select-auto-complete.ant-select .ant-select-selection{
+.ant-select-auto-complete.ant-select .ant-select-selection {
   margin-left: -8px;
-  border-radius: 15px 0px 0px 15px!important;
+  border-radius: 15px 0px 0px 15px !important;
 }
 /* 登录头部 */
 .login-header {
@@ -777,20 +800,20 @@ li {
   line-height: 26px;
   padding: 0px 23px 0px 23px;
   text-align: left;
-  text-indent: 0px!important;
+  text-indent: 0px !important;
   // margin-left: 15px;
   // margin-right: 15px;
   border-right: 2px solid #e0e0e0;
   color: #999999 !important;
-   overflow: hidden;
- text-overflow:ellipsis;
- white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.medicine-name-box .spike a:last-child{
-  border: none!important;
+.medicine-name-box .spike a:last-child {
+  border: none !important;
 }
-.spike a:hover{
-  color: #ed2f26!important;
+.spike a:hover {
+  color: #ed2f26 !important;
 }
 .medicine-name {
   display: inline-block;
@@ -814,12 +837,12 @@ li {
   border: 2px solid rgb(255, 0, 54);
   background: rgb(255, 0, 54);
 }
-.search-box{
+.search-box {
   width: 97%;
   margin-top: 2px;
   margin-left: 10px;
   border-radius: 50%;
-  } 
+}
 .search-btn {
   width: 83px;
   height: 30px;
@@ -951,7 +974,7 @@ li {
   width: 1190px;
   margin: 0 auto;
 }
-.goods-type .bars{
+.goods-type .bars {
   float: left;
   margin-top: 10px;
   margin-left: -8px;
@@ -1044,29 +1067,29 @@ li {
 .searchs-input {
   width: 82% !important;
 }
-.margin-top15{
+.margin-top15 {
   margin-top: 8px;
 }
-.title-box{
+.title-box {
   background: #f8f8f8;
 }
-.medicine-text{
+.medicine-text {
   .p-size(20px, 20px, 18px, left, 0px, #ed3025);
-  margin-top:  -5px;
+  margin-top: -5px;
   // padding: 0px 20px 0px 30px;
   padding-right: 15px;
-  span{
+  span {
     color: #999;
     font-weight: 500;
   }
-  .float-left{
+  .float-left {
     float: left;
   }
-  .float-right{
+  .float-right {
     float: right;
   }
 }
-.circle{
+.circle {
   float: left;
   width: 5px;
   height: 5px;

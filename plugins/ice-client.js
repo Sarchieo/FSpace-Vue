@@ -54,7 +54,7 @@ function refcallback(context, moduleName,_IRequest, callback) {
               }, 2);
             })
             .catch(err => {
-              console.log(err);
+
             });
           return
         } else if(success.code == -3){
@@ -106,7 +106,6 @@ function initIceLong(serverName, compid, callback) {
     }
   ).exception(
     function (ex) {
-      console.log(ex.toString());
       Ice.Promise.try(
         function () {
           // if (communication) {

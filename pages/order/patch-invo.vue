@@ -407,7 +407,7 @@ export default {
         iRequest,
         new this.$iceCallback(
           function result(result) {
-            debugger
+            
             if (result.code == 200 && result.data.paystatus == 1) {
               _this.steps = 4;
               clearInterval(_this.intervalid);
@@ -422,7 +422,7 @@ export default {
         receive: function(message, current) {
           try{
             let result = JSON.parse(message);
-            debugger
+            
             // event tradeStatus 需要跟蒋文广确认
             if (result.event == 1 && result.body.tradeStatus == 1) {
               _this.steps = 4;
@@ -526,8 +526,6 @@ export default {
                 _this.getFeePayResult()
               }, 5000)
               _this.setStep(3);
-            } else {
-              console.log("result--- " + JSON.stringify(result));
             }
           },
           function error(error) {}

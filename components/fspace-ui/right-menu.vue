@@ -34,12 +34,25 @@
   </div>
 </template>
 <script>
+import * as types from '@/store/mutation-types'
+import {
+  saveUserStatus
+}  from '@/utils/cache'
+
 export default {
   name: "f-space-right",
   computed: {
     storeInfo() {
       return this.$store.state.user;
     },
+    isLogin: {
+      get: function() {
+        return this.$store.state.userStatus;
+      },
+      set: function(newValue) {
+        this.$store.commit(types.SET_LOGIN_STATE, saveUserStatus(newValue, this))
+      }
+    }
   },
   data() {
     return {
@@ -77,9 +90,6 @@ export default {
           }
         })
       );
-    },
-    isLogin() {
-      return this.$store.state.userStatus;
     },
     toPage(name) {
       

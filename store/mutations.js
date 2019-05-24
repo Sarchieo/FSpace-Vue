@@ -20,7 +20,6 @@ const mutations = {
     state.isNewNotice = status
   },
   [types.NOTICE_LIST] (state, list) {
-    
     state.noticeList = list
   },
 }

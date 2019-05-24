@@ -733,7 +733,6 @@ export default {
               _this.discountLadoff.forEach(item => {
                 _this.$set(item, 'rulecode', Math.floor(item.offercode / 1000))
               })
-              console.log(_this.discountLadoff);
             });
           }
         })
@@ -1051,7 +1050,7 @@ export default {
                 : 1;
               // 设置中包装数 商品数
               _this.inventory = result.data.medpacknum;
-              debugger;
+              ;
               if (_this.userStatus) {
                 // 上传足迹
                 _this.getFoot();

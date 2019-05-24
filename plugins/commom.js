@@ -13,7 +13,7 @@ var fsGeneralMethods = {
        * @param {*} arr 数组
        */
       request(context,serverName, cls, method, params, arr) {
-        console.log('模块名<' + cls + '>  方法名:<' + method + '>调用参数:' + JSON.stringify(params || {}))
+        // console.log('模块名<' + cls + '>  方法名:<' + method + '>调用参数:' + JSON.stringify(params || {}))
         return new Promise((resolve, reject) => {
           if(serverName && serverName == 'orderServer') {
             serverName +=  Math.floor((context.storeInfo.comp.storeId / 8192) % 65535)

@@ -51,7 +51,6 @@ export default {
     
     this.noticeIndex = Number(this.$route.query.noticeIndex)
     this.notice = JSON.parse(sessionStorage.getItem("noticeListAll"))
-    console.log(this.notice)
   },
   methods: {
     toPage(index) {

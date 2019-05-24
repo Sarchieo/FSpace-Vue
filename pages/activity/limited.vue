@@ -99,7 +99,6 @@ export default {
           if (result.code == 200) {
             result.data.list = result.data.list;
             _this.goodsList = result.data;
-            console.log(_this.goodsList)
             _this.pagination = _this.goodsList.list
             _this.total = result.total
             _this.goodsList.list.forEach((item) => {
@@ -109,8 +108,6 @@ export default {
             _this.fsGeneralMethods.addImages(_this, _this.goodsList.list, 'sku', 'spu')
             _this.secondKill(_this.stringToDate(_this.goodsList.now || '2019-4-13 16:10:20') ,_this.goodsList.edate)
           }
-        },function(error) {
-          console.log(error)
         })
       );
     },
@@ -156,14 +153,11 @@ export default {
         }
         }, 1000);
         if (times >= 0) {
-          console.log(times)
         } else {
-          console.log('活动结束')
         }
       }
     },
     callback(key) {
-      console.log(key);
     },
     toDetails(item) {
       this.$router.push({

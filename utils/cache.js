@@ -29,7 +29,8 @@ export function removeUser () {
 }
 
 export function loadUserStatus(context) {
-  return context.$cookies.get(UserStatusKey)
+  console.log(context.$cookies.get(UserStatusKey) || false)
+  return context.$cookies.get(UserStatusKey) || false
 }
 
 export function saveUserStatus (state, context) {

@@ -81,7 +81,6 @@ export default {
       this.$router.push({
         path: e.key
       });
-      console.log("click ", e);
     },
     queryCompAllBal() {
       let _this = this;

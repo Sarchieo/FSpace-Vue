@@ -84,7 +84,6 @@ export default {
       this.asType = this.$route.query.asType;
       this.orderno = this.$route.query.orderno;
       this.goodsArr = JSON.parse(sessionStorage.getItem("afterSaleGoods"));
-      console.log(this.goodsArr)
       this.fsGeneralMethods.addImages(this, this.goodsArr, "pdno", "spu");
       this.goodsArr.forEach((item) => {
         item.inventory = item.pnum

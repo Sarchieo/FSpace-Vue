@@ -169,9 +169,7 @@ export default {
         }
         }, 1000);
         if (times >= 0) {
-          console.log(times)
         } else {
-          console.log('活动结束')
         }
       }
     },
@@ -200,9 +198,7 @@ export default {
         }
         }, 1000);
         if (times >= 0) {
-          console.log(times)
         } else {
-          console.log('活动结束')
         }
       }
     },
