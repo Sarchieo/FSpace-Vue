@@ -4,15 +4,17 @@
       <f-space-header type="register"></f-space-header>
 
       <div class="register-box">
-        <a-steps :current="stepNum" class="steps">
-          <a-step>
-            <!-- <span slot="title">Finished</span> -->
-            <template slot="title">用户注册</template>
-            <span slot="description">完善资料</span>
-          </a-step>
-          <a-step title="提交药店资质" description="上传营业执照、GSP等"/>
-          <a-step title="注册完成" description="注册完成."/>
-        </a-steps>
+        <div>
+           <a-steps :current="stepNum" class="steps">
+            <a-step class="margin-right150">
+              <!-- <span slot="title">Finished</span> -->
+              <template slot="title">用户注册</template>
+              <span slot="description">完善资料</span>
+            </a-step>
+            <a-step title="提交药店资质" description="上传营业执照、GSP等"  class="margin-right150"/>
+            <a-step title="注册完成" description="注册完成" class="float-right"/>
+         </a-steps>
+        </div>
         <!-- 用户注册 -->
         <div class="from-box" v-if="stepNum === 0">
           <!-- <p>用户注册</p> -->
@@ -135,19 +137,17 @@
         </div>
         <!-- 提交资质 -->
         <div v-if="stepNum === 1">
-          <div>
-            <span class="tip">温馨提示：为确保您药店认证通过，请填写药店名称、 药店地址时请保持与《营业执照》一致</span>
+          <p class="tip">温馨提示：为确保您药店认证通过，请填写药店名称、 药店地址时请保持与《营业执照》一致</p>
+          <div class="upload-box">
             <h2 class="certificate-title">药店资质</h2>
-            <a-input placeholder="请填写邀请人, 若无可不填写" v-model="uphone" ref="userNameInput">
-              <a-icon slot="prefix" type="user" />
-            </a-input>
+           
             <a-form-item
               v-bind="formItemLayout"
               class="upload"
               v-for="(item, index) in uploadList"
               :key="index"
             >
-              <div @click="setUploadIndex(index)">
+              <div @click="setUploadIndex(index)" class="card-box">
                 <a-upload
                   :fileList="item.fileList"
                   :headers="headers"
@@ -170,7 +170,7 @@
               <p class="upload-p">{{ item.name }}</p>
             </a-form-item>
           </div>
-          <a-button @click="completed()">完成注册</a-button>
+          <a-button @click="completed()" class="complete-btn">完成注册</a-button>
         </div>
       </div>
       <f-space-footer></f-space-footer>
@@ -205,7 +205,7 @@ export default {
   data() {
     return {
       loading: false, // 图片上传加载条
-      stepNum: 0,
+      stepNum: 1,
       headers: {
         "specify-path": "",
         "specify-filename": ""
@@ -535,7 +535,7 @@ export default {
 }
 .from-box {
   .container-size(block, 700px, 734px, 0 auto, 0px);
-  padding-top: 10%;
+  // padding-top: 10%;
 }
 .from-box p {
   .p-size(50px, 50px, 18px, center, 0px, #000000);
@@ -560,7 +560,46 @@ export default {
 .captcha:hover {
   opacity: 0.8;
 }
-// .steps {
-  
-// }
+.steps {
+  .container-size(block, 800px,80px, 30px auto, 0px);
+  // padding: 10px 80px;
+}
+.margin-right150{
+  margin-right: 198px!important;
+}
+.float-right {
+  float: right;
+}
+.city{
+  width: 392px;
+  border: 1px solid #e0e0e0;
+}
+.ant-input {
+  border: 1px solid #e0e0e0;
+  border-radius: 0px !important;
+}
+.tip{
+  .p-size(50px, 50px, 18px, left, 195px, #000000);
+}
+.certificate-title{
+   .p-size(50px, 50px, 18px, left, 0px, #333333);
+   margin-bottom: 30px;
+}
+.upload-box{
+  .container-size(block, 800px,260px, 30px auto, 0px);
+}
+.upload {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  margin-right: 100px;
+}
+.upload-p{
+  text-align: center;
+}
+.complete-btn{
+   .button-display(block, 15px auto 0 auto);
+   .button-size(120px, 48px, 48px, 18px, 0px, 5px);
+   .button-color(1px solid transparent, #ed3025, #ffffff);
+}
 </style>

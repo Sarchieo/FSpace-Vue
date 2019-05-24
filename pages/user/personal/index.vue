@@ -699,7 +699,7 @@ export default {
 .upload {
   display: inline-block;
   width: 240px;
-  height: 200px;
+  height: 130px;
 }
 .tip {
   color: #ed3025;
